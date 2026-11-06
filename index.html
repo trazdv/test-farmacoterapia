@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Test Farmacoterapia</title>
+<meta name="description" content="Test de estudio del 1er parcial de Farmacoterapia veterinaria, por temas.">
+<meta name="theme-color" content="#1f5f8b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Farmaco Test">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<style>
+:root{
+  --bg:#f4f6f8; --surface:#ffffff; --surface-2:#eef2f5; --text:#16212b; --muted:#5b6b78;
+  --border:#d5dde3; --accent:#1f5f8b; --accent-ink:#ffffff; --accent-soft:#dcebf6;
+  --ok:#1e7d4f; --ok-soft:#dff3e8; --bad:#b3362f; --bad-soft:#fbe4e2; --warn:#8a5a00; --warn-soft:#fdf0d5;
+  --shadow:0 1px 2px rgba(16,30,40,.06),0 4px 14px rgba(16,30,40,.06);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f151a; --surface:#18212a; --surface-2:#202b35; --text:#e6edf2; --muted:#9aabb8;
+    --border:#2e3b47; --accent:#5aa7dc; --accent-ink:#0b1720; --accent-soft:#1c3446;
+    --ok:#4cc38a; --ok-soft:#173527; --bad:#f07a71; --bad-soft:#3d1f1d; --warn:#f0c060; --warn-soft:#3a2f14;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f151a; --surface:#18212a; --surface-2:#202b35; --text:#e6edf2; --muted:#9aabb8;
+  --border:#2e3b47; --accent:#5aa7dc; --accent-ink:#0b1720; --accent-soft:#1c3446;
+  --ok:#4cc38a; --ok-soft:#173527; --bad:#f07a71; --bad-soft:#3d1f1d; --warn:#f0c060; --warn-soft:#3a2f14;
+  --shadow:none;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--text);
+  font:17px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-text-size-adjust:100%;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  min-height:100vh;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px 120px}
+h1{font-size:1.65rem;margin:8px 0 4px;letter-spacing:-.01em}
+h2{font-size:1.15rem;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.stack>*+*{margin-top:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+
+/* buttons */
+.btn{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:12px 18px;min-height:48px;font-weight:600}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.ghost{background:transparent}
+.btn.block{width:100%}
+.btn:disabled{opacity:.45;cursor:default;transform:none}
+.icon-btn{border:1px solid var(--border);background:var(--surface);border-radius:12px;width:48px;height:48px;display:inline-grid;place-items:center;font-size:1.2rem}
+
+/* topic picker */
+.topic{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;min-height:64px}
+.topic+.topic{margin-top:10px}
+.topic .chk{width:26px;height:26px;border-radius:8px;border:2px solid var(--border);display:grid;place-items:center;flex:none;font-size:16px;color:transparent}
+.topic[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.topic[aria-pressed="true"] .chk{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.topic .t-name{font-weight:600}
+.topic .t-desc{color:var(--muted);font-size:.9rem}
+.topic .count{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;font-size:.95rem;flex:none}
+.topic:disabled{opacity:.5;cursor:default}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1.5px solid var(--border);background:var(--surface);border-radius:999px;padding:9px 16px;min-height:44px;font-weight:600}
+.chip[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--text)}
+.toggle{display:flex;align-items:center;gap:12px;padding:6px 0}
+.switch{width:52px;height:32px;border-radius:999px;background:var(--border);position:relative;flex:none;border:none}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:left .15s}
+.switch[aria-checked="true"]{background:var(--accent)}
+.switch[aria-checked="true"]::after{left:23px}
+.label{font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 10px}
+
+/* quiz */
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.progress{height:8px;background:var(--surface-2);border-radius:999px;overflow:hidden;margin-bottom:18px}
+.progress>div{height:100%;background:var(--accent);transition:width .2s}
+.qmeta{color:var(--muted);font-size:.95rem;font-variant-numeric:tabular-nums}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.qtext{font-size:1.25rem;font-weight:650;line-height:1.4;margin:10px 0 18px}
+.opt{display:flex;gap:14px;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;min-height:60px;line-height:1.4}
+.opt+.opt{margin-top:10px}
+.opt .letter{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--surface-2);font-size:.95rem}
+.opt[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.opt[aria-pressed="true"] .letter{background:var(--accent);color:var(--accent-ink)}
+.opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.opt.correct .letter{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.wrong .letter{background:var(--bad);color:#fff}
+.navbar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.navbar .inner{max-width:820px;margin:0 auto;display:flex;gap:10px}
+.navbar .btn{flex:1}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:8px;margin-top:12px}
+.grid button{height:46px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);font-weight:600;font-variant-numeric:tabular-nums}
+.grid button.answered{background:var(--accent-soft);border-color:var(--accent)}
+.grid button.current{outline:3px solid var(--accent);outline-offset:1px}
+
+/* results */
+.score{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.ring{--p:0;width:132px;height:132px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:conic-gradient(var(--ring-color,var(--ok)) calc(var(--p)*1%),var(--surface-2) 0)}
+.ring>div{width:104px;height:104px;border-radius:50%;background:var(--surface);display:grid;place-items:center;text-align:center}
+.ring b{font-size:2rem;line-height:1;font-variant-numeric:tabular-nums}
+.ring span{font-size:.8rem;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;flex:1;min-width:240px}
+.stat{border-radius:12px;padding:12px;text-align:center;background:var(--surface-2)}
+.stat b{display:block;font-size:1.6rem;font-variant-numeric:tabular-nums}
+.stat.ok b{color:var(--ok)} .stat.bad b{color:var(--bad)}
+.verdict{font-weight:700;font-size:1.1rem}
+.tabs{display:flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:12px;margin:18px 0 14px;overflow-x:auto}
+.tabs button{flex:1;border:none;background:transparent;border-radius:9px;padding:10px 8px;min-height:44px;font-weight:600;white-space:nowrap;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--text);box-shadow:var(--shadow)}
+.rev{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+.rev+.rev{margin-top:12px}
+.rev .qtext{font-size:1.05rem;margin:8px 0 12px}
+.ans{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px;margin-top:8px;font-size:.98rem}
+.ans .k{flex:none;font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;padding-top:2px;width:86px}
+.ans.ok{background:var(--ok-soft)} .ans.ok .k{color:var(--ok)}
+.ans.bad{background:var(--bad-soft)} .ans.bad .k{color:var(--bad)}
+.ans.blank{background:var(--surface-2)} .ans.blank .k{color:var(--muted)}
+.info-btn{margin-top:12px;border:1.5px solid var(--accent);color:var(--accent);background:transparent;border-radius:10px;padding:10px 16px;min-height:44px;font-weight:700}
+.empty{color:var(--muted);text-align:center;padding:30px 10px}
+
+/* modal */
+.backdrop{position:fixed;inset:0;background:rgba(5,12,18,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.modal{background:var(--surface);width:100%;max-width:720px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom))}
+@media (min-width:700px){.backdrop{align-items:center;padding:24px}.modal{border-radius:20px;max-height:84vh}}
+.modal h3{margin:0 0 6px;font-size:1.15rem}
+.modal .note{font-size:1.02rem;line-height:1.6}
+.callout{border-radius:10px;padding:10px 12px;font-size:.95rem;margin-top:12px}
+.callout.warn{background:var(--warn-soft);color:var(--warn)}
+.callout.okc{background:var(--ok-soft)}
+.hidden{display:none!important}
+.footer-note{color:var(--muted);font-size:.85rem;margin-top:22px;text-align:center}
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<div id="modal-root"></div>
+
+<script>
+"use strict";
+const TOPICS = {
+  1:{name:"Tema 1",desc:"Terapéutica veterinaria"},
+  2:{name:"Tema 2",desc:"Autacoides (histamina, serotonina, péptidos, eicosanoides y NO)"},
+  3:{name:"Tema 3",desc:"AINEs, antiartríticos y antirreumatoideos"},
+  4:{name:"Tema 4",desc:"Antiinflamatorios esteroideos"},
+  5:{name:"Tema 5",desc:"Terapéutica cardiovascular"}
+};
+
+/* t = tema, q = pregunta, o = opciones (orden original A-D), a = índice correcto,
+   m = índice marcado en los apuntes cuando NO coincide con la correcta, d = pregunta dudosa, n = apuntes */
+const QUESTIONS = [
+{t:5,q:"¿Cuál de los siguientes fármacos NO está indicado en la cardiomiopatía hipertrófica?",o:["Verapamilo","Atenolol","Dobutamina","Enalapril"],a:2,
+n:"En la cardiomiopatía hipertrófica el problema es diastólico: el ventrículo está engrosado, rígido e hipercontráctil. Se usan fármacos que relajan y enlentecen el corazón: β-bloqueantes (atenolol), antagonistas del Ca²⁺ (diltiazem, verapamilo) y, si hay ICC, IECAs (enalapril). Los inotropos positivos como la <b>dobutamina están contraindicados</b>: aumentan la contractilidad y empeoran la obstrucción del tracto de salida."},
+{t:5,q:"Respecto a los antiarrítmicos de clase I. Señalar la correcta:",o:["Aumentan la velocidad de despolarización y de expansión del estímulo en el miocardio","Acortan el periodo refractario","Solo utilizados en alteraciones intensas del ritmo que alteran el gasto cardiaco","Bloquean el canal independientemente de su estado"],a:2,
+n:"Clase I = bloqueantes de canales de Na⁺. <b>Disminuyen</b> la velocidad de despolarización (fase 0) y de conducción y, en general, <b>prolongan</b> el periodo refractario. El bloqueo es <b>dependiente del estado</b> del canal (se unen al canal abierto/inactivado). Por su efecto proarritmogénico se reservan para alteraciones intensas del ritmo que comprometen el gasto cardiaco."},
+{t:5,q:"Fármacos inotrópicos. Señala la proposición correcta:",o:["La dopamina es agonista adrenérgico β1, β2 y α1 con más acción inotrópica que vasoconstrictora","Prenalterol es agonista adrenérgico α1 útil en hipertensión portal","Amrinona posee más acción vasodilatadora que inotrópica positiva","Dobutamina es agonista de receptores dopaminérgicos D1 y D2"],a:2,
+n:"Amrinona y milrinona (inhibidores de PDE3) son «inodilatadores» con <b>mayor efecto vasodilatador que inotrópico</b>.<br>• Dopamina: agonista D1, β1 y α1 (no β2).<br>• Prenalterol: agonista <b>parcial β1</b>.<br>• Dobutamina: agonista β1 (algo β2 y α1); no actúa sobre receptores dopaminérgicos."},
+{t:5,q:"Bloqueantes de los canales lentos de Ca²⁺. Señala la proposición FALSA:",o:["Útiles en estenosis aórtica e hipertensión arterial","Contraindicados en intoxicación digitálica","Poseen actividad depresora intensa de la conducción AV y en células de Purkinje","De elección en taquicardias ventriculares"],a:3,
+n:"Los antagonistas del Ca²⁺ (verapamilo, diltiazem) deprimen la conducción AV: son de elección en taquicardias <b>supraventriculares</b>, no ventriculares. Están contraindicados en la intoxicación digitálica (el verapamilo aumenta los niveles de digoxina y suma depresión AV)."},
+{t:5,q:"IECAs. Señalar la proposición incorrecta:",o:["Aumentan el flujo renal sin apenas cambios en la filtración glomerular","Producen efecto cronotropo positivo leve por activación simpática","Asociados con AINEs pueden producir hiperpotasemia","Disminuyen la resistencia vascular periférica y retrasan el desarrollo de aterosclerosis"],a:1,
+n:"Los IECA producen vasodilatación <b>sin taquicardia refleja</b>: al reducir la angiotensina II disminuyen el tono simpático. Aumentan el flujo renal con poco cambio en la FG, pueden dar hiperpotasemia (más con AINEs o diuréticos ahorradores de K⁺), reducen la RVP y frenan la remodelación vascular y la aterosclerosis."},
+{t:5,q:"Otros vasodilatadores. Señalar la proposición incorrecta:",o:["Prazosina, bloqueante α1, es útil en ICC de origen valvular","Isoxsuprina es un arteriodilatador útil en laminitis","El inhibidor de la renina, aliskiren, es útil en hipertrofia cardiaca","Sildenafilo, inhibidor de PDE5, es útil para reducir la hipertensión aórtica"],a:3,
+n:"El sildenafilo (inhibidor de PDE5) se usa en <b>hipertensión pulmonar</b> (en perros), no aórtica.<br>• Prazosina: bloqueante α1, vasodilatador mixto útil en ICC valvular.<br>• Isoxsuprina: vasodilatador usado en laminitis y enfermedad navicular en caballos.<br>• Aliskiren: inhibidor directo de la renina."},
+{t:5,q:"Digitálicos. Señalar la proposición correcta:",o:["Se acumulan en tejido adiposo","La digoxina se elimina principalmente vía hepática en forma de metabolitos","En perro la digoxina posee una vida media más prolongada que la digitoxina","La hiperpotasemia disminuye su actividad inotrópica"],a:2,d:true,
+n:"En el <b>perro</b> la digoxina tiene vida media más larga (≈20–55 h) que la digitoxina (≈8–12 h); en humanos ocurre al revés.<br>• Se acumulan en corazón, riñón, hígado y músculo, pero <b>muy poco en tejido adiposo</b> (se dosifica por peso magro).<br>• La digoxina se elimina sobre todo por <b>vía renal sin metabolizar</b>.<br>• Potasio: la <b>hipopotasemia aumenta su toxicidad</b>. La D tiene parte de verdad (el K⁺ alto compite con la digoxina en la Na⁺/K⁺-ATPasa), pero la respuesta esperada es la C."},
+{t:2,q:"¿Cuál NO es un efecto de la histamina?",o:["Disminución de la resistencia periférica e hipotensión","Constricción de venas hepáticas en el perro","Efecto cronotropo e inotropo negativo","Relajación de rumen y retículo"],a:2,
+n:"En el corazón la histamina tiene efecto <b>cronotropo e inotropo POSITIVO</b> (receptores H2) y enlentece la conducción AV (H1). Otros efectos: vasodilatación de vasos pequeños → ↓RVP e hipotensión; en el perro constricción de las venas hepáticas (secuestro de sangre esplácnica en la anafilaxia)."},
+{t:5,q:"Los nitratos orgánicos (dilatadores coronarios). Señalar la incorrecta:",o:["Buena disponibilidad oral pero duración de acción inferior a gliceril trinitrato","Son vasodilatadores mixtos con mayor actividad sobre venas","Disminuyen la demanda de oxígeno","Mejoran la perfusión subendocárdica al evitar estenosis espasmódicas de coronarias"],a:0,
+n:"Los nitratos orales (dinitrato y mononitrato de isosorbida) tienen buena biodisponibilidad oral y una duración de acción <b>MAYOR</b> que la nitroglicerina (gliceril trinitrato), que es de acción muy corta. Son vasodilatadores mixtos de predominio venoso (↓precarga), disminuyen la demanda de O₂ y mejoran la perfusión subendocárdica."},
+{t:2,q:"Antihistamínicos H1 (2ª generación). Señala la incorrecta:",o:["Presentan vidas medias prolongadas que permiten su administración una vez al día","Su excreción es principalmente por vía hepática","Muchos de ellos poseen metabolitos activos que contribuyen a su acción terapéutica","Acción más selectiva presentando poco bloqueo de otros receptores autonómicos"],a:1,
+n:"AntiH1 de 2ª generación (loratadina, cetirizina, fexofenadina…): vida media larga (una dosis al día), metabolitos activos, más selectivos (poco bloqueo colinérgico/adrenérgico), poco paso de la BHE (menos sedación) y alta unión a proteínas. Según el temario su <b>excreción es fundamentalmente RENAL</b>."},
+{t:2,q:"Efectos de los antihistamínicos H2. Señala la proposición incorrecta:",o:["Ranitidina estimula la secreción de prolactina","Nizatidina no se biotransforma y es útil en casos de insuficiencia hepática","Presentan buena absorción oral aunque con efecto de primer paso","No presentan efectos a nivel central"],a:0,d:true,
+n:"El antiH2 que estimula la prolactina y tiene efecto antiandrogénico es la <b>CIMETIDINA</b> (que además inhibe el citocromo P450). La ranitidina prácticamente no modifica la prolactina a dosis normales.<br>• Nizatidina: apenas se biotransforma (eliminación renal) → útil en insuficiencia hepática.<br>• Buena absorción oral con efecto de primer paso.<br>• Pasan poco la BHE (aunque la cimetidina puede dar confusión en pacientes mayores)."},
+{t:2,q:"Efectos sobre la serotonina. Señale la respuesta incorrecta:",o:["Los inhibidores de su recaptación son serotoninérgicos indirectos utilizados como antidepresivos","Los agonistas 5-HT4 son potentes antieméticos","Los antagonistas 5-HT2 provocan estimulación de fibra muscular lisa vascular y uterina","Los setrones no son útiles en vómitos por cinetosis"],a:2,m:1,d:true,
+n:"Los receptores 5-HT2 median la <b>contracción</b> del músculo liso vascular, uterino y bronquial; sus <b>antagonistas</b> (ketanserina) la bloquean → producen relajación, no estimulación.<br>Ojo: la opción de los agonistas 5-HT4 también es discutible. Los agonistas 5-HT4 (cisaprida, mosaprida) son sobre todo <b>procinéticos</b>; los antieméticos potentes son los <b>antagonistas 5-HT3</b> (setrones), que no sirven para la cinetosis."},
+{t:2,q:"La angiotensina II… Señalar la proposición incorrecta:",o:["Por unión con el receptor AT2 provoca vasoconstricción y activación simpática","Por unión con el receptor AT2 tiene actividad antiproliferativa y vasodilatadora","La interacción con el receptor AT1 promueve la hipertrofia y proliferación de miocitos","Por interacción con el receptor AT1 se estimula la fibrosis cardiaca y la formación de superóxidos"],a:0,m:1,
+n:"<b>AT1</b>: vasoconstricción, activación simpática, liberación de aldosterona y ADH, hipertrofia y proliferación, fibrosis y formación de superóxidos.<br><b>AT2</b>: efectos opuestos: vasodilatación, antiproliferativo, apoptosis.<br>Atribuir vasoconstricción y activación simpática al AT2 es falso."},
+{t:2,q:"Los eicosanoides NO están indicados en:",o:["Profilaxis de úlcera gastroduodenal","Disminución de la presión intraocular","Coagulación intravascular diseminada","Incremento de la producción seminal"],a:2,m:0,
+n:"Usos de los eicosanoides:<br>• Misoprostol (PGE1): profilaxis de úlcera por AINEs.<br>• Latanoprost (PGF2α): baja la PIO en glaucoma.<br>• PGF2α: luteólisis, sincronización del celo, inducción del parto y aumento de la producción seminal (toros, verracos).<br>No se usan en la <b>CID</b>: eicosanoides como el tromboxano A2 favorecen la agregación plaquetaria."},
+{t:3,q:"AINEs. Señalar la proposición incorrecta:",o:["La inhibición de COX-3 está relacionada con su actividad antipirética y analgésica","Paracetamol y dipirona son potentes antiinflamatorios","No son efectivos para controlar la hipertermia inducida por ejercicio excesivo o aplicación de PGE2","La inhibición de la COX-1 es la responsable de los efectos adversos de estos fármacos"],a:1,
+n:"Paracetamol y metamizol (dipirona) son buenos analgésicos y antipiréticos pero <b>antiinflamatorios muy débiles</b> (actúan sobre todo a nivel central, COX-3). La inhibición de COX-1 explica la mayoría de los efectos adversos (gástricos, renales, plaquetarios). No bajan la hipertermia por ejercicio ni la provocada por PGE2 exógena."},
+{t:3,q:"Farmacocinética de AINEs. Señalar la correcta:",o:["Presentan volúmenes de distribución elevados","Su eliminación en orina depende del pH y la tasa de secreción tubular","No se biotransforman","Se acumulan en tejidos inflamados por su baja tasa de unión a proteínas plasmáticas"],a:1,
+n:"Los AINEs son ácidos débiles con <b>alta unión a proteínas</b> (>90 %) → volumen de distribución <b>bajo</b>. Se acumulan en el foco inflamatorio (pH ácido y extravasación de proteínas). Se biotransforman en el hígado. Su eliminación urinaria depende del <b>pH</b> (la orina alcalina aumenta la excreción) y de la <b>secreción tubular</b> activa."},
+{t:3,q:"¿Cuál de los siguientes fármacos es un agente biológico modificador de la enfermedad anti-TNF utilizado en artritis reumatoide?",o:["Rituximab","Tofacitinib","Etanercept","Leflunomida"],a:2,
+n:"Anti-TNF biológicos: <b>etanercept</b> (proteína de fusión con el receptor del TNF), infliximab, adalimumab.<br>• Rituximab: anti-CD20 (linfocitos B).<br>• Tofacitinib: inhibidor de JAK (FAME sintético dirigido).<br>• Leflunomida: FAME sintético convencional (inhibe la síntesis de pirimidinas)."},
+{t:4,q:"¿Cuál de los siguientes efectos NO es producido por los glucocorticoides?",o:["Aumento de la volemia e hipertensión","Aumento de neutrófilos y plaquetas","Estimulación de la gluconeogénesis a nivel hepático","Disminución de la eliminación urinaria de ácido úrico"],a:3,m:1,
+n:"Los glucocorticoides <b>aumentan</b> la eliminación urinaria de ácido úrico (efecto uricosúrico).<br>Sí producen: retención de Na⁺ y agua (↑volemia, HTA); <b>neutrofilia</b> y aumento de plaquetas y eritrocitos, con linfopenia y eosinopenia («leucograma de estrés»); y estimulan la gluconeogénesis hepática."},
+{t:2,q:"Usos de antihistamínicos. Señalar la proposición FALSA:",o:["Los antiH2 se pueden usar para el tratamiento de úlcera péptica y gastritis urémica","Los antiH3 se usan en deterioro cognitivo y desórdenes del sueño","Los antiH1 se usan para evitar retención de placenta","Los antiH2 se usan para el tratamiento de vómitos y vértigo"],a:3,
+n:"Para vómitos por cinetosis y vértigo se usan <b>antiH1</b> (dimenhidrinato, meclizina, difenhidramina), no antiH2.<br>• AntiH2: úlcera péptica, gastritis urémica, esofagitis por reflujo.<br>• AntiH3: deterioro cognitivo y trastornos del sueño.<br>• AntiH1 en veterinaria: alergias, prurito y coadyuvante en retención de placenta."},
+{t:2,q:"Los antihistamínicos H1 presentan buena eficacia EXCEPTO en:",o:["Urticaria y prurito","Broncoespasmo","Retención de placenta","Rinitis y conjuntivitis alérgica"],a:1,
+n:"En el broncoespasmo y el asma participan muchos otros mediadores (leucotrienos, etc.), por eso los antiH1 son <b>poco eficaces</b>. Funcionan bien en urticaria, prurito, rinitis y conjuntivitis alérgica."},
+{t:2,q:"Toxicidad de la metoclopramida. ¿Cuál NO es un efecto tóxico provocado por este fármaco?",o:["Trastornos del movimiento","Estreñimiento","Galactorrea","Somnolencia y fatiga"],a:1,
+n:"Metoclopramida: antagonista D2 (y 5-HT3) y agonista 5-HT4 → procinético y antiemético. Al aumentar la motilidad provoca <b>diarrea</b>, no estreñimiento. Otros efectos: trastornos extrapiramidales del movimiento, galactorrea (↑prolactina por bloqueo D2), somnolencia y fatiga."},
+{t:2,q:"Antagonistas 5-HT3. Señalar la proposición CORRECTA:",o:["Pueden provocar broncoespasmo e hipotensión","La vía intravenosa está contraindicada","Antagonizan los receptores dopaminérgicos D2","Muy eficaces contra vómitos de origen cinético"],a:0,
+n:"Setrones (ondansetrón, granisetrón): bloquean los 5-HT3 de la zona gatillo y de las aferencias vagales. Muy eficaces en vómitos por quimioterapia, <b>poco en cinetosis</b>. Se pueden dar por vía IV y no bloquean D2. Reacciones adversas poco frecuentes: hipersensibilidad con <b>broncoespasmo e hipotensión</b>, estreñimiento, cefalea."},
+{t:2,q:"Características farmacológicas de antihistamínicos H1. Señalar la proposición FALSA:",o:["Los de 2ª generación presentan menos incompatibilidades por ser metabolizados por enzimas microsomales","Poseen una acción poco selectiva","Los de 1ª generación presentan mayor probabilidad de bloqueo de receptores autonómicos","Los de 2ª generación presentan menor penetración y por tanto menores efectos sedantes"],a:0,
+n:"Precisamente por metabolizarse por el citocromo P450 (CYP3A4), los de 2ª generación presentan <b>MÁS interacciones</b> (con macrólidos e imidazoles → cardiotoxicidad de terfenadina y astemizol). Los de 1ª generación son poco selectivos (bloqueo colinérgico y α) y atraviesan la BHE (sedación)."},
+{t:2,q:"Efectos farmacológicos de la histamina. Señalar la proposición FALSA:",o:["Disminuye la conducción auriculoventricular","En perro produce vasodilatación de venas hepáticas","Disminuye la resistencia vascular periférica","Produce vasoconstricción de vasos de gran calibre"],a:1,
+n:"En el perro la histamina produce <b>constricción</b> de las venas hepáticas (acumulación de sangre en el territorio esplácnico, típico del shock anafiláctico canino). Además disminuye la conducción AV, baja la RVP (dilata los vasos pequeños) y contrae los vasos de gran calibre."},
+{t:2,q:"La activación de receptores H1 de la histamina produce (señalar la CORRECTA):",o:["Bradicardia","Activa la secreción de catecolaminas en médula adrenal","Relajación de la musculatura gástrica","Broncodilatación"],a:1,
+n:"Efectos H1: contracción del músculo liso (bronquios → <b>broncoconstricción</b>, intestino), vasodilatación de vasos pequeños con aumento de permeabilidad, prurito y dolor, y <b>liberación de catecolaminas en la médula adrenal</b>. La taquicardia y el aumento de contractilidad dependen de H2."},
+{t:2,q:"¿Cuál NO es un efecto farmacológico de la serotonina?",o:["Efecto cronotropo e inotropo negativo","Vasoconstricción arteriolar en músculo esquelético y cardiaco","Broncoconstricción","Disminución de la agresividad"],a:1,m:0,d:true,
+n:"La serotonina contrae la mayoría de los vasos (grandes arterias, venas), pero <b>DILATA las arteriolas del músculo esquelético y del corazón</b> (vía óxido nítrico endotelial). En el corazón su efecto directo es crono e inotropo positivo, aunque puede producir bradicardia refleja (reflejo de Bezold-Jarisch, 5-HT3), por eso la opción A es discutible. Además produce broncoconstricción y a nivel central reduce la agresividad."},
+{t:2,q:"Señalar la proposición INCORRECTA:",o:["COX-2 es inducible y promueve la formación de mediadores proinflamatorios","La 5-lipooxigenasa produce leucotrienos a partir de ácido araquidónico implicados en shock anafiláctico y asma","COX-1 es una enzima constitutiva muy implicada en la síntesis de prostanoides para la homeostasis del organismo","Los leucotrienos A4 y B4 poseen cisteína y componen la sustancia de reacción lenta de la anafilaxia"],a:3,
+n:"Los leucotrienos con cisteína (cisteinil-LT) son <b>LTC4, LTD4 y LTE4</b>: forman la sustancia de reacción lenta de la anafilaxia (SRS-A). LTA4 es el precursor inestable y LTB4 es quimiotáctico; ninguno lleva cisteína. COX-1 es constitutiva (homeostasis), COX-2 inducible (inflamación) y la 5-LOX produce leucotrienos."},
+{t:2,q:"Acciones de la angiotensina II. Señalar la INCORRECTA:",o:["En SNC provoca aumento del tono simpático que provoca aumento de la resistencia periférica y del gasto cardiaco","Aumento de la diuresis","A nivel cardiaco provoca efecto crono e inotropo positivos","Induce a nivel cardiovascular expresión de genes que conducen a remodelación del sistema"],a:1,
+n:"La angiotensina II es <b>antidiurética</b>: retiene Na⁺ y agua (directamente en el túbulo proximal y a través de aldosterona y ADH). Además aumenta el tono simpático central, tiene efecto crono e inotropo positivo y produce remodelación cardiovascular."},
+{t:3,q:"Reacciones adversas de AINEs. Señalar la INCORRECTA:",o:["Pueden provocar hiperuricemia e hipertensión","La tepoxalina en sobredosificación puede provocar fiebre y acúfenos","Pueden producir acidosis mixta respiratoria y metabólica","Son ulcerógenos y dificultan la reepitelización de la mucosa afectada"],a:1,
+n:"Fiebre y acúfenos (tinnitus) por sobredosis son típicos del <b>salicilismo</b> (ácido acetilsalicílico), no de la tepoxalina. Los AINEs pueden dar hiperuricemia (salicilatos a dosis bajas), HTA (retención de Na⁺), acidosis mixta (salicilatos) y son ulcerógenos (retrasan la reepitelización)."},
+{t:3,q:"Sobre la actividad antiinflamatoria de AINEs. Señalar la afirmación INCORRECTA:",o:["Las concentraciones necesarias para reducir la inflamación son inferiores a las que inhiben la actividad de la COX","Los fenamatos poseen una acción más rápida pues pueden antagonizar PGs ya presentes en el foco inflamatorio, pero no impiden la liberación de radicales libres","Diflunisal y tepoxalina pueden inhibir la 5-lipooxigenasa","La acción antiinflamatoria es estereoespecífica en los derivados del ácido propiónico"],a:0,
+n:"Las concentraciones necesarias para el efecto antiinflamatorio son <b>SUPERIORES</b> a las que inhiben la COX (por eso las dosis antiinflamatorias son más altas que las analgésicas, y se proponen mecanismos adicionales).<br>• Fenamatos: inhiben la síntesis y además antagonizan PGs ya formadas → acción más rápida.<br>• Tepoxalina (y diflunisal) inhiben también la 5-LOX.<br>• En los derivados del ácido propiónico la actividad reside en el enantiómero S."},
+{t:3,q:"¿Cuál de las siguientes proposiciones sobre la toxicidad de los AINEs es INCORRECTA?",o:["Generan reducción del flujo sanguíneo y de la tasa de filtración a nivel renal","Los análogos de las PGs como el misoprostol son útiles para la profilaxis de úlceras gástricas por AINEs","La inhibición a nivel del aparato yuxtaglomerular origina una actividad del sistema renina-angiotensina-aldosterona aumentada","Nimesulida y nabumetona presentan actividad ulcerógena baja"],a:2,
+n:"Las prostaglandinas estimulan la liberación de renina. Al inhibirlas, los AINEs <b>DISMINUYEN</b> la actividad del sistema renina-angiotensina-aldosterona (hipoaldosteronismo hiporreninémico → hiperpotasemia). También reducen el flujo renal y la FG. El misoprostol previene úlceras por AINEs; nimesulida y nabumetona son poco ulcerógenas."},
+{t:4,q:"Receptor glucocorticoide. Señalar la proposición INCORRECTA:",o:["Por unión del receptor con la proteína AP-1 y el factor nuclear kappa B se inhibe la expresión de genes que codifican proteínas inflamatorias","La activación de la expresión de genes requiere la unión del receptor con el ADN en elementos de respuesta a GC (GRE) y da lugar a síntesis de proteínas antiinflamatorias","La zona amino-terminal del receptor interacciona con los esteroides y modula la formación de dímeros","La zona central con sus residuos de cinc se une al ADN nuclear"],a:2,
+n:"Dominios del receptor GC:<br>• <b>C-terminal</b>: unión al ligando (esteroide) y a las proteínas de choque térmico (HSP90); interviene en la dimerización.<br>• <b>Central</b>: unión al ADN mediante «dedos de cinc».<br>• <b>N-terminal</b>: dominio de transactivación.<br>Transactivación: unión a GRE → proteínas antiinflamatorias (lipocortina). Transrepresión: interacción con AP-1 y NF-κB → inhibe genes proinflamatorios."},
+{t:3,q:"Señalar la proposición CORRECTA sobre antiartríticos:",o:["Los GAGs tienen poca utilidad en el desgaste articular por sobrepeso y tras traumatismo","Para apreciar los efectos beneficiosos de los GAGs se necesitan al menos 3-4 semanas y deben aplicarse cíclicamente en casos de artrosis","El ácido hialurónico se administra preferentemente vía intramuscular","El hialurónico reduce la infiltración de PMN y la pérdida de GAGs"],a:3,
+n:"El ácido hialurónico se administra por vía <b>intraarticular</b> (o IV), no IM. Mejora la viscosidad del líquido sinovial, <b>reduce la infiltración de PMN</b>, los radicales libres y la <b>pérdida de glucosaminoglicanos (GAGs)</b>. Los condroprotectores (GAGs polisulfatados, condroitín, glucosamina) sí son útiles en la artrosis por sobrepeso y postraumática."},
+{t:4,q:"Farmacocinética de glucocorticoides. Señalar la INCORRECTA:",o:["Su biotransformación se realiza exclusivamente a nivel hepático","A nivel intraarticular se usan ésteres o suspensiones de absorción más reducida","La eliminación es mayoritariamente renal, eliminándose también en heces y vía mamaria","La vía tópica permite alcanzar concentraciones elevadas en piel y mucosas disminuyendo riesgos sistémicos"],a:0,
+n:"Se biotransforman principalmente en el hígado, pero <b>no exclusivamente</b>: también en riñón y otros tejidos (11β-HSD). Eliminación mayoritariamente renal (también heces y leche). Intraarticular: ésteres o suspensiones de absorción lenta (depot). Tópica: altas concentraciones locales con menos riesgo sistémico."},
+{t:5,q:"Dobutamina. Señalar la proposición INCORRECTA:",o:["En taquicardias supraventriculares asociar a digitálicos","A dosis elevadas puede provocar taquiarritmias por ser proarritmogénica","Utilizada en ICC en infusión continua a dosis bajas","Agonista beta adrenérgico que posee menor acción inotrópica que vasodilatadora"],a:3,
+n:"Dobutamina: agonista β1 (con algo de β2 y α1) con acción <b>inotrópica predominante</b> y poco efecto sobre la frecuencia y la resistencia vascular. Se usa en infusión continua IV (vida media de minutos). A dosis altas: taquiarritmias. En fibrilación o taquicardia supraventricular se digitaliza antes, porque facilita la conducción AV."},
+{t:5,q:"Pimobendan. Señalar la proposición INCORRECTA:",o:["Inodilatador dual indicado en ICC por insuficiencia valvular","Su metabolito produce la acción vasodilatadora por inhibición de PDE III y V","Disminuye la hipertrofia cardiaca patológica","Se asocia a beta-bloqueantes para contrarrestar su efecto proarrítmico"],a:3,
+n:"Pimobendan: inodilatador (sensibiliza la troponina C al Ca²⁺ e inhibe PDE3; su metabolito ODMP inhibe PDE III/V → vasodilatación). Indicado en ICC por endocardiosis mitral y cardiomiopatía dilatada en perro. <b>No se asocia a β-bloqueantes</b> (tienen efectos opuestos sobre la contractilidad); se combina con IECA, diuréticos y espironolactona."},
+{t:5,q:"Inhibidores de PDE (amrinona). Señalar la proposición CORRECTA:",o:["Pueden provocar disritmias ventriculares y trombocitopenia","Amrinona presenta escaso metabolismo hepático y se elimina mayoritariamente vía renal en forma activa","Su utilización aumenta el consumo de oxígeno a nivel cardiaco","Controlan la ICC a largo plazo y poseen más acción inotrópica que vasodilatadora"],a:0,
+n:"Amrinona y milrinona: inhibidores de PDE3, inodilatadores de uso a <b>corto plazo</b> (en tratamiento crónico aumentan la mortalidad). Efectos adversos: <b>arritmias ventriculares y trombocitopenia</b> (amrinona). Apenas aumentan el consumo de O₂. La amrinona tiene un metabolismo hepático importante (acetilación)."},
+{t:5,q:"¿Cuál NO es una reacción adversa de los digitálicos?",o:["Visión borrosa y discromatopsia","Convulsiones","Arritmias, extrasístoles y/o bloqueo AV","Dolor abdominal, vómitos o náuseas"],a:1,
+n:"Intoxicación digitálica:<br>• Digestivos (los primeros): anorexia, náuseas, vómitos, dolor abdominal, diarrea.<br>• Cardiacos: extrasístoles, bloqueo AV, taquiarritmias.<br>• Neurológicos y visuales: letargia, desorientación, visión borrosa, discromatopsia.<br>Las <b>convulsiones</b> no son una reacción característica."},
+{t:5,q:"Inhibidores de fosfodiesterasas (IPDE). Señalar la proposición INCORRECTA:",o:["Aumentan la perfusión orgánica al disminuir la resistencia vascular sistémica","Los inhibidores de PDE5 como el sildenafilo son útiles para reducir la hipertensión pulmonar en perro","Los inhibidores de PDE3 son útiles para el tratamiento a corto plazo del fallo cardiaco o la descompensación de IC crónica","A nivel cardiaco disminuyen la contractilidad y la frecuencia"],a:3,m:1,
+n:"A nivel cardiaco los inhibidores de PDE3 <b>AUMENTAN la contractilidad</b> (y pueden aumentar la frecuencia). Reducen la RVS → mejor perfusión. El sildenafilo (PDE5) <b>sí es útil</b> en la hipertensión pulmonar del perro."},
+{t:2,q:"Acciones fisiológicas de los péptidos natriuréticos. Señalar la proposición INCORRECTA:",o:["Poseen actividad antiproliferativa y antifibrótica","Producen vasodilatación arterial y venosa","Producen inhibición de la endotelina I","Estimulan la liberación de vasopresina"],a:3,m:2,
+n:"Péptidos natriuréticos (ANP, BNP): natriuresis y diuresis, vasodilatación arterial y venosa, efecto antiproliferativo y antifibrótico. Inhiben la renina, la aldosterona, la endotelina-1 y la <b>liberación de vasopresina</b> (no la estimulan)."},
+{t:5,q:"Antagonistas del calcio derivados de dihidropiridina (amlodipino…). Señalar la proposición CORRECTA:",o:["Son arteriodilatadores no vasoselectivos","Utilizados en hipertensión y espasmos vasculares en hemorragias subaracnoideas","Contraindicados en profilaxis y crisis agudas de infarto porque pueden provocar espasmo de coronarias","No provocan taquicardia refleja"],a:1,
+n:"Dihidropiridinas (nifedipino, amlodipino, nimodipino): arteriodilatadores <b>vasoselectivos</b>, con poco efecto sobre el corazón, por lo que producen <b>taquicardia refleja</b>. Usos: hipertensión (amlodipino en gatos) y vasoespasmo tras hemorragia subaracnoidea (nimodipino)."},
+{t:5,q:"Antagonistas del calcio, cationes anfófilos. Señalar la proposición INCORRECTA:",o:["Producen efecto cronotropo y dromotropo negativo","Útiles en hipertensión y cardiomiopatía hipertrófica felina","Son arteriodilatadores no vasoselectivos","Contraindicados en daño cerebral provocado por traumatismos"],a:3,
+n:"Verapamilo y diltiazem (cationes anfófilos) actúan sobre corazón y vasos (<b>no vasoselectivos</b>): cronotropo y dromotropo negativos. Usos: hipertensión, taquicardias supraventriculares y cardiomiopatía hipertrófica felina (diltiazem). No están contraindicados en el daño cerebral traumático."},
+{t:2,q:"Antihistamínicos H1 de 2ª generación. Señalar la proposición FALSA:",o:["La excreción es fundamentalmente hepática","Al ser metabolizados por el citocromo CYP3A4 presentan interacciones con otros fármacos de similar metabolismo","Presentan una unión elevada a proteínas plasmáticas","Algunos poseen metabolitos con lo que se prolonga su acción"],a:0,
+n:"La excreción de los antiH1 de 2ª generación es fundamentalmente <b>RENAL</b>. Se metabolizan por CYP3A4 (interacciones con macrólidos, imidazoles…), tienen alta unión a proteínas y algunos generan metabolitos activos (p. ej. loratadina → desloratadina) que prolongan su acción."},
+{t:2,q:"Serotonina. Señalar la proposición FALSA:",o:["La excreción se produce a nivel renal","Su biotransformación se produce exclusivamente en hígado","Se almacena en células enterocromafines y plaquetas","En glándula pineal es precursora de melatonina"],a:1,
+n:"La serotonina se metaboliza por la MAO (→ ácido 5-hidroxiindolacético, 5-HIAA) en hígado, <b>pulmón, endotelio y otros tejidos</b>: no exclusivamente en hígado. Se excreta por riñón. Se almacena en células enterocromafines (~90 %), plaquetas y neuronas. En la glándula pineal es precursora de la melatonina."},
+{t:2,q:"Interacciones de antihistamínicos H1. Señalar la proposición FALSA:",o:["Potencian la acción de anticolinérgicos","Potencian la acción sedante de analgésicos opiáceos","Pueden presentar cardiotoxicidad (astemizol) si se usan con macrólidos o imidazoles","Aumentan el efecto de corticosteroides"],a:3,
+n:"Interacciones de los antiH1 (sobre todo 1ª generación): potencian los <b>anticolinérgicos</b> y los <b>depresores del SNC</b> (opiáceos, alcohol, hipnóticos). Terfenadina y astemizol + macrólidos o imidazoles (inhiben CYP3A4) → arritmias graves. <b>No aumentan</b> el efecto de los corticosteroides."},
+{t:2,q:"Los agonistas de la serotonina NO se usan para el tratamiento de:",o:["La ansiedad","Comportamientos compulsivos y automutilación","Vómitos","Atonía ruminal y reflujo gastroesofágico"],a:2,
+n:"Usos de agonistas o potenciadores serotoninérgicos: ansiedad (buspirona, 5-HT1A), conductas compulsivas y automutilación (ISRS como fluoxetina, clomipramina), procinéticos en atonía ruminal y reflujo (agonistas 5-HT4: cisaprida). Para los vómitos se usan <b>antagonistas 5-HT3</b>."},
+{t:2,q:"Los eicosanoides se caracterizan por (señalar la correcta):",o:["Tener estructura glucídica","Almacenarse en células específicas","Amplia presencia en el organismo excepto eritrocitos","Ser los autacoides con menos potencia"],a:2,
+n:"Eicosanoides: derivados de ácidos grasos de 20 C (ácido araquidónico) → estructura <b>lipídica</b>. <b>No se almacenan</b>: se sintetizan a demanda. Los producen casi todas las células <b>excepto los eritrocitos</b>. Son autacoides muy potentes, de acción local."},
+{t:2,q:"¿Cuál de los siguientes efectos NO es provocado por la angiotensina II?",o:["Aumento de la producción de radicales superóxido y agregación plaquetaria","El incremento del tono simpático a nivel de SNC provoca hipertensión","Inhibición de la liberación de ADH y ACTH","Liberación de adrenalina y aldosterona por estimulación de la glándula adrenal"],a:2,
+n:"La angiotensina II <b>estimula</b> la liberación de ADH (vasopresina) y ACTH, y provoca sed. También aumenta los superóxidos y la agregación plaquetaria, eleva el tono simpático central y libera adrenalina y aldosterona de la glándula adrenal."},
+{t:3,q:"Actividad analgésica de AINEs. Señalar la INCORRECTA:",o:["Actividad antiálgica de intensidad moderada o media","Presenta gran variabilidad en la respuesta individual y no producen tolerancia","Útil para dolores inducidos por estimulación mecánica o eléctrica","Asociada a la capacidad de inhibir la síntesis de PGs por la COX"],a:2,
+n:"Los AINEs son analgésicos de intensidad leve-moderada, útiles en el <b>dolor inflamatorio</b> (las PGs sensibilizan los nociceptores). <b>No son eficaces</b> en el dolor por estimulación mecánica o eléctrica directa ni en el dolor visceral intenso. Gran variabilidad individual; no producen tolerancia ni dependencia."},
+{t:2,q:"¿Cuál de las siguientes NO es una indicación para el uso de eicosanoides en veterinaria?",o:["Sincronización del celo","Disminución de la PIO en glaucoma","Inducción al parto","Procinéticos en atonía ruminal"],a:3,
+n:"PGF2α (dinoprost, cloprostenol): sincronización del celo, inducción del parto o aborto, piómetra. Latanoprost: glaucoma (↓PIO). Misoprostol: protección gástrica. <b>No se usan como procinéticos</b> en la atonía ruminal."},
+{t:5,q:"Señalar la proposición INCORRECTA sobre los SARTANES:",o:["Favorecen la retención de agua y sodio","Son antagonistas puros del receptor AT1 de uso oral","Sustituyen adecuadamente a los IECAs cuando aparece tos seca en el paciente","Tienen efecto antiproliferativo y antiapoptótico"],a:0,
+n:"ARA-II (losartán, telmisartán, valsartán): antagonistas selectivos del receptor AT1, por vía oral. Al bloquear la angiotensina II y la aldosterona favorecen la <b>excreción</b> de agua y Na⁺ (no la retención). No elevan la bradicinina → no dan tos seca, por eso sustituyen a los IECA. Telmisartán: proteinuria en gatos."},
+{t:3,q:"¿Cuál de los siguientes fármacos es un modificador de la enfermedad sintético dirigido utilizado en la artritis reumatoide?",o:["Tofacitinib","Rituximab","Abatacept","Leflunomida"],a:0,m:3,
+n:"FAME <b>sintéticos dirigidos</b> (tsDMARD): inhibidores de JAK (<b>tofacitinib</b>, baricitinib; en veterinaria, oclacitinib).<br>• FAME biológicos: rituximab (anti-CD20), abatacept (bloquea la coestimulación de linfocitos T), anti-TNF.<br>• Leflunomida y metotrexato son FAME sintéticos <b>convencionales</b>."},
+{t:5,q:"Señalar la proposición INCORRECTA sobre los bloqueantes beta-adrenérgicos:",o:["Estabilizan membranas y enlentecen la conducción AV","Carvedilol y propranolol, al no ser selectivos β1, pueden provocar broncoconstricción","Pueden incrementar la aparición de despolarizaciones prematuras","Pueden reducir la presión sanguínea en hipertensión"],a:2,
+n:"Los β-bloqueantes (clase II) <b>DISMINUYEN</b> el automatismo y las despolarizaciones prematuras o ectópicas, enlentecen la conducción AV y estabilizan membranas (propranolol). Los no selectivos (propranolol, carvedilol) bloquean β2 → broncoconstricción. Reducen la presión arterial en la hipertensión."},
+{t:5,q:"IECAs. Señalar la proposición CORRECTA:",o:["Promueven natriuresis y diuresis","Todas son ciertas","Útiles en profilaxis y tratamiento de cardiopatía isquémica","Evitan la hipertrofia cardiaca y vascular en hipertensos"],a:1,
+n:"IECA (enalapril, benazepril): al reducir angiotensina II y aldosterona → <b>natriuresis y diuresis</b>; son antiproliferativos → <b>evitan la hipertrofia</b> cardiaca y vascular; útiles en profilaxis y tratamiento de la <b>cardiopatía isquémica</b>, ICC, hipertensión y proteinuria renal. Todas las opciones son ciertas."},
+{t:5,q:"Hidralazina. Señalar la proposición CORRECTA:",o:["De elección en tratamiento crónico de hipertensión asociada a insuficiencia renal grave","Muy utilizada junto a beta-bloqueantes y diuréticos","A altas dosis puede provocar bradicardia por acción vagolítica","Posee una vida media prolongada que facilita el cumplimiento de los tratamientos"],a:1,
+n:"Hidralazina: arteriodilatador directo. Produce <b>taquicardia refleja</b> y retención de Na⁺ y agua, por eso se asocia a <b>β-bloqueantes y diuréticos</b>. Vida media corta (aunque su efecto dura más). Uso en perros: insuficiencia mitral e hipertensión."},
+{t:2,q:"¿Cuál NO es un efecto farmacológico de los antihistamínicos H2?",o:["Algunos estimulan la secreción de prolactina","Estimulan el sistema microsomal hepático","Inhiben la vasodilatación e hipotensión","Presentan efecto antiandrogénico"],a:1,
+n:"La cimetidina <b>INHIBE</b> el sistema microsomal hepático (citocromo P450) → muchas interacciones. Algunos (cimetidina) estimulan la prolactina y tienen efecto antiandrogénico. Bloquean el componente H2 de la vasodilatación e hipotensión por histamina."},
+{t:5,q:"Los IECAs NO son útiles en:",o:["Insuficiencia cardiaca congestiva dilatada, hipertrófica y restrictiva","Glomerulopatías que cursen con oliguria","Nefropatía diabética","Insuficiencia renal progresiva"],a:1,
+n:"Los IECA dilatan la arteriola eferente y reducen la presión de filtración: son útiles en proteinuria, nefropatía diabética e insuficiencia renal progresiva, pero en glomerulopatías con <b>oliguria</b> (o con hipovolemia o fallo renal agudo) pueden precipitar un fallo renal agudo. Son útiles en ICC por cardiomiopatía dilatada, hipertrófica y restrictiva."},
+{t:3,q:"Farmacocinética de AINEs. Señalar la CORRECTA:",o:["Presentan volúmenes de distribución elevados","Existen variaciones en la vida media intra e interespecíficas","En general se unen poco a proteínas plasmáticas","No producen residuos en leche"],a:1,
+n:"Hay grandes diferencias de vida media <b>entre especies</b> (ej. ácido acetilsalicílico: gato ≈ 38 h por déficit de glucuronidación, perro ≈ 8 h, caballo ≈ 1 h) e incluso entre individuos. Vd bajo, alta unión a proteínas y pueden dejar residuos en leche (tiempos de espera)."},
+{t:3,q:"Actividad antipirética de los AINEs. Señalar la INCORRECTA:",o:["Diflunisal carece de esta actividad","Mediada por inhibición de COX-3 a nivel central","No producen hipotermia","Son efectivos para reducir la temperatura corporal anormalmente elevada por insolación o ejercicio intenso"],a:3,
+n:"Los AINEs bajan la fiebre porque inhiben la síntesis de PGE2 en el hipotálamo (COX-3/COX-2 central). En la hipertermia por <b>golpe de calor o ejercicio</b> el punto de consigna hipotalámico no está alterado, por lo que <b>no son eficaces</b>. No producen hipotermia en animales normotérmicos. El diflunisal carece de acción antipirética."},
+{t:4,q:"¿Cuál de las siguientes reacciones adversas NO es producida por los glucocorticoides?",o:["Incrementan la incidencia de pancreatitis","Provocan anemia y neutropenia","Degeneración y atrofia muscular","Pueden provocar acné, alopecia y adelgazamiento de la piel"],a:1,
+n:"Los GC producen <b>neutrofilia</b> (no neutropenia) y aumentan los eritrocitos (no anemia). Reacciones adversas: pancreatitis, atrofia muscular, piel fina, alopecia, comedones, Cushing iatrogénico, inmunosupresión, diabetes, úlceras, retraso de la cicatrización y supresión adrenal."},
+{t:4,q:"Señalar la proposición INCORRECTA sobre los receptores GC y MC:",o:["La isoforma 1 de la enzima 11β-hidroxiesteroide deshidrogenasa convierte los corticoides fisiológicos en formas ceto inactivas en tejidos con capacidad de reacción mineralocorticoide","Aldosterona y cortisol se unen con igual afinidad al receptor mineralocorticoide","Los efectos rápidos como la excitabilidad neural y el comportamiento se explican por la interacción de GC con receptores específicos de membrana asociados a proteínas G","La aldosterona resiste la acción de la enzima por ser un derivado hemiacetal"],a:0,
+n:"Es la <b>isoforma 2</b> (11β-HSD2) la que inactiva el cortisol a cortisona (forma 11-ceto) en los tejidos diana de mineralocorticoides (riñón, colon), protegiendo al receptor MC. La isoforma 1 hace lo contrario (reactiva cortisona → cortisol en hígado y tejido adiposo). Cortisol y aldosterona tienen igual afinidad por el receptor MC; la aldosterona resiste a la enzima por su estructura hemiacetal."},
+{t:4,q:"De los siguientes fármacos, ¿cuál es la mejor opción para el tratamiento del hipercortisolismo o síndrome de Cushing en el perro?",o:["Ketoconazol","Aminoglutetimida","Trilostano","Mitotano"],a:2,
+n:"<b>Trilostano</b>: inhibidor competitivo de la 3β-hidroxiesteroide deshidrogenasa → bloquea la síntesis de cortisol. Es el tratamiento de elección actual (registrado para perros) por eficacia y seguridad. Mitotano: adrenolítico (necrosis de las zonas fascicular y reticular), alternativa con más efectos adversos. Ketoconazol y aminoglutetimida son menos eficaces."},
+{t:5,q:"Señalar la proposición CORRECTA sobre los glicósidos cardiotónicos:",o:["Aumentan el periodo refractario del nodo AV y la formación de impulsos ectópicos","Son útiles en IC grave asociada a hipertiroidismo","Son dromotropos y cronotropos positivos","Indicados en arritmias ventriculares en perro y gato"],a:0,m:2,
+n:"Digitálicos: inotropos <b>positivos</b>, pero cronotropos y dromotropos <b>NEGATIVOS</b> (efecto vagal): aumentan el periodo refractario del nodo AV. A dosis altas aumentan el automatismo → impulsos ectópicos. Indicados en fibrilación auricular y taquicardias supraventriculares con ICC; poco útiles en IC por hipertiroidismo y contraindicados en arritmias ventriculares."},
+{t:5,q:"Señalar la proposición CORRECTA sobre los bloqueantes de los canales de K⁺:",o:["El bretilio se utiliza para el control de fibrilación auricular en cardiomiopatía dilatada","Acortan el potencial de acción y el periodo refractario","Producen retraso en la repolarización","Amiodarona es de elección en taquicardias supraventriculares"],a:2,
+n:"Clase III (amiodarona, sotalol, bretilio): bloquean canales de K⁺ → <b>retrasan la repolarización</b>, prolongan el potencial de acción y el periodo refractario. Bretilio: fibrilación <b>ventricular</b>. Amiodarona: arritmias ventriculares y supraventriculares refractarias (no es la de elección en TSV)."},
+{t:5,q:"Efectos farmacológicos de los IECAs. Señalar la proposición INCORRECTA:",o:["Aumentan el flujo renal sin aumentar la tasa de filtración","Evitan la remodelación cardiaca tras una cardiopatía isquémica por ser antiproliferativos","Disminuyen la disfunción endotelial en enfermedad arterial e IC","Pueden provocar hipopotasemia"],a:3,
+n:"Los IECA reducen la aldosterona → retienen K⁺: producen <b>HIPERpotasemia</b>, no hipopotasemia. Aumentan el flujo renal sin cambiar la FG, evitan la remodelación tras isquemia y mejoran la disfunción endotelial."},
+{t:5,q:"Nitratos orgánicos. Señalar la respuesta INCORRECTA:",o:["Útiles en crisis agudas hipertensivas, en ICC e infarto","Pueden aumentar la demanda de oxígeno a nivel cardiaco","Para la profilaxis y tratamiento a largo plazo de la enfermedad coronaria es preferible utilizar nitratos orgánicos (mononitrato de isosorbida) que permiten su administración oral","Son vasodilatadores mixtos con más actividad sobre venas, por lo que disminuyen la precarga"],a:1,m:3,
+n:"Los nitratos <b>DISMINUYEN</b> la demanda miocárdica de O₂ (↓precarga y poscarga → ↓tensión de la pared). Son vasodilatadores mixtos con predominio venoso (↓precarga). Útiles en crisis hipertensivas, ICC aguda e infarto; para el tratamiento crónico oral se usa mononitrato o dinitrato de isosorbida."},
+{t:4,q:"Efectos de los glucocorticoides. Señalar la proposición CORRECTA:",o:["Aumentan la volemia por retención de agua","Disminuyen eritrocitos y plaquetas","A nivel vascular producen vasodilatación","Inhiben la actividad osteoclástica a nivel óseo"],a:0,m:1,
+n:"GC: retención de Na⁺ y agua (<b>↑volemia</b>); <b>aumentan</b> eritrocitos y plaquetas; potencian la vasoconstricción por catecolaminas (efecto permisivo); en el hueso inhiben los osteoblastos y estimulan los osteoclastos → osteoporosis."},
+{t:5,q:"Dopamina. Señalar la proposición INCORRECTA:",o:["En ICC congestiva se precisan dosis altas similares a las aplicadas en estados de shock","A dosis bajas puede ocasionar bradicardia e hipotensión por interacción con receptores D2","Vida media muy corta por lo que ha de administrarse IV","No puede usarse más de 72 h porque provoca desensibilización y disminución de receptores β1"],a:0,
+n:"La dopamina es dosis-dependiente: dosis bajas → D1 (vasodilatación renal y esplácnica); intermedias → β1 (inotropo, uso en ICC); altas → α1 (vasoconstricción, shock). En la ICC se usan dosis <b>más bajas</b> que en el shock. Vida media de minutos → infusión IV. Desensibilización de receptores β1 tras ~72 h."},
+{t:5,q:"Bloqueantes de los canales de Ca²⁺ (verapamilo). Señalar la proposición CORRECTA:",o:["Utilizados en intoxicación digitálica","Reducir la dosis en insuficiencia renal hasta un 70 %","Se pueden asociar con seguridad a beta-bloqueantes","De elección en taquicardias supraventriculares agudas"],a:3,
+n:"Verapamilo: de elección en <b>taquicardias supraventriculares agudas</b> (enlentece el nodo AV). Contraindicado en la intoxicación digitálica. No asociar a β-bloqueantes (depresión cardiaca y bloqueo AV grave). Metabolismo hepático: se reduce la dosis en insuficiencia <b>hepática</b>, no renal."}
+];
+QUESTIONS.forEach((q,i)=>q.id=i);
+
+/* ---------- utils ---------- */
+const $ = (s,el=document)=>el.querySelector(s);
+const esc = s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const LET = ["A","B","C","D","E"];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
+  del(k){try{localStorage.removeItem(k);}catch(e){}}
+};
+const countByTopic = t=>QUESTIONS.filter(q=>q.t===t).length;
+
+/* ---------- state ---------- */
+let cfg = store.get("ft_cfg",{topics:[2,3,4,5],limit:0,shuffleQ:true});
+let test = null;   // {items:[{id,order:[...]}], answers:[], idx, done}
+let reviewTab = "bad";
+
+function saveTest(){ if(test) store.set("ft_test",test); else store.del("ft_test"); }
+
+/* ---------- setup screen ---------- */
+function renderSetup(){
+  const pending = store.get("ft_test",null);
+  const lastWrong = store.get("ft_lastwrong",[]);
+  const pool = QUESTIONS.filter(q=>cfg.topics.includes(q.t));
+  const n = cfg.limit && cfg.limit<pool.length ? cfg.limit : pool.length;
+  const topicsHtml = Object.keys(TOPICS).map(Number).map(t=>{
+    const c = countByTopic(t), on = cfg.topics.includes(t);
+    return `<button class="topic" data-topic="${t}" aria-pressed="${on&&c>0}" ${c?"":"disabled"}>
+      <span class="chk">✓</span>
+      <span><span class="t-name">${TOPICS[t].name}</span><br><span class="t-desc">${esc(TOPICS[t].desc)}</span></span>
+      <span class="count">${c?c+" preg.":"sin preguntas"}</span></button>`;
+  }).join("");
+  const limits=[0,10,20,30];
+  $("#app").innerHTML = `
+    <h1>Test Farmacoterapia</h1>
+    <p class="sub">1er parcial · ${QUESTIONS.length} preguntas. Responde todas y al final verás tu nota y los apuntes de las que falles.</p>
+    ${pending && !pending.done ? `<div class="card" style="margin-bottom:16px"><div class="row"><div><b>Tienes un test a medias</b><br><span class="qmeta">${pending.answers.filter(a=>a!=null).length} de ${pending.items.length} respondidas</span></div><span class="spacer"></span><button class="btn primary" id="resume">Continuar</button></div></div>`:""}
+    <div class="card stack">
+      <div>
+        <div class="row" style="margin-bottom:10px"><p class="label" style="margin:0">Temas</p><span class="spacer"></span>
+          <button class="btn ghost" id="all" style="min-height:40px;padding:6px 12px">Todos</button></div>
+        ${topicsHtml}
+      </div>
+      <div>
+        <p class="label">Número de preguntas</p>
+        <div class="chips">${limits.map(l=>`<button class="chip" data-limit="${l}" aria-pressed="${cfg.limit===l}">${l?l:"Todas"}</button>`).join("")}</div>
+      </div>
+      <div class="toggle"><button class="switch" id="shq" role="switch" aria-checked="${cfg.shuffleQ}" aria-label="Orden aleatorio de preguntas"></button><span>Orden aleatorio de preguntas</span></div>
+      <button class="btn primary block" id="start" ${n?"":"disabled"}>${n?`Empezar test · ${n} preguntas`:"Elige al menos un tema"}</button>
+      ${lastWrong.length?`<button class="btn block" id="redo">Repetir las ${lastWrong.length} falladas del último test</button>`:""}
+    </div>
+    <p class="footer-note">Las respuestas se mezclan en cada pregunta. Funciona sin conexión una vez instalada.</p>`;
+  document.querySelectorAll("[data-topic]").forEach(b=>b.onclick=()=>{
+    const t=+b.dataset.topic; cfg.topics = cfg.topics.includes(t)?cfg.topics.filter(x=>x!==t):[...cfg.topics,t];
+    store.set("ft_cfg",cfg); renderSetup();
+  });
+  $("#all").onclick=()=>{const all=[2,3,4,5].filter(t=>countByTopic(t));cfg.topics = cfg.topics.length===all.length?[]:all;store.set("ft_cfg",cfg);renderSetup();};
+  document.querySelectorAll("[data-limit]").forEach(b=>b.onclick=()=>{cfg.limit=+b.dataset.limit;store.set("ft_cfg",cfg);renderSetup();});
+  $("#shq").onclick=()=>{cfg.shuffleQ=!cfg.shuffleQ;store.set("ft_cfg",cfg);renderSetup();};
+  $("#start").onclick=()=>{
+    let ids = pool.map(q=>q.id); if(cfg.shuffleQ) ids=shuffle(ids);
+    if(cfg.limit) ids = ids.slice(0,cfg.limit);
+    startTest(ids);
+  };
+  if($("#resume")) $("#resume").onclick=()=>{test=pending;renderQuiz();};
+  if($("#redo")) $("#redo").onclick=()=>startTest(shuffle(lastWrong));
+}
+
+function startTest(ids){
+  test = {items:ids.map(id=>({id,order:shuffle(QUESTIONS[id].o.map((_,i)=>i))})), answers:ids.map(()=>null), idx:0, done:false};
+  saveTest(); renderQuiz();
+}
+
+/* ---------- quiz screen ---------- */
+let showGrid=false;
+function renderQuiz(){
+  const it = test.items[test.idx], Q = QUESTIONS[it.id], total=test.items.length;
+  const answered = test.answers.filter(a=>a!=null).length;
+  const last = test.idx===total-1;
+  $("#app").innerHTML = `
+    <div class="topbar">
+      <button class="icon-btn" id="exit" aria-label="Salir">✕</button>
+      <div class="qmeta"><b>Pregunta ${test.idx+1}</b> de ${total} · ${answered} respondidas</div>
+      <span class="spacer"></span>
+      <button class="icon-btn" id="gridbtn" aria-label="Ver todas las preguntas">▦</button>
+    </div>
+    <div class="progress"><div style="width:${(answered/total)*100}%"></div></div>
+    <div id="grid" class="card ${showGrid?"":"hidden"}" style="margin-bottom:16px">
+      <div class="qmeta">Toca un número para ir a esa pregunta</div>
+      <div class="grid">${test.items.map((_,i)=>`<button data-go="${i}" class="${test.answers[i]!=null?"answered":""} ${i===test.idx?"current":""}">${i+1}</button>`).join("")}</div>
+    </div>
+    <span class="tag">${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}</span>
+    <div class="qtext">${esc(Q.q)}</div>
+    <div>${it.order.map((oi,k)=>`<button class="opt" data-opt="${oi}" aria-pressed="${test.answers[test.idx]===oi}"><span class="letter">${LET[k]}</span><span>${esc(Q.o[oi])}</span></button>`).join("")}</div>
+    <nav class="navbar"><div class="inner">
+      <button class="btn" id="prev" ${test.idx===0?"disabled":""}>‹ Anterior</button>
+      ${last?`<button class="btn primary" id="finish">Finalizar</button>`:`<button class="btn primary" id="next">Siguiente ›</button>`}
+    </div></nav>`;
+  document.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{
+    const v=+b.dataset.opt; test.answers[test.idx] = test.answers[test.idx]===v?null:v; saveTest(); renderQuiz();
+  });
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{test.idx=+b.dataset.go;saveTest();renderQuiz();window.scrollTo(0,0);});
+  $("#gridbtn").onclick=()=>{showGrid=!showGrid;$("#grid").classList.toggle("hidden",!showGrid);};
+  $("#prev").onclick=()=>go(-1);
+  if($("#next")) $("#next").onclick=()=>go(1);
+  if($("#finish")) $("#finish").onclick=tryFinish;
+  $("#exit").onclick=()=>confirmBox("¿Salir del test?","Tu progreso se guarda y podrás continuarlo desde el inicio.","Salir",()=>{test=null;renderSetup();window.scrollTo(0,0);});
+}
+function go(d){const n=test.idx+d;if(n<0||n>=test.items.length)return;test.idx=n;saveTest();renderQuiz();window.scrollTo(0,0);}
+function tryFinish(){
+  const blank = test.answers.filter(a=>a==null).length;
+  if(blank) confirmBox("¿Finalizar el test?",`Te quedan ${blank} pregunta${blank>1?"s":""} sin responder; contarán como en blanco.`,"Finalizar",finish);
+  else finish();
+}
+function finish(){
+  test.done=true;
+  const wrong = test.items.filter((it,i)=>test.answers[i]!==QUESTIONS[it.id].a).map(it=>it.id);
+  store.set("ft_lastwrong",wrong);
+  store.del("ft_test");
+  reviewTab = "bad";
+  renderResults(); window.scrollTo(0,0);
+}
+
+/* ---------- results ---------- */
+function renderResults(){
+  const rows = test.items.map((it,i)=>{const Q=QUESTIONS[it.id];const a=test.answers[i];return {it,Q,a,status:a==null?"blank":a===Q.a?"ok":"bad",n:i+1};});
+  const ok=rows.filter(r=>r.status==="ok").length, bad=rows.filter(r=>r.status==="bad").length, blank=rows.filter(r=>r.status==="blank").length;
+  const total=rows.length, pct=Math.round(ok/total*100), nota=(ok/total*10).toFixed(1).replace(".",",");
+  const pass = ok/total>=0.5;
+  const tabs=[["bad",`Falladas (${bad})`],["blank",`En blanco (${blank})`],["ok",`Acertadas (${ok})`],["all","Todas"]];
+  const list = rows.filter(r=>reviewTab==="all"||r.status===reviewTab);
+  $("#app").innerHTML = `
+    <h1>Resultado</h1>
+    <div class="card">
+      <div class="score">
+        <div class="ring" style="--p:${pct};--ring-color:${pass?"var(--ok)":"var(--bad)"}"><div><div><b>${nota}</b><br><span>sobre 10</span></div></div></div>
+        <div style="flex:1;min-width:240px">
+          <div class="verdict" style="color:${pass?"var(--ok)":"var(--bad)"}">${pass?"Aprobado":"Suspenso"} · ${pct}% de aciertos</div>
+          <div class="stats" style="margin-top:12px">
+            <div class="stat ok"><b>${ok}</b>Bien</div>
+            <div class="stat bad"><b>${bad}</b>Mal</div>
+            <div class="stat"><b>${blank}</b>En blanco</div>
+          </div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        ${bad+blank?`<button class="btn primary" id="redo" style="flex:1">Repetir falladas (${bad+blank})</button>`:""}
+        <button class="btn" id="new" style="flex:1">Nuevo test</button>
+      </div>
+    </div>
+    <div class="tabs" role="tablist">${tabs.map(([k,l])=>`<button role="tab" data-tab="${k}" aria-selected="${reviewTab===k}">${l}</button>`).join("")}</div>
+    <div>${list.length?list.map(r=>reviewCard(r)).join(""):`<div class="empty">${reviewTab==="bad"?"¡No has fallado ninguna! 🎉":"No hay preguntas aquí."}</div>`}</div>`;
+  document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{reviewTab=b.dataset.tab;renderResults();});
+  document.querySelectorAll("[data-info]").forEach(b=>b.onclick=()=>openInfo(+b.dataset.info));
+  if($("#redo")) $("#redo").onclick=()=>startTest(shuffle(rows.filter(r=>r.status!=="ok").map(r=>r.it.id)));
+  $("#new").onclick=()=>{test=null;renderSetup();window.scrollTo(0,0);};
+}
+function reviewCard(r){
+  const {Q,a,status}=r;
+  const mine = a==null?`<div class="ans blank"><span class="k">Tu respuesta</span><span>Sin responder</span></div>`
+    : status==="ok"?"" : `<div class="ans bad"><span class="k">Tu respuesta</span><span>${esc(Q.o[a])}</span></div>`;
+  return `<div class="rev">
+    <div class="row"><span class="tag">${r.n} · ${TOPICS[Q.t].name}</span>${Q.d?`<span class="tag" style="background:var(--warn-soft);color:var(--warn)">Dudosa</span>`:""}</div>
+    <div class="qtext">${esc(Q.q)}</div>
+    ${mine}
+    <div class="ans ok"><span class="k">Correcta</span><span>${esc(Q.o[Q.a])}</span></div>
+    <button class="info-btn" data-info="${Q.id}">ⓘ Ver apuntes</button>
+  </div>`;
+}
+
+/* ---------- modals ---------- */
+function closeModal(){ $("#modal-root").innerHTML=""; document.body.style.overflow=""; }
+function modal(html){
+  $("#modal-root").innerHTML = `<div class="backdrop" id="bd"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+  document.body.style.overflow="hidden";
+  $("#bd").onclick=e=>{if(e.target.id==="bd")closeModal();};
+}
+function openInfo(id){
+  const Q=QUESTIONS[id];
+  modal(`<div class="row" style="margin-bottom:8px"><span class="tag">${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc)}</span></div>
+    <h3>${esc(Q.q)}</h3>
+    <div class="callout okc"><b>Respuesta correcta:</b> ${esc(Q.o[Q.a])}</div>
+    <div class="note" style="margin-top:14px">${Q.n}</div>
+    ${Q.m!=null?`<div class="callout warn"><b>Ojo:</b> en tus apuntes estaba marcada «${esc(Q.o[Q.m])}», que no es la correcta.</div>`:""}
+    ${Q.d?`<div class="callout warn"><b>Pregunta dudosa:</b> el enunciado admite discusión; si tu profesor/a dio otra respuesta, prioriza la suya.</div>`:""}
+    <button class="btn primary block" style="margin-top:18px" id="close">Cerrar</button>`);
+  $("#close").onclick=closeModal;
+}
+function confirmBox(title,text,okLabel,onOk){
+  modal(`<h3>${esc(title)}</h3><p style="color:var(--muted)">${esc(text)}</p>
+    <div class="row" style="margin-top:16px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">${esc(okLabel)}</button></div>`);
+  $("#no").onclick=closeModal; $("#yes").onclick=()=>{closeModal();onOk();};
+}
+
+/* ---------- keyboard (iPad con teclado) ---------- */
+document.addEventListener("keydown",e=>{
+  if($("#modal-root").innerHTML){ if(e.key==="Escape") closeModal(); return; }
+  if(!test||test.done) return;
+  const k=e.key.toUpperCase(), it=test.items[test.idx];
+  const pos = "1234".indexOf(k)>=0 ? "1234".indexOf(k) : "ABCD".indexOf(k);
+  if(pos>=0 && pos<it.order.length && k.length===1){test.answers[test.idx]=it.order[pos];saveTest();renderQuiz();}
+  else if(e.key==="ArrowRight") go(1);
+  else if(e.key==="ArrowLeft") go(-1);
+});
+
+/* ---------- offline (service worker) ---------- */
+if("serviceWorker" in navigator && (location.protocol==="https:"||location.hostname==="localhost") && window.self===window.top){
+  try{ navigator.serviceWorker.register("sw.js").catch(()=>{}); }catch(e){}
+}
+
+renderSetup();
+</script>
+</body>
+</html>
