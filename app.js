@@ -102,7 +102,7 @@ function renderSetup() {
       <label class="toggle"><button class="switch" id="shq" role="switch" aria-checked="${cfg.shuffleQ}" aria-label="Orden aleatorio"></button><span>Preguntas en orden aleatorio</span></label>
       <button class="btn primary block" id="start" ${n ? "" : "disabled"}>${n ? `Empezar test · ${n} preguntas` : "Elige al menos un tema"}</button>
     </div>
-    <p class="footer-note">Las respuestas cambian de orden en cada pregunta.</p>`;
+    <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 5 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>`;
   $$("[data-topic]").forEach(b => b.onclick = () => {
     const t = +b.dataset.topic; cfg.topics = cfg.topics.includes(t) ? cfg.topics.filter(x => x !== t) : [...cfg.topics, t];
     store.set("ft_cfg", cfg); renderSetup();
@@ -167,6 +167,11 @@ function finish() {
   quiz.done = true;
   quiz.items.forEach((it, i) => Stats.record(it.id, quiz.answers[i] === QUESTIONS[it.id].a));
   store.del("ft_test");
+  // energía para la consulta: +1 por cada 5 respondidas, +1 extra si nota >= 7 (con 10 o más preguntas)
+  const answered = quiz.answers.filter(a => a != null).length;
+  const okN = quiz.items.filter((it, i) => quiz.answers[i] === QUESTIONS[it.id].a).length;
+  let e = Math.floor(answered / 5) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
+  quiz.energy = e ? addEnergy(e, "por el test") : 0;
   reviewTab = "bad";
   render(); window.scrollTo(0, 0);
 }
@@ -195,7 +200,7 @@ function renderResults() {
         ${bad + blank ? `<button class="btn primary" id="redo" style="flex:1">Repetir falladas (${bad + blank})</button>` : ""}
         <button class="btn" id="new" style="flex:1">Cerrar</button>
       </div>
-      <p class="muted small" style="margin:12px 0 0">Las falladas se han guardado en <b>Repaso</b>.</p>
+      <p class="muted small" style="margin:12px 0 0">Las falladas se han guardado en <b>Repaso</b>.${quiz.energy ? ` Has ganado ${BOLT}<b>+${quiz.energy}</b> de energía para la consulta.` : ""}</p>
     </div>
     <div class="seg" role="tablist">${tabs.map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${reviewTab === k}">${l}</button>`).join("")}</div>
     <div>${list.length ? list.map(reviewCard).join("") : `<div class="empty">${reviewTab === "bad" ? "¡No has fallado ninguna!" : "No hay preguntas aquí."}</div>`}</div>`;
@@ -285,8 +290,9 @@ function renderStudy() {
         <div class="ans ok"><span class="k">Correcta</span><span>${esc(q.o[q.a])}</span></div><div class="qa-note">${q.n}</div></details>`; }).join("")}` : ""}`;
   } else {
     const byTopic = ALL_TOPICS.map(t => [t, failed.filter(x => x.q.t === t)]).filter(([, l]) => l.length);
-    body = failed.length ? `
-      <div class="row" style="margin-bottom:12px"><p class="muted small" style="margin:0;flex:1">${failed.length} preguntas que has fallado alguna vez, de más a menos falladas.</p>
+    const cf = CStats.failed();
+    body = failed.length || cf.length ? `
+      <div class="row" style="margin-bottom:12px"><p class="muted small" style="margin:0;flex:1">Solo lo que has fallado alguna vez, de más a menos fallado.</p>
       <button class="btn" id="print">Imprimir / PDF</button></div>
       ${byTopic.map(([t, l]) => `<article class="paper last">
         <h2 class="paper-title">${TOPICS[t].name}: ${esc(TOPICS[t].desc.split(" (")[0])}</h2>
@@ -294,20 +300,60 @@ function renderStudy() {
           <div class="lh-q">${esc(x.q.q)} <span class="tag ${x.mastered ? "okt" : "bad"}">${x.e.w}× fallada${x.mastered ? " · dominada" : ""}</span></div>
           <div class="lh-a">✓ ${esc(x.q.o[x.q.a])}</div>
           <div class="lh-n">${x.q.n}</div></div>`).join("")}
-      </article>`).join("")}`
-      : `<div class="card empty-state"><p><b>Aquí aparecerán tus apuntes de última hora.</b></p><p class="muted">Solo con las preguntas que hayas fallado, su respuesta correcta y la explicación. Haz algún test primero.</p></div>`;
+      </article>`).join("")}
+      ${cf.length ? `<article class="paper last">
+        <h2 class="paper-title">De la consulta</h2>
+        ${cf.map(x => `<div class="lh">
+          <div class="lh-q">${esc(x.c.pet)} (${esc(x.c.owner)}): «${esc(x.st.ask)}» <span class="tag ${x.mastered ? "okt" : "bad"}">${x.e.w}× fallada${x.mastered ? " · dominada" : ""}</span></div>
+          <div class="lh-a">✓ ${esc(x.st.o[0])}</div>
+          <div class="lh-n">${esc(x.st.why)}</div></div>`).join("")}
+      </article>` : ""}`
+      : `<div class="card empty-state"><p><b>Aquí aparecerán tus apuntes de última hora.</b></p><p class="muted">Solo con lo que hayas fallado en los tests y en la consulta, la respuesta correcta y la explicación.</p></div>`;
   }
+  const nFail = failed.length + CStats.failed().length;
   $("#app").innerHTML = `
-    <header class="page-head"><h1>Estudiar</h1></header>
-    <div class="seg"><button data-sv="temas" aria-selected="${studyTab === "temas"}">Apuntes por tema</button><button data-sv="ultima" aria-selected="${studyTab === "ultima"}">Última hora${failed.length ? ` (${failed.length})` : ""}</button></div>
+    <header class="page-head row"><h1 style="flex:1">Estudiar</h1><span class="energy-chip" id="studychip"></span></header>
+    <div class="seg"><button data-sv="temas" aria-selected="${studyTab === "temas"}">Apuntes por tema</button><button data-sv="ultima" aria-selected="${studyTab === "ultima"}">Última hora${nFail ? ` (${nFail})` : ""}</button></div>
     ${body}`;
+  updateStudyChip();
   $$("[data-sv]").forEach(b => b.onclick = () => { studyTab = b.dataset.sv; renderStudy(); });
   $$("[data-st]").forEach(b => b.onclick = () => { studyTopic = +b.dataset.st; renderStudy(); });
   if ($("#print")) $("#print").onclick = () => window.print();
 }
 
+/* ============ energía por estudiar ============ */
+/* cuenta el tiempo con la pestaña Estudiar (o unos apuntes) abiertos, la app visible y actividad reciente */
+const STUDY_SECS = 180;
+let studyAcc = store.get("ft_studyacc", 0), lastInteract = Date.now(), infoOpen = false;
+["scroll", "touchstart", "pointerdown", "keydown", "wheel"].forEach(ev => window.addEventListener(ev, () => { lastInteract = Date.now(); }, { passive: true, capture: true }));
+function isStudying() {
+  return document.visibilityState === "visible" && Date.now() - lastInteract < 120000 && ((view === "estudiar" && !quiz) || infoOpen);
+}
+function updateStudyChip() {
+  const el = $("#studychip"); if (!el) return;
+  const left = Math.max(0, STUDY_SECS - studyAcc), m = Math.floor(left / 60), s = String(left % 60).padStart(2, "0");
+  el.innerHTML = `${BOLT}<span>+1 en ${m}:${s}</span>`;
+  el.classList.toggle("paused", !isStudying());
+}
+setInterval(() => {
+  if (isStudying()) {
+    studyAcc += 5;
+    if (studyAcc >= STUDY_SECS) { studyAcc -= STUDY_SECS; addEnergy(1, "por estudiar"); }
+    store.set("ft_studyacc", studyAcc);
+  }
+  updateStudyChip();
+}, 5000);
+
+/* ============ aviso flotante ============ */
+function toast(html) {
+  let t = document.getElementById("toast");
+  if (!t) { t = document.createElement("div"); t.id = "toast"; t.setAttribute("role", "status"); document.body.appendChild(t); }
+  t.innerHTML = html; t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 3000);
+}
+
 /* ============ modales ============ */
-function closeModal() { const r = $("#modal-root"); if (r) r.innerHTML = ""; document.body.style.overflow = ""; }
+function closeModal() { const r = $("#modal-root"); if (r) r.innerHTML = ""; document.body.style.overflow = ""; infoOpen = false; }
 function modal(html) {
   $("#modal-root").innerHTML = `<div class="backdrop" id="bd"><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
   document.body.style.overflow = "hidden";
@@ -324,6 +370,7 @@ function openInfo(id) {
     ${e && e.w ? `<p class="muted small" style="margin-top:12px">La has fallado ${e.w} ${e.w === 1 ? "vez" : "veces"} y acertado ${e.r}.</p>` : ""}
     <button class="btn primary block" style="margin-top:16px" id="close">Cerrar</button>`);
   $("#close").onclick = closeModal;
+  infoOpen = true;
 }
 function confirmBox(title, text, okLabel, onOk) {
   modal(`<h3>${esc(title)}</h3><p class="muted">${esc(text)}</p>

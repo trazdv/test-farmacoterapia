@@ -3,7 +3,6 @@
 const INK = "#4a3426";
 const S = `stroke="${INK}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
 const S1 = `stroke="${INK}" stroke-width="1.4" stroke-linecap="round" fill="none"`;
-const PATIENTS_PER_DAY = 6;
 
 /* ---------- catálogo de la tienda ---------- */
 const SHOP = {
@@ -53,25 +52,42 @@ const DEFAULT_GAME = {
   money: 40, rep: 50, clinic: "Clínica Veterinaria",
   owned: SHOP_ORDER.flatMap(c => SHOP[c].items.filter(i => i.price === 0).map(i => c + ":" + i.id)),
   eq: { hair: "corto", hairColor: "castano", skin: "s2", outfit: "bata", neck: "esteto", eyes: null, head: null, wall: "crema", floor: "tarima", decor: [] },
-  day: 1, served: 0, okTotal: 0, streak: 0, best: 0, recent: [], cur: null
+  day: 1, served: 0, okTotal: 0, streak: 0, best: 0, cur: null,
+  energy: 3, topics: [1, 2, 3, 4, 5], recentCases: []
 };
 let G = Object.assign({}, DEFAULT_GAME, store.get("ft_game", {}));
 G.eq = Object.assign({}, DEFAULT_GAME.eq, G.eq);
+if (G.cur && !G.cur.clients) G.cur = null;   // partida guardada con el formato antiguo
 function saveGame() { store.set("ft_game", G); }
 let gview = "hub";      // hub | patient | shop | summary
 let shopCat = "hair";
 let lastSummary = null;
 
+/* ---------- energía ---------- */
+const ENERGY_COST = 3, MAX_ENERGY = 15;
+function addEnergy(n, reason) {
+  const before = G.energy;
+  G.energy = Math.min(MAX_ENERGY, G.energy + n);
+  saveGame();
+  const got = G.energy - before;
+  if (got > 0) toast(`${BOLT}<b>+${got}</b> de energía ${reason}`);
+  else toast(`${BOLT} Energía al máximo (${MAX_ENERGY})`);
+  return got;
+}
+
 /* ---------- reputación y pagos ---------- */
 const REP_TIERS = [[0, "Clínica en apuros"], [20, "Recién titulado"], [40, "Veterinario de barrio"], [60, "Clínica de confianza"], [80, "Eminencia local"], [95, "Leyenda del pueblo"]];
 const repTier = r => REP_TIERS.filter(([m]) => r >= m).pop()[1];
-const payFor = (rep, streak) => Math.round(30 * (0.4 + 1.2 * rep / 100)) + (streak >= 2 ? Math.min(streak - 1, 5) * 3 : 0);
+const clientsForRep = r => r < 20 ? 2 : r < 40 ? 3 : r < 60 ? 4 : r < 80 ? 5 : 6;
+const payFor = (rep, streak) => Math.round(12 * (0.4 + 1.2 * rep / 100)) + (streak >= 3 ? Math.min(streak - 2, 4) * 2 : 0);
+const REP_OK = 2, REP_BAD = -5, REP_HAPPY = 2, TIP_HAPPY = 10;
 const fmt = n => n.toLocaleString("es-ES");
 
 /* ---------- utilidades de dibujo ---------- */
 function hash(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; }
 let uid = 0;
 const COIN = `<svg class="ico-coin" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#f0c25e" ${S}/><path d="M10 6v8M7.5 8.2c.6-1 4.4-1.2 4.4.6 0 1.8-4.4.9-4.4 2.7 0 1.6 3.9 1.6 4.6.5" ${S1}/></svg>`;
+const BOLT = `<svg class="ico-bolt" viewBox="0 0 20 20"><path d="M11.6 1.8 4.4 11.3h4.8L8 18.2l7.6-9.7h-4.9Z" fill="#f3c74f" ${S}/></svg>`;
 const STAR = `<svg class="ico-star" viewBox="0 0 20 20"><path d="M10 2.5l2.3 4.8 5.2.7-3.8 3.6.9 5.2L10 14.3l-4.6 2.5.9-5.2L2.5 8l5.2-.7Z" fill="#e8a65a" ${S}/></svg>`;
 
 /* ---------- animales (100x100) ---------- */
@@ -304,22 +320,62 @@ function sceneSVG(opts = {}) {
   </svg>`;
 }
 
-/* ---------- selección de pacientes ---------- */
-function buildQueue() {
-  const pool = QUESTIONS.filter(q => cfg.topics.includes(q.t)).map(q => q.id);
+/* ---------- estadísticas propias de la consulta ---------- */
+const CStats = {
+  all() { return store.get("ft_cstats", {}); },
+  record(key, ok) {
+    const s = this.all(); const e = s[key] || { w: 0, r: 0, s: 0 };
+    if (ok) { e.r++; e.s++; } else { e.w++; e.s = 0; }
+    s[key] = e; store.set("ft_cstats", s);
+  },
+  failed() {
+    const s = this.all(), out = [];
+    CONSULTAS.forEach((c, ci) => c.steps.forEach((st, si) => { const e = s[ci + "-" + si]; if (e && e.w) out.push({ c, ci, st, si, e, mastered: e.s >= 2 }); }));
+    return out.sort((a, b) => b.e.w - a.e.w);
+  },
+  caseWeight(ci) {
+    const s = this.all();
+    return CONSULTAS[ci].steps.reduce((acc, _, si) => { const e = s[ci + "-" + si]; return acc + (e && e.w && e.s < 2 ? e.w : 0); }, 0);
+  }
+};
+
+/* ---------- los dueños ---------- */
+function ownerEq(name, farm) {
+  const h = hash(name + "·dueño");
+  const pick = (arr, k) => arr[Math.floor(h / k) % arr.length];
+  return {
+    hair: pick(["corto", "melena", "coleta", "mono", "rizos", "tupe", "rapado", "corto", "melena"], 1),
+    hairColor: pick(["castano", "negro", "rubio", "pelirrojo", "canoso", "castano", "negro"], 7),
+    skin: pick(["s1", "s2", "s3", "s4", "s2"], 13),
+    outfit: pick(farm ? ["peto", "jersey", "sudadera", "peto"] : ["jersey", "sudadera", "hawaiana", "traje", "jersey", "pijama_rosa"], 17),
+    neck: null, eyes: pick([null, null, "gafas", null, null], 23), head: farm && h % 3 === 0 ? "paja" : null,
+    wall: "crema", floor: "tarima", decor: []
+  };
+}
+const faceSVG = (eq, mood) => `<svg class="face" viewBox="22 16 76 76" aria-hidden="true">${avatarG(eq, mood || "neutral")}</svg>`;
+const REACT_OK = ["¡Ah, vale! Ahora lo entiendo.", "Perfecto, muchas gracias.", "Qué bien explicado, da gusto.", "Entendido, lo haré así.", "Me quedo mucho más tranquila con eso.", "Genial, eso me aclara mucho."];
+const REACT_BAD = ["Mmm… no sé, no me convence.", "¿Seguro? Eso no es lo que me habían dicho…", "Vaya, pues no me ha quedado nada claro.", "Uy… creo que pediré una segunda opinión.", "No sé yo… lo consultaré en otro sitio."];
+function bubble(who, text, eq, cls, mood) {
+  return `<div class="bub ${who} ${cls || ""}">${faceSVG(eq, mood)}<p>${esc(text)}</p></div>`;
+}
+
+/* ---------- la jornada ---------- */
+function pickClients(n) {
+  const pool = CONSULTAS.map((_, i) => i).filter(i => G.topics.includes(CONSULTAS[i].t));
   if (!pool.length) return [];
-  const pend = Stats.pending().filter(x => cfg.topics.includes(x.q.t)).sort((a, b) => Stats.weight(b.e) - Stats.weight(a.e)).map(x => x.q.id);
-  const q = [];
-  shuffle(pend.slice(0, 6)).slice(0, 2).forEach(id => q.push(id));
-  const fresh = shuffle(pool.filter(id => !q.includes(id) && !G.recent.includes(id)));
-  const rest = shuffle(pool.filter(id => !q.includes(id) && G.recent.includes(id)));
-  for (const id of [...fresh, ...rest]) { if (q.length >= PATIENTS_PER_DAY) break; q.push(id); }
-  return shuffle(q);
+  const weak = shuffle(pool.filter(i => CStats.caseWeight(i) > 0)).sort((a, b) => CStats.caseWeight(b) - CStats.caseWeight(a));
+  const out = weak.slice(0, Math.min(2, Math.floor(n / 2)));
+  const fresh = shuffle(pool.filter(i => !out.includes(i) && !G.recentCases.includes(i)));
+  const old = pool.filter(i => !out.includes(i) && G.recentCases.includes(i)).sort((a, b) => G.recentCases.indexOf(b) - G.recentCases.indexOf(a));
+  for (const i of [...fresh, ...old]) { if (out.length >= n) break; out.push(i); }
+  return shuffle(out);
 }
 function openDay() {
-  const queue = buildQueue();
-  if (!queue.length) return;
-  G.cur = { queue, i: 0, order: shuffle([0, 1, 2, 3]), answer: null, earned: 0, drep: 0, ok: 0, log: [] };
+  if (G.energy < ENERGY_COST) return;
+  const clients = pickClients(clientsForRep(G.rep));
+  if (!clients.length) return;
+  G.energy -= ENERGY_COST;
+  G.cur = { clients, ci: 0, si: 0, order: shuffle([0, 1, 2, 3]), answers: clients.map(() => []), bye: [], earned: 0, drep: 0 };
   saveGame(); gview = "patient"; render(); window.scrollTo(0, 0);
 }
 
@@ -327,7 +383,8 @@ function openDay() {
 function statsBar() {
   return `<div class="g-stats">
     <div class="g-pill">${COIN}<b>${fmt(G.money)}</b></div>
-    <div class="g-rep">${STAR}<div><div class="g-rep-top"><b>${G.rep}</b><span>${repTier(G.rep)}</span></div><div class="g-bar"><div style="width:${G.rep}%"></div></div></div></div>
+    <div class="g-meter">${BOLT}<div><div class="g-rep-top"><b>${G.energy}/${MAX_ENERGY}</b><span>energía</span></div><div class="g-bar en"><div style="width:${G.energy / MAX_ENERGY * 100}%"></div></div></div></div>
+    <div class="g-meter wide">${STAR}<div><div class="g-rep-top"><b>${G.rep}</b><span>${repTier(G.rep)}</span></div><div class="g-bar"><div style="width:${G.rep}%"></div></div></div></div>
   </div>`;
 }
 
@@ -337,31 +394,38 @@ function renderConsulta() {
   if (gview === "summary" && lastSummary) return renderSummary();
   gview = "hub";
   setFocusMode(false);
-  const inDay = G.cur && G.cur.i < G.cur.queue.length;
+  const inDay = !!G.cur, n = clientsForRep(G.rep), enough = G.energy >= ENERGY_COST;
   $("#app").innerHTML = `
     <div class="g-wrap">
       <header class="g-head">
-        <div><p class="g-kicker">Día ${G.day}</p><h1 class="g-title" id="cname">${esc(G.clinic)}</h1></div>
+        <div><p class="g-kicker">Día ${G.day}</p><h1 class="g-title">${esc(G.clinic)}</h1></div>
         <button class="icon-btn soft" id="rename" aria-label="Cambiar nombre"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 10.5-10.5a2.1 2.1 0 0 0-3-3L5 16Z"/></svg></button>
       </header>
       ${statsBar()}
       <div class="scene-frame">${sceneSVG({ vetMood: "happy" })}</div>
       <div class="g-actions">
-        <button class="btn primary block big" id="open">${inDay ? `Seguir con la consulta · paciente ${G.cur.i + 1} de ${G.cur.queue.length}` : `Abrir la consulta`}</button>
+        ${inDay ? `<button class="btn primary block big" id="open">Seguir con la consulta · cliente ${G.cur.ci + 1} de ${G.cur.clients.length}</button>`
+        : enough ? `<button class="btn primary block big" id="open" ${G.topics.length ? "" : "disabled"}>Abrir la consulta <span class="cost">${BOLT}${ENERGY_COST}</span></button>
+          <p class="muted small center">Hoy esperan <b>${n} clientes</b>. Con más reputación vendrán más.</p>`
+        : `<div class="g-paper tired"><p class="g-hand">Estás sin energía</p>
+          <p>Para abrir la clínica necesitas ${BOLT}<b>${ENERGY_COST}</b> y tienes <b>${G.energy}</b>. Recarga estudiando:</p>
+          <div class="row"><button class="btn primary" id="gotest" style="flex:1">Hacer un test</button><button class="btn" id="gostudy" style="flex:1">Leer apuntes</button></div></div>`}
         <button class="btn block" id="shop">Tienda y aspecto</button>
       </div>
       <div class="g-paper">
         <p class="g-hand">Cómo funciona</p>
-        <p>Cada jornada llegan ${PATIENTS_PER_DAY} pacientes. Si aciertas, cobras y ganas reputación. Si fallas, el cliente se va descontento y pierdes reputación. Cuanta más reputación tengas, más cobras por consulta.</p>
-        <p class="muted small">Atendidos: <b>${G.served}</b> · Aciertos: <b>${G.okTotal}</b> · Mejor racha: <b>${G.best}</b></p>
+        <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 5 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar (+1 cada 3 minutos).</p>
+        <p>Cada cliente te hará varias preguntas sobre su animal. Si respondes bien, cobras y ganas reputación; si te equivocas, la pierdes. Si respondes bien a todo, te deja propina. Cuanta más reputación, más clientes y mejor pagados.</p>
+        <p class="muted small">Preguntas respondidas: <b>${G.served}</b> · Aciertos: <b>${G.okTotal}</b> · Mejor racha: <b>${G.best}</b></p>
         <p class="label" style="margin-top:12px">Casos de los temas</p>
-        <div class="chips">${topicsWithQ().map(t => `<button class="chip" data-gt="${t}" aria-pressed="${cfg.topics.includes(t)}">Tema ${t}</button>`).join("")}</div>
+        <div class="chips">${ALL_TOPICS.map(t => `<button class="chip" data-gt="${t}" aria-pressed="${G.topics.includes(t)}">Tema ${t}</button>`).join("")}</div>
       </div>
     </div>`;
-  $("#open").onclick = () => { if (inDay) { gview = "patient"; render(); window.scrollTo(0, 0); } else openDay(); };
-  $("#open").disabled = !cfg.topics.length && !inDay;
+  if ($("#open")) $("#open").onclick = () => { if (inDay) { gview = "patient"; render(); window.scrollTo(0, 0); } else openDay(); };
+  if ($("#gotest")) $("#gotest").onclick = () => setView("test");
+  if ($("#gostudy")) $("#gostudy").onclick = () => setView("estudiar");
   $("#shop").onclick = () => { gview = "shop"; render(); window.scrollTo(0, 0); };
-  $$("[data-gt]").forEach(b => b.onclick = () => { const t = +b.dataset.gt; cfg.topics = cfg.topics.includes(t) ? cfg.topics.filter(x => x !== t) : [...cfg.topics, t]; store.set("ft_cfg", cfg); renderConsulta(); });
+  $$("[data-gt]").forEach(b => b.onclick = () => { const t = +b.dataset.gt; G.topics = G.topics.includes(t) ? G.topics.filter(x => x !== t) : [...G.topics, t]; saveGame(); renderConsulta(); });
   $("#rename").onclick = () => {
     modal(`<h3>Nombre de tu clínica</h3><input id="cn" class="field" maxlength="32" value="${esc(G.clinic)}">
       <div class="row" style="margin-top:14px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">Guardar</button></div>`);
@@ -370,82 +434,99 @@ function renderConsulta() {
   };
 }
 
+function feedbackCard(st, a) {
+  return `<div class="fb ${a.ok ? "ok" : "bad"}">
+    <div class="fb-h"><b>${a.ok ? "Buena respuesta" : "No era lo más adecuado"}</b>
+      <span class="fb-gain">${a.ok ? `${COIN}+${a.pay} ${STAR}+${a.drep}` : `${STAR}${a.drep}`}</span></div>
+    ${a.ok ? "" : `<p class="fb-correct"><b>Lo correcto era:</b> ${esc(st.o[0])}</p>`}
+    <p class="fb-why">${esc(st.why)}</p>
+    ${st.q != null ? `<button class="link" data-info="${st.q}">Ver apuntes de la pregunta del examen</button>` : ""}
+  </div>`;
+}
+
 function renderPatient() {
   setFocusMode(true);
-  const C = G.cur, id = C.queue[C.i], Q = QUESTIONS[id], [species, name, motivo] = CASES[id];
-  const A = C.answer, last = C.i === C.queue.length - 1;
-  const mood = A ? (A.ok ? "happy" : "sad") : "neutral";
+  const C = G.cur, ci = C.clients[C.ci], K = CONSULTAS[ci], ans = C.answers[C.ci];
+  const cur = ans[C.si], done = ans.length === K.steps.length, bye = C.bye[C.ci];
+  const last = ans[ans.length - 1];
+  const mood = done ? (bye.nOk === bye.total ? "happy" : bye.nOk * 2 >= bye.total ? "neutral" : "sad") : last ? (last.ok ? "happy" : "sad") : "neutral";
+  const farm = ["cow", "pig", "horse"].includes(K.sp);
+  const oq = ownerEq(K.owner, farm);
+  const lastClient = C.ci === C.clients.length - 1;
+  let chat = "";
+  for (let si = 0; si <= C.si && si < K.steps.length; si++) {
+    const st = K.steps[si], a = ans[si];
+    chat += bubble("them", st.ask, oq);
+    if (a) {
+      chat += bubble("me", st.o[a.choice], G.eq, a.ok ? "ok" : "bad", a.ok ? "happy" : "neutral");
+      chat += feedbackCard(st, a);
+      if (!(done && si === K.steps.length - 1)) chat += bubble("them", (a.ok ? REACT_OK : REACT_BAD)[(ci * 3 + si) % (a.ok ? REACT_OK : REACT_BAD).length], oq, "", a.ok ? "happy" : "sad");
+    }
+  }
+  if (done) {
+    const msg = bye.nOk === bye.total ? "¡Muchísimas gracias! Da gusto venir aquí. Volveremos seguro." : bye.nOk * 2 >= bye.total ? "Gracias. Alguna cosa no me ha quedado clara, pero bueno." : "Pues… no sé si volveremos, la verdad.";
+    chat += bubble("them", msg, oq, "bye", mood === "neutral" ? "neutral" : mood);
+  }
+  const st = K.steps[C.si];
   $("#app").innerHTML = `
     <div class="g-wrap">
       <div class="topbar">
         <button class="icon-btn soft" id="back" aria-label="Volver a la clínica"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-        <div class="muted"><b class="ink">Paciente ${C.i + 1}</b> de ${C.queue.length}</div>
+        <div class="muted"><b class="ink">Cliente ${C.ci + 1}</b> de ${C.clients.length}</div>
         <span class="spacer"></span>
         <div class="g-pill sm">${COIN}<b>${fmt(G.money)}</b></div><div class="g-pill sm">${STAR}<b>${G.rep}</b></div>
       </div>
-      <div class="dots">${C.queue.map((_, i) => `<span class="${i < C.i ? (C.log[i] ? "ok" : "bad") : i === C.i ? "cur" : ""}"></span>`).join("")}</div>
-      <div class="scene-frame">${sceneSVG({ patient: { species, name }, mood, vetMood: A ? (A.ok ? "happy" : "sad") : "neutral" })}</div>
+      <div class="dots">${C.clients.map((_, i) => { const b = C.bye[i]; return `<span class="${b ? (b.nOk === b.total ? "ok" : "bad") : i === C.ci ? "cur" : ""}"></span>`; }).join("")}</div>
+      <div class="scene-frame">${sceneSVG({ patient: { species: K.sp, name: K.pet }, mood, vetMood: last ? (last.ok ? "happy" : "sad") : "neutral" })}</div>
       <div class="ficha">
         <div class="ficha-clip"></div>
-        <div class="ficha-head"><span class="ficha-name">${esc(name)}</span><span class="ficha-sp">${SPECIES[species]} · ${TOPICS[Q.t].name}</span></div>
-        <p class="ficha-motivo">${esc(motivo)}</p>
+        <div class="ficha-head"><span class="ficha-name">${esc(K.pet)}</span><span class="ficha-sp">${SPECIES[K.sp]} · ${TOPICS[K.t].name}</span></div>
+        <p class="ficha-owner">Viene con ${esc(K.owner)}</p>
+        <p class="ficha-motivo">${esc(K.intro)}</p>
       </div>
-      <div class="g-question">
-        <p class="g-hand">Para decidir el tratamiento…</p>
-        <h2 class="qtext">${esc(Q.q)}</h2>
-        <div>${C.order.map((oi, k) => {
-          let cls = "";
-          if (A) { if (oi === Q.a) cls = "correct"; else if (oi === A.choice) cls = "wrong"; else cls = "dim"; }
-          return `<button class="opt ${cls}" data-g="${oi}" ${A ? "disabled" : ""}><span class="letter">${LET[k]}</span><span>${esc(Q.o[oi])}</span></button>`;
-        }).join("")}</div>
-      </div>
-      ${A ? `<div class="g-result ${A.ok ? "ok" : "bad"}">
-        <div class="g-result-msg">${A.ok
-          ? `<b>¡Bien visto!</b> ${esc(name)} se va a casa mucho mejor.<div class="g-gains"><span>${COIN}+${A.pay}</span><span>${STAR}+${A.drep}</span>${A.streak >= 2 ? `<span class="streak">racha ${A.streak}</span>` : ""}</div>`
-          : `<b>Vaya…</b> el tratamiento no era ese y el dueño de ${esc(name)} se va descontento.<div class="g-gains"><span>${STAR}${A.drep}</span></div>`}</div>
-        <div class="row">
-          <button class="btn" id="notes" style="flex:1">Ver apuntes</button>
-          <button class="btn primary" id="nextp" style="flex:1.4">${last ? "Cerrar la jornada" : "Siguiente paciente"}</button>
-        </div>
-      </div>` : ""}
+      <div class="chat">${chat}</div>
+      ${!cur && !done ? `<p class="g-hand reply-head">¿Qué le respondes a ${esc(K.owner)}?</p>
+        <div>${C.order.map((oi, k) => `<button class="opt reply" data-g="${oi}"><span class="letter">${LET[k]}</span><span>${esc(st.o[oi])}</span></button>`).join("")}</div>` : ""}
+      ${cur && !done ? `<button class="btn primary block big" id="cont" style="margin-top:14px">Continuar</button>` : ""}
+      ${done ? `<div class="g-result ${bye.nOk === bye.total ? "ok" : "bad"}">
+          <div class="g-result-msg"><b>${esc(K.pet)} y ${esc(K.owner)} se van a casa.</b> Has acertado ${bye.nOk} de ${bye.total}.
+          ${bye.tip ? `<div class="g-gains"><span>${COIN}+${bye.tip} propina</span><span>${STAR}+${bye.rb}</span></div>` : ""}</div>
+          <button class="btn primary block" id="nextc">${lastClient ? "Cerrar la jornada" : "Que pase el siguiente"}</button>
+        </div>` : ""}
     </div>`;
   $("#back").onclick = () => { gview = "hub"; render(); window.scrollTo(0, 0); };
-  $$("[data-g]").forEach(b => b.onclick = () => answerPatient(+b.dataset.g));
-  if (A) {
-    $("#notes").onclick = () => openInfo(id);
-    $("#nextp").onclick = nextPatient;
-    requestAnimationFrame(() => { const r = $(".g-result"); if (r) r.scrollIntoView({ behavior: "smooth", block: "nearest" }); });
-  }
+  $$("[data-g]").forEach(b => b.onclick = () => answerStep(+b.dataset.g));
+  $$("[data-info]").forEach(b => b.onclick = () => openInfo(+b.dataset.info));
+  if ($("#cont")) $("#cont").onclick = () => { C.si++; C.order = shuffle([0, 1, 2, 3]); saveGame(); renderPatient(); scrollToEl(".chat .bub.them"); };
+  if ($("#nextc")) $("#nextc").onclick = nextClient;
 }
-function answerPatient(choice) {
-  const C = G.cur, id = C.queue[C.i], Q = QUESTIONS[id], ok = choice === Q.a;
-  Stats.record(id, ok);
+function scrollToEl(sel) {
+  requestAnimationFrame(() => { const els = $$(sel); const el = els[els.length - 1]; if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); });
+}
+function answerStep(choice) {
+  const C = G.cur, ci = C.clients[C.ci], K = CONSULTAS[ci], ok = choice === 0;
+  CStats.record(ci + "-" + C.si, ok);
   G.served++;
   let pay = 0, drep;
-  if (ok) {
-    G.streak++; G.best = Math.max(G.best, G.streak); G.okTotal++;
-    pay = payFor(G.rep, G.streak);
-    drep = Math.min(4, 100 - G.rep);
-    C.ok++;
-  } else {
-    G.streak = 0;
-    drep = -Math.min(8, G.rep);
-  }
+  if (ok) { G.streak++; G.best = Math.max(G.best, G.streak); G.okTotal++; pay = payFor(G.rep, G.streak); drep = Math.min(REP_OK, 100 - G.rep); }
+  else { G.streak = 0; drep = Math.max(REP_BAD, -G.rep); }
   G.money += pay; G.rep += drep; C.earned += pay; C.drep += drep;
-  C.answer = { choice, ok, pay, drep, streak: G.streak };
-  C.log[C.i] = ok;
-  G.recent = [id, ...G.recent.filter(x => x !== id)].slice(0, 24);
-  saveGame(); renderPatient();
+  C.answers[C.ci][C.si] = { choice, ok, pay, drep };
+  if (C.answers[C.ci].length === K.steps.length) {
+    const nOk = C.answers[C.ci].filter(a => a.ok).length;
+    let tip = 0, rb = 0;
+    if (nOk === K.steps.length) { tip = TIP_HAPPY; rb = Math.min(REP_HAPPY, 100 - G.rep); G.money += tip; G.rep += rb; C.earned += tip; C.drep += rb; }
+    C.bye[C.ci] = { nOk, total: K.steps.length, tip, rb };
+    G.recentCases = [ci, ...G.recentCases.filter(x => x !== ci)].slice(0, 14);
+  }
+  saveGame(); renderPatient(); scrollToEl(".chat .fb");
 }
-function nextPatient() {
+function nextClient() {
   const C = G.cur;
-  if (C.i < C.queue.length - 1) {
-    C.i++; C.answer = null; C.order = shuffle([0, 1, 2, 3]); saveGame(); renderPatient(); window.scrollTo(0, 0);
+  if (C.ci < C.clients.length - 1) {
+    C.ci++; C.si = 0; C.order = shuffle([0, 1, 2, 3]); saveGame(); renderPatient(); window.scrollTo(0, 0);
   } else {
-    const perfect = C.ok === C.queue.length;
-    const bonus = perfect ? 40 : 0;
-    G.money += bonus;
-    lastSummary = { day: G.day, ok: C.ok, total: C.queue.length, earned: C.earned + bonus, bonus, drep: C.drep, names: C.queue.map((id, i) => [CASES[id], C.log[i], id]) };
+    lastSummary = { day: G.day, earned: C.earned, drep: C.drep, list: C.clients.map((ci, i) => ({ K: CONSULTAS[ci], b: C.bye[i] })) };
     G.day++; G.cur = null; saveGame();
     gview = "summary"; render(); window.scrollTo(0, 0);
   }
@@ -453,20 +534,23 @@ function nextPatient() {
 function renderSummary() {
   setFocusMode(false);
   const s = lastSummary;
-  const msg = s.ok === s.total ? "¡Jornada perfecta! El pueblo entero habla de tu clínica." : s.ok >= s.total * .66 ? "Buen día de trabajo. Los clientes se van contentos." : s.ok >= s.total / 3 ? "Un día regular. Mañana irá mejor: repasa lo que fallaste." : "Día duro. Échale un ojo a los apuntes antes de abrir mañana.";
+  const happy = s.list.filter(x => x.b.nOk === x.b.total).length, total = s.list.length;
+  const msg = happy === total ? "¡Jornada redonda! El pueblo entero habla de tu clínica." : happy * 3 >= total * 2 ? "Buen día de trabajo. La mayoría se ha ido encantada." : happy * 3 >= total ? "Un día regular. Repasa lo que fallaste y mañana irá mejor." : "Día duro. Échale un ojo a los apuntes antes de volver a abrir.";
   $("#app").innerHTML = `
     <div class="g-wrap">
       <div class="g-paper summary">
         <p class="g-kicker">Fin del día ${s.day}</p>
-        <h1 class="g-title">${s.ok} de ${s.total} pacientes curados</h1>
+        <h1 class="g-title">${happy} de ${total} clientes encantados</h1>
         <p>${msg}</p>
         <div class="g-gains big"><span>${COIN}+${s.earned}</span><span>${STAR}${s.drep >= 0 ? "+" : ""}${s.drep}</span></div>
-        ${s.bonus ? `<p class="muted small">Incluye ${s.bonus} monedas de propina por la jornada perfecta.</p>` : ""}
-        <ul class="sum-list">${s.names.map(([[sp, nm], ok, id]) => `<li><svg viewBox="0 0 100 100" class="mini-pet">${animalSVG(sp, nm, ok ? "happy" : "sad")}</svg><span>${esc(nm)}</span><span class="spacer"></span>${ok ? `<span class="tag okt">curado</span>` : `<button class="link" data-info="${id}">ver apuntes</button>`}</li>`).join("")}</ul>
+        <ul class="sum-list">${s.list.map(({ K, b }) => {
+          const m = b.nOk === b.total ? "happy" : b.nOk * 2 >= b.total ? "neutral" : "sad";
+          return `<li><svg viewBox="0 0 100 100" class="mini-pet">${animalSVG(K.sp, K.pet, m)}</svg><span>${esc(K.pet)} <span class="muted small">· ${esc(K.owner)}</span></span><span class="spacer"></span><span class="tag ${b.nOk === b.total ? "okt" : "bad"}">${b.nOk}/${b.total}</span></li>`;
+        }).join("")}</ul>
+        <p class="muted small">Tus fallos de la consulta aparecen en Estudiar → Última hora.</p>
         <button class="btn primary block" id="home">Volver a la clínica</button>
       </div>
     </div>`;
-  $$("[data-info]").forEach(b => b.onclick = () => openInfo(+b.dataset.info));
   $("#home").onclick = () => { lastSummary = null; gview = "hub"; render(); window.scrollTo(0, 0); };
 }
 

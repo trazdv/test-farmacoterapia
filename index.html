@@ -247,6 +247,44 @@ body.focus #tabs{display:none}
 .btn.buy .ico-coin{width:18px;height:18px}
 .worn{font-size:.85rem;font-weight:700;color:var(--accent);min-height:38px;display:grid;place-items:center}
 
+/* energía, conversación y avisos */
+.g-stats{display:grid;grid-template-columns:auto 1fr;gap:10px}
+.g-meter{display:flex;gap:8px;align-items:center;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:6px 12px 8px 8px;box-shadow:0 2px 0 var(--border);min-width:0}
+.g-meter>div{flex:1;min-width:0}
+.g-meter.wide{grid-column:1 / -1}
+.g-bar.en>div{background:linear-gradient(90deg,#f3d36b,#e8a65a)}
+.ico-bolt{width:22px;height:22px;flex:none;vertical-align:middle}
+.btn .cost{display:inline-flex;align-items:center;gap:2px;background:rgba(255,250,241,.22);border-radius:999px;padding:1px 10px 1px 4px;margin-left:6px;font-family:var(--serif)}
+.btn .cost .ico-bolt{width:18px;height:18px}
+.center{text-align:center;margin:0}
+.tired{border-style:dashed;border-color:#e8a65a}
+.ficha-owner{margin:2px 0 0;font-size:.88rem;color:#85705d;font-style:italic;font-family:var(--serif)}
+.chat{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+.bub{display:flex;gap:10px;align-items:flex-end;max-width:92%}
+.bub .face{width:44px;height:44px;flex:none;border-radius:50%;background:var(--surface-2);border:1.5px solid var(--border)}
+.bub p{margin:0;padding:11px 14px;border-radius:18px;line-height:1.45;border:1.5px solid var(--border);background:var(--surface);box-shadow:0 2px 0 var(--border)}
+.bub.them p{border-bottom-left-radius:6px}
+.bub.me{flex-direction:row-reverse;align-self:flex-end}
+.bub.me p{border-bottom-right-radius:6px;background:var(--accent-soft);border-color:var(--accent);box-shadow:0 2px 0 var(--accent)}
+.bub.me.ok p{background:var(--ok-soft);border-color:var(--ok);box-shadow:0 2px 0 var(--ok)}
+.bub.me.bad p{background:var(--bad-soft);border-color:var(--bad);box-shadow:0 2px 0 var(--bad)}
+.bub.bye p{font-family:var(--serif);font-style:italic}
+.fb{border-radius:14px;padding:12px 14px;border:1.5px dashed;font-size:.95rem;line-height:1.5;margin:0 4px}
+.fb.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok-soft) 60%,transparent)}
+.fb.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad-soft) 60%,transparent)}
+.fb-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.fb.ok .fb-h b{color:var(--ok)} .fb.bad .fb-h b{color:var(--bad)}
+.fb-gain{margin-left:auto;display:inline-flex;align-items:center;gap:3px;font-family:var(--serif);font-weight:700}
+.fb-gain .ico-coin,.fb-gain .ico-star{width:18px;height:18px}
+.fb-correct{margin:8px 0 0} .fb-why{margin:8px 0 0;color:var(--text)}
+.fb .link{padding:6px 0 0;font-size:.9rem}
+.reply-head{margin:18px 0 8px!important}
+.opt.reply{font-size:.97rem}
+.energy-chip{display:inline-flex;align-items:center;gap:4px;font-size:.85rem;font-weight:650;background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:4px 12px 4px 6px;color:var(--muted)}
+.energy-chip.paused{opacity:.55}
+.energy-chip .ico-bolt{width:18px;height:18px}
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-140%);background:var(--surface);border:1.5px solid var(--border);box-shadow:0 4px 0 rgba(74,52,38,.15);border-radius:999px;padding:8px 16px 8px 10px;display:flex;align-items:center;gap:6px;z-index:60;transition:transform .35s cubic-bezier(.2,.9,.3,1.3);font-weight:600;white-space:nowrap}
+#toast.show{transform:translate(-50%,0)}
 @media (max-width:380px){.g-rep-top span{display:none}}
 @media print{
   #tabs,.seg,.chips,.btn,.link,.navbar,.icon-btn{display:none!important}
@@ -262,6 +300,7 @@ body.focus #tabs{display:none}
 <script src="data.js"></script>
 <script src="study.js"></script>
 <script src="app.js"></script>
+<script src="consultas.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
