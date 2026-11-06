@@ -253,6 +253,11 @@ function answerStep(choice) {
     G.recentCases = [ci, ...G.recentCases.filter(x => x !== ci)].slice(0, 14);
   }
   saveGame(); renderPatient(); scrollToEl(".chat .fb");
+  const happyClient = C.bye[C.ci] && C.bye[C.ci].tip;
+  setTimeout(() => {
+    const fbs = $$(".chat .fb"), last = fbs[fbs.length - 1];
+    if (ok) { coinBurst(last ? last.querySelector(".fb-gain") : null, 5); confetti(happyClient ? 70 : 18); }
+  }, 250);
 }
 function nextClient() {
   const C = G.cur;
@@ -262,6 +267,8 @@ function nextClient() {
     lastSummary = { day: G.day, earned: C.earned, drep: C.drep, list: C.clients.map((ci, i) => ({ K: CONSULTAS[ci], b: C.bye[i] })) };
     G.day++; G.cur = null; saveGame();
     gview = "summary"; render(); window.scrollTo(0, 0);
+    const happy = lastSummary.list.filter(x => x.b.nOk === x.b.total).length;
+    if (happy * 2 >= lastSummary.list.length) setTimeout(() => confetti(happy === lastSummary.list.length ? 130 : 60), 300);
   }
 }
 function renderSummary() {
@@ -288,23 +295,28 @@ function renderSummary() {
 }
 
 /* ---------- tienda ---------- */
-let preview = null;
+let preview = null, shopSet = "navidad";
+const SET_DISCOUNT = .85;
 function renderShop() {
   setFocusMode(false);
   const sec = SHOP_SECTIONS.find(s => s.id === shopSec);
-  if (!sec.cats.includes(shopCat)) shopCat = sec.cats[0];
-  const cat = SHOP[shopCat], isRoom = shopSec === "room";
-  const owned = id => G.owned.includes(shopCat + ":" + id);
-  const isOn = id => G.eq[shopCat] === id;
-  const face = ["hair", "hairColor", "skin", "face", "eyes", "head", "ears"].includes(shopCat);
-  const thumb = it => {
-    if (shopCat === "hairColor" || shopCat === "skin") return `<span class="swatch" style="background:${it.c}"></span>`;
-    const eq = Object.assign({}, G.eq, { [shopCat]: it.id });
-    if (isRoom) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[shopCat] })}</span>`;
-    return `<span class="thumb">${avatarSVG(eq, "happy", "", face ? "22 2 76 92" : "0 0 120 140")}</span>`;
+  const isSets = shopSec === "sets";
+  if (isSets) { if (!PAT_SETS[shopSet]) shopSet = "navidad"; }
+  else if (!sec.cats.includes(shopCat)) shopCat = sec.cats[0];
+  const owned = (c, id) => G.owned.includes(c + ":" + id);
+  const isRoomCat = c => SHOP_SECTIONS[1].cats.includes(c);
+  const thumb = (c, it) => {
+    if (c === "hairColor" || c === "skin") return `<span class="swatch" style="background:${it.c}"></span>`;
+    const eq = Object.assign({}, G.eq, { [c]: it.id });
+    if (isRoomCat(c)) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[c] })}</span>`;
+    return `<span class="thumb">${avatarSVG(eq, "happy", "", AV_FOCUS[c] || "0 0 120 140")}</span>`;
   };
-  const stage = isRoom ? sceneSVG({ eq: preview || G.eq, vetMood: "happy" })
-    : `<div class="dress"><div class="dress-av">${avatarSVG(preview || G.eq, "happy")}</div></div>`;
+  const list = isSets ? setItems(shopSet) : SHOP[shopCat].items.map(it => ({ cat: shopCat, it }));
+  const showRoom = isSets ? true : isRoomCat(shopCat);
+  const stageEq = preview || G.eq;
+  const stage = showRoom ? sceneSVG({ eq: stageEq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(stageEq, "happy")}</div></div>`;
+  const missing = isSets ? list.filter(x => !owned(x.cat, x.it.id)) : [];
+  const setPrice = Math.round(missing.reduce((a, x) => a + x.it.price, 0) * SET_DISCOUNT);
   $("#app").innerHTML = `
     <div class="g-wrap">
       <div class="topbar">
@@ -313,38 +325,60 @@ function renderShop() {
         <div class="g-pill">${COIN}<b>${fmt(G.money)}</b></div>
       </div>
       <div class="seg">${SHOP_SECTIONS.map(s => `<button data-sec="${s.id}" aria-selected="${shopSec === s.id}">${s.label}</button>`).join("")}</div>
-      <div class="scene-frame ${isRoom ? "" : "dressing"}">${stage}</div>
-      <div class="shop-cats">${sec.cats.map(c => `<button data-cat="${c}" aria-pressed="${shopCat === c}">${SHOP[c].label}</button>`).join("")}</div>
-      ${cat.opt && G.eq[shopCat] ? `<button class="link" id="none" style="margin:-4px 0 8px">Quitar ${SHOP[shopCat].label.toLowerCase()}</button>` : ""}
-      <div class="shop-grid">${cat.items.map(it => {
-        const have = owned(it.id), on = isOn(it.id);
+      <div class="scene-frame ${showRoom ? "" : "dressing"}">${stage}</div>
+      <div class="shop-cats">${isSets
+        ? Object.entries(PAT_SETS).map(([id, l]) => `<button data-set="${id}" aria-pressed="${shopSet === id}">${l}</button>`).join("")
+        : sec.cats.map(c => `<button data-cat="${c}" aria-pressed="${shopCat === c}">${SHOP[c].label}</button>`).join("")}</div>
+      ${isSets ? `<div class="set-bar">
+          <button class="btn" id="tryall">Probar todo</button>
+          ${missing.length ? `<button class="btn primary" id="buyall" ${G.money < setPrice ? "disabled" : ""}>Comprar lo que falta ${COIN}${setPrice}</button>` : `<span class="worn">¡Colección completa!</span>`}
+        </div>${missing.length ? `<p class="muted small center">Comprando la colección entera tienes un 15 % de descuento.</p>` : ""}` : ""}
+      ${!isSets && SHOP[shopCat].opt && G.eq[shopCat] ? `<button class="link" id="none" style="margin:-4px 0 8px">Quitar ${SHOP[shopCat].label.toLowerCase()}</button>` : ""}
+      <div class="shop-grid">${list.map(({ cat, it }, i) => {
+        const have = owned(cat, it.id), on = G.eq[cat] === it.id;
         let btn;
-        if (have) btn = on ? (cat.opt ? `<button class="btn sm" data-off="1">Quitar</button>` : `<span class="worn">Puesto</span>`) : `<button class="btn sm primary" data-wear="${it.id}">${isRoom ? "Colocar" : "Ponérmelo"}</button>`;
-        else btn = `<button class="btn sm buy" data-buy="${it.id}" ${G.money < it.price ? "disabled" : ""}>${COIN}${it.price}</button>`;
-        return `<div class="item ${on ? "on" : ""}" data-prev="${it.id}">${thumb(it)}<span class="item-name">${esc(it.name)}</span>${btn}</div>`;
+        if (have) btn = on ? (SHOP[cat].opt ? `<button class="btn sm" data-off="${cat}">Quitar</button>` : `<span class="worn">Puesto</span>`) : `<button class="btn sm primary" data-wear="${cat}|${it.id}">${isRoomCat(cat) ? "Colocar" : "Ponérmelo"}</button>`;
+        else btn = `<button class="btn sm buy" data-buy="${cat}|${it.id}" ${G.money < it.price ? "disabled" : ""}>${COIN}${it.price}</button>`;
+        return `<div class="item ${on ? "on" : ""}" data-prev="${cat}|${it.id}" style="animation-delay:${Math.min(i, 14) * 35}ms">${thumb(cat, it)}${isSets ? `<span class="item-cat">${SHOP[cat].label}</span>` : ""}<span class="item-name">${esc(it.name)}</span>${btn}</div>`;
       }).join("")}</div>
       <p class="muted small" style="text-align:center">Toca un objeto para probarlo antes de comprarlo.</p>
     </div>`;
   const cats = $(".shop-cats"), act = $(".shop-cats [aria-pressed=true]");
   if (cats && act) cats.scrollLeft = Math.max(0, act.offsetLeft - cats.offsetLeft - 24);
+  const restage = (eq, room) => {
+    const fr = $(".scene-frame");
+    fr.classList.toggle("dressing", !room);
+    fr.innerHTML = room ? sceneSVG({ eq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(eq, "happy")}</div></div>`;
+    fr.classList.remove("pop"); void fr.offsetWidth; fr.classList.add("pop");
+  };
   $("#back").onclick = () => { preview = null; gview = "hub"; render(); window.scrollTo(0, 0); };
   $$("[data-sec]").forEach(b => b.onclick = () => { shopSec = b.dataset.sec; preview = null; renderShop(); });
   $$("[data-cat]").forEach(b => b.onclick = () => { shopCat = b.dataset.cat; preview = null; renderShop(); });
+  $$("[data-set]").forEach(b => b.onclick = () => { shopSet = b.dataset.set; preview = null; renderShop(); });
   $$("[data-prev]").forEach(el => el.onclick = e => {
     if (e.target.closest("button")) return;
-    preview = Object.assign({}, G.eq, { [shopCat]: el.dataset.prev });
-    $(".scene-frame").innerHTML = isRoom ? sceneSVG({ eq: preview, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(preview, "happy")}</div></div>`;
+    const [cat, id] = el.dataset.prev.split("|");
+    preview = Object.assign({}, preview || G.eq, { [cat]: id });
+    restage(preview, isSets ? true : isRoomCat(cat));
     $$(".item").forEach(x => x.classList.toggle("trying", x === el));
     $(".scene-frame").scrollIntoView({ behavior: "smooth", block: "nearest" });
   });
+  if ($("#tryall")) $("#tryall").onclick = () => {
+    preview = Object.assign({}, G.eq); const done = new Set(); list.forEach(({ cat, it }) => { if (!done.has(cat)) { preview[cat] = it.id; done.add(cat); } });
+    restage(preview, true); $(".scene-frame").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+  if ($("#buyall")) $("#buyall").onclick = () => confirmBox(`¿Comprar la colección ${PAT_SETS[shopSet]}?`, `${missing.length} objetos por ${setPrice} monedas (15 % de descuento). Te quedarán ${G.money - setPrice}.`, "Comprar", () => {
+    G.money -= setPrice; const done = new Set(); missing.forEach(({ cat, it }) => { G.owned.push(cat + ":" + it.id); if (!done.has(cat)) { G.eq[cat] = it.id; done.add(cat); } });
+    preview = null; saveGame(); renderShop(); celebrate(`¡Colección ${PAT_SETS[shopSet]} completa!`);
+  });
   $$("[data-buy]").forEach(b => b.onclick = () => {
-    const it = findItem(shopCat, b.dataset.buy);
+    const [cat, id] = b.dataset.buy.split("|"), it = findItem(cat, id);
     confirmBox(`¿Comprar ${it.name}?`, `Cuesta ${it.price} monedas. Te quedarán ${G.money - it.price}.`, "Comprar", () => {
-      G.money -= it.price; G.owned.push(shopCat + ":" + it.id); G.eq[shopCat] = it.id;
-      preview = null; saveGame(); renderShop();
+      G.money -= it.price; G.owned.push(cat + ":" + it.id); G.eq[cat] = it.id;
+      preview = null; saveGame(); renderShop(); celebrate("¡Nuevo objeto!");
     });
   });
-  $$("[data-wear]").forEach(b => b.onclick = () => { G.eq[shopCat] = b.dataset.wear; preview = null; saveGame(); renderShop(); });
-  $$("[data-off]").forEach(b => b.onclick = () => { G.eq[shopCat] = null; preview = null; saveGame(); renderShop(); });
+  $$("[data-wear]").forEach(b => b.onclick = () => { const [cat, id] = b.dataset.wear.split("|"); G.eq[cat] = id; preview = null; saveGame(); renderShop(); });
+  $$("[data-off]").forEach(b => b.onclick = () => { G.eq[b.dataset.off] = null; preview = null; saveGame(); renderShop(); });
   if ($("#none")) $("#none").onclick = () => { G.eq[shopCat] = null; preview = null; saveGame(); renderShop(); };
 }

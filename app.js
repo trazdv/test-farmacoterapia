@@ -172,6 +172,7 @@ function finish() {
   const okN = quiz.items.filter((it, i) => quiz.answers[i] === QUESTIONS[it.id].a).length;
   let e = Math.floor(answered / 5) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
   quiz.energy = e ? addEnergy(e, "por el test") : 0;
+  if (okN / quiz.items.length >= 0.5) setTimeout(() => confetti(okN === quiz.items.length ? 120 : 60), 350);
   reviewTab = "bad";
   render(); window.scrollTo(0, 0);
 }
@@ -351,6 +352,37 @@ function toast(html) {
   t.innerHTML = html; t.classList.remove("show"); void t.offsetWidth; t.classList.add("show");
   clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 3000);
 }
+
+/* ============ celebraciones ============ */
+const calm = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function confetti(n = 60) {
+  if (calm()) return;
+  const colors = ["#ff6f4f", "#ffc23d", "#2ec4b0", "#5fb8ef", "#a98bf0", "#ff7fae"];
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement("div");
+    d.className = "confetti";
+    d.style.left = Math.random() * 100 + "vw";
+    d.style.background = colors[i % colors.length];
+    d.style.setProperty("--dx", (Math.random() * 140 - 70) + "px");
+    d.style.setProperty("--rot", (Math.random() * 720 - 360) + "deg");
+    d.style.setProperty("--t", (1.6 + Math.random() * 1.4) + "s");
+    d.style.animationDelay = (Math.random() * .4) + "s";
+    if (i % 3 === 0) { d.style.borderRadius = "50%"; d.style.width = d.style.height = "10px"; }
+    document.body.appendChild(d); setTimeout(() => d.remove(), 3600);
+  }
+}
+function coinBurst(el, n = 6) {
+  if (calm() || typeof COIN === "undefined") return;
+  const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement("div");
+    d.className = "coinfx"; d.innerHTML = COIN;
+    d.style.left = (r.left + r.width / 2 - 13) + "px"; d.style.top = (r.top + r.height / 2 - 13) + "px";
+    d.style.setProperty("--dx", (Math.random() * 120 - 60) + "px"); d.style.animationDelay = i * 70 + "ms";
+    document.body.appendChild(d); setTimeout(() => d.remove(), 1600);
+  }
+}
+function celebrate(text) { confetti(70); if (text) toast(text); }
 
 /* ============ modales ============ */
 function closeModal() { const r = $("#modal-root"); if (r) r.innerHTML = ""; document.body.style.overflow = ""; infoOpen = false; }
