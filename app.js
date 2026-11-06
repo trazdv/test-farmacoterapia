@@ -64,9 +64,17 @@ function renderTabs() {
   $$("#tabs [data-view]").forEach(b => b.onclick = () => setView(b.dataset.view));
 }
 
+/* la animación de entrada solo se lanza al cambiar de pantalla, no al tocar botones */
+let lastScreen = "";
+function enterAnim() {
+  const a = $("#app"); a.classList.remove("enter"); void a.offsetWidth; a.classList.add("enter");
+  clearTimeout(enterAnim._t); enterAnim._t = setTimeout(() => a.classList.remove("enter"), 800);
+}
 function render() {
   closeModal();
   renderTabs();
+  const screen = view + "|" + (quiz ? (quiz.done ? "res" : "quiz") : "") + "|" + (view === "consulta" && typeof gview !== "undefined" ? gview : "");
+  if (screen !== lastScreen) { lastScreen = screen; enterAnim(); }
   if (quiz && !quiz.done) { setFocusMode(true); return renderQuiz(); }
   setFocusMode(false);
   if (quiz && quiz.done) return renderResults();

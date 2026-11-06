@@ -26,6 +26,7 @@ G.eq = Object.assign({}, DEFAULT_EQ, G.eq);
 })();
 if (!G.energyStart) { G.energy = Math.max(G.energy, 10); G.energyStart = true; }   // partidas anteriores: energía inicial de 10
 if (G.cur && !G.cur.clients) G.cur = null;   // partida guardada con el formato antiguo
+if (!Array.isArray(G.topics) || !G.topics.length) G.topics = [1, 2, 3, 4, 5];   // siempre al menos un tema
 function saveGame() { store.set("ft_game", G); }
 let gview = "hub";      // hub | patient | shop | summary
 let shopSec = "me", shopCat = "hair";
@@ -154,8 +155,9 @@ function renderConsulta() {
         <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 3 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar (+1 cada minuto).</p>
         <p>Cada cliente te hará varias preguntas sobre su animal. Si respondes bien, cobras y ganas reputación; si te equivocas, la pierdes. Si respondes bien a todo, te deja propina. Cuanta más reputación, más clientes y mejor pagados.</p>
         <p class="muted small">Preguntas respondidas: <b>${G.served}</b> · Aciertos: <b>${G.okTotal}</b> · Mejor racha: <b>${G.best}</b></p>
-        <p class="label" style="margin-top:12px">Casos de los temas</p>
-        <div class="chips">${ALL_TOPICS.map(t => `<button class="chip" data-gt="${t}" aria-pressed="${G.topics.includes(t)}">Tema ${t}</button>`).join("")}</div>
+        <p class="label" style="margin-top:12px">Temas de las consultas</p>
+        <div class="chips">${ALL_TOPICS.map(t => `<button class="chip tchip" data-gt="${t}" aria-pressed="${G.topics.includes(t)}" title="${esc(TOPICS[t].desc)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7"/></svg>Tema ${t}</button>`).join("")}</div>
+        <p class="muted small" style="margin:8px 0 0">Toca un tema para activarlo o desactivarlo. Tiene que quedar al menos uno.</p>
       </div>
       <p class="footer-note"><button class="link" id="xfer">Pasar mi partida a otro dispositivo</button></p>
     </div>`;
@@ -164,7 +166,14 @@ function renderConsulta() {
   if ($("#gotest")) $("#gotest").onclick = () => setView("test");
   if ($("#gostudy")) $("#gostudy").onclick = () => setView("estudiar");
   $("#shop").onclick = () => { gview = "shop"; render(); window.scrollTo(0, 0); };
-  $$("[data-gt]").forEach(b => b.onclick = () => { const t = +b.dataset.gt; G.topics = G.topics.includes(t) ? G.topics.filter(x => x !== t) : [...G.topics, t]; saveGame(); renderConsulta(); });
+  $$("[data-gt]").forEach(b => b.onclick = () => {
+    const t = +b.dataset.gt;
+    if (G.topics.includes(t)) {
+      if (G.topics.length === 1) { b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); toast("Tiene que haber al menos un tema activado"); return; }
+      G.topics = G.topics.filter(x => x !== t);
+    } else G.topics = [...G.topics, t].sort();
+    saveGame(); renderConsulta();
+  });
   $("#rename").onclick = () => {
     modal(`<h3>Nombre de tu clínica</h3><input id="cn" class="field" maxlength="32" value="${esc(G.clinic)}">
       <div class="row" style="margin-top:14px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">Guardar</button></div>`);

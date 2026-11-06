@@ -80,10 +80,10 @@ h1{font-size:1.9rem;margin:6px 0 4px;font-weight:900}
 @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
 @keyframes fall{0%{transform:translate3d(0,-20px,0) rotate(0);opacity:1}100%{transform:translate3d(var(--dx),105vh,0) rotate(var(--rot));opacity:.9}}
 @keyframes coin{0%{transform:translate(0,0) scale(.6);opacity:0}20%{opacity:1;transform:translate(0,-10px) scale(1.1)}100%{transform:translate(var(--dx),-80px) scale(.8);opacity:0}}
-#app>*{animation:rise .38s cubic-bezier(.2,.9,.3,1.2) both}
-#app>*:nth-child(2){animation-delay:.05s}#app>*:nth-child(3){animation-delay:.1s}#app>*:nth-child(4){animation-delay:.15s}#app>*:nth-child(5){animation-delay:.2s}#app>*:nth-child(6){animation-delay:.25s}
-.g-wrap>*{animation:rise .38s cubic-bezier(.2,.9,.3,1.2) both}
-.g-wrap>*:nth-child(2){animation-delay:.05s}.g-wrap>*:nth-child(3){animation-delay:.1s}.g-wrap>*:nth-child(4){animation-delay:.15s}.g-wrap>*:nth-child(5){animation-delay:.2s}.g-wrap>*:nth-child(6){animation-delay:.25s}.g-wrap>*:nth-child(7){animation-delay:.3s}
+#app.enter>*{animation:rise .38s cubic-bezier(.2,.9,.3,1.2) both}
+#app.enter>*:nth-child(2){animation-delay:.05s}#app.enter>*:nth-child(3){animation-delay:.1s}#app.enter>*:nth-child(4){animation-delay:.15s}#app.enter>*:nth-child(5){animation-delay:.2s}#app.enter>*:nth-child(6){animation-delay:.25s}
+#app.enter .g-wrap>*{animation:rise .38s cubic-bezier(.2,.9,.3,1.2) both}
+#app.enter .g-wrap>*:nth-child(2){animation-delay:.05s}#app.enter .g-wrap>*:nth-child(3){animation-delay:.1s}#app.enter .g-wrap>*:nth-child(4){animation-delay:.15s}#app.enter .g-wrap>*:nth-child(5){animation-delay:.2s}#app.enter .g-wrap>*:nth-child(6){animation-delay:.25s}#app.enter .g-wrap>*:nth-child(7){animation-delay:.3s}
 .confetti{position:fixed;top:0;width:10px;height:14px;border-radius:3px;z-index:80;pointer-events:none;animation:fall var(--t) cubic-bezier(.3,.6,.5,1) forwards}
 .coinfx{position:fixed;z-index:81;pointer-events:none;width:26px;height:26px;animation:coin 1s ease-out forwards}
 
@@ -118,6 +118,12 @@ h1{font-size:1.9rem;margin:6px 0 4px;font-weight:900}
 .chip{border:2px solid var(--border);background:var(--surface);border-radius:999px;padding:8px 16px;min-height:42px;font-weight:800;font-family:var(--round);transition:transform .12s}
 .chip:active{transform:scale(.94)}
 .chip[aria-pressed="true"]{border-color:var(--lilac);background:var(--lilac);color:#fff;box-shadow:0 3px 0 #7d5fd0}
+.tchip{display:inline-flex;align-items:center;gap:5px}
+.tchip svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.tchip[aria-pressed="false"]{border-style:dashed;background:transparent;color:var(--muted);opacity:.6;text-decoration:line-through;text-decoration-thickness:2px}
+.tchip[aria-pressed="false"] svg{display:none}
+.tchip[aria-pressed="true"]{border-color:var(--teal);background:var(--teal);color:#fff;box-shadow:0 3px 0 var(--teal-press)}
+.tchip.nope{animation:shake .4s}
 .toggle{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:700}
 .switch{width:54px;height:32px;border-radius:999px;background:var(--border);position:relative;flex:none;border:none;transition:background .2s}
 .switch::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 2px 3px rgba(0,0,0,.2);transition:left .25s cubic-bezier(.3,1.6,.5,1)}
@@ -390,7 +396,7 @@ body.focus #tabs{display:none}
 @media print{
   #tabs,.seg,.chips,.btn,.link,.navbar,.icon-btn{display:none!important}
   body{background:#fff;color:#000} .paper,.qa,.card{box-shadow:none;border-color:#bbb;break-inside:avoid-page}
-  .wrap{padding:0} #app>*{animation:none}
+  .wrap{padding:0} #app>*{animation:none!important}
 }
 </style>
 </head>
