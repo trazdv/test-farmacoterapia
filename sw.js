@@ -1,6 +1,6 @@
 // Service worker: guarda la app en caché para que funcione sin conexión.
 // Si cambias index.html, sube el número de versión para forzar la actualización.
-const CACHE = "farmaco-test-v8";
+const CACHE = "farmaco-test-v9";
 const FILES = ["./", "index.html", "data.js", "study.js", "app.js", "consultas.js", "art.js", "game.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

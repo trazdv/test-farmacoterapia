@@ -100,7 +100,11 @@ function pickClients(n) {
   const out = weak.slice(0, Math.min(2, Math.floor(n / 2)));
   const fresh = shuffle(pool.filter(i => !out.includes(i) && !G.recentCases.includes(i)));
   const old = pool.filter(i => !out.includes(i) && G.recentCases.includes(i)).sort((a, b) => G.recentCases.indexOf(b) - G.recentCases.indexOf(a));
-  for (const i of [...fresh, ...old]) { if (out.length >= n) break; out.push(i); }
+  /* primero un caso de cada especie que aún no esté en la jornada, para que no salgan solo perros */
+  const cand = [...fresh, ...old];
+  const species = new Set(out.map(i => CONSULTAS[i].sp));
+  for (const i of cand) { if (out.length >= n) break; if (!species.has(CONSULTAS[i].sp)) { out.push(i); species.add(CONSULTAS[i].sp); } }
+  for (const i of cand) { if (out.length >= n) break; if (!out.includes(i)) out.push(i); }
   return shuffle(out);
 }
 function openDay() {

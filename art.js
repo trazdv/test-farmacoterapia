@@ -691,10 +691,13 @@ function sceneSVG(opts = {}) {
   const night = ["noche", "luna"].includes(eq.view);
   const wainscot = eq.wall === "cal" ? `<defs>${patternDef(k + "z", "flores", "#fbf8f2", wall.d)}</defs><rect y="128" width="360" height="49" fill="url(#${k}z)"/><path d="M0 128 H360" stroke="${wall.d}" stroke-width="3"/>`
     : `<rect y="128" width="360" height="48" fill="${wall.d}" opacity=".55"/>${[30, 90, 150, 210, 270, 330].map(x => `<rect x="${x - 24}" y="135" width="48" height="34" rx="2" fill="none" stroke="${INK}" stroke-width="1" opacity=".18"/>`).join("")}`;
-  const patient = opts.patient ? `${SH(263, 150, 44, 4, .14)}<g class="${opts.mood === "happy" ? "hop" : opts.mood === "sad" ? "droop" : "idle"}" style="transform-origin:263px 160px"><g transform="translate(206 56) scale(1.08)">${animalSVG(opts.patient.species, opts.patient.name, opts.mood || "neutral")}</g></g>` : "";
+  /* altura de la superficie de cada camilla: el paciente se sienta encima, sobre la toalla */
+  const TOP = { cojin: 138, t_amor: 138, acolchada: 142, hidraulica: 144, t_laca: 144, t_diner: 144, madera: 146, rustica: 146, t_navidad: 146, t_halloween: 146 }[eq.table] || 148;
+  const PS = .8, py = TOP - 2 - 101 * PS, px = 263 - 50 * PS;
+  const patient = opts.patient ? `${SH(263, TOP - 2, 30, 3, .16)}<g class="${opts.mood === "happy" ? "hop" : opts.mood === "sad" ? "droop" : "idle"}" style="transform-origin:263px ${TOP}px"><g transform="translate(${px} ${py.toFixed(1)}) scale(${PS})">${animalSVG(opts.patient.species, opts.patient.name, opts.mood || "neutral")}</g></g>` : "";
   const table = (TABLES[eq.table] || TABLES.metal)();
   const towelC = TOWEL[eq.table] || "#f2d6cd";
-  const towel = opts.patient ? `<path d="M222 ${eq.table === "cojin" || eq.table === "t_amor" ? 140 : 147} q6 -6 20 -4 h44 q12 -2 18 4 v4 h-82Z" fill="${towelC}" ${S1}/>` : `<path d="M226 147 q8 -10 22 -4 q12 -6 22 2 q10 -2 14 2" fill="${towelC}" ${S}/>`;
+  const towel = opts.patient ? `<path d="M226 ${TOP - 1} q6 -6 18 -4 h38 q10 -2 16 4 v4 h-72Z" fill="${towelC}" ${S1}/>` : `<path d="M226 147 q8 -10 22 -4 q12 -6 22 2 q10 -2 14 2" fill="${towelC}" ${S}/>`;
   return `<svg class="scene" viewBox="${opts.viewBox || "0 0 360 240"}" role="img" aria-label="Tu clínica" preserveAspectRatio="xMidYMid meet">
     <defs>${defs}</defs>
     <rect width="360" height="177" fill="${wallFill}"/>${wainscot}

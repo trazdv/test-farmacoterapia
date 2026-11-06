@@ -171,7 +171,7 @@ const CONSULTAS = [
      "Todos por igual: la somnolencia depende de la dosis, no de la generación del antihistamínico."],
   why:"Los antiH1 de 1ª generación atraviesan la BHE (sedación) y son poco selectivos (efectos anticolinérgicos). Los de 2ª generación penetran poco en el SNC y son más selectivos.",q:22}]},
 
-{t:2,sp:"dog",pet:"Kira",owner:"Diego",intro:"Kira es una bulldog francesa con dermatitis atópica que toma un antihistamínico de segunda generación. El dermatólogo le acaba de recetar ketoconazol para unos hongos.",steps:[
+{t:2,sp:"cat",pet:"Kira",owner:"Diego",intro:"Kira es una gata persa con dermatitis alérgica que toma un antihistamínico de segunda generación. El dermatólogo le acaba de recetar ketoconazol para unos hongos.",steps:[
  {ask:"¿Hay algún problema si los toma juntos?",
   o:["Puede haberlo: el ketoconazol frena el CYP3A4, por donde se eliminan varios de ellos; con alguno hay arritmias.",
      "Ninguno: los de segunda generación se eliminan sin metabolizar por el riñón, así que no interaccionan con él.",
@@ -185,7 +185,7 @@ const CONSULTAS = [
      "Solo en los brotes: si se dan seguidos, los receptores H1 se desensibilizan en pocos días."],
   why:"Los antiH1 de 2ª generación tienen una vida media prolongada, alta unión a proteínas y, a menudo, metabolitos activos (p. ej. loratadina → desloratadina). Por eso se dan una vez al día.",q:9}]},
 
-{t:2,sp:"dog",pet:"Lola",owner:"Isabel",intro:"Lola tiene una enfermedad renal y vomita por una gastritis urémica.",steps:[
+{t:2,sp:"cat",pet:"Lola",owner:"Isabel",intro:"Lola tiene una enfermedad renal y vomita por una gastritis urémica.",steps:[
  {ask:"¿Qué le podemos dar para el estómago?",
   o:["Un antiH2 como la famotidina: bloquea los receptores H2 del estómago y reduce el ácido.",
      "Un antiH1 como la difenhidramina: frena la histamina del estómago y además le quita las náuseas.",
@@ -199,7 +199,7 @@ const CONSULTAS = [
      "Mejor no: la cimetidina pasa al cerebro y da mucho sueño, como los antiH1 de primera generación."],
   why:"La cimetidina inhibe el sistema microsomal hepático (P450): produce interacciones, tiene efecto antiandrogénico y aumenta la prolactina. Famotidina, ranitidina y nizatidina apenas tienen estos efectos.",q:55}]},
 
-{t:2,sp:"dog",pet:"Chispa",owner:"Elena",intro:"Chispa es una perra en tratamiento con quimioterapia. Desde la última sesión vomita muchísimo.",steps:[
+{t:2,sp:"cat",pet:"Chispa",owner:"Elena",intro:"Chispa es una gata en tratamiento con quimioterapia. Desde la última sesión vomita muchísimo.",steps:[
  {ask:"¿Qué podemos hacer con los vómitos?",
   o:["Ondansetrón: bloquea los receptores 5-HT3 de la zona del vómito y del intestino; es de lo más eficaz con la quimio.",
      "Cisaprida: estimula los receptores 5-HT4 del estómago y es la de elección en los vómitos por quimioterapia.",
@@ -213,7 +213,7 @@ const CONSULTAS = [
      "No: para el mareo se usa un antiH2 como la famotidina, que reduce el ácido que provoca las náuseas."],
   why:"En la cinetosis participan vías vestibulares (histamina H1 y acetilcolina), por eso los setrones son poco eficaces. Los antiH1 de 1ª generación sí son útiles en la cinetosis.",q:11}]},
 
-{t:2,sp:"dog",pet:"Pipo",owner:"Rafa",intro:"Pipo empezó hace unos días con metoclopramida por unos vómitos. Su dueño vuelve preocupado.",steps:[
+{t:2,sp:"cat",pet:"Pipo",owner:"Rafa",intro:"Pipo empezó hace unos días con metoclopramida por unos vómitos. Su dueño vuelve preocupado.",steps:[
  {ask:"Desde que toma la metoclopramida tiene la tripa suelta y está como atontado. ¿Es por eso?",
   o:["Puede ser: acelera el intestino (diarrea) y, al bloquear receptores D2 en el cerebro, da somnolencia.",
      "Puede ser: bloquea receptores H1 en el cerebro, que da sueño, y relaja el intestino, que provoca la diarrea.",
@@ -429,7 +429,7 @@ const CONSULTAS = [
      "El exceso de aldosterona le hace perder potasio, y eso debilita los músculos del abdomen."],
   why:"El cortisol tiene efecto catabólico proteico (atrofia muscular), redistribuye la grasa y debilita la piel y los tejidos de sostén: de ahí el abdomen péndulo y la debilidad.",q:66}]},
 
-{t:4,sp:"dog",pet:"Bella",owner:"Nuria",intro:"Bella tiene una dermatitis atópica con un brote muy intenso. Le has recetado un corticoide.",steps:[
+{t:4,sp:"cat",pet:"Bella",owner:"Nuria",intro:"Bella tiene una dermatitis atópica con un brote muy intenso. Le has recetado un corticoide.",steps:[
  {ask:"¿Cómo consigue el corticoide quitarle el picor tan rápido?",
   o:["Se une a su receptor dentro de la célula y apaga los genes de las sustancias inflamatorias.",
      "Bloquea los receptores H1 de la piel, como un antihistamínico muy potente, y por eso el picor cede tan rápido.",
@@ -500,17 +500,17 @@ const CONSULTAS = [
      "Son iguales siempre; si el prospecto da dos cifras, es por la diferencia entre machos y hembras."],
   why:"El tiempo de espera se fija para cada medicamento, especie y producto (carne, leche, huevos, miel) según la cinética de eliminación del fármaco en cada tejido."}]},
 
-{t:1,sp:"dog",pet:"Pirata",owner:"Lourdes",intro:"Pirata es un perro de 14 años con insuficiencia renal crónica. Necesita un antibiótico por una infección de orina.",steps:[
+{t:1,sp:"cat",pet:"Pirata",owner:"Lourdes",intro:"Pirata es un gato de 14 años con insuficiencia renal crónica. Necesita un antibiótico por una infección de orina.",steps:[
  {ask:"¿Por qué hay que ajustarle la dosis por sus riñones?",
   o:["Porque muchos fármacos se eliminan por el riñón; si funciona mal, se acumulan y pueden ser tóxicos.",
      "Porque con el riñón enfermo los fármacos se absorben peor en el intestino y hace falta más dosis.",
      "Porque el riñón es donde se activan los fármacos; si falla, no hacen efecto y hay que duplicarlos.",
      "No hace falta: la dosis depende solo del peso del animal, no del estado de sus órganos."],
   why:"La posología se individualiza según la especie, la edad, el peso y la función renal y hepática. En la insuficiencia renal se reduce la dosis o se alarga el intervalo de los fármacos de eliminación renal."},
- {ask:"¿Le puedo dar el jarabe que le sobró a mi otro perro, que es igual de grande?",
+ {ask:"¿Le puedo dar el jarabe que le sobró a mi otro gato, que pesa lo mismo?",
   o:["Mejor no: el fármaco y la dosis dependen de su diagnóstico, su edad y su riñón, no solo del tamaño.",
      "Sí: si pesan lo mismo, la dosis es la misma, y en un jarabe el riñón no llega a influir.",
-     "Sí, pero a mitad de dosis, que es lo que se hace siempre con los perros mayores de diez años.",
+     "Sí, pero a mitad de dosis, que es lo que se hace siempre con los gatos mayores de diez años.",
      "Sí, porque los jarabes se eliminan por el hígado y nunca por el riñón, así que no hay riesgo."],
   why:"Cada tratamiento se prescribe para un paciente concreto: no se extrapola entre individuos sin tener en cuenta el diagnóstico, la edad y la función de los órganos de eliminación."}]},
 
@@ -696,7 +696,7 @@ const CONSULTAS = [
      "No, siempre que lo combinemos con un antihistamínico, que anula sus efectos secundarios."],
   why:"La vía local reduce el riesgo sistémico pero no lo elimina: parte del fármaco se absorbe, sobre todo a dosis altas o en tratamientos prolongados.",q:33}]},
 
-{t:4,sp:"dog",pet:"Zar",owner:"Ernesto",intro:"Zar lleva varios meses con corticoides por una enfermedad inmunomediada. En la analítica tiene la glucosa alta.",steps:[
+{t:4,sp:"cat",pet:"Zar",owner:"Ernesto",intro:"Zar lleva varios meses con corticoides por una enfermedad inmunomediada. En la analítica tiene la glucosa alta.",steps:[
  {ask:"¿Por qué le ha subido el azúcar?",
   o:["Estimulan la fabricación de glucosa en el hígado y dificultan la acción de la insulina.",
      "Los corticoides destruyen el páncreas y por eso deja de producir insulina para siempre.",
