@@ -151,7 +151,7 @@ function renderConsulta() {
       </div>
       <div class="g-paper">
         <p class="g-hand">Cómo funciona</p>
-        <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 5 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar (+1 cada 3 minutos).</p>
+        <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 3 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar (+1 cada minuto).</p>
         <p>Cada cliente te hará varias preguntas sobre su animal. Si respondes bien, cobras y ganas reputación; si te equivocas, la pierdes. Si respondes bien a todo, te deja propina. Cuanta más reputación, más clientes y mejor pagados.</p>
         <p class="muted small">Preguntas respondidas: <b>${G.served}</b> · Aciertos: <b>${G.okTotal}</b> · Mejor racha: <b>${G.best}</b></p>
         <p class="label" style="margin-top:12px">Casos de los temas</p>

@@ -102,7 +102,7 @@ function renderSetup() {
       <label class="toggle"><button class="switch" id="shq" role="switch" aria-checked="${cfg.shuffleQ}" aria-label="Orden aleatorio"></button><span>Preguntas en orden aleatorio</span></label>
       <button class="btn primary block" id="start" ${n ? "" : "disabled"}>${n ? `Empezar test · ${n} preguntas` : "Elige al menos un tema"}</button>
     </div>
-    <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 5 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>`;
+    <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 3 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>`;
   $$("[data-topic]").forEach(b => b.onclick = () => {
     const t = +b.dataset.topic; cfg.topics = cfg.topics.includes(t) ? cfg.topics.filter(x => x !== t) : [...cfg.topics, t];
     store.set("ft_cfg", cfg); renderSetup();
@@ -167,10 +167,10 @@ function finish() {
   quiz.done = true;
   quiz.items.forEach((it, i) => Stats.record(it.id, quiz.answers[i] === QUESTIONS[it.id].a));
   store.del("ft_test");
-  // energía para la consulta: +1 por cada 5 respondidas, +1 extra si nota >= 7 (con 10 o más preguntas)
+  // energía para la consulta: +1 por cada 3 respondidas, +1 extra si nota >= 7 (con 10 o más preguntas)
   const answered = quiz.answers.filter(a => a != null).length;
   const okN = quiz.items.filter((it, i) => quiz.answers[i] === QUESTIONS[it.id].a).length;
-  let e = Math.floor(answered / 5) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
+  let e = Math.floor(answered / 3) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
   quiz.energy = e ? addEnergy(e, "por el test") : 0;
   if (okN / quiz.items.length >= 0.5) setTimeout(() => confetti(okN === quiz.items.length ? 120 : 60), 350);
   reviewTab = "bad";
@@ -324,7 +324,7 @@ function renderStudy() {
 
 /* ============ energía por estudiar ============ */
 /* cuenta el tiempo con la pestaña Estudiar (o unos apuntes) abiertos, la app visible y actividad reciente */
-const STUDY_SECS = 180;
+const STUDY_SECS = 60;
 let studyAcc = store.get("ft_studyacc", 0), lastInteract = Date.now(), infoOpen = false;
 ["scroll", "touchstart", "pointerdown", "keydown", "wheel"].forEach(ev => window.addEventListener(ev, () => { lastInteract = Date.now(); }, { passive: true, capture: true }));
 function isStudying() {
