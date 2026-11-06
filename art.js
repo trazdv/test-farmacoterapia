@@ -246,9 +246,13 @@ function animalSVG(species, name, mood) {
       `<path d="M29 32 C17 34 16 55 23 63 C31 61 33 48 34 38 Z" fill="${c.e}" ${S}/><path d="M71 32 C83 34 84 55 77 63 C69 61 67 48 66 38 Z" fill="${c.e}" ${S}/>`,
       `<path d="M30 36 L27 12 L45 27 Z" fill="${c.f}" ${S}/><path d="M32 31 L31 18 L41 27Z" fill="#e8a99a" opacity=".8"/><path d="M70 36 L73 12 L55 27 Z" fill="${c.f}" ${S}/><path d="M68 31 L69 18 L59 27Z" fill="#e8a99a" opacity=".8"/>`,
       `<path d="M30 37 L29 17 Q36 13 41 20 L46 27 Z" fill="${c.f}" ${S}/><path d="M29 17 Q36 13 41 20 L34 25Z" fill="${c.e}" ${S1}/><path d="M70 37 L71 17 Q64 13 59 20 L54 27 Z" fill="${c.f}" ${S}/><path d="M71 17 Q64 13 59 20 L66 25Z" fill="${c.e}" ${S1}/>`][c.ear || 0];
-    g += `<ellipse cx="50" cy="84" rx="27" ry="17" fill="${c.f}" ${S}/><ellipse cx="50" cy="91" rx="20" ry="7" fill="${c.e}" opacity=".18"/><ellipse cx="50" cy="80" rx="11" ry="10" fill="${c.m}" opacity=".9"/>
+    g += `<g class="${mood === "sad" ? "" : "wag"}" style="transform-box:fill-box;transform-origin:0% 100%"><path d="M71 88 C82 85 88 76 85 66" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M71 88 C82 85 88 76 85 66" stroke="${c.f}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="85" cy="66.5" r="2" fill="${c.m}"/></g>
+      <ellipse cx="50" cy="84" rx="27" ry="17" fill="${c.f}" ${S}/><ellipse cx="50" cy="91" rx="20" ry="7" fill="${c.e}" opacity=".18"/><path d="M38 72 C40 86 60 86 62 72 C56 76 44 76 38 72Z" fill="${c.m}"/>
+      <path d="M43 79 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5" stroke="${c.m}" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M27 88 C25 94 28 98 33 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/><path d="M73 88 C75 94 72 98 67 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/>
       <ellipse cx="40" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/><ellipse cx="60" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/>${toes(40, 97)}${toes(60, 97)}
       ${c.ear === 0 ? "" : ears}<ellipse cx="50" cy="46" rx="23" ry="21" fill="${c.f}" ${S}/><path d="M47 26 q3 -6 6 0" ${S1}/>
+      <path d="M28 50 l-2.5 3 l3 1 l-2 3M72 50 l2.5 3 l-3 1 l2 3" stroke="${c.f}" stroke-width="2.4" fill="none" stroke-linejoin="round"/><path d="M28 50 l-2.5 3 l3 1 l-2 3M72 50 l2.5 3 l-3 1 l2 3" ${S1}/>
       ${c.patch ? `<path d="M56 33 C64 30 70 36 68 44 C62 47 56 43 56 33Z" fill="${c.e}"/>` : ""}${c.brow ? `<ellipse cx="41" cy="37" rx="3" ry="2" fill="${c.m}"/><ellipse cx="59" cy="37" rx="3" ry="2" fill="${c.m}"/>` : ""}
       <ellipse cx="50" cy="57" rx="11.5" ry="8.5" fill="${c.m}" ${S}/>${c.ear === 0 ? ears : ""}
       <path d="M33 66 Q50 74 67 66" stroke="${col}" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="72.5" r="3.2" fill="#f0c25e" stroke="${INK}" stroke-width="1.1"/>
@@ -595,16 +599,25 @@ const DECOR = {
       <ellipse cx="58" cy="222" rx="7" ry="3" fill="#f6e7d2" ${S1}/>
       <path d="M24 218 C24 230 52 231 62 225" stroke="${INK}" stroke-width="8.5" fill="none" stroke-linecap="round"/><path d="M24 218 C24 230 52 231 62 225" stroke="#d89a5b" stroke-width="5.5" fill="none" stroke-linecap="round"/><path d="M40 228 v-3M48 228 v-3" stroke="#b8733a" stroke-width="2"/>
       </g><text class="zz" x="78" y="200" font-size="8" fill="${INK}" font-family="Georgia,serif" font-style="italic">z</text>`,
-    perro: () => `${SH(50, 233, 42, 3, .14)}<ellipse cx="50" cy="225" rx="44" ry="13" fill="#5f84a8" ${S}/><ellipse cx="50" cy="222" rx="36" ry="8.5" fill="#a8c4da"/>
-      <g class="breathe" style="transform-origin:50px 222px">
-      <path d="M16 221 C14 208 30 202 46 203 C62 204 72 207 74 215 C74 222 30 227 16 221Z" fill="#c98f55" ${S}/>
-      <path d="M26 207 C36 202 52 202 60 205 C54 211 36 212 26 207Z" fill="#3e3230"/>
-      <path d="M18 218 C26 223 48 224 66 220" stroke="#fbf7ef" stroke-width="5" fill="none" stroke-linecap="round"/>
-      <path d="M16 214 C8 210 8 204 12 201" stroke="${INK}" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M16 214 C8 210 8 204 12 201" stroke="#c98f55" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="12" cy="201" r="1.8" fill="#fbf7ef"/>
-      <ellipse cx="78" cy="214" rx="11" ry="8" fill="#c98f55" ${S}/><path d="M76 207 q4 4 6 9" stroke="#fbf7ef" stroke-width="2.4" fill="none"/>
-      <ellipse cx="87" cy="218" rx="6.5" ry="4.2" fill="#f3e3cc" ${S1}/><ellipse cx="92" cy="216.5" rx="2" ry="1.5" fill="${INK}"/>
-      <path d="M73 208 C66 210 66 223 72 225 C77 223 78 215 77 210Z" fill="#7a4a2c" ${S1}/><path d="M79 211.5 q2 1.4 4 0" ${S1}/>
-      <ellipse cx="85" cy="225" rx="8" ry="2.8" fill="#fbf7ef" ${S1}/><ellipse cx="74" cy="226.5" rx="7" ry="2.4" fill="#fbf7ef" ${S1}/>
+    perro: () => `${SH(50, 234, 44, 3, .14)}
+      <ellipse cx="50" cy="226" rx="46" ry="12.5" fill="#5f84a8" ${S}/><ellipse cx="50" cy="223.5" rx="38" ry="8" fill="#a8c4da"/><path d="M8 226 Q50 240 92 226" stroke="#86a6c4" stroke-width="2" stroke-dasharray="3 3" fill="none"/>
+      <g class="breathe" style="transform-origin:50px 224px">
+      <path class="wag-slow" style="transform-box:fill-box;transform-origin:100% 100%" d="M16 214 C9 212 6 206 9 200" stroke="${INK}" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+      <path class="wag-slow" style="transform-box:fill-box;transform-origin:100% 100%" d="M16 214 C9 212 6 206 9 200" stroke="#c98f55" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M14 222 C12 210 20 202 34 201 C48 200 60 203 68 208 C74 212 76 218 74 224 C60 228 26 229 14 222Z" fill="#c98f55" ${S}/>
+      <path d="M20 207 C28 201 46 200 58 204 C54 209 44 211 34 211 C27 211 22 210 20 207Z" fill="#3e3230"/>
+      <path d="M17 220 C24 225 44 227 58 225" stroke="#a87444" stroke-width="2" fill="none" opacity=".55"/>
+      <path d="M18 215 C18 206 30 205 34 212 C36 219 32 224 24 224 C20 224 18 220 18 215Z" fill="#c98f55" ${S1}/><path d="M23 210 q5 1 7 5" stroke="#a87444" stroke-width="1.4" fill="none"/>
+      <ellipse cx="33" cy="226.5" rx="8" ry="2.6" fill="#fbf7ef" ${S1}/><path d="M37 225.5 v2M39.5 225.8 v2" stroke="${INK}" stroke-width=".7"/>
+      <path d="M48 225 C56 222 66 221 74 222 L74 226.5 C62 228 54 228 48 227Z" fill="#fbf7ef"/>
+      <ellipse cx="84" cy="226.5" rx="9" ry="2.8" fill="#fbf7ef" ${S1}/><ellipse cx="77" cy="228.6" rx="8" ry="2.5" fill="#fbf7ef" ${S1}/><path d="M89 225.5 v2M91 225.8 v2M82 227.6 v2M84.5 227.8 v2" stroke="${INK}" stroke-width=".7"/>
+      <path d="M65 214 C66 205 76 201 83 204 C87 206 89 210 89 213 L95 215 C98 216.5 98 221 95 222 L84 223.5 C75 224.5 66 221 65 214Z" fill="#c98f55" ${S}/>
+      <path d="M86 212.5 C90 212.5 96 214.5 96.5 218 C96.5 221 91 222.5 85 222 Z" fill="#fbf7ef"/><path d="M79 203.5 C81 207 84 210 87 212.5" stroke="#fbf7ef" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="96.5" cy="217" rx="2.2" ry="1.7" fill="${INK}"/><ellipse cx="95.8" cy="216.4" rx=".7" ry=".4" fill="#fff" opacity=".7"/><path d="M96 219 q-3 2.4 -7 1.6" ${S1}/>
+      <path d="M80 210 q2.2 1.6 4.4 0" ${S1}/><path d="M80.5 207.5 q1.6 -.8 3 -.2" stroke="#3e3230" stroke-width="1" fill="none"/>
+      <path class="ear" style="transform-box:fill-box;transform-origin:50% 0%" d="M73 206 C67 207 65 217 69 223 C73 225.5 77.5 221 77.5 214.5 C77.5 210 76 207 73 206Z" fill="#7a4a2c" ${S1}/>
+      <path d="M71 210 q-2 6 0 10" stroke="#5c3620" stroke-width="1" fill="none" opacity=".6"/>
+      <path d="M66 216 q-1 4 1 6" stroke="#c0453a" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="67.6" cy="222.6" r="1.4" fill="#f0c25e"/>
       </g>`,
     conejo: () => `${SH(46, 234, 26, 3, .14)}<g class="breathe" style="transform-origin:46px 232px">
       <path d="M24 232 C18 216 28 200 46 200 C60 200 66 212 64 224 C62 233 30 235 24 232Z" fill="#c9b29a" ${S}/>
@@ -700,8 +713,8 @@ function sceneSVG(opts = {}) {
     ${D("plant")}
     ${SH(263, 207, 66, 5, .14)}${table}${towel}
     ${patient}
-    ${SH(146, 236, 40, 4, .1)}<g class="vet ${opts.vetMood === "happy" ? "cheer" : ""}" style="transform-origin:146px 240px"><g transform="translate(84 88) scale(1.08)">${avatarG(eq, opts.vetMood || "neutral")}</g></g>
     ${D("pet")}
+    ${SH(146, 236, 40, 4, .1)}<g class="vet ${opts.vetMood === "happy" ? "cheer" : ""}" style="transform-origin:146px 240px"><g transform="translate(84 88) scale(1.08)">${avatarG(eq, opts.vetMood || "neutral")}</g></g>
     ${D("ceiling")}
     <rect width="360" height="240" fill="url(#${k}v)" pointer-events="none"/>
   </svg>`;
