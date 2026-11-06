@@ -102,7 +102,9 @@ function renderSetup() {
       <label class="toggle"><button class="switch" id="shq" role="switch" aria-checked="${cfg.shuffleQ}" aria-label="Orden aleatorio"></button><span>Preguntas en orden aleatorio</span></label>
       <button class="btn primary block" id="start" ${n ? "" : "disabled"}>${n ? `Empezar test · ${n} preguntas` : "Elige al menos un tema"}</button>
     </div>
-    <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 3 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>`;
+    <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 3 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>
+    <p class="footer-note"><button class="link" id="xfer">Copia de seguridad · pasar la partida a otro dispositivo</button></p>`;
+  $("#xfer").onclick = openTransfer;
   $$("[data-topic]").forEach(b => b.onclick = () => {
     const t = +b.dataset.topic; cfg.topics = cfg.topics.includes(t) ? cfg.topics.filter(x => x !== t) : [...cfg.topics, t];
     store.set("ft_cfg", cfg); renderSetup();
@@ -409,6 +411,99 @@ function confirmBox(title, text, okLabel, onOk) {
     <div class="row" style="margin-top:16px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">${esc(okLabel)}</button></div>`);
   $("#no").onclick = closeModal; $("#yes").onclick = () => { closeModal(); onOk(); };
 }
+
+/* ============ copia de seguridad: exportar / importar partida ============ */
+const SAVE_KEYS = ["ft_game", "ft_stats", "ft_cstats", "ft_cfg", "ft_studyacc", "ft_test"];
+const toB64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
+const fromB64 = b => Uint8Array.from(atob(b), ch => ch.charCodeAt(0));
+async function exportSave() {
+  const data = { v: 1, t: Date.now(), d: {} };
+  SAVE_KEYS.forEach(k => { try { const v = localStorage.getItem(k); if (v != null) data.d[k] = v; } catch (e) { } });
+  const bytes = new TextEncoder().encode(JSON.stringify(data));
+  if (window.CompressionStream) {
+    const gz = new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new CompressionStream("gzip"))).arrayBuffer());
+    return "FTZ" + toB64(gz);
+  }
+  return "FTJ" + toB64(bytes);
+}
+async function readSave(code) {
+  code = String(code || "").replace(/\s+/g, "");
+  const kind = code.slice(0, 3), body = code.slice(3);
+  if (kind !== "FTZ" && kind !== "FTJ") throw new Error("ese texto no es un código de partida.");
+  let bytes, data;
+  try {
+    bytes = fromB64(body);
+    if (kind === "FTZ") {
+      if (!window.DecompressionStream) throw new Error("este navegador no puede leer el código.");
+      bytes = new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+    }
+    data = JSON.parse(new TextDecoder().decode(bytes));
+  } catch (e) { throw new Error("el código está cortado o tiene algún carácter de más."); }
+  if (!data || data.v !== 1 || typeof data.d !== "object") throw new Error("El código está incompleto o es de otra versión.");
+  return data;
+}
+function saveSummary(d) {
+  const g = (() => { try { return JSON.parse(d.ft_game || "{}"); } catch (e) { return {}; } })();
+  const st = (() => { try { return JSON.parse(d.ft_stats || "{}"); } catch (e) { return {}; } })();
+  const fails = Object.values(st).filter(e => e && e.w > 0).length;
+  return `${COIN}<b>${fmt(g.money || 0)}</b> monedas · día <b>${g.day || 1}</b> · <b>${(g.owned || []).length}</b> objetos · <b>${fails}</b> preguntas falladas`;
+}
+function applySave(data) {
+  SAVE_KEYS.forEach(k => { try { localStorage.removeItem(k); } catch (e) { } });
+  Object.entries(data.d).forEach(([k, v]) => { if (SAVE_KEYS.includes(k)) try { localStorage.setItem(k, v); } catch (e) { } });
+  try { localStorage.setItem("ft_imported", "1"); } catch (e) { }
+  location.reload();
+}
+function openTransfer() {
+  const cur = {}; SAVE_KEYS.forEach(k => { try { const v = localStorage.getItem(k); if (v != null) cur[k] = v; } catch (e) { } });
+  modal(`<h3>Tu partida</h3>
+    <p class="muted small" style="margin-top:0">Tu progreso solo se guarda en este dispositivo. Para llevarlo a otro, exporta aquí y luego importa allí.</p>
+    <div class="xfer">
+      <p class="label">En este dispositivo</p>
+      <p class="xfer-sum">${saveSummary(cur)}</p>
+      <div class="row"><button class="btn primary" id="exCopy" style="flex:1">Copiar código</button><button class="btn" id="exFile" style="flex:1">Descargar archivo</button></div>
+      <textarea id="exOut" class="field code hidden" readonly aria-label="Código de tu partida"></textarea>
+    </div>
+    <div class="xfer">
+      <p class="label">Traer una partida de otro dispositivo</p>
+      <textarea id="imIn" class="field code" placeholder="Pega aquí el código de tu partida" aria-label="Código para importar"></textarea>
+      <div class="row" style="margin-top:10px"><button class="btn" id="imFileBtn" style="flex:1">Cargar archivo</button><button class="btn primary" id="imGo" style="flex:1">Importar</button></div>
+      <input type="file" id="imFile" accept=".txt,text/plain" hidden>
+      <p class="muted small" id="imMsg" style="margin:8px 0 0">Importar sustituye la partida que hay ahora en este dispositivo.</p>
+    </div>
+    <button class="btn block" style="margin-top:14px" id="close">Cerrar</button>`);
+  $("#close").onclick = closeModal;
+  const showCode = c => { const o = $("#exOut"); o.value = c; o.classList.remove("hidden"); o.focus(); o.select(); };
+  $("#exCopy").onclick = async () => {
+    const c = await exportSave();
+    try { await navigator.clipboard.writeText(c); toast("Código copiado: pégalo en el otro dispositivo"); showCode(c); }
+    catch (e) { showCode(c); toast("Copia el código del recuadro"); }
+  };
+  $("#exFile").onclick = async () => {
+    const c = await exportSave(), a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([c], { type: "text/plain" }));
+    a.download = `partida-farmacotest-${new Date().toISOString().slice(0, 10)}.txt`;
+    document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    toast("Archivo de partida descargado");
+  };
+  $("#imFileBtn").onclick = () => $("#imFile").click();
+  $("#imFile").onchange = async e => { const f = e.target.files[0]; if (f) { $("#imIn").value = (await f.text()).trim(); $("#imGo").click(); } };
+  $("#imGo").onclick = async () => {
+    const msg = $("#imMsg");
+    try {
+      const data = await readSave($("#imIn").value);
+      const sum = saveSummary(data.d);
+      modal(`<h3>¿Importar esta partida?</h3><p class="xfer-sum">${sum}</p>
+        <p class="muted small">Guardada el ${new Date(data.t).toLocaleString("es-ES")}. Sustituirá la partida de este dispositivo.</p>
+        <div class="row" style="margin-top:16px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">Importar</button></div>`);
+      $("#no").onclick = closeModal; $("#yes").onclick = () => applySave(data);
+    } catch (e) {
+      msg.textContent = "No se ha podido leer: " + (e.message || "código no válido") + " Comprueba que lo has copiado entero.";
+      msg.style.color = "var(--bad)";
+    }
+  };
+}
+try { if (localStorage.getItem("ft_imported")) { localStorage.removeItem("ft_imported"); setTimeout(() => celebrate("¡Partida importada!"), 500); } } catch (e) { }
 
 /* ============ teclado ============ */
 document.addEventListener("keydown", e => {

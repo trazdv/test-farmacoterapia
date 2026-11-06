@@ -157,7 +157,9 @@ function renderConsulta() {
         <p class="label" style="margin-top:12px">Casos de los temas</p>
         <div class="chips">${ALL_TOPICS.map(t => `<button class="chip" data-gt="${t}" aria-pressed="${G.topics.includes(t)}">Tema ${t}</button>`).join("")}</div>
       </div>
+      <p class="footer-note"><button class="link" id="xfer">Pasar mi partida a otro dispositivo</button></p>
     </div>`;
+  $("#xfer").onclick = openTransfer;
   if ($("#open")) $("#open").onclick = () => { if (inDay) { gview = "patient"; render(); window.scrollTo(0, 0); } else openDay(); };
   if ($("#gotest")) $("#gotest").onclick = () => setView("test");
   if ($("#gostudy")) $("#gostudy").onclick = () => setView("estudiar");
