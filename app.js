@@ -103,8 +103,14 @@ function renderSetup() {
       <button class="btn primary block" id="start" ${n ? "" : "disabled"}>${n ? `Empezar test · ${n} preguntas` : "Elige al menos un tema"}</button>
     </div>
     <p class="footer-note">Las respuestas cambian de orden en cada pregunta. Cada 3 preguntas respondidas ganas ${BOLT}+1 de energía para la consulta.</p>
-    <p class="footer-note"><button class="link" id="xfer">Copia de seguridad · pasar la partida a otro dispositivo</button></p>`;
+    <p class="footer-note"><button class="link" id="xfer">Copia de seguridad · pasar la partida a otro dispositivo</button></p>
+    <div class="theme-pick">Aspecto:${[["light", "Claro"], ["dark", "Oscuro"], ["auto", "Como el móvil"]].map(([k, l]) => `<button data-th="${k}" aria-pressed="${store.get("ft_theme", "light") === k}">${l}</button>`).join("")}</div>`;
   $("#xfer").onclick = openTransfer;
+  $$("[data-th]").forEach(b => b.onclick = () => {
+    const t = b.dataset.th; store.set("ft_theme", t);
+    if (t === "auto") delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = t;
+    renderSetup();
+  });
   $$("[data-topic]").forEach(b => b.onclick = () => {
     const t = +b.dataset.topic; cfg.topics = cfg.topics.includes(t) ? cfg.topics.filter(x => x !== t) : [...cfg.topics, t];
     store.set("ft_cfg", cfg); renderSetup();
