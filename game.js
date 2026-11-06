@@ -53,10 +53,11 @@ const DEFAULT_GAME = {
   owned: SHOP_ORDER.flatMap(c => SHOP[c].items.filter(i => i.price === 0).map(i => c + ":" + i.id)),
   eq: { hair: "corto", hairColor: "castano", skin: "s2", outfit: "bata", neck: "esteto", eyes: null, head: null, wall: "crema", floor: "tarima", decor: [] },
   day: 1, served: 0, okTotal: 0, streak: 0, best: 0, cur: null,
-  energy: 3, topics: [1, 2, 3, 4, 5], recentCases: []
+  energy: 10, energyStart: true, topics: [1, 2, 3, 4, 5], recentCases: []
 };
 let G = Object.assign({}, DEFAULT_GAME, store.get("ft_game", {}));
 G.eq = Object.assign({}, DEFAULT_GAME.eq, G.eq);
+if (!G.energyStart) { G.energy = Math.max(G.energy, 10); G.energyStart = true; }   // partidas anteriores: energía inicial de 10
 if (G.cur && !G.cur.clients) G.cur = null;   // partida guardada con el formato antiguo
 function saveGame() { store.set("ft_game", G); }
 let gview = "hub";      // hub | patient | shop | summary
