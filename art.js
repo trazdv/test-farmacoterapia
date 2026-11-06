@@ -247,7 +247,7 @@ function animalSVG(species, name, mood) {
       `<path d="M30 36 L27 12 L45 27 Z" fill="${c.f}" ${S}/><path d="M32 31 L31 18 L41 27Z" fill="#e8a99a" opacity=".8"/><path d="M70 36 L73 12 L55 27 Z" fill="${c.f}" ${S}/><path d="M68 31 L69 18 L59 27Z" fill="#e8a99a" opacity=".8"/>`,
       `<path d="M30 37 L29 17 Q36 13 41 20 L46 27 Z" fill="${c.f}" ${S}/><path d="M29 17 Q36 13 41 20 L34 25Z" fill="${c.e}" ${S1}/><path d="M70 37 L71 17 Q64 13 59 20 L54 27 Z" fill="${c.f}" ${S}/><path d="M71 17 Q64 13 59 20 L66 25Z" fill="${c.e}" ${S1}/>`][c.ear || 0];
     g += `<g class="${mood === "sad" ? "" : "wag"}" style="transform-box:fill-box;transform-origin:0% 100%"><path d="M71 88 C82 85 88 76 85 66" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M71 88 C82 85 88 76 85 66" stroke="${c.f}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="85" cy="66.5" r="2" fill="${c.m}"/></g>
-      <ellipse cx="50" cy="84" rx="27" ry="17" fill="${c.f}" ${S}/><ellipse cx="50" cy="91" rx="20" ry="7" fill="${c.e}" opacity=".18"/><path d="M38 72 C40 86 60 86 62 72 C56 76 44 76 38 72Z" fill="${c.m}"/>
+      <ellipse cx="50" cy="84" rx="27" ry="17" fill="${c.f}" ${S}/><path d="M36 58 C34 64 34 70 35 76 L65 76 C66 70 66 64 64 58Z" fill="${c.f}"/><path d="M36 58 C34.5 63 34.3 67 35 70M64 58 C65.5 63 65.7 67 65 70" ${S} fill="none"/><ellipse cx="50" cy="91" rx="20" ry="7" fill="${c.e}" opacity=".18"/><path d="M38 72 C40 86 60 86 62 72 C56 76 44 76 38 72Z" fill="${c.m}"/>
       <path d="M43 79 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5" stroke="${c.m}" stroke-width="2" fill="none" stroke-linejoin="round"/>
       <path d="M27 88 C25 94 28 98 33 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/><path d="M73 88 C75 94 72 98 67 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/>
       <ellipse cx="40" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/><ellipse cx="60" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/>${toes(40, 97)}${toes(60, 97)}
@@ -260,7 +260,7 @@ function animalSVG(species, name, mood) {
   } else if (species === "cat") {
     g += `<path d="M72 92 C92 90 94 70 85 63" stroke="${INK}" stroke-width="9.5" fill="none" stroke-linecap="round"/><path d="M72 92 C92 90 94 70 85 63" stroke="${c.f}" stroke-width="6" fill="none" stroke-linecap="round"/>
       ${c.tabby ? `<path d="M88 80 l4 1M90 72 l4 -1M86 66 l3 -2" stroke="${c.e}" stroke-width="2" stroke-linecap="round"/>` : ""}${c.point ? `<path d="M88 72 C92 68 90 64 85 63" stroke="${c.e}" stroke-width="6" fill="none" stroke-linecap="round"/>` : ""}
-      <ellipse cx="50" cy="84" rx="24" ry="17" fill="${c.f}" ${S}/><ellipse cx="50" cy="91" rx="18" ry="7" fill="${c.e}" opacity=".16"/>
+      <ellipse cx="50" cy="84" rx="24" ry="17" fill="${c.f}" ${S}/><path d="M38 60 C36 66 36 71 37 76 L63 76 C64 71 64 66 62 60Z" fill="${c.f}"/><path d="M38 60 C36.6 64 36.4 67 37 69.5M62 60 C63.4 64 63.6 67 63 69.5" ${S} fill="none"/><ellipse cx="50" cy="91" rx="18" ry="7" fill="${c.e}" opacity=".16"/>
       ${c.bib ? `<path d="M42 70 Q50 86 58 70 Q50 74 42 70Z" fill="#fbf7ef"/>` : ""}${c.tabby ? `<path d="M30 82 q4 -3 8 0M62 82 q4 -3 8 0M32 90 q4 -3 7 0M61 90 q4 -3 7 0" stroke="${c.e}" stroke-width="2" fill="none" stroke-linecap="round"/>` : ""}
       <ellipse cx="41" cy="97" rx="6" ry="4" fill="${c.bib ? "#fbf7ef" : c.f}" ${S}/><ellipse cx="59" cy="97" rx="6" ry="4" fill="${c.bib ? "#fbf7ef" : c.f}" ${S}/>${toes(41, 97)}${toes(59, 97)}
       <path d="M30 40 L32 14 L48 29 Z" fill="${c.point ? c.e : c.f}" ${S}/><path d="M34 33 L35 21 L43 29Z" fill="#f1a7a0"/><path d="M70 40 L68 14 L52 29 Z" fill="${c.point ? c.e : c.f}" ${S}/><path d="M66 33 L65 21 L57 29Z" fill="#f1a7a0"/>
@@ -282,7 +282,7 @@ function animalSVG(species, name, mood) {
       ${eyes(mood, 44.5, 59.5, 38)}${cheeks(41, 63, 47)}
       ${mood === "happy" ? `<path d="M46 65 Q52 70 58 65" ${S} fill="none"/>` : mood === "sad" ? `<path d="M47 67 Q52 64 57 67" ${S} fill="none"/>` : `<path d="M47.5 65.5 Q52 67 56.5 65.5" ${S1}/>`}`;
   } else if (species === "cow") {
-    g += `<ellipse cx="50" cy="87" rx="30" ry="15" fill="#f8f4ec" ${S}/><path d="M30 80 C36 76 42 80 40 88 C34 90 30 86 30 80Z" fill="${c.e}"/><path d="M62 84 C68 80 76 84 72 92 C66 94 62 90 62 84Z" fill="${c.e}"/>
+    g += `<ellipse cx="50" cy="87" rx="30" ry="15" fill="#f8f4ec" ${S}/><path d="M30 80 C36 76 42 80 40 88 C34 90 30 86 30 80Z" fill="${c.e}"/><path d="M62 84 C68 80 76 84 72 92 C66 94 62 90 62 84Z" fill="${c.e}"/><path d="M33 52 C31 60 31 68 33 80 L67 80 C69 68 69 60 67 52Z" fill="#f8f4ec"/><path d="M33.5 58 C32 64 32 70 34 74.5M66.5 58 C68 64 68 70 66 74.5" ${S} fill="none"/>
       <path d="M33 26 C26 22 26 13 30 11 C31 17 34 21 39 23Z" fill="#efe3c4" ${S}/><path d="M67 26 C74 22 74 13 70 11 C69 17 66 21 61 23Z" fill="#efe3c4" ${S}/>
       <path d="M31 36 C20 33 13 38 15 43 C21 46 28 43 32 41Z" fill="#f8f4ec" ${S}/><path d="M69 36 C80 33 87 38 85 43 C79 46 72 43 68 41Z" fill="#f8f4ec" ${S}/><rect x="79" y="40" width="6" height="7" rx="1.2" fill="#f3d36b" stroke="${INK}" stroke-width="1"/>
       <ellipse cx="50" cy="43" rx="21" ry="20" fill="#f8f4ec" ${S}/><path d="M53 25 C62 22 69 29 67 38 C60 41 55 35 53 25Z" fill="${c.e}"/><path d="M44 22 C47 27 53 27 56 22" ${S} fill="${c.e}"/>
@@ -290,7 +290,7 @@ function animalSVG(species, name, mood) {
       ${c.bell ? `<path d="M36 70 Q50 76 64 70" stroke="#7a5638" stroke-width="4" fill="none"/><path d="M46 74 h8 l1.5 8 h-11Z" fill="#f0c25e" ${S1}/>` : ""}
       ${eyes(mood, 41, 59, 42)}${mood === "happy" ? `<path d="M45 64 Q50 68 55 64" ${S} fill="none"/>` : mood === "sad" ? `<path d="M46 66 Q50 63 54 66" ${S} fill="none"/>` : `<path d="M46.5 64.5 Q50 66 53.5 64.5" ${S1}/>`}`;
   } else {
-    g += `<path d="M76 84 c7 -3 9 4 5 6 c-4 2 -6 -4 -1 -6" ${S} fill="none"/><ellipse cx="50" cy="85" rx="28" ry="17" fill="#f4b9b2" ${S}/><ellipse cx="50" cy="92" rx="21" ry="7" fill="#c97f78" opacity=".2"/>
+    g += `<path d="M76 84 c7 -3 9 4 5 6 c-4 2 -6 -4 -1 -6" ${S} fill="none"/><ellipse cx="50" cy="85" rx="28" ry="17" fill="#f4b9b2" ${S}/><path d="M33 56 C31 62 31 68 33 76 L67 76 C69 68 69 62 67 56Z" fill="#f4b9b2"/><path d="M33.5 60 C32.4 64 32.4 68 33.5 71.5M66.5 60 C67.6 64 67.6 68 66.5 71.5" ${S} fill="none"/><ellipse cx="50" cy="92" rx="21" ry="7" fill="#c97f78" opacity=".2"/>
       ${c.spots ? `<path d="M30 80 C34 76 40 79 38 85 C33 87 30 85 30 80Z" fill="#8a6a5e" opacity=".75"/>` : ""}
       <ellipse cx="40" cy="98" rx="6" ry="4" fill="#f4b9b2" ${S}/><ellipse cx="60" cy="98" rx="6" ry="4" fill="#f4b9b2" ${S}/>
       <ellipse cx="50" cy="46" rx="23" ry="21" fill="#f6c3bc" ${S}/>${c.spots ? `<path d="M58 30 C64 28 69 33 67 39 C62 40 58 36 58 30Z" fill="#8a6a5e" opacity=".7"/>` : ""}
