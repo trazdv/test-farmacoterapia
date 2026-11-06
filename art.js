@@ -697,9 +697,9 @@ function sceneSVG(opts = {}) {
     ${night ? "" : `<path d="M24 179 L94 179 L140 238 L54 238Z" fill="url(#${k}l)"/>`}
     ${D("cornerL")}
     ${D("rug")}
+    ${D("plant")}
     ${SH(263, 207, 66, 5, .14)}${table}${towel}
     ${patient}
-    ${D("plant")}
     ${SH(146, 236, 40, 4, .1)}<g class="vet ${opts.vetMood === "happy" ? "cheer" : ""}" style="transform-origin:146px 240px"><g transform="translate(84 88) scale(1.08)">${avatarG(eq, opts.vetMood || "neutral")}</g></g>
     ${D("pet")}
     ${D("ceiling")}
