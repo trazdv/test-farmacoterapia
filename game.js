@@ -1,7 +1,8 @@
 "use strict";
 /* ================= MODO CONSULTA (lógica) — los dibujos y el catálogo están en art.js ================= */
 const DEFAULT_EQ = {
-  hair: "corto", hairColor: "castano", skin: "s2", face: null, outfit: "bata", neck: "esteto", eyes: null, head: null, ears: null,
+  hair: "corto", hairColor: "castano", skin: "s2", eyeShape: "punto", eyeColor: "marron", brows: "finas", nose: "boton", mouth: "sonrisa", blush: "suave", face: null,
+  top: "camisa", bottom: "vaqueros", shoes: "zapatillas", coat: "bata", glasses: null, head: null, neck: "esteto", ears: null, acc: null,
   wall: "crema", floor: "tarima", view: "campo", curtains: "terracota", table: "metal",
   ceiling: null, wallL: null, wallC: null, wallR: null, shelf: null, sill: null, cornerL: null, plant: null, rug: null, pet: null
 };
@@ -21,6 +22,24 @@ G.eq = Object.assign({}, DEFAULT_EQ, G.eq);
     acuario: ["cornerL", "acuario"], trofeo: ["sill", "trofeo"] };
   G.owned = G.owned.map(o => { const [c, id] = o.split(":"); return c === "decor" && MAP[id] ? MAP[id].join(":") : o; });
   if (Array.isArray(G.eq.decor)) { G.eq.decor.forEach(id => { const m = MAP[id]; if (m && !G.eq[m[0]]) G.eq[m[0]] = m[1]; }); delete G.eq.decor; }
+  /* la ropa antigua era una sola prenda ("outfit"): ahora hay parte de arriba, de abajo, calzado y bata */
+  const OUTFIT = id => {
+    if (id === "bata" || id === "bata_botones") return { coat: id, top: "camisa", bottom: "vaqueros" };
+    if (id.startsWith("pijama_")) return { top: id, bottom: "pant_" + id.slice(7), coat: null };
+    if (id === "traje") return { top: "traje", bottom: "pant_traje", coat: null };
+    if (id === "peto") return { coat: "peto", top: "camisa_cuadros" };
+    if (["capa", "vampiro", "haori"].includes(id)) return { coat: id };
+    return { top: id, coat: null };
+  };
+  G.owned = G.owned.flatMap(o => {
+    const [c, id] = o.split(":");
+    if (c === "eyes") return ["glasses:" + id];
+    if (c === "outfit") return Object.entries(OUTFIT(id)).filter(([, v]) => v).map(([cc, v]) => cc + ":" + v);
+    return [o];
+  });
+  if ("outfit" in G.eq) { if (G.eq.outfit) Object.assign(G.eq, OUTFIT(G.eq.outfit)); delete G.eq.outfit; }
+  if ("eyes" in G.eq) { if (G.eq.eyes) G.eq.glasses = G.eq.eyes; delete G.eq.eyes; }
+  G.owned = [...new Set(G.owned)];
   DEFAULT_GAME.owned.forEach(o => { if (!G.owned.includes(o)) G.owned.push(o); });
   for (const c of SHOP_ORDER) if (G.eq[c] && !findItem(c, G.eq[c])) G.eq[c] = DEFAULT_EQ[c];
 })();
@@ -29,7 +48,7 @@ if (G.cur && !G.cur.clients) G.cur = null;   // partida guardada con el formato 
 if (!Array.isArray(G.topics) || !G.topics.length) G.topics = [1, 2, 3, 4, 5];   // siempre al menos un tema
 function saveGame() { store.set("ft_game", G); }
 let gview = "hub";      // hub | patient | shop | summary
-let shopSec = "me", shopCat = "hair";
+let shopSec = "face", shopCat = "hair";
 let lastSummary = null;
 
 /* ---------- energía ---------- */
@@ -75,18 +94,27 @@ const CStats = {
 function ownerEq(name, farm) {
   const h = hash(name + "·dueño");
   const pick = (arr, k) => arr[Math.floor(h / k) % arr.length];
+  const top = pick(farm ? ["camisa_cuadros", "jersey", "sudadera", "chaleco", "cardigan", "vaquera"] : ["jersey", "sudadera", "hawaiana", "traje", "cardigan", "cuello_alto", "camiseta", "marinera", "chaleco", "camisa"], 17);
   return {
-    hair: pick(["corto", "melena", "coleta", "mono", "rizos", "tupe", "rapado", "media", "flequillo", "trenzas", "calvo"], 1),
-    hairColor: pick(["castano", "negro", "rubio", "pelirrojo", "canoso", "miel", "castano", "negro"], 7),
-    skin: pick(["s1", "s2", "s3", "s4", "s2"], 13),
-    face: pick([null, null, "pecas", "barba", null, "bigote", "lunar", null], 29),
-    outfit: pick(farm ? ["peto", "jersey", "sudadera", "peto", "cardigan"] : ["jersey", "sudadera", "hawaiana", "traje", "cardigan", "jersey"], 17),
-    neck: pick([null, null, "bufanda", null, "collar", "panuelo"], 31), eyes: pick([null, null, "gafas", null, "pasta"], 23),
+    hair: pick(["corto", "melena", "coleta", "mono", "rizos", "tupe", "rapado", "media", "flequillo", "trenzas", "calvo", "pixie", "afro", "ondas", "bob_flequillo", "rizada_larga", "ondulado_corto", "mono_alto", "raya_medio", "media_coleta"], 1),
+    hairColor: pick(["castano", "negro", "rubio", "pelirrojo", "canoso", "miel", "castano", "negro", "caoba"], 7),
+    skin: pick(["s1", "s2", "s3", "s4", "s2", "s5", "s6"], 13),
+    eyeShape: pick(["punto", "ovalados", "almendra", "pestanas", "dormilones", "finos", "grandes", "alegres", "punto"], 43),
+    eyeColor: pick(["marron", "marron", "avellana", "verde", "azul", "gris", "marron"], 47),
+    brows: pick(["finas", "gruesas", "arqueadas", "rectas", "pobladas", "finas"], 53),
+    nose: pick(["boton", "punto", "redonda", "respingona", "larga", "triangulo", "boton"], 59),
+    mouth: pick(["sonrisa", "timida", "sonrisa", "abierta", "seria"], 61),
+    blush: pick(["suave", null, "suave", "intenso", null], 67),
+    face: pick([null, null, "pecas", "barba", null, "bigote", "lunar", "perilla", null], 29),
+    top, bottom: top === "traje" ? "pant_traje" : pick(farm ? ["vaqueros", "pana", "chinos"] : ["vaqueros", "chinos", "pana", "falda_larga", "falda_corta", "leggings", "pant_lino"], 19),
+    shoes: pick(farm ? ["botas_verdes", "botas_agua", "botines"] : ["zapatillas", "mocasines", "botines", "manoletinas", "deportivas", "alpargatas"], 71),
+    coat: farm && h % 4 === 0 ? "peto" : h % 9 === 0 ? "chubasquero" : null,
+    neck: pick([null, null, "bufanda", null, "collar", "panuelo"], 31), glasses: pick([null, null, "gafas", null, "pasta", "doradas", "cuadradas", null], 23),
     head: farm && h % 3 === 0 ? "paja" : pick([null, null, null, "boina", null, "diadema", "lana"], 37),
-    ears: pick([null, null, "aros", null, "perlas"], 41)
+    ears: pick([null, null, "aros", null, "perlas"], 41), acc: null
   };
 }
-const faceSVG = (eq, mood) => `<svg class="face" viewBox="22 16 76 76" aria-hidden="true">${avatarG(eq, mood || "neutral")}</svg>`;
+const faceSVG = (eq, mood) => `<svg class="face" viewBox="${AV_CROP.head}" aria-hidden="true">${avatarG(eq, mood || "neutral", { headOnly: true })}</svg>`;
 const REACT_OK = ["¡Ah, vale! Ahora lo entiendo.", "Perfecto, muchas gracias.", "Qué bien explicado, da gusto.", "Entendido, lo haré así.", "Me quedo mucho más tranquila con eso.", "Genial, eso me aclara mucho."];
 const REACT_BAD = ["Mmm… no sé, no me convence.", "¿Seguro? Eso no es lo que me habían dicho…", "Vaya, pues no me ha quedado nada claro.", "Uy… creo que pediré una segunda opinión.", "No sé yo… lo consultaré en otro sitio."];
 function bubble(who, text, eq, cls, mood) {
@@ -300,7 +328,7 @@ function renderSummary() {
         <div class="g-gains big"><span>${COIN}+${s.earned}</span><span>${STAR}${s.drep >= 0 ? "+" : ""}${s.drep}</span></div>
         <ul class="sum-list">${s.list.map(({ K, b }) => {
           const m = b.nOk === b.total ? "happy" : b.nOk * 2 >= b.total ? "neutral" : "sad";
-          return `<li><svg viewBox="0 0 100 100" class="mini-pet">${animalSVG(K.sp, K.pet, m)}</svg><span>${esc(K.pet)} <span class="muted small">· ${esc(K.owner)}</span></span><span class="spacer"></span><span class="tag ${b.nOk === b.total ? "okt" : "bad"}">${b.nOk}/${b.total}</span></li>`;
+          return `<li>${still(() => animalIcon(K.sp, K.pet, m, "mini-pet"))}<span>${esc(K.pet)} <span class="muted small">· ${esc(K.owner)}</span></span><span class="spacer"></span><span class="tag ${b.nOk === b.total ? "okt" : "bad"}">${b.nOk}/${b.total}</span></li>`;
         }).join("")}</ul>
         <p class="muted small">Tus fallos de la consulta aparecen en Estudiar → Última hora.</p>
         <button class="btn primary block" id="home">Volver a la clínica</button>
@@ -314,22 +342,23 @@ let preview = null, shopSet = "navidad";
 const SET_DISCOUNT = .85;
 function renderShop() {
   setFocusMode(false);
-  const sec = SHOP_SECTIONS.find(s => s.id === shopSec);
+  let sec = SHOP_SECTIONS.find(s => s.id === shopSec);
+  if (!sec) { shopSec = "face"; sec = SHOP_SECTIONS[0]; }
   const isSets = shopSec === "sets";
   if (isSets) { if (!PAT_SETS[shopSet]) shopSet = "navidad"; }
   else if (!sec.cats.includes(shopCat)) shopCat = sec.cats[0];
   const owned = (c, id) => G.owned.includes(c + ":" + id);
-  const isRoomCat = c => SHOP_SECTIONS[1].cats.includes(c);
+  const isRoomCat = c => ROOM_CATS.includes(c);
   const thumb = (c, it) => {
-    if (c === "hairColor" || c === "skin") return `<span class="swatch" style="background:${it.c}"></span>`;
+    if (c === "hairColor" || c === "skin" || c === "eyeColor") return `<span class="swatch" style="background:${it.c}"></span>`;
     const eq = Object.assign({}, G.eq, { [c]: it.id });
-    if (isRoomCat(c)) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[c] })}</span>`;
-    return `<span class="thumb">${avatarSVG(eq, "happy", "", AV_FOCUS[c] || "0 0 120 140")}</span>`;
+    if (isRoomCat(c)) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[c], static: true })}</span>`;
+    return `<span class="thumb">${still(() => avatarSVG(eq, "neutral", "", AV_FOCUS[c] || AV_CROP.full))}</span>`;
   };
   const list = isSets ? setItems(shopSet) : SHOP[shopCat].items.map(it => ({ cat: shopCat, it }));
   const showRoom = isSets ? true : isRoomCat(shopCat);
   const stageEq = preview || G.eq;
-  const stage = showRoom ? sceneSVG({ eq: stageEq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(stageEq, "happy")}</div></div>`;
+  const stage = showRoom ? sceneSVG({ eq: stageEq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(stageEq, "neutral")}</div></div>`;
   const missing = isSets ? list.filter(x => !owned(x.cat, x.it.id)) : [];
   const setPrice = Math.round(missing.reduce((a, x) => a + x.it.price, 0) * SET_DISCOUNT);
   $("#app").innerHTML = `
@@ -363,7 +392,7 @@ function renderShop() {
   const restage = (eq, room) => {
     const fr = $(".scene-frame");
     fr.classList.toggle("dressing", !room);
-    fr.innerHTML = room ? sceneSVG({ eq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(eq, "happy")}</div></div>`;
+    fr.innerHTML = room ? sceneSVG({ eq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(eq, "neutral")}</div></div>`;
     fr.classList.remove("pop"); void fr.offsetWidth; fr.classList.add("pop");
   };
   $("#back").onclick = () => { preview = null; gview = "hub"; render(); window.scrollTo(0, 0); };

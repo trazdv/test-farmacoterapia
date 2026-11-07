@@ -4,7 +4,7 @@ const INK = "#4a3426";
 const S = `stroke="${INK}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
 const S1 = `stroke="${INK}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
 const SF = (c) => `fill="${c}" ${S}`;
-const SH = (cx, cy, rx, ry, o = .16) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${INK}" opacity="${o}"/>`;
+const SH = (cx, cy, rx, ry, o = .16) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#gSoft)" opacity="${Math.min(1, o * 3.6).toFixed(2)}"/>`;   /* sombra suave */
 function hash(s) { let h = 0; for (const ch of s) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; }
 let uid = 0;
 const COIN = `<svg class="ico-coin" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#f0c25e" ${S}/><path d="M10 6v8M7.5 8.2c.6-1 4.4-1.2 4.4.6 0 1.8-4.4.9-4.4 2.7 0 1.6 3.9 1.6 4.6.5" ${S1}/></svg>`;
@@ -42,56 +42,155 @@ function patternDef(id, pat, bg, fg) {
 }
 const PAT_SETS = { navidad: "Navidad", halloween: "Halloween", sanvalentin: "San Valentín", asiatico: "Asiático", mediterraneo: "Mediterráneo", americano: "Americano" };
 
+/* ---------------- color y trazo ilustrado ---------------- */
+const hx = h => { h = String(h).replace("#", ""); if (h.length === 3) h = h.split("").map(c => c + c).join(""); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16) || 0); };
+const toHex = a => "#" + a.map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0")).join("");
+const mixC = (a, b, t) => { const A = hx(a), B = hx(b); return toHex(A.map((v, i) => v + (B[i] - v) * t)); };
+const darken = (h, f = .78) => toHex(hx(h).map(v => v * f));
+const lighten = (h, t = .3) => mixC(h, "#ffffff", t);
+/* contorno del color del objeto (más oscuro y cálido), en vez de negro uniforme */
+const lineOf = fill => /^#[0-9a-f]{3,6}$/i.test(fill || "") ? mixC(darken(fill, .5), "#3a2418", .35) : "#5b3b28";
+const LN = (fill, w = 1.8) => `stroke="${lineOf(fill)}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
+let ANIM = true;   /* false en miniaturas o con movimiento reducido */
+/* forma con volumen: color base + sombra (gradiente) + brillo + contorno de color */
+function V(tag, attrs, fill, o = {}) {
+  const w = o.w === undefined ? 1.8 : o.w, x = o.x ? " " + o.x : "";
+  let s = `<${tag} ${attrs} fill="${fill}"${x}/>`;
+  if (o.sh !== 0) s += `<${tag} ${attrs} fill="url(#${o.dir || "gSh"})"${o.sh && o.sh !== 1 ? ` opacity="${o.sh}"` : ""}${x}/>`;
+  if (o.hl !== 0) s += `<${tag} ${attrs} fill="url(#gHl)"${o.hl && o.hl !== 1 ? ` opacity="${o.hl}"` : ""}${x}/>`;
+  if (w) s += `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, w)}${x}/>`;
+  return s;
+}
+const VP = (d, fill, o) => V("path", `d="${d}"`, fill, o);
+const VE = (cx, cy, rx, ry, fill, o) => V("ellipse", `cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"`, fill, o);
+const VC = (cx, cy, r, fill, o) => V("circle", `cx="${cx}" cy="${cy}" r="${r}"`, fill, o);
+const VR = (x, y, w, h, rx, fill, o) => V("rect", `x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"`, fill, o);
+const LINE = (d, c, w = 1.4, extra = "") => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+const SOFT = (cx, cy, rx, ry, o = .5) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#gSoft)" opacity="${o}"/>`;
+/* animaciones SMIL (deformar trazos: llamas, colas, crines) */
+const MORPH = (ds, dur, extra = "") => ANIM ? `<animate attributeName="d" values="${ds.join(";")}" dur="${dur}s" repeatCount="indefinite" calcMode="spline" keySplines="${ds.slice(1).map(() => ".45 0 .55 1").join(";")}" ${extra}/>` : "";
+const ANI = (attr, values, dur, extra = "") => ANIM ? `<animate attributeName="${attr}" values="${values}" dur="${dur}s" repeatCount="indefinite" ${extra}/>` : "";
+const ANIT = (type, values, dur, extra = "") => ANIM ? `<animateTransform attributeName="transform" type="${type}" values="${values}" dur="${dur}s" repeatCount="indefinite" ${extra}/>` : "";
+/* la decoración antigua (contorno negro) pasa a contorno de color con sombreado */
+function paintLegacy(s) {
+  const parts = s.split(/(<defs>[\s\S]*?<\/defs>)/);
+  return parts.map(p => p.startsWith("<defs>") ? p : p.replace(/<(path|rect|ellipse|circle|polygon)\b([^>]*?)\s*\/>/g, (m, tag, attrs) => {
+    if (!attrs.includes('stroke="#4a3426"')) return m;
+    const fm = attrs.match(/\sfill="([^"]+)"/), fill = fm ? fm[1] : null;
+    const bare = attrs.replace(/\s(stroke|stroke-width|stroke-linejoin|stroke-linecap|stroke-dasharray|stroke-opacity|fill)="[^"]*"/g, "");
+    const wm = attrs.match(/stroke-width="([\d.]+)"/), dash = attrs.match(/\sstroke-dasharray="[^"]*"/);
+    const line = `<${tag}${bare} fill="none" stroke="${fill && fill[0] === "#" ? lineOf(fill) : "#6b4a35"}" stroke-width="${wm ? (+wm[1] * .8).toFixed(2) : "1.6"}" stroke-linejoin="round" stroke-linecap="round"${dash ? dash[0] : ""}/>`;
+    if (!fill || fill === "none") return line;
+    return `<${tag}${bare} fill="${fill}"/><${tag}${bare} fill="url(#gSh)"/>${line}`;
+  })).join("");
+}
+
 /* ---------------- catálogo ---------------- */
 const scrubs = (id, name, c, price, pat, pc, set) => ({ id, name, k: "scrubs", c, pat, pc, price, set });
 const cap = (id, name, c, price, pat, pc, set) => ({ id, name, k: "cap", c, pat, pc, price, set });
+const SCRUBS = [
+  ["salvia", "salvia", "#8fae8b"], ["cielo", "cielo", "#86afc9"], ["rosa", "rosa", "#e3a4a8"], ["mostaza", "mostaza", "#d9b45a"], ["granate", "granate", "#a85a5a"],
+  ["lavanda", "lavanda", "#a99acb"], ["menta", "menta", "#8ccbb4"], ["coral", "coral", "#ec9373"], ["marino", "azul marino", "#3f5878"], ["gris", "gris perla", "#a9a6a1"], ["negro", "negro", "#3a3536"],
+  ["huellas", "de huellas", "#86afc9", "huellas", "#fbf7ef"], ["huesos", "de huesos", "#8fae8b", "huesos", "#fbf7ef"], ["estrellas", "de estrellas", "#3f5878", "estrellas", "#f3d36b"],
+  ["lunares", "de lunares", "#d9b45a", "lunares", "#fbf7ef"], ["flores", "de flores", "#e3a4a8", "flores", "#fbf7ef"], ["rayas", "de rayas", "#8ccbb4", "rayas", "#fbf7ef"],
+  ["cuadros", "de cuadros", "#fbf2e8", "cuadros", "#c95b4a"], ["cerezas", "de cerezas", "#fbf2e8", "cerezas", "#c0453a"],
+  ["copos", "de copos", "#b8473a", "copos", "#fbf7ef", "navidad"], ["calabazas", "de calabazas", "#4a3a5c", "calabazas", "#e8873f", "halloween"], ["corazones", "de corazones", "#f0b8c0", "corazones", "#c9607e", "sanvalentin"],
+  ["sakura", "de cerezos", "#f6e4e6", "sakura", "#e9a1b5", "asiatico"], ["olas", "de olas", "#dfeef2", "olas", "#4f7fae", "mediterraneo"], ["cactus", "de cactus", "#efdcb6", "cactus", "#5f8a55", "americano"]];
 const SHOP = {
-  /* --- tu aspecto --- */
+  /* --- tu cara --- */
   hair: { label: "Peinado", items: [
     { id: "corto", name: "Corto", price: 0 }, { id: "rapado", name: "Rapado", price: 0 }, { id: "calvo", name: "Sin pelo", price: 0 },
-    { id: "flequillo", name: "Flequillo de lado", price: 50 }, { id: "media", name: "Media melena", price: 60 }, { id: "melena", name: "Melena", price: 70 },
-    { id: "coleta", name: "Coleta", price: 70 }, { id: "mono", name: "Moño", price: 90 }, { id: "trenzas", name: "Trenzas", price: 120 },
-    { id: "tupe", name: "Tupé", price: 120 }, { id: "rizos", name: "Rizos", price: 140 }, { id: "cresta", name: "Cresta", price: 260 }] },
+    { id: "pixie", name: "Pixie", price: 60 }, { id: "flequillo", name: "Flequillo de lado", price: 50 }, { id: "ondulado_corto", name: "Ondulado corto", price: 70 },
+    { id: "punta", name: "De punta", price: 70 }, { id: "undercut", name: "Rapado lateral", price: 100 }, { id: "media", name: "Media melena", price: 60 },
+    { id: "bob_flequillo", name: "Bob con flequillo", price: 90 }, { id: "melena", name: "Melena", price: 70 }, { id: "raya_medio", name: "Larga con raya", price: 100 },
+    { id: "ondas", name: "Ondas largas", price: 120 }, { id: "coleta", name: "Coleta", price: 70 }, { id: "coletas", name: "Dos coletas", price: 90 },
+    { id: "media_coleta", name: "Media coleta", price: 90 }, { id: "mono", name: "Moño", price: 90 }, { id: "mono_alto", name: "Moño alto", price: 90 },
+    { id: "trenzas", name: "Trenzas", price: 120 }, { id: "trenza_lateral", name: "Trenza lateral", price: 120 }, { id: "tupe", name: "Tupé", price: 120 },
+    { id: "rizos", name: "Rizos", price: 140 }, { id: "rizada_larga", name: "Melena rizada", price: 150 }, { id: "afro", name: "Afro", price: 150 }, { id: "cresta", name: "Cresta", price: 260 }] },
   hairColor: { label: "Color de pelo", items: [
     { id: "castano", name: "Castaño", c: "#6b4430", price: 0 }, { id: "negro", name: "Negro", c: "#2c2524", price: 0 },
     { id: "rubio", name: "Rubio", c: "#e2b65e", price: 40 }, { id: "pelirrojo", name: "Pelirrojo", c: "#c0602f", price: 40 },
-    { id: "miel", name: "Miel", c: "#b8803e", price: 40 }, { id: "canoso", name: "Canoso", c: "#cfc8c0", price: 60 },
+    { id: "miel", name: "Miel", c: "#b8803e", price: 40 }, { id: "caoba", name: "Caoba", c: "#7a3328", price: 50 }, { id: "canoso", name: "Canoso", c: "#cfc8c0", price: 60 },
     { id: "lavanda", name: "Lavanda", c: "#a58bc9", price: 110 }, { id: "menta", name: "Menta", c: "#7fbfa4", price: 110 },
     { id: "chicle", name: "Chicle", c: "#e58aa6", price: 110 }, { id: "azul", name: "Azul tinta", c: "#4f6fae", price: 110 }] },
   skin: { label: "Piel", items: [
-    { id: "s1", name: "Clara", c: "#f6d9c4", price: 0 }, { id: "s2", name: "Media", c: "#e8bd9a", price: 0 },
-    { id: "s3", name: "Tostada", c: "#c48b65", price: 0 }, { id: "s4", name: "Oscura", c: "#8a5a40", price: 0 }] },
-  face: { label: "Cara", opt: true, items: [
-    { id: "pecas", name: "Pecas", price: 30 }, { id: "lunar", name: "Lunar", price: 20 }, { id: "bigote", name: "Bigote", price: 60 },
-    { id: "perilla", name: "Perilla", price: 60 }, { id: "barba", name: "Barba", price: 90 }] },
-  outfit: { label: "Ropa", items: [
-    { id: "bata", name: "Bata blanca", k: "bata", price: 0 }, { id: "bata_botones", name: "Bata con botones de colores", k: "bata", btn: 1, price: 90 },
-    scrubs("pijama_salvia", "Pijama salvia", "#8fae8b", 50), scrubs("pijama_cielo", "Pijama cielo", "#86afc9", 50), scrubs("pijama_rosa", "Pijama rosa", "#e3a4a8", 50),
-    scrubs("pijama_mostaza", "Pijama mostaza", "#d9b45a", 50), scrubs("pijama_granate", "Pijama granate", "#a85a5a", 50), scrubs("pijama_lavanda", "Pijama lavanda", "#a99acb", 50),
-    scrubs("pijama_menta", "Pijama menta", "#8ccbb4", 50), scrubs("pijama_coral", "Pijama coral", "#ec9373", 50), scrubs("pijama_marino", "Pijama azul marino", "#3f5878", 60),
-    scrubs("pijama_gris", "Pijama gris perla", "#a9a6a1", 50), scrubs("pijama_negro", "Pijama negro", "#3a3536", 70),
-    scrubs("pijama_huellas", "Pijama de huellas", "#86afc9", 110, "huellas", "#fbf7ef"), scrubs("pijama_huesos", "Pijama de huesos", "#8fae8b", 110, "huesos", "#fbf7ef"),
-    scrubs("pijama_estrellas", "Pijama de estrellas", "#3f5878", 120, "estrellas", "#f3d36b"), scrubs("pijama_lunares", "Pijama de lunares", "#d9b45a", 110, "lunares", "#fbf7ef"),
-    scrubs("pijama_flores", "Pijama de flores", "#e3a4a8", 120, "flores", "#fbf7ef"), scrubs("pijama_rayas", "Pijama de rayas", "#8ccbb4", 100, "rayas", "#fbf7ef"),
-    scrubs("pijama_cuadros", "Pijama de cuadros", "#fbf2e8", 110, "cuadros", "#c95b4a"), scrubs("pijama_cerezas", "Pijama de cerezas", "#fbf2e8", 130, "cerezas", "#c0453a"),
-    { id: "jersey", name: "Jersey de punto", k: "jersey", c: "#b8604a", price: 140 }, { id: "cardigan", name: "Rebeca lila", k: "cardigan", price: 150 },
-    { id: "chaleco", name: "Chaleco polar", k: "chaleco", price: 150 }, { id: "peto", name: "Peto de granja", k: "peto", price: 160 },
-    { id: "sudadera", name: "Sudadera de huellas", k: "sudadera", price: 180 }, { id: "hawaiana", name: "Camisa de flores", k: "hawaiana", price: 200 },
-    { id: "traje", name: "Traje de domingo", k: "traje", price: 260 }, { id: "capa", name: "Capa de superveterinario", k: "capa", price: 600 },
-    scrubs("pijama_copos", "Pijama de copos", "#b8473a", 130, "copos", "#fbf7ef", "navidad"), { id: "jersey_navidad", name: "Jersey navideño", k: "jersey", c: "#b8473a", motif: "navidad", price: 190, set: "navidad" },
-    scrubs("pijama_calabazas", "Pijama de calabazas", "#4a3a5c", 130, "calabazas", "#e8873f", "halloween"), { id: "vampiro", name: "Capa de vampiro", k: "vampiro", price: 220, set: "halloween" },
-    scrubs("pijama_corazones", "Pijama de corazones", "#f0b8c0", 130, "corazones", "#c9607e", "sanvalentin"), { id: "jersey_amor", name: "Jersey de corazones", k: "jersey", c: "#e58aa6", motif: "corazones", price: 180, set: "sanvalentin" },
-    scrubs("pijama_sakura", "Pijama de cerezos", "#f6e4e6", 130, "sakura", "#e9a1b5", "asiatico"), { id: "haori", name: "Chaqueta haori", k: "haori", price: 230, set: "asiatico" },
-    scrubs("pijama_olas", "Pijama de olas", "#dfeef2", 130, "olas", "#4f7fae", "mediterraneo"), { id: "marinera", name: "Camiseta marinera", k: "marinera", price: 150, set: "mediterraneo" },
-    scrubs("pijama_cactus", "Pijama de cactus", "#efdcb6", 130, "cactus", "#5f8a55", "americano"), { id: "vaquera", name: "Camisa vaquera", k: "vaquera", price: 170, set: "americano" }] },
-  neck: { label: "Cuello", opt: true, items: [
-    { id: "esteto", name: "Fonendo", price: 0 }, { id: "panuelo", name: "Pañuelo rojo", price: 50 }, { id: "collar", name: "Collar de cuentas", price: 70 },
-    { id: "pajarita", name: "Pajarita", price: 80 }, { id: "bufanda", name: "Bufanda verde", price: 110 },
-    { id: "bufanda_navidad", name: "Bufanda de rayas", price: 110, set: "navidad" }, { id: "collar_corazones", name: "Collar de corazones", price: 90, set: "sanvalentin" },
-    { id: "lunares", name: "Pañuelo de lunares", price: 70, set: "mediterraneo" }, { id: "bandana", name: "Bandana vaquera", price: 70, set: "americano" }] },
-  eyes: { label: "Gafas", opt: true, items: [
-    { id: "gafas", name: "Gafas redondas", price: 60 }, { id: "pasta", name: "Gafas de pasta", price: 80 },
-    { id: "gafas_sol", name: "Gafas de sol", price: 110 }, { id: "gafas_corazon", name: "Gafas corazón", price: 160, set: "sanvalentin" }] },
+    { id: "s1", name: "Clara", c: "#f6d9c4", price: 0 }, { id: "s6", name: "Clara rosada", c: "#f3cdbc", price: 0 }, { id: "s2", name: "Media", c: "#e8bd9a", price: 0 },
+    { id: "s3", name: "Tostada", c: "#c48b65", price: 0 }, { id: "s4", name: "Oscura", c: "#8a5a40", price: 0 }, { id: "s5", name: "Muy oscura", c: "#5e3a28", price: 0 }] },
+  eyeShape: { label: "Ojos", items: [
+    { id: "punto", name: "Puntito", price: 0 }, { id: "ovalados", name: "Ovalados", price: 40 }, { id: "almendra", name: "Almendrados", price: 60 },
+    { id: "pestanas", name: "Con pestañas", price: 60 }, { id: "dormilones", name: "Dormilones", price: 50 }, { id: "finos", name: "Finos", price: 50 },
+    { id: "grandes", name: "Grandes y brillantes", price: 80 }, { id: "alegres", name: "Siempre sonrientes", price: 60 }, { id: "estrellas", name: "Estrellados", price: 120 }] },
+  eyeColor: { label: "Color de ojos", items: [
+    { id: "marron", name: "Marrón", c: "#5a3a26", price: 0 }, { id: "avellana", name: "Avellana", c: "#8a6a3a", price: 30 }, { id: "verde", name: "Verde", c: "#5f8a55", price: 50 },
+    { id: "azul", name: "Azul", c: "#4f7fae", price: 50 }, { id: "gris", name: "Gris", c: "#7a8a96", price: 50 }, { id: "ambar", name: "Ámbar", c: "#c98a2a", price: 70 },
+    { id: "violeta", name: "Violeta", c: "#8a5ab4", price: 110 }, { id: "rojo", name: "Rojo vampiro", c: "#b8333a", price: 110, set: "halloween" }] },
+  brows: { label: "Cejas", items: [
+    { id: "finas", name: "Finas", price: 0 }, { id: "gruesas", name: "Gruesas", price: 20 }, { id: "arqueadas", name: "Arqueadas", price: 30 },
+    { id: "rectas", name: "Rectas", price: 20 }, { id: "pobladas", name: "Pobladas", price: 40 }, { id: "puntitos", name: "Puntitos", price: 40 }] },
+  nose: { label: "Nariz", items: [
+    { id: "boton", name: "Botón", price: 0 }, { id: "punto", name: "Puntito", price: 20 }, { id: "redonda", name: "Redondita", price: 30 },
+    { id: "respingona", name: "Respingona", price: 30 }, { id: "larga", name: "Larga", price: 30 }, { id: "triangulo", name: "Triangular", price: 30 }] },
+  mouth: { label: "Boca", items: [
+    { id: "sonrisa", name: "Sonrisa", price: 0 }, { id: "timida", name: "Tímida", price: 20 }, { id: "seria", name: "Seria", price: 20 }, { id: "abierta", name: "Muy contenta", price: 30 },
+    { id: "gatuna", name: "Gatuna", price: 50 }, { id: "dientes", name: "Con dientes", price: 40 }, { id: "lengua", name: "Lengua fuera", price: 50 },
+    { id: "sorpresa", name: "Sorpresa", price: 40 }, { id: "labios", name: "Labios pintados", price: 60, set: "sanvalentin" }] },
+  blush: { label: "Rubor", opt: true, items: [
+    { id: "suave", name: "Suave", price: 0 }, { id: "intenso", name: "Intenso", price: 30 }, { id: "rayitas", name: "Rayitas", price: 40 }, { id: "corazones", name: "Corazones", price: 60, set: "sanvalentin" }] },
+  face: { label: "Detalles", opt: true, items: [
+    { id: "pecas", name: "Pecas", price: 30 }, { id: "lunar", name: "Lunar", price: 20 }, { id: "tirita", name: "Tirita", price: 40 }, { id: "pegatina", name: "Pegatina de estrella", price: 50 },
+    { id: "bigote", name: "Bigote", price: 60 }, { id: "perilla", name: "Perilla", price: 60 }, { id: "barba", name: "Barba", price: 90 }] },
+  /* --- tu ropa --- */
+  top: { label: "Arriba", items: [
+    { id: "camisa", name: "Camisa celeste", k: "shirt", c: "#a9c7d9", price: 0 }, { id: "camiseta", name: "Camiseta blanca", k: "tee", c: "#fbf8f2", price: 0 },
+    ...SCRUBS.map(([id, nm, c, pat, pc, set]) => scrubs("pijama_" + id, "Pijama " + nm, c, pat ? (set ? 130 : 110) : 50, pat, pc, set)),
+    { id: "jersey", name: "Jersey de punto", k: "knit", c: "#b8604a", price: 140 }, { id: "cuello_alto", name: "Jersey de cuello alto", k: "turtle", c: "#4f6fae", price: 130 },
+    { id: "cardigan", name: "Rebeca lila", k: "cardigan", c: "#9c7bb0", price: 150 }, { id: "chaleco", name: "Chaleco polar", k: "vest", c: "#6f9e6b", price: 150 },
+    { id: "sudadera", name: "Sudadera de huellas", k: "hoodie", c: "#e2b45a", price: 180 }, { id: "hawaiana", name: "Camisa de flores", k: "hawaiian", c: "#4f9e94", price: 200 },
+    { id: "camisa_cuadros", name: "Camisa de cuadros", k: "plaid", c: "#c95b4a", price: 110 }, { id: "traje", name: "Americana y corbata", k: "blazer", c: "#3f4a5c", price: 260 },
+    { id: "jersey_navidad", name: "Jersey navideño", k: "knit", c: "#b8473a", motif: "navidad", price: 190, set: "navidad" },
+    { id: "jersey_amor", name: "Jersey de corazones", k: "knit", c: "#e58aa6", motif: "corazones", price: 180, set: "sanvalentin" },
+    { id: "marinera", name: "Camiseta marinera", k: "breton", c: "#fbf8f2", price: 150, set: "mediterraneo" },
+    { id: "vaquera", name: "Camisa vaquera", k: "denim", c: "#6f8fb4", price: 170, set: "americano" }] },
+  bottom: { label: "Abajo", items: [
+    { id: "vaqueros", name: "Vaqueros", c: "#5b7da3", style: "jeans", price: 0 }, { id: "chinos", name: "Pantalón chino", c: "#c9b48e", price: 60 },
+    { id: "pana", name: "Pantalón de pana", c: "#a8724a", style: "cord", price: 90 }, { id: "chandal", name: "Pantalón de chándal", c: "#4f6fae", style: "track", price: 70 },
+    { id: "leggings", name: "Mallas", c: "#3a3536", cut: "slim", price: 70 }, { id: "pant_traje", name: "Pantalón de traje", c: "#3f4a5c", style: "suit", price: 90 },
+    { id: "shorts", name: "Pantalón corto", c: "#c9b48e", cut: "shorts", price: 60 }, { id: "falda_corta", name: "Falda corta", c: "#c95b4a", cut: "skirt", price: 70 },
+    { id: "falda_larga", name: "Falda larga", c: "#8fae8b", cut: "skirtL", price: 90 }, { id: "falda_cuadros", name: "Falda de cuadros", c: "#c0453a", pat: "cuadros", pc: "#2e2630", cut: "skirt", price: 100 },
+    { id: "falda_vaquera", name: "Falda vaquera", c: "#5b7da3", cut: "skirt", style: "denim", price: 80 },
+    ...SCRUBS.map(([id, nm, c, pat, pc, set]) => ({ id: "pant_" + id, name: "Pantalón de pijama " + nm, c, pat, pc, price: pat ? 60 : 40, set })),
+    { id: "pant_escoces", name: "Pantalón escocés", c: "#b8473a", pat: "cuadros", pc: "#2f5a3a", price: 120, set: "navidad" },
+    { id: "pant_rayas_bruja", name: "Pantalón de rayas", c: "#2e2630", pat: "rayas", pc: "#7a5a9c", price: 110, set: "halloween" },
+    { id: "falda_corazones", name: "Falda de corazones", c: "#f0b8c0", pat: "corazones", pc: "#c9607e", cut: "skirt", price: 110, set: "sanvalentin" },
+    { id: "pant_ancho", name: "Pantalón ancho", c: "#3f5878", cut: "wide", price: 110, set: "asiatico" },
+    { id: "pant_lino", name: "Pantalón de lino", c: "#f3ece0", price: 100, set: "mediterraneo" },
+    { id: "vaqueros_cinturon", name: "Vaqueros con cinturón", c: "#5b7da3", style: "belt", price: 110, set: "americano" }] },
+  shoes: { label: "Calzado", items: [
+    { id: "zapatillas", name: "Zapatillas blancas", k: "sneaker", c: "#fbf8f2", acc: "#7fb2cf", price: 0 },
+    ...[["blanco", "#f6f4ef"], ["azul", "#7fb2cf"], ["rosa", "#f29bb0"], ["verde", "#8fcf8a"], ["amarillo", "#f3d36b"], ["morado", "#a98bd8"], ["negro", "#3a3536"], ["naranja", "#f0a35e"]].map(([n, c]) => ({ id: "crocs_" + n, name: "Crocs " + n, k: "croc", c, price: 60 })),
+    { id: "crocs_pins", name: "Crocs con pins", k: "croc", c: "#9fd8e8", pins: 1, price: 140 }, { id: "zuecos", name: "Zuecos sanitarios", k: "clog", price: 80 },
+    { id: "botas_agua", name: "Botas de agua amarillas", k: "boot", c: "#f3d36b", price: 90 }, { id: "botas_verdes", name: "Botas de agua verdes", k: "boot", c: "#5f8a55", price: 90 },
+    { id: "botines", name: "Botines", k: "boot", c: "#8a5a3a", top: 170, lace: 1, price: 100 }, { id: "mocasines", name: "Mocasines", k: "loafer", c: "#8a5636", price: 90 },
+    { id: "manoletinas", name: "Manoletinas", k: "flat", c: "#e14f6c", bow: "#f6c3cf", price: 80 }, { id: "deportivas", name: "Deportivas de colores", k: "sneaker", c: "#7fb2cf", sole: "#f3d36b", acc: "#e14f6c", price: 90 },
+    { id: "zapatillas_reno", name: "Zapatillas de reno", k: "reindeer", price: 120, set: "navidad" }, { id: "zapatos_bruja", name: "Zapatos de bruja", k: "witch", price: 110, set: "halloween" },
+    { id: "merceditas", name: "Merceditas rojas", k: "flat", c: "#c0453a", strap: 1, price: 100, set: "sanvalentin" }, { id: "zapatillas_tela", name: "Zapatillas de tela", k: "cloth", c: "#3f5878", price: 90, set: "asiatico" },
+    { id: "alpargatas", name: "Alpargatas", k: "espadrille", c: "#4f7fae", price: 90, set: "mediterraneo" }, { id: "botas_vaqueras", name: "Botas vaqueras", k: "cowboy", c: "#8a5636", price: 140, set: "americano" }] },
+  coat: { label: "Batas y vestidos", opt: true, items: [
+    { id: "bata", name: "Bata blanca", k: "lab", c: "#fbf8f2", price: 0 }, { id: "bata_botones", name: "Bata con botones de colores", k: "lab", c: "#fbf8f2", btn: 1, price: 90 },
+    { id: "bata_huella", name: "Bata con huella bordada", k: "lab", c: "#fbf8f2", emb: "#e8a65a", price: 110 }, { id: "bata_rosa", name: "Bata rosa", k: "lab", c: "#f6d6dc", price: 80 },
+    { id: "bata_azul", name: "Bata azul", k: "lab", c: "#d6e6f2", price: 80 }, { id: "bata_verde", name: "Bata verde menta", k: "lab", c: "#d8ead2", price: 80 },
+    { id: "peto", name: "Peto de granja", k: "overalls", c: "#5f84a8", price: 160 }, { id: "delantal", name: "Delantal de granja", k: "apron", c: "#8fae8b", price: 90 },
+    { id: "chubasquero", name: "Chubasquero", k: "raincoat", c: "#f3c94a", price: 130 }, { id: "vestido_flores", name: "Vestido de flores", k: "dress", c: "#f6d6dc", pat: "flores", pc: "#e58aa6", price: 150 },
+    { id: "capa", name: "Capa de superveterinario", k: "cape", c: "#c0453a", price: 600 },
+    { id: "abrigo_navidad", name: "Abrigo rojo de invierno", k: "wintercoat", c: "#c0453a", price: 220, set: "navidad" }, { id: "vampiro", name: "Capa de vampiro", k: "vampire", c: "#2e2630", price: 220, set: "halloween" },
+    { id: "vestido_rojo", name: "Vestido rojo", k: "dress", c: "#d4404f", belt: "#f6c3cf", price: 200, set: "sanvalentin" }, { id: "haori", name: "Chaqueta haori", k: "haori", c: "#3f5878", price: 230, set: "asiatico" },
+    { id: "vestido_lunares", name: "Vestido de lunares", k: "dress", c: "#c0453a", pat: "lunares", pc: "#fbf7ef", price: 200, set: "mediterraneo" },
+    { id: "chaleco_vaquero", name: "Chaleco vaquero", k: "denimvest", c: "#6f8fb4", price: 150, set: "americano" }] },
+  glasses: { label: "Gafas", opt: true, items: [
+    { id: "gafas", name: "Redondas", price: 60 }, { id: "doradas", name: "Doradas finas", price: 90 }, { id: "cuadradas", name: "Cuadradas", price: 70 }, { id: "pasta", name: "De pasta", price: 80 },
+    { id: "ojo_gato", name: "Ojo de gato", price: 110 }, { id: "aviador", name: "De aviador", price: 130 }, { id: "lectura", name: "De lectura con cadena", price: 90 },
+    { id: "monoculo", name: "Monóculo", price: 140 }, { id: "proteccion", name: "Gafas de laboratorio", price: 80 }, { id: "gafas_sol", name: "De sol", price: 110 },
+    { id: "fiesta", name: "De fiesta", price: 120 }, { id: "gafas_corazon", name: "De corazón", price: 160, set: "sanvalentin" }] },
   head: { label: "Cabeza", opt: true, items: [
     cap("gorro", "Gorro cielo", "#7fb2cf", 60), cap("gorro_verde", "Gorro verde quirófano", "#7fae8f", 60), cap("gorro_rosa", "Gorro rosa", "#e9a7b4", 60),
     cap("gorro_morado", "Gorro morado", "#9c84c4", 60), cap("gorro_huellas", "Gorro de huellas", "#86afc9", 100, "huellas", "#fbf7ef"),
@@ -106,10 +205,18 @@ const SHOP = {
     cap("gorro_sakura", "Gorro de cerezos", "#f6e4e6", 110, "sakura", "#e9a1b5", "asiatico"), { id: "horquilla", name: "Horquillas con flor", price: 110, set: "asiatico" },
     cap("gorro_olas", "Gorro de olas", "#dfeef2", 110, "olas", "#4f7fae", "mediterraneo"), { id: "pamela", name: "Pamela de paja", price: 150, set: "mediterraneo" },
     cap("gorro_cactus", "Gorro de cactus", "#efdcb6", 110, "cactus", "#5f8a55", "americano"), { id: "vaquero", name: "Sombrero vaquero", price: 170, set: "americano" }] },
+  neck: { label: "Cuello", opt: true, items: [
+    { id: "esteto", name: "Fonendo", price: 0 }, { id: "panuelo", name: "Pañuelo rojo", price: 50 }, { id: "collar", name: "Collar de cuentas", price: 70 },
+    { id: "pajarita", name: "Pajarita", price: 80 }, { id: "bufanda", name: "Bufanda verde", price: 110 },
+    { id: "bufanda_navidad", name: "Bufanda de rayas", price: 110, set: "navidad" }, { id: "collar_corazones", name: "Collar de corazones", price: 90, set: "sanvalentin" },
+    { id: "lunares", name: "Pañuelo de lunares", price: 70, set: "mediterraneo" }, { id: "bandana", name: "Bandana vaquera", price: 70, set: "americano" }] },
   ears: { label: "Pendientes", opt: true, items: [
     { id: "aros", name: "Aros dorados", price: 50 }, { id: "perlas", name: "Perlas", price: 70 }, { id: "estrellas", name: "Estrellitas", price: 90 },
     { id: "cascabeles", name: "Cascabeles", price: 80, set: "navidad" }, { id: "calabacitas", name: "Calabacitas", price: 80, set: "halloween" },
     { id: "corazones", name: "Corazones", price: 80, set: "sanvalentin" }, { id: "borlas", name: "Borlas rojas", price: 80, set: "asiatico" }, { id: "coral", name: "Coral", price: 80, set: "mediterraneo" }] },
+  acc: { label: "Complementos", opt: true, items: [
+    { id: "reloj", name: "Reloj de pulsera", price: 80 }, { id: "credencial", name: "Tarjeta identificativa", price: 70 }, { id: "mascarilla", name: "Mascarilla", price: 60 },
+    { id: "bandolera", name: "Bolso bandolera", price: 120 }, { id: "mochila", name: "Mochila", price: 140 }, { id: "rinonera", name: "Riñonera", price: 100 }] },
   /* --- tu clínica --- */
   wall: { label: "Pared", items: [
     { id: "crema", name: "Crema", c: "#f3e6cf", d: "#e2cfae", price: 0 }, { id: "salvia", name: "Salvia", c: "#d3dcc2", d: "#a9b893", price: 80 },
@@ -136,9 +243,13 @@ const SHOP = {
     { id: "terracota", name: "Terracota", c: "#e6a77f", price: 0 }, { id: "salvia", name: "Salvia", c: "#a9c49a", price: 50 },
     { id: "mostaza", name: "Mostaza", c: "#e8c06a", price: 50 }, { id: "rosa", name: "Rosa", c: "#eab3ae", price: 50, set: "sanvalentin" },
     { id: "lino", name: "Lino", c: "#efe3cf", price: 60 }, { id: "cuadros", name: "Cuadros vichy", c: "#d97a6c", pat: "cuadros", price: 110 },
+    { id: "cerradas_lino", name: "Cerradas de lino", c: "#efe3cf", st: "closed", price: 120 }, { id: "cerradas_terciopelo", name: "Cerradas de terciopelo", c: "#8e2f3a", st: "closed", price: 160 },
+    { id: "cerradas_estrellas", name: "Cerradas de estrellas", c: "#f3d36b", pat: "estrellas", pbg: "#3f5878", st: "closed", price: 160 },
+    { id: "estor", name: "Estor de lino", c: "#e9dcc4", st: "half", price: 110 }, { id: "persiana", name: "Persiana de madera", c: "#c9a26f", st: "blind", price: 130 },
+    { id: "visillo", name: "Visillo de encaje", st: "sheer", price: 120 }, { id: "cafe", name: "Cortinilla de cuadros", c: "#d97a6c", pat: "cuadros", st: "cafe", price: 100 },
     { id: "c_navidad", name: "Rojas de acebo", c: "#b8473a", pat: "acebo", pbg: "#fbf2e8", price: 110, set: "navidad" },
-    { id: "c_halloween", name: "Moradas", c: "#6a4f86", price: 90, set: "halloween" }, { id: "c_rayas", name: "Rayas azules", c: "#4f7fae", pat: "rayas", pbg: "#fbf8f2", price: 100, set: "mediterraneo" },
-    { id: "c_vaquera", name: "Vaqueras", c: "#5b7da3", price: 90, set: "americano" }] },
+    { id: "c_halloween", name: "Moradas", c: "#6a4f86", price: 90, set: "halloween" }, { id: "c_bambu", name: "Estor de bambú", st: "bamboo", price: 130, set: "asiatico" },
+    { id: "c_rayas", name: "Rayas azules", c: "#4f7fae", pat: "rayas", pbg: "#fbf8f2", price: 100, set: "mediterraneo" }, { id: "c_vaquera", name: "Vaqueras", c: "#5b7da3", price: 90, set: "americano" }] },
   table: { label: "Camilla", items: [
     { id: "metal", name: "Acero", price: 0 }, { id: "madera", name: "Madera", price: 140 }, { id: "cojin", name: "Con cojín de flores", price: 220 },
     { id: "hidraulica", name: "Hidráulica", price: 260 }, { id: "acolchada", name: "Acolchada con ruedas", price: 240 }, { id: "bascula_mesa", name: "Con báscula", price: 280 },
@@ -153,7 +264,8 @@ const SHOP = {
     { id: "hilo_corazones", name: "Hilo de corazones", price: 180, set: "sanvalentin" }, { id: "farol_rojo", name: "Farolillos rojos", price: 200, set: "asiatico" },
     { id: "buganvilla", name: "Buganvilla", price: 200, set: "mediterraneo" }, { id: "ventilador", name: "Ventilador de techo", price: 200, set: "americano" }] },
   wallL: { label: "Cuadro grande", opt: true, items: [
-    { id: "diploma", name: "Título enmarcado", price: 60 }, { id: "cuadro", name: "Cuadro de montañas", price: 100 }, { id: "espejo", name: "Espejo redondo", price: 110 },
+    { id: "diploma", name: "Título enmarcado", price: 60 }, { id: "cuadro", name: "Paisaje al óleo", price: 100 }, { id: "bodegon", name: "Bodegón de flores", price: 130 },
+    { id: "acuarela", name: "Acuarela de gatitos", price: 120 }, { id: "retrato", name: "Retrato del Sr. Bigotes", price: 180 }, { id: "espejo", name: "Espejo redondo", price: 110 },
     { id: "galeria", name: "Fotos de pacientes", price: 140 }, { id: "corcho", name: "Corcho con notas", price: 120 },
     { id: "corona_navidad", name: "Corona de acebo", price: 140, set: "navidad" }, { id: "fantasma", name: "Retrato encantado", price: 140, set: "halloween" },
     { id: "polaroids", name: "Fotos con corazones", price: 140, set: "sanvalentin" }, { id: "abanico", name: "Abanico de papel", price: 150, set: "asiatico" },
@@ -197,285 +309,25 @@ const SHOP = {
     { id: "gato", name: "Gato dormilón", price: 320 }, { id: "perro", name: "Beagle en su cama", price: 340 }, { id: "conejo", name: "Conejo", price: 300 }, { id: "tortuga", name: "Tortuga", price: 260 }] }
 };
 const SHOP_SECTIONS = [
-  { id: "me", label: "Tu aspecto", cats: ["hair", "hairColor", "skin", "face", "outfit", "neck", "eyes", "head", "ears"] },
-  { id: "room", label: "Tu clínica", cats: ["wall", "floor", "view", "curtains", "table", "ceiling", "wallL", "wallC", "wallR", "shelf", "sill", "cornerL", "plant", "rug", "pet"] },
+  { id: "face", label: "Cara", cats: ["hair", "hairColor", "skin", "eyeShape", "eyeColor", "brows", "nose", "mouth", "blush", "face"] },
+  { id: "clothes", label: "Ropa", cats: ["top", "bottom", "shoes", "coat", "glasses", "head", "neck", "ears", "acc"] },
+  { id: "room", label: "Clínica", cats: ["wall", "floor", "view", "curtains", "table", "ceiling", "wallL", "wallC", "wallR", "shelf", "sill", "cornerL", "plant", "rug", "pet"] },
   { id: "sets", label: "Colecciones", cats: Object.keys(PAT_SETS) }
 ];
-const SHOP_ORDER = SHOP_SECTIONS[0].cats.concat(SHOP_SECTIONS[1].cats);
+const SHOP_ORDER = SHOP_SECTIONS.filter(s => s.id !== "sets").flatMap(s => s.cats);
+const ROOM_CATS = SHOP_SECTIONS[2].cats;
 const findItem = (cat, id) => SHOP[cat] && SHOP[cat].items.find(i => i.id === id);
 const setItems = set => SHOP_ORDER.flatMap(c => SHOP[c].items.filter(i => i.set === set).map(i => ({ cat: c, it: i })));
+/* zona de la escena que se enseña en la miniatura de cada categoría de la clínica */
 const FOCUS = {
   wall: "0 0 360 240", floor: "0 150 360 90", view: "12 16 88 88", curtains: "8 12 96 92", table: "186 110 152 104",
-  ceiling: "0 0 360 96", wallL: "98 14 84 60", wallC: "156 12 66 60", wallR: "282 12 76 84", shelf: "100 60 80 52",
+  ceiling: "0 0 360 96", wallL: "104 16 80 57", wallC: "156 12 66 60", wallR: "282 12 76 84", shelf: "100 60 80 52",
   sill: "14 64 84 40", cornerL: "0 96 100 96", plant: "290 80 70 112", rug: "50 180 230 60", pet: "0 180 106 60"
 };
-const AV_FOCUS = { hair: "22 2 76 92", hairColor: "22 2 76 92", skin: "22 2 76 92", face: "22 2 76 92", eyes: "22 2 76 92", head: "16 -6 88 96", ears: "22 2 76 92", neck: "14 50 92 90", outfit: "0 40 120 100" };
-
-/* ---------------- animales pacientes (100x100) ---------------- */
-const PAL = {
-  dog: [{ f: "#d4a373", e: "#8c5a3c", m: "#f3e3cc", ear: 0 }, { f: "#f3e3cc", e: "#c99566", m: "#fff8ee", ear: 2 }, { f: "#4a3b36", e: "#2e2522", m: "#c9a88a", ear: 1, brow: 1 },
-    { f: "#e9b872", e: "#b5793f", m: "#fbe9cf", ear: 1 }, { f: "#f7f2ea", e: "#3d3433", m: "#ffffff", patch: 1, ear: 0 }, { f: "#b07a52", e: "#6b4430", m: "#e8c9a6", patch: 1, ear: 2 },
-    { f: "#2f2a2a", e: "#1e1a1a", m: "#d9a374", ear: 1, brow: 1 }, { f: "#c9c4bd", e: "#8f8a83", m: "#f4f1ec", ear: 0 }],
-  cat: [{ f: "#e3a15c", e: "#b8733a", tabby: 1 }, { f: "#a3a3a8", e: "#6e6e75", tabby: 1, bib: 1 }, { f: "#3e3a3b", e: "#2a2627", bib: 1 }, { f: "#f2e6d2", e: "#c9b79a", point: 1 },
-    { f: "#f7f3ec", e: "#e3a15c", patch: 1 }, { f: "#5b5552", e: "#3a3533", tabby: 1 }],
-  horse: [{ f: "#9a5f3d", e: "#3a2a22", m: "#c08a68", blaze: 1 }, { f: "#5a4034", e: "#2b211c", m: "#7d6050" }, { f: "#d8cfc2", e: "#8d8478", m: "#ebe4d8" }, { f: "#c4783f", e: "#efe0c0", m: "#e2a97a", blaze: 1 }],
-  cow: [{ e: "#3b3433" }, { e: "#8a5636" }, { e: "#3b3433", bell: 1 }],
-  pig: [{}, { spots: 1 }]
-};
-const SPECIES = { dog: "Perro", cat: "Gato", horse: "Caballo", cow: "Vaca", pig: "Cerdo" };
-const COLLARS = ["#c0453a", "#4f6fae", "#5f8a55", "#e8a65a", "#a85a9a"];
-function eyes(mood, lx, rx, y, big) {
-  const ry = big ? 4 : 3.5, rx_ = big ? 3.1 : 2.8;
-  if (mood === "happy") return `<path d="M${lx - 3.5} ${y + 1} Q${lx} ${y - 3.5} ${lx + 3.5} ${y + 1}M${rx - 3.5} ${y + 1} Q${rx} ${y - 3.5} ${rx + 3.5} ${y + 1}" ${S} fill="none"/>`;
-  let s = [lx, rx].map(x => `<ellipse cx="${x}" cy="${y}" rx="${rx_}" ry="${ry}" fill="${INK}"/><circle cx="${x + 1.1}" cy="${y - 1.5}" r="1.15" fill="#fff"/><circle cx="${x - .9}" cy="${y + 1.4}" r=".55" fill="#fff"/>`).join("");
-  if (mood === "sad") s += `<path d="M${lx - 4.5} ${y - 5.5} L${lx + 3} ${y - 8.5}M${rx - 3} ${y - 8.5} L${rx + 4.5} ${y - 5.5}" ${S} fill="none"/><path d="M${rx + 3.5} ${y + 3} q1.8 3.2 0 4.8 q-1.8 -1.6 0 -4.8Z" fill="#8cc4e0" stroke="${INK}" stroke-width="1"/>`;
-  return s;
-}
-const cheeks = (lx, rx, y) => `<ellipse cx="${lx}" cy="${y}" rx="4" ry="2.6" fill="#f09a86" opacity=".45"/><ellipse cx="${rx}" cy="${y}" rx="4" ry="2.6" fill="#f09a86" opacity=".45"/>`;
-const toes = (x, y) => `<path d="M${x - 3} ${y - 1} v2.6M${x} ${y - .6} v2.8M${x + 3} ${y - 1} v2.6" stroke="${INK}" stroke-width="1" stroke-linecap="round" opacity=".7"/>`;
-function smallMouth(mood, x, y) {
-  if (mood === "happy") return `<path d="M${x - 5} ${y} Q${x} ${y + 7} ${x + 5} ${y}" ${S} fill="#e8857c"/>`;
-  if (mood === "sad") return `<path d="M${x - 4} ${y + 3} Q${x} ${y - 1} ${x + 4} ${y + 3}" ${S} fill="none"/>`;
-  return `<path d="M${x - 4} ${y} Q${x - 2} ${y + 2.6} ${x} ${y} Q${x + 2} ${y + 2.6} ${x + 4} ${y}" ${S} fill="none"/>`;
-}
-function animalSVG(species, name, mood) {
-  const pals = PAL[species] || PAL.dog, h = hash(name), c = pals[h % pals.length], col = COLLARS[(h >> 3) % COLLARS.length];
-  let g = SH(50, 99, 30, 3.6);
-  if (species === "dog") {
-    const ears = [
-      `<path d="M29 32 C17 34 16 55 23 63 C31 61 33 48 34 38 Z" fill="${c.e}" ${S}/><path d="M71 32 C83 34 84 55 77 63 C69 61 67 48 66 38 Z" fill="${c.e}" ${S}/>`,
-      `<path d="M30 36 L27 12 L45 27 Z" fill="${c.f}" ${S}/><path d="M32 31 L31 18 L41 27Z" fill="#e8a99a" opacity=".8"/><path d="M70 36 L73 12 L55 27 Z" fill="${c.f}" ${S}/><path d="M68 31 L69 18 L59 27Z" fill="#e8a99a" opacity=".8"/>`,
-      `<path d="M30 37 L29 17 Q36 13 41 20 L46 27 Z" fill="${c.f}" ${S}/><path d="M29 17 Q36 13 41 20 L34 25Z" fill="${c.e}" ${S1}/><path d="M70 37 L71 17 Q64 13 59 20 L54 27 Z" fill="${c.f}" ${S}/><path d="M71 17 Q64 13 59 20 L66 25Z" fill="${c.e}" ${S1}/>`][c.ear || 0];
-    g += `<g class="${mood === "sad" ? "" : "wag"}" style="transform-box:fill-box;transform-origin:0% 100%"><path d="M71 88 C82 85 88 76 85 66" stroke="${INK}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M71 88 C82 85 88 76 85 66" stroke="${c.f}" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="85" cy="66.5" r="2" fill="${c.m}"/></g>
-      <ellipse cx="50" cy="84" rx="27" ry="17" fill="${c.f}" ${S}/><path d="M36 58 C34 64 34 70 35 76 L65 76 C66 70 66 64 64 58Z" fill="${c.f}"/><path d="M36 58 C34.5 63 34.3 67 35 70M64 58 C65.5 63 65.7 67 65 70" ${S} fill="none"/><ellipse cx="50" cy="91" rx="20" ry="7" fill="${c.e}" opacity=".18"/><path d="M38 72 C40 86 60 86 62 72 C56 76 44 76 38 72Z" fill="${c.m}"/>
-      <path d="M43 79 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5 l2.5 3.5 l2.5 -3.5" stroke="${c.m}" stroke-width="2" fill="none" stroke-linejoin="round"/>
-      <path d="M27 88 C25 94 28 98 33 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/><path d="M73 88 C75 94 72 98 67 98" stroke="${c.e}" stroke-width="1.4" fill="none" opacity=".5"/>
-      <ellipse cx="40" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/><ellipse cx="60" cy="97" rx="7" ry="4.5" fill="${c.f}" ${S}/>${toes(40, 97)}${toes(60, 97)}
-      ${c.ear === 0 ? "" : ears}<ellipse cx="50" cy="46" rx="23" ry="21" fill="${c.f}" ${S}/><path d="M47 26 q3 -6 6 0" ${S1}/>
-      <path d="M28 50 l-2.5 3 l3 1 l-2 3M72 50 l2.5 3 l-3 1 l2 3" stroke="${c.f}" stroke-width="2.4" fill="none" stroke-linejoin="round"/><path d="M28 50 l-2.5 3 l3 1 l-2 3M72 50 l2.5 3 l-3 1 l2 3" ${S1}/>
-      ${c.patch ? `<path d="M56 33 C64 30 70 36 68 44 C62 47 56 43 56 33Z" fill="${c.e}"/>` : ""}${c.brow ? `<ellipse cx="41" cy="37" rx="3" ry="2" fill="${c.m}"/><ellipse cx="59" cy="37" rx="3" ry="2" fill="${c.m}"/>` : ""}
-      <ellipse cx="50" cy="57" rx="11.5" ry="8.5" fill="${c.m}" ${S}/>${c.ear === 0 ? ears : ""}
-      <path d="M33 66 Q50 74 67 66" stroke="${col}" stroke-width="4.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="72.5" r="3.2" fill="#f0c25e" stroke="${INK}" stroke-width="1.1"/>
-      ${eyes(mood, 41, 59, 44)}${cheeks(36, 64, 52)}<ellipse cx="50" cy="52.5" rx="4.8" ry="3.4" fill="${INK}"/><ellipse cx="48.6" cy="51.6" rx="1.5" ry=".9" fill="#fff" opacity=".7"/><path d="M50 55.8 v2.4" ${S1}/>${smallMouth(mood, 50, 59)}`;
-  } else if (species === "cat") {
-    g += `<path d="M72 92 C92 90 94 70 85 63" stroke="${INK}" stroke-width="9.5" fill="none" stroke-linecap="round"/><path d="M72 92 C92 90 94 70 85 63" stroke="${c.f}" stroke-width="6" fill="none" stroke-linecap="round"/>
-      ${c.tabby ? `<path d="M88 80 l4 1M90 72 l4 -1M86 66 l3 -2" stroke="${c.e}" stroke-width="2" stroke-linecap="round"/>` : ""}${c.point ? `<path d="M88 72 C92 68 90 64 85 63" stroke="${c.e}" stroke-width="6" fill="none" stroke-linecap="round"/>` : ""}
-      <ellipse cx="50" cy="84" rx="24" ry="17" fill="${c.f}" ${S}/><path d="M38 60 C36 66 36 71 37 76 L63 76 C64 71 64 66 62 60Z" fill="${c.f}"/><path d="M38 60 C36.6 64 36.4 67 37 69.5M62 60 C63.4 64 63.6 67 63 69.5" ${S} fill="none"/><ellipse cx="50" cy="91" rx="18" ry="7" fill="${c.e}" opacity=".16"/>
-      ${c.bib ? `<path d="M42 70 Q50 86 58 70 Q50 74 42 70Z" fill="#fbf7ef"/>` : ""}${c.tabby ? `<path d="M30 82 q4 -3 8 0M62 82 q4 -3 8 0M32 90 q4 -3 7 0M61 90 q4 -3 7 0" stroke="${c.e}" stroke-width="2" fill="none" stroke-linecap="round"/>` : ""}
-      <ellipse cx="41" cy="97" rx="6" ry="4" fill="${c.bib ? "#fbf7ef" : c.f}" ${S}/><ellipse cx="59" cy="97" rx="6" ry="4" fill="${c.bib ? "#fbf7ef" : c.f}" ${S}/>${toes(41, 97)}${toes(59, 97)}
-      <path d="M30 40 L32 14 L48 29 Z" fill="${c.point ? c.e : c.f}" ${S}/><path d="M34 33 L35 21 L43 29Z" fill="#f1a7a0"/><path d="M70 40 L68 14 L52 29 Z" fill="${c.point ? c.e : c.f}" ${S}/><path d="M66 33 L65 21 L57 29Z" fill="#f1a7a0"/>
-      <ellipse cx="50" cy="47" rx="23.5" ry="20" fill="${c.f}" ${S}/>${c.point ? `<ellipse cx="50" cy="55" rx="11" ry="9" fill="${c.e}" opacity=".7"/>` : ""}
-      ${c.tabby ? `<path d="M46 29 L47 36M50 28 L50 36M54 29 L53 36M28 46 l5 1M28 51 l5 0M72 46 l-5 1M72 51 l-5 0" stroke="${c.e}" stroke-width="2.2" stroke-linecap="round"/>` : ""}${c.patch ? `<path d="M30 42 C32 32 42 30 46 34 C42 40 36 44 30 42Z" fill="${c.e}"/>` : ""}
-      <ellipse cx="45.5" cy="55.5" rx="4.5" ry="3.2" fill="#fbf7ef" opacity=".85"/><ellipse cx="54.5" cy="55.5" rx="4.5" ry="3.2" fill="#fbf7ef" opacity=".85"/>
-      ${eyes(mood, 41, 59, 46, true)}${cheeks(35, 65, 54)}<path d="M47.6 52.4 L52.4 52.4 L50 55.2Z" fill="#e58b8b" stroke="${INK}" stroke-width="1"/>
-      ${mood === "happy" ? `<path d="M45 57 Q50 63 55 57" ${S} fill="#e8857c"/>` : mood === "sad" ? `<path d="M46.5 59.5 Q50 56.5 53.5 59.5" ${S} fill="none"/>` : `<path d="M50 55.2 Q48 58.4 45.8 57M50 55.2 Q52 58.4 54.2 57" ${S1}/>`}
-      <path d="M38 53 L25 51M38 56 L25 57.5M62 53 L75 51M62 56 L75 57.5" stroke="${INK}" stroke-width=".9" stroke-linecap="round"/>
-      <path d="M36 66 Q50 72 64 66" stroke="${col}" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="50" cy="71" r="2.6" fill="#f0c25e" stroke="${INK}" stroke-width="1"/>`;
-  } else if (species === "horse") {
-    g += `<path d="M30 100 C30 80 36 66 42 58 L62 58 C68 70 72 84 72 100 Z" fill="${c.f}" ${S}/><path d="M58 64 C64 74 68 86 68 100 L60 100 C60 86 58 74 54 66Z" fill="${c.e}" opacity=".15"/>
-      <path d="M38 20 C30 34 28 54 32 76 C38 64 40 48 46 34 Z" fill="${c.e}" ${S}/><path d="M40 22 L41 6 L49 18Z" fill="${c.f}" ${S}/><path d="M60 18 L63 6 L66 22Z" fill="${c.f}" ${S}/>
-      <ellipse cx="52" cy="40" rx="16.5" ry="24" fill="${c.f}" ${S}/>${c.blaze ? `<path d="M50 24 C48 36 49 47 50 54 C52 47 54 36 54 24Z" fill="#f7f2e8"/>` : ""}
-      <path d="M43 18 C47 27 57 27 61 18 C56 22 49 23 43 18Z" fill="${c.e}" ${S}/><ellipse cx="52" cy="59" rx="14" ry="10" fill="${c.m}" ${S}/>
-      <ellipse cx="46.5" cy="60" rx="1.7" ry="2.5" fill="${INK}"/><ellipse cx="57.5" cy="60" rx="1.7" ry="2.5" fill="${INK}"/>
-      <path d="M38.5 50 C42 56 62 56 65.5 50" stroke="#c0453a" stroke-width="3" fill="none"/><path d="M39 34 L39 50M65 34 L65 50" stroke="#c0453a" stroke-width="3"/>
-      <circle cx="39" cy="50" r="2" fill="#f0c25e" stroke="${INK}" stroke-width="1"/><circle cx="65" cy="50" r="2" fill="#f0c25e" stroke="${INK}" stroke-width="1"/>
-      ${eyes(mood, 44.5, 59.5, 38)}${cheeks(41, 63, 47)}
-      ${mood === "happy" ? `<path d="M46 65 Q52 70 58 65" ${S} fill="none"/>` : mood === "sad" ? `<path d="M47 67 Q52 64 57 67" ${S} fill="none"/>` : `<path d="M47.5 65.5 Q52 67 56.5 65.5" ${S1}/>`}`;
-  } else if (species === "cow") {
-    g += `<ellipse cx="50" cy="87" rx="30" ry="15" fill="#f8f4ec" ${S}/><path d="M30 80 C36 76 42 80 40 88 C34 90 30 86 30 80Z" fill="${c.e}"/><path d="M62 84 C68 80 76 84 72 92 C66 94 62 90 62 84Z" fill="${c.e}"/><path d="M33 52 C31 60 31 68 33 80 L67 80 C69 68 69 60 67 52Z" fill="#f8f4ec"/><path d="M33.5 58 C32 64 32 70 34 74.5M66.5 58 C68 64 68 70 66 74.5" ${S} fill="none"/>
-      <path d="M33 26 C26 22 26 13 30 11 C31 17 34 21 39 23Z" fill="#efe3c4" ${S}/><path d="M67 26 C74 22 74 13 70 11 C69 17 66 21 61 23Z" fill="#efe3c4" ${S}/>
-      <path d="M31 36 C20 33 13 38 15 43 C21 46 28 43 32 41Z" fill="#f8f4ec" ${S}/><path d="M69 36 C80 33 87 38 85 43 C79 46 72 43 68 41Z" fill="#f8f4ec" ${S}/><rect x="79" y="40" width="6" height="7" rx="1.2" fill="#f3d36b" stroke="${INK}" stroke-width="1"/>
-      <ellipse cx="50" cy="43" rx="21" ry="20" fill="#f8f4ec" ${S}/><path d="M53 25 C62 22 69 29 67 38 C60 41 55 35 53 25Z" fill="${c.e}"/><path d="M44 22 C47 27 53 27 56 22" ${S} fill="${c.e}"/>
-      <ellipse cx="50" cy="59" rx="17" ry="10" fill="#f2b8b0" ${S}/><ellipse cx="44" cy="58" rx="2" ry="2.7" fill="#8a4b45"/><ellipse cx="56" cy="58" rx="2" ry="2.7" fill="#8a4b45"/>
-      ${c.bell ? `<path d="M36 70 Q50 76 64 70" stroke="#7a5638" stroke-width="4" fill="none"/><path d="M46 74 h8 l1.5 8 h-11Z" fill="#f0c25e" ${S1}/>` : ""}
-      ${eyes(mood, 41, 59, 42)}${mood === "happy" ? `<path d="M45 64 Q50 68 55 64" ${S} fill="none"/>` : mood === "sad" ? `<path d="M46 66 Q50 63 54 66" ${S} fill="none"/>` : `<path d="M46.5 64.5 Q50 66 53.5 64.5" ${S1}/>`}`;
-  } else {
-    g += `<path d="M76 84 c7 -3 9 4 5 6 c-4 2 -6 -4 -1 -6" ${S} fill="none"/><ellipse cx="50" cy="85" rx="28" ry="17" fill="#f4b9b2" ${S}/><path d="M33 56 C31 62 31 68 33 76 L67 76 C69 68 69 62 67 56Z" fill="#f4b9b2"/><path d="M33.5 60 C32.4 64 32.4 68 33.5 71.5M66.5 60 C67.6 64 67.6 68 66.5 71.5" ${S} fill="none"/><ellipse cx="50" cy="92" rx="21" ry="7" fill="#c97f78" opacity=".2"/>
-      ${c.spots ? `<path d="M30 80 C34 76 40 79 38 85 C33 87 30 85 30 80Z" fill="#8a6a5e" opacity=".75"/>` : ""}
-      <ellipse cx="40" cy="98" rx="6" ry="4" fill="#f4b9b2" ${S}/><ellipse cx="60" cy="98" rx="6" ry="4" fill="#f4b9b2" ${S}/>
-      <ellipse cx="50" cy="46" rx="23" ry="21" fill="#f6c3bc" ${S}/>${c.spots ? `<path d="M58 30 C64 28 69 33 67 39 C62 40 58 36 58 30Z" fill="#8a6a5e" opacity=".7"/>` : ""}
-      <path d="M30 33 L27 15 L44 25 Z" fill="#f4b9b2" ${S}/><path d="M70 33 L73 15 L56 25 Z" fill="#f4b9b2" ${S}/>
-      <ellipse cx="50" cy="55" rx="10.5" ry="7.5" fill="#ee9e98" ${S}/><ellipse cx="46.5" cy="55.5" rx="1.7" ry="2.6" fill="#9b5450"/><ellipse cx="53.5" cy="55.5" rx="1.7" ry="2.6" fill="#9b5450"/>
-      ${eyes(mood, 40, 60, 42)}${cheeks(34, 66, 52)}${mood === "happy" ? `<path d="M45 64 Q50 69 55 64" ${S} fill="none"/>` : mood === "sad" ? `<path d="M46 66 Q50 63 54 66" ${S} fill="none"/>` : `<path d="M47 64.5 Q50 66 53 64.5" ${S1}/>`}`;
-  }
-  return g;
-}
-
-/* ---------------- tu personaje (120x140) ---------------- */
-const BODY = `M18 140 C18 108 34 91 60 89 C86 91 102 108 102 140 Z`;
-const darken = (hex, f = .78) => "#" + [1, 3, 5].map(i => Math.round(parseInt(hex.slice(i, i + 2), 16) * f).toString(16).padStart(2, "0")).join("");
-function outfitSVG(it, sk, k) {
-  let back = "", t = "";
-  const fill = it.pat ? `url(#${k}o)` : it.c;
-  let defs = it.pat ? patternDef(k + "o", it.pat, it.c, it.pc) : "";
-  switch (it.k) {
-    case "bata":
-      t = `<path d="M49 90 L60 108 L71 90 Z" fill="#9cc0cf" ${S}/><path d="${BODY}" fill="#fbf7ef" ${S}/><path d="M49 90 L60 108 L71 90" fill="#9cc0cf" ${S}/>
-        <path d="M49 90 L45 140M71 90 L75 140" ${S1}/>${[118, 130].map((y, i) => `<circle cx="${44.5 - i * .5}" cy="${y}" r="${it.btn ? 2.2 : 1.4}" fill="${it.btn ? ["#e58aa6", "#7fb2cf"][i] : INK}" ${it.btn ? `stroke="${INK}" stroke-width=".9"` : ""}/>`).join("")}
-        <rect x="77" y="116" width="13" height="10" rx="2" fill="#fbf7ef" ${S}/><path d="M81 112 v6" stroke="#4f6fae" stroke-width="2" stroke-linecap="round"/><path d="M85 113 v5" stroke="#c0453a" stroke-width="2" stroke-linecap="round"/>
-        <rect x="28" y="106" width="14" height="7" rx="1.5" fill="#f3e6cf" stroke="${INK}" stroke-width="1"/><path d="M31 109.5 h8" stroke="#c9a77d" stroke-width="1.2"/>
-        ${it.btn ? PAWP(84, 132, .8, "#e8a65a") : ""}`; break;
-    case "scrubs": {
-      const tc = darken(it.c, .72);
-      t = `<path d="${BODY}" fill="${fill}" ${S}/><path d="M50 90 L60 105 L70 90 Z" fill="${sk}"/><path d="M48.5 89.5 L60 106 L71.5 89.5" fill="none" stroke="${tc}" stroke-width="3.2" stroke-linejoin="round"/><path d="M48.5 89.5 L60 106 L71.5 89.5" ${S1}/>
-        <path d="M26 112 q6 -2 10 1M94 112 q-6 -2 -10 1" stroke="${tc}" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-        <rect x="69" y="110" width="13" height="10" rx="2" fill="${fill}" ${S}/><path d="M69 112.5 h13" stroke="${tc}" stroke-width="1.6"/><path d="M72 106 v6" stroke="#4f6fae" stroke-width="2" stroke-linecap="round"/><path d="M75.5 107 v5" stroke="#f3d36b" stroke-width="2" stroke-linecap="round"/>
-        <path d="M34 128 h14v8h-14Z" fill="${fill}" ${S1}/><path d="M60 106 V140" stroke="${INK}" stroke-width=".9" opacity=".22"/>`; break; }
-    case "jersey": {
-      const c = it.c, d = darken(c, .8);
-      t = `<path d="${BODY}" fill="${c}" ${S}/>${[104, 114, 124, 134].map(y => `<path d="M${y > 120 ? 20 : 26} ${y} Q60 ${y + 4} ${y > 120 ? 100 : 94} ${y}" stroke="${darken(c, 1.18)}" stroke-width="2" stroke-dasharray="2 3" fill="none"/>`).join("")}<path d="M48 91 Q60 99 72 91" ${S} fill="${d}"/>`;
-      if (it.motif === "navidad") t += `<rect x="24" y="111" width="72" height="13" fill="#fbf7ef" opacity=".95"/><path d="M24 111 h72M24 124 h72" stroke="${INK}" stroke-width="1"/>${[32, 48, 64, 80].map((x, i) => i % 2 ? `<path d="M${x} 113 l-4 8 h8Z" fill="#5f8a55"/><circle cx="${x}" cy="113" r="1" fill="#f3d36b"/>` : STARP(x, 117.5, 3.2, "#b8473a")).join("")}<path d="M26 130 l4 -3 4 3 4 -3 4 3 4 -3 4 3 4 -3 4 3 4 -3 4 3 4 -3 4 3 4 -3 4 3 4 -3 4 3" stroke="#fbf7ef" stroke-width="1.6" fill="none"/>`;
-      if (it.motif === "corazones") t += [[38, 112], [60, 116], [82, 112], [48, 128], [72, 128]].map(([x, y]) => HEART(x, y, 1.6, "#fbf7ef")).join("");
-      break; }
-    case "cardigan": t = `<path d="${BODY}" fill="#9c7bb0" ${S}/><path d="M52 90 L60 100 L68 90 L66 140 L54 140Z" fill="#fbf7ef" ${S}/><path d="M60 100 L60 140" ${S1}/>${[110, 122, 134].map(y => `<circle cx="51" cy="${y}" r="1.8" fill="#f3d36b" stroke="${INK}" stroke-width=".8"/>`).join("")}<path d="M28 132 h14M78 132 h14" stroke="#7d5f92" stroke-width="2.5"/>`; break;
-    case "chaleco": t = `<path d="${BODY}" fill="#a9c7d9" ${S}/><path d="M50 90 L60 100 L70 90" fill="none" ${S1}/><path d="M18 140 C18 108 30 94 48 90 L56 140Z" fill="#6f9e6b" ${S}/><path d="M102 140 C102 108 90 94 72 90 L64 140Z" fill="#6f9e6b" ${S}/><path d="M30 104 q4 2 8 0M28 116 q5 2 10 0M84 104 q-4 2 -8 0M88 116 q-5 2 -10 0" stroke="#8fbf8a" stroke-width="1.4" fill="none"/><rect x="40" y="118" width="10" height="6" rx="1" fill="#5f8a55" ${S1}/>`; break;
-    case "peto": t = `<path d="${BODY}" fill="#c95b4a" ${S}/><path d="M30 104 L90 104M26 118 L94 118M42 92 L36 140M60 90 L60 140M78 92 L84 140" stroke="#e48d7b" stroke-width="1.5"/><path d="M43 140 L45 108 L75 108 L77 140Z" fill="#5f84a8" ${S}/><path d="M45 110 L40 92M75 110 L80 92" stroke="#5f84a8" stroke-width="4" stroke-linecap="round"/><circle cx="47" cy="112" r="1.8" fill="#f0c25e"/><circle cx="73" cy="112" r="1.8" fill="#f0c25e"/><rect x="53" y="116" width="14" height="10" rx="2" fill="#6f93b6" ${S}/>`; break;
-    case "sudadera": t = `<path d="M40 94 Q60 108 80 94 L78 90 Q60 100 42 90Z" fill="#c99847" ${S}/><path d="${BODY}" fill="#e2b45a" ${S}/><path d="M42 93 Q60 104 78 93" ${S} fill="none"/><path d="M54 96 v10M66 96 v10" stroke="#fbf7ef" stroke-width="1.6" stroke-linecap="round"/><path d="M40 140 L43 126 Q60 120 77 126 L80 140Z" fill="#d6a74e" ${S}/>${PAWP(60, 112, 1.3, INK)}`; break;
-    case "hawaiana": t = `<path d="${BODY}" fill="#4f9e94" ${S}/><path d="M50 90 L60 100 L70 90" fill="${sk}" ${S}/>${[[34, 112], [80, 108], [50, 128], [72, 130], [90, 128], [28, 132], [62, 114]].map(([x, y], i) => FLOWER(x, y, 2.6, i % 2 ? "#f3d36b" : "#f29b8a", "#fff6d8")).join("")}<path d="M60 100 L60 140" ${S1}/>`; break;
-    case "traje": t = `<path d="${BODY}" fill="#3f4a5c" ${S}/><path d="M50 90 L60 114 L70 90Z" fill="#fbf7ef" ${S}/><path d="M57.5 95 L62.5 95 L63.5 111 L60 116 L56.5 111Z" fill="#b8473a" ${S}/><path d="M50 90 L54 120M70 90 L66 120" ${S1}/><path d="M76 108 l6 -2 l1 3 l-6 2Z" fill="#fbf7ef"/>`; break;
-    case "capa": back = `<path d="M8 140 C12 104 30 86 60 84 C90 86 108 104 112 140Z" fill="#c0453a" ${S}/>`; t = `<path d="${BODY}" fill="#4a64a3" ${S}/><circle cx="60" cy="114" r="9" fill="#f0c25e" ${S}/>${PAWP(60, 114, 1.1, INK)}<path d="M44 92 L52 89M76 92 L68 89" stroke="#c0453a" stroke-width="4" stroke-linecap="round"/>`; break;
-    case "vampiro": back = `<path d="M6 140 C10 100 26 80 40 76 L60 90 L80 76 C94 80 110 100 114 140Z" fill="#2e2630" ${S}/><path d="M40 76 L48 96 L60 90 L72 96 L80 76" fill="#b8473a" ${S}/>`; t = `<path d="${BODY}" fill="#2e2630" ${S}/><path d="M48 90 L60 116 L72 90Z" fill="#fbf7ef" ${S}/><path d="M60 94 l-6 -4 v8Z M60 94 l6 -4 v8Z" fill="#b8473a" ${S1}/><path d="M30 104 L48 92M90 104 L72 92" stroke="#b8473a" stroke-width="2"/>`; break;
-    case "haori": defs += patternDef(k + "h", "sakura", "#3f5878", "#e9a1b5"); t = `<path d="${BODY}" fill="#c9b8a0" ${S}/><path d="M18 140 C18 110 30 96 46 91 L54 140Z" fill="url(#${k}h)" ${S}/><path d="M102 140 C102 110 90 96 74 91 L66 140Z" fill="url(#${k}h)" ${S}/><path d="M46 91 L56 140M74 91 L64 140" stroke="#2d4058" stroke-width="5"/><path d="M54 116 q6 4 12 0" stroke="#f3e6cf" stroke-width="2" fill="none"/><circle cx="60" cy="118" r="2" fill="#f3e6cf"/>`; break;
-    case "marinera": defs += patternDef(k + "m", "marinera", "#fbf8f2", "#3f5878"); t = `<path d="${BODY}" fill="url(#${k}m)" ${S}/><path d="M42 92 Q60 98 78 92" stroke="#3f5878" stroke-width="3" fill="none"/><path d="M42 92 Q60 98 78 92" ${S1}/>`; break;
-    case "vaquera": t = `<path d="${BODY}" fill="#6f8fb4" ${S}/><path d="M50 90 L60 98 L70 90 L68 86 L60 92 L52 86Z" fill="#5b7da3" ${S}/><path d="M24 108 Q60 100 96 108" stroke="#f3d36b" stroke-width="1.2" stroke-dasharray="3 2" fill="none"/><path d="M60 98 V140" ${S1}/>${[108, 118, 128, 138].map(y => `<circle cx="60" cy="${y}" r="1.5" fill="#fbf7ef" stroke="${INK}" stroke-width=".6"/>`).join("")}<path d="M36 112 h14 l-2 6 h-10Z M70 112 h14 l-2 6 h-10Z" fill="#5b7da3" ${S1}/>`; break;
-    default: t = `<path d="${BODY}" fill="#fbf7ef" ${S}/>`;
-  }
-  return { back, torso: (defs ? `<defs>${defs}</defs>` : "") + t };
-}
-function headSVG(it, hc, k) {
-  if (!it) return "";
-  if (it.k === "cap") {
-    const fill = it.pat ? `url(#${k}c)` : it.c, d = darken(it.c, .72);
-    return `${it.pat ? `<defs>${patternDef(k + "c", it.pat, it.c, it.pc)}</defs>` : ""}<path d="M83 42 l8 -4 l1 6Z M83 43 l7 4 l-2 4Z" fill="${it.c}" ${S1}/>
-      <path d="M35 50 C34 30 46 22 60 22 C76 22 86 30 85 50 C76 45 44 45 35 50Z" fill="${fill}" ${S}/><path d="M35.5 48 C46 43.5 74 43.5 84.5 48" stroke="${d}" stroke-width="3" fill="none"/><path d="M44 30 q6 -4 14 -4" stroke="#fff" stroke-width="2" opacity=".35" fill="none" stroke-linecap="round"/>`;
-  }
-  switch (it.id) {
-    case "flor": return `<g transform="translate(79 35)">${[0, 72, 144, 216, 288].map(a => `<ellipse rx="3.6" ry="5.5" transform="rotate(${a}) translate(0 -5)" fill="#f29b8a" ${S1}/>`).join("")}<circle r="3" fill="#f3d36b" ${S}/></g>`;
-    case "diadema": return `<path d="M37 46 C40 28 80 28 83 46" stroke="#e58aa6" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M72 30 l-7 -5 v10Z M72 30 l7 -5 v10Z" fill="#e58aa6" ${S1}/><circle cx="72" cy="30" r="2" fill="#c9607e"/>`;
-    case "lana": return `<path d="M34 50 C34 26 86 26 86 50 Z" fill="#c95b4a" ${S}/><path d="M44 30 v14M52 28 v16M60 27 v17M68 28 v16M76 30 v14" stroke="#a8483a" stroke-width="1.4"/><rect x="32" y="44" width="56" height="9" rx="4" fill="#a8483a" ${S}/><circle cx="60" cy="24" r="6.5" fill="#f3e6cf" ${S}/>`;
-    case "boina": return `<path d="M34 44 C34 28 52 22 66 24 C82 26 92 34 86 42 C76 46 46 48 34 44Z" fill="#3f4a5c" ${S}/><path d="M62 24 l1 -5" ${S}/>`;
-    case "paja": return `<ellipse cx="60" cy="40" rx="37" ry="8" fill="#e2c27a" ${S}/><path d="M42 40 C42 22 78 22 78 40 Z" fill="#e8cc89" ${S}/><path d="M42 36 C52 39 68 39 78 36" stroke="#c0453a" stroke-width="3.5" fill="none"/>`;
-    case "corona": return `<path d="M42 36 L43 18 L51 28 L60 13 L69 28 L77 18 L78 36Z" fill="#f1c75b" ${S}/><circle cx="60" cy="29" r="2.6" fill="#c0453a"/><circle cx="48" cy="31" r="1.6" fill="#4f6fae"/><circle cx="72" cy="31" r="1.6" fill="#5f8a55"/>`;
-    case "papanoel": return `<path d="M36 46 C38 24 58 14 80 18 C90 20 96 30 96 42" fill="none"/><path d="M36 46 C38 26 56 16 76 20 C88 23 94 34 92 46 L84 42 C84 34 80 30 74 30 C60 30 46 36 36 46Z" fill="#c0453a" ${S}/><path d="M76 20 C90 22 98 34 96 46" stroke="#c0453a" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="96" cy="48" r="5.5" fill="#fbf7ef" ${S}/><rect x="32" y="42" width="56" height="9" rx="4.5" fill="#fbf7ef" ${S}/>`;
-    case "reno": return `<path d="M37 46 C40 28 80 28 83 46" stroke="#8a6244" stroke-width="4" fill="none" stroke-linecap="round"/>${[[42, -1], [78, 1]].map(([x, s]) => `<path d="M${x} 32 C${x - 4 * s} 22 ${x - 2 * s} 14 ${x - 6 * s} 8 M${x - 2 * s} 22 l${-7 * s} -4 M${x - 3 * s} 15 l${4 * s} -6" stroke="#a87447" stroke-width="3.4" fill="none" stroke-linecap="round"/>`).join("")}<circle cx="40" cy="36" r="2" fill="#c0453a"/><circle cx="80" cy="36" r="2" fill="#c0453a"/>`;
-    case "bruja": return `<ellipse cx="60" cy="40" rx="38" ry="7" fill="#3a2f45" ${S}/><path d="M42 40 C46 26 52 14 58 6 C62 2 70 4 72 10 C66 10 64 14 66 20 C70 28 76 34 78 40Z" fill="#4a3a5c" ${S}/><path d="M44 35 C54 38 68 38 77 35" stroke="#e8873f" stroke-width="4" fill="none"/><rect x="56" y="31" width="7" height="7" fill="none" stroke="#f3d36b" stroke-width="1.6"/>`;
-    case "orejas_gato": return `<path d="M37 46 C40 28 80 28 83 46" stroke="#2e2630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M38 36 L40 18 L52 30Z M82 36 L80 18 L68 30Z" fill="#2e2630" ${S}/><path d="M42 31 L42.5 23 L48 29Z M78 31 L77.5 23 L72 29Z" fill="#e58aa6"/>`;
-    case "diadema_corazones": return `<path d="M37 46 C40 28 80 28 83 46" stroke="#e58aa6" stroke-width="3.5" fill="none" stroke-linecap="round"/><path d="M48 31 L46 20M72 31 L74 20" stroke="${INK}" stroke-width="1.2"/>${HEART(46, 18, 1.8, "#e14f6c")}${HEART(74, 18, 1.8, "#e14f6c")}`;
-    case "horquilla": return `<path d="M70 26 L86 16M74 30 L90 22" stroke="#2e2630" stroke-width="2" stroke-linecap="round"/><g transform="translate(70 28)">${FLOWER(0, 0, 3, "#f2b5c4", "#c9607e")}</g><path d="M86 16 l3 5 M90 22 l2 5" stroke="#c0453a" stroke-width="1.4"/>`;
-    case "pamela": return `<ellipse cx="60" cy="40" rx="44" ry="9" fill="#ead39b" ${S}/><path d="M40 40 C40 22 80 22 80 40Z" fill="#efdcab" ${S}/><path d="M40 36 C52 39 68 39 80 36" stroke="#4f7fae" stroke-width="3.5" fill="none"/><path d="M26 42 q4 2 8 2M86 44 q4 0 8 -2" stroke="#c9a65a" stroke-width="1" fill="none"/>`;
-    case "vaquero": return `<path d="M18 40 C24 48 40 46 60 45 C80 46 96 48 102 40 C96 44 88 42 82 40 L78 22 C74 14 68 18 60 18 C52 18 46 14 42 22 L38 40 C32 42 24 44 18 40Z" fill="#a8724a" ${S}/><path d="M39 36 C50 39 70 39 81 36" stroke="#6b4430" stroke-width="3.5" fill="none"/><path d="M60 18 v6" ${S1}/>`;
-    default: return "";
-  }
-}
-function avatarG(eq, mood) {
-  mood = mood || "neutral";
-  const k = "a" + (uid++);
-  const hcI = findItem("hairColor", eq.hairColor) || SHOP.hairColor.items[0], hc = hcI.c, sk = (findItem("skin", eq.skin) || SHOP.skin.items[1]).c;
-  const H = `fill="${hc}" ${S}`;
-  const shine = `<path d="M46 33 Q53 28.5 61 29.5" stroke="#fff" stroke-width="2.2" opacity=".32" fill="none" stroke-linecap="round"/>`;
-  const fringeShort = `<path d="M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z" ${H}/>`;
-  const hairBack = {
-    melena: `<path d="M34 52 C30 30 44 24 60 24 C78 24 90 32 86 54 L90 102 C80 106 74 100 76 86 L44 86 C46 100 40 106 30 102 Z" ${H}/>`,
-    media: `<path d="M34 54 C30 30 44 24 60 24 C78 24 90 30 86 54 L88 78 C80 83 74 79 74 72 L46 72 C46 79 40 83 32 78Z" ${H}/>`,
-    coleta: `<path d="M80 40 C100 44 102 72 90 90 C88 74 84 62 78 54 Z" ${H}/>`,
-    mono: `<circle cx="60" cy="23" r="10" ${H}/>`,
-    trenzas: [36, 84].map(x => [0, 1, 2, 3].map(i => `<ellipse cx="${x + (x < 60 ? -2 : 2) * i / 2}" cy="${66 + i * 9}" rx="5" ry="6" ${H}/>`).join("") + `<path d="M${x - 3} 103 h6" stroke="#c0453a" stroke-width="3" stroke-linecap="round"/>`).join("")
-  }[eq.hair] || "";
-  const hairFront = {
-    corto: fringeShort + shine,
-    rapado: `<path d="M37 50 C36 34 46 29 60 29 C74 29 84 34 83 50 C76 42 68 40 60 40 C52 40 44 42 37 50 Z" ${H} opacity=".92"/>`,
-    melena: `<path d="M36 56 C34 32 48 26 62 26 C78 26 86 36 84 56 C78 44 70 36 56 38 C48 40 40 46 36 56Z" ${H}/>` + shine,
-    media: `<path d="M36 52 C34 30 48 26 60 26 C74 26 86 30 84 52 C78 46 70 44 60 44 C50 44 42 46 36 52Z" ${H}/>` + shine,
-    flequillo: `<path d="M36 54 C33 30 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54Z" ${H}/>` + shine,
-    coleta: `<path d="M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C78 40 68 37 58 38 C50 39 42 43 36 52 Z" ${H}/>` + shine,
-    mono: `<path d="M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z" ${H}/>`,
-    trenzas: `<path d="M36 54 C34 32 46 26 60 26 C76 26 86 34 84 54 C80 42 70 38 60 38 C50 38 40 42 36 54 Z" ${H}/><path d="M60 27 V38" ${S1}/>`,
-    tupe: `<path d="M36 52 C33 30 46 22 62 20 C74 18 89 24 86 36 C88 44 85 50 84 52 C80 40 70 36 58 37 C48 38 41 44 36 52Z" ${H}/>` + shine,
-    rizos: [[40, 42, 9], [47, 32, 10], [60, 27, 10.5], [73, 32, 10], [80, 42, 9], [85, 52, 7], [35, 52, 7]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" ${H}/>`).join(""),
-    cresta: `<path d="M54 36 L50 14 L58 22 L61 6 L65 22 L73 13 L68 36 Z" ${H}/>`,
-    calvo: `<path d="M44 34 q4 -3 9 -3" stroke="#fff" stroke-width="2" opacity=".5" fill="none" stroke-linecap="round"/>`
-  }[eq.hair] || "";
-  const oi = findItem("outfit", eq.outfit) || SHOP.outfit.items[0];
-  const { back, torso } = outfitSVG(oi, sk, k);
-  const shade = `<path d="M18 140 C18 120 24 108 32 101 C30 114 30 128 32 140Z" fill="${INK}" opacity=".08"/><path d="M102 140 C102 120 96 108 88 101 C90 114 90 128 88 140Z" fill="${INK}" opacity=".08"/>`;
-  const neckAcc = {
-    esteto: `<path d="M48 90 C46 106 52 116 60 116 C68 116 74 106 72 90" stroke="#55626b" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="60" cy="118" r="4.5" fill="#c9d3d9" ${S}/>`,
-    panuelo: `<path d="M47 89 L73 89 L60 103 Z" fill="#c0453a" ${S}/><circle cx="56" cy="93" r="1" fill="#fff"/><circle cx="63" cy="95" r="1" fill="#fff"/>`,
-    lunares: `<path d="M46 89 L74 89 L60 105 Z" fill="#c0453a" ${S}/>${[[53, 92], [60, 92], [67, 92], [57, 97], [63, 97], [60, 101]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.4" fill="#fbf7ef"/>`).join("")}`,
-    bandana: `<path d="M46 89 L74 89 L60 104 Z" fill="#4f6fae" ${S}/>${[[54, 92], [64, 93], [59, 98]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="none" stroke="#fbf7ef" stroke-width=".8"/>`).join("")}`,
-    collar: [0, 1, 2, 3, 4, 5, 6].map(i => { const t = i / 6, x = 48 + 24 * t, y = 92 + 9 * Math.sin(Math.PI * t); return `<circle cx="${x}" cy="${y}" r="2.2" fill="${["#f29b8a", "#f3d36b", "#9cc0cf"][i % 3]}" stroke="${INK}" stroke-width=".9"/>`; }).join(""),
-    collar_corazones: `<path d="M48 91 Q60 104 72 91" stroke="#f3d36b" stroke-width="1.2" fill="none"/>${HEART(60, 100, 1.4, "#e14f6c")}`,
-    pajarita: `<path d="M60 94 L50 88 L50 100 Z M60 94 L70 88 L70 100Z" fill="#b8473a" ${S}/><circle cx="60" cy="94" r="2.6" fill="#a03c31" ${S}/>`,
-    bufanda: `<path d="M43 88 Q60 97 77 88 L78 96 Q60 106 42 96Z" fill="#5f8a55" ${S}/><path d="M66 98 L70 124 L62 125 L60 100Z" fill="#5f8a55" ${S}/>`,
-    bufanda_navidad: `<defs>${patternDef(k + "b", "rayas", "#fbf7ef", "#c0453a")}</defs><path d="M43 88 Q60 97 77 88 L78 96 Q60 106 42 96Z" fill="url(#${k}b)" ${S}/><path d="M66 98 L70 124 L62 125 L60 100Z" fill="url(#${k}b)" ${S}/><path d="M62 125 l-1 3M65 125 v3M68 124 l1 3" ${S1}/>`
-  }[eq.neck] || "";
-  const faceAcc = {
-    pecas: [[45, 61], [48, 63.5], [43, 64.5], [75, 61], [72, 63.5], [77, 64.5]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#a86a48"/>`).join(""),
-    lunar: `<circle cx="70" cy="67" r="1.1" fill="${INK}"/>`,
-    bigote: `<path d="M52 64.5 Q56 60.5 60 63.5 Q64 60.5 68 64.5 Q64 66.5 60 65 Q56 66.5 52 64.5Z" fill="${hc}" ${S1}/>`,
-    perilla: `<path d="M55 74 Q60 81 65 74 Q60 76.5 55 74Z" fill="${hc}" ${S1}/>`,
-    barba: `<path d="M37 58 C37 76 48 83 60 83 C72 83 83 76 83 58 C79 70 70 75 60 75 C50 75 41 70 37 58Z" fill="${hc}" ${S}/>`
-  }[eq.face] || "";
-  const eyeAcc = {
-    gafas: `<circle cx="51" cy="57" r="6.5" fill="#fff" fill-opacity=".25" ${S}/><circle cx="69" cy="57" r="6.5" fill="#fff" fill-opacity=".25" ${S}/><path d="M57.5 56.5 L62.5 56.5" ${S}/>`,
-    pasta: `<rect x="43" y="51.5" width="16" height="11" rx="3" fill="#fff" fill-opacity=".2" stroke="#7a3b2e" stroke-width="3"/><rect x="61" y="51.5" width="16" height="11" rx="3" fill="#fff" fill-opacity=".2" stroke="#7a3b2e" stroke-width="3"/><path d="M59 55 L61 55" stroke="#7a3b2e" stroke-width="3"/>`,
-    gafas_sol: `<rect x="43.5" y="51.5" width="15" height="10" rx="4" fill="#2b2a2e" ${S}/><rect x="61.5" y="51.5" width="15" height="10" rx="4" fill="#2b2a2e" ${S}/><path d="M58.5 55 L61.5 55" ${S}/>`,
-    gafas_corazon: [51, 69].map(x => `<path d="M${x} 62 C${x - 9} 56 ${x - 6} 49 ${x} 53 C${x + 6} 49 ${x + 9} 56 ${x} 62Z" fill="#e8708f" fill-opacity=".85" ${S}/>`).join("") + `<path d="M57 55 L63 55" ${S}/>`
-  }[eq.eyes] || "";
-  const earAcc = {
-    aros: `<circle cx="35" cy="66" r="3.2" fill="none" stroke="#e2b65e" stroke-width="1.8"/><circle cx="85" cy="66" r="3.2" fill="none" stroke="#e2b65e" stroke-width="1.8"/>`,
-    perlas: `<circle cx="35" cy="64.5" r="2.2" fill="#fbf7ef" stroke="${INK}" stroke-width=".9"/><circle cx="85" cy="64.5" r="2.2" fill="#fbf7ef" stroke="${INK}" stroke-width=".9"/>`,
-    estrellas: [35, 85].map(x => STARP(x, 65, 3, "#f3d36b")).join(""),
-    cascabeles: [35, 85].map(x => `<circle cx="${x}" cy="66" r="2.6" fill="#f0c25e" stroke="${INK}" stroke-width=".9"/><path d="M${x - 1.5} 66.5 h3" stroke="${INK}" stroke-width=".7"/>`).join(""),
-    calabacitas: [35, 85].map(x => `<ellipse cx="${x}" cy="66.5" rx="2.8" ry="2.3" fill="#e8873f" stroke="${INK}" stroke-width=".8"/><path d="M${x} 64.2 v-1.4" stroke="#5f8a55" stroke-width="1"/>`).join(""),
-    corazones: [35, 85].map(x => HEART(x, 66, .9, "#e14f6c")).join(""),
-    borlas: [35, 85].map(x => `<circle cx="${x}" cy="64" r="1.4" fill="#f0c25e"/><path d="M${x - 1.2} 65 L${x - 2} 72 L${x + 2} 72 L${x + 1.2} 65Z" fill="#c0453a"/>`).join(""),
-    coral: [35, 85].map(x => `<circle cx="${x}" cy="65" r="2" fill="#e8806b" stroke="${INK}" stroke-width=".8"/><circle cx="${x}" cy="69" r="1.4" fill="#e8806b"/>`).join("")
-  }[eq.ears] || "";
-  const eyesNow = mood === "happy" ? `<path d="M47.5 57 Q51 53.5 54.5 57M65.5 57 Q69 53.5 72.5 57" ${S} fill="none"/>`
-    : `<ellipse cx="51" cy="57" rx="2.5" ry="3.1" fill="${INK}"/><ellipse cx="69" cy="57" rx="2.5" ry="3.1" fill="${INK}"/><circle cx="52" cy="55.8" r=".9" fill="#fff"/><circle cx="70" cy="55.8" r=".9" fill="#fff"/>`;
-  const mY = eq.face === "bigote" ? 1.2 : 0;
-  const m = mood === "sad" ? `<path d="M55 ${67 + mY} Q60 ${63.5 + mY} 65 ${67 + mY}" ${S} fill="none"/>` : `<path d="M54 ${64.5 + mY} Q60 ${70 + mY} 66 ${64.5 + mY}" ${S} fill="${mood === "happy" ? "#e8857c" : "none"}"/>`;
-  const brows = mood === "sad" ? `<path d="M46.5 50 L54 48M66 48 L73.5 50" stroke="${hc}" stroke-width="2.4" stroke-linecap="round"/>` : `<path d="M47 49 L54 48M66 48 L73 49" stroke="${hc}" stroke-width="2.4" stroke-linecap="round"/>`;
-  const head = headSVG(findItem("head", eq.head), hc, k);
-  return `${back}${hairBack}${torso}${shade}
-    <path d="M53 76 L53 90 L67 90 L67 76Z" fill="${sk}" ${S}/><path d="M53 80 Q60 84 67 80 L67 76 L53 76Z" fill="${INK}" opacity=".1"/>
-    ${neckAcc}
-    <circle cx="36" cy="58" r="5" fill="${sk}" ${S}/><circle cx="84" cy="58" r="5" fill="${sk}" ${S}/>${earAcc}
-    <circle cx="60" cy="55" r="24" fill="${sk}" ${S}/>
-    ${eq.face === "barba" ? faceAcc : ""}${eyesNow}${brows}${cheeks(45, 75, 64)}<path d="M60 59 q1.8 2.4 -.6 3.4" ${S1}/>
-    ${eq.face && eq.face !== "barba" && eq.face !== "bigote" ? faceAcc : ""}${m}${eq.face === "bigote" ? faceAcc : ""}
-    ${hairFront}${eyeAcc}${head}`;
-}
-function avatarSVG(eq, mood, cls, vb) { return `<svg class="${cls || ""}" viewBox="${vb || "0 0 120 140"}" aria-hidden="true">${avatarG(eq, mood || "neutral")}</svg>`; }
 
 /* ---------------- la clínica (360x240) ---------------- */
 const FLOOR_Y = 186;   /* base de todo lo que está apoyado contra la pared */
 const POT = (x, y, w, h, c) => `<path d="M${x} ${y} h${w} l-${w * .12} ${h} h-${w * .76}Z" fill="${c || "#c9764e"}" ${S}/><rect x="${x - 2}" y="${y - 4}" width="${w + 4}" height="5" rx="1.5" fill="${c || "#c9764e"}" ${S}/>`;
-function windowView(id) {
-  const sky = { campo: "#cfe7ee", ciudad: "#d6e4ec", mar: "#cde6f0", otono: "#f6dcc0", nieve: "#e3ecf0", noche: "#26304a", luna: "#3a2f4f", sakura: "#f6e6ea", pueblo: "#cfe6f0", desierto: "#f6dcb0" }[id] || "#cfe7ee";
-  let v = `<rect x="20" y="24" width="72" height="68" fill="${sky}"/>`;
-  if (id === "campo") v += `<circle cx="72" cy="40" r="7" fill="#f6d77a"/><path d="M20 70 q12 -12 26 -4 q12 -10 24 -2 q10 -6 22 0 L92 92 L20 92Z" fill="#a9c49a"/><path d="M20 80 q20 -8 40 0 q18 -6 32 0 L92 92 L20 92Z" fill="#8fae8b"/><circle cx="36" cy="66" r="5" fill="#6f9e6b"/><path d="M36 70 v6" stroke="#7a5638" stroke-width="2"/><path d="M30 36 q3 -3 6 0 q3 -3 6 0" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
-  if (id === "ciudad") v += `<circle cx="34" cy="38" r="6" fill="#f6d77a"/>${[[22, 60, 12], [36, 50, 10], [48, 64, 12], [62, 46, 14], [78, 58, 14]].map(([x, y, w], i) => `<rect x="${x}" y="${y}" width="${w}" height="${92 - y}" fill="${["#b9a28c", "#c9b6a0", "#a9917c", "#bfa58e", "#d0bba5"][i]}"/>${[0, 1, 2].map(r => `<rect x="${x + 3}" y="${y + 5 + r * 9}" width="3" height="4" fill="#fbf2d8"/><rect x="${x + w - 6}" y="${y + 5 + r * 9}" width="3" height="4" fill="#fbf2d8"/>`).join("")}`).join("")}`;
-  if (id === "mar") v += `<circle cx="70" cy="42" r="7" fill="#f6d77a"/><rect x="20" y="64" width="72" height="28" fill="#7fb2cf"/><path d="M22 70 q4 -2 8 0M44 76 q4 -2 8 0M66 70 q4 -2 8 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M38 64 l8 -14 v14Z" fill="#fbf7ef" ${S1}/><path d="M34 64 h16 l-3 4 h-10Z" fill="#c95b4a"/><path d="M20 88 q20 -6 40 0 q16 -4 32 0 V92 H20Z" fill="#efdcb6"/>`;
-  if (id === "otono") v += `<circle cx="72" cy="38" r="6" fill="#f2b45a"/><path d="M20 78 q24 -8 48 0 q12 -4 24 0 V92 H20Z" fill="#c9a65a"/>${[[34, 62, "#d9733f"], [56, 58, "#e8a03f"], [78, 64, "#c0453a"]].map(([x, y, c]) => `<path d="M${x} ${y + 12} v10" stroke="#7a5638" stroke-width="2.4"/><circle cx="${x}" cy="${y}" r="10" fill="${c}"/><circle cx="${x - 5}" cy="${y + 4}" r="6" fill="${c}"/>`).join("")}`;
-  if (id === "nieve") v += `<path d="M20 72 q16 -12 34 -2 q16 -10 38 2 V92 H20Z" fill="#fbfdff"/>${[[34, 60], [52, 56], [76, 62]].map(([x, y]) => `<path d="M${x} ${y} l-7 14 h14Z M${x} ${y + 8} l-8 14 h16Z" fill="#5f8a6b"/><path d="M${x - 3} ${y + 8} h6" stroke="#fbfdff" stroke-width="2"/>`).join("")}${[[28, 34], [46, 30], [62, 40], [84, 32], [40, 48], [74, 50]].map(([x, y]) => `<circle class="snow" cx="${x}" cy="${y}" r="1.4" fill="#fff"/>`).join("")}`;
-  if (id === "noche") v += `<circle cx="70" cy="42" r="8" fill="#f3e6cf"/><circle cx="73.5" cy="40" r="7" fill="#26304a"/>${[[30, 34], [44, 46], [56, 32], [36, 58], [84, 60], [50, 66]].map(([x, y]) => `<circle class="twinkle" cx="${x}" cy="${y}" r="1.1" fill="#f3e6cf"/>`).join("")}<path d="M20 80 q20 -8 40 0 q16 -6 32 0 V92 H20Z" fill="#1c2438"/>`;
-  if (id === "luna") v += `<circle cx="64" cy="44" r="13" fill="#f2b45a"/><circle cx="60" cy="40" r="2" fill="#e09a42"/><circle cx="68" cy="48" r="3" fill="#e09a42"/><path d="M20 82 q20 -6 40 0 q16 -4 32 0 V92 H20Z" fill="#241c30"/><path d="M34 82 v-14 M34 72 l-6 -6 M34 68 l5 -7 M30 66 l-3 1" stroke="#241c30" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M76 34 q2 -2 3 0 q1 -1.5 1.5 0 q1 -2 3 0 q-2 0 -2.5 1.5 q-1 -.8 -2 0 q-.5 -1.5 -3 -1.5Z" fill="#241c30"/>`;
-  if (id === "sakura") v += `<circle cx="72" cy="38" r="6" fill="#f6d77a"/><path d="M20 72 l14 -20 l10 12 l12 -16 l18 24 H20Z" fill="#a9b8c9"/><path d="M50 48 l6 -8 l6 8Z" fill="#fbfdff"/><path d="M20 80 q30 -8 72 0 V92 H20Z" fill="#a9c49a"/>${[[30, 68], [46, 72], [78, 70]].map(([x, y]) => `<path d="M${x} ${y + 10} v8" stroke="#6b4430" stroke-width="2.4"/><circle cx="${x}" cy="${y}" r="9" fill="#f2b5c4"/><circle cx="${x + 5}" cy="${y + 3}" r="6" fill="#e9a1b5"/>`).join("")}`;
-  if (id === "pueblo") v += `<circle cx="74" cy="36" r="6" fill="#f6d77a"/><rect x="20" y="74" width="72" height="18" fill="#7fb2cf"/>${[[22, 60, 14], [36, 56, 12], [48, 62, 14], [62, 54, 12], [74, 60, 16]].map(([x, y, w]) => `<rect x="${x}" y="${y}" width="${w}" height="${78 - y}" fill="#fbf8f2" stroke="#d9cbb5" stroke-width=".6"/><rect x="${x + w / 2 - 2}" y="${y + 6}" width="4" height="5" fill="#4f7fae"/>`).join("")}<path d="M62 54 q6 -8 12 0Z" fill="#4f7fae"/>`;
-  if (id === "desierto") v += `<circle cx="70" cy="40" r="8" fill="#f6c45a"/><path d="M20 70 h14 v-12 h12 v12 h8 V92 H20Z" fill="#c9764e"/><path d="M60 72 h8 v-8 h10 v8 h14 V92 H60Z" fill="#b86a45"/><path d="M20 84 q36 -6 72 0 V92 H20Z" fill="#e6c08a"/><path d="M50 88 v-14 M50 80 h-4 v-4 M50 78 h4 v-5" stroke="#5f8a55" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
-  return v;
-}
-function curtainsSVG(id, k) {
-  if (!id) return "";
-  const it = findItem("curtains", id); if (!it) return "";
-  const fill = it.pat ? `url(#${k}g)` : it.c;
-  return `${it.pat ? `<defs>${patternDef(k + "g", it.pat, it.pbg || "#fbf2e8", it.c)}</defs>` : ""}
-    <path d="M16 20 C22 40 22 70 14 96 L26 96 C32 70 30 40 30 20Z" fill="${fill}" ${S}/><path d="M22 24 C25 44 25 70 20 94" stroke="${INK}" stroke-width="1" opacity=".25" fill="none"/>
-    <path d="M96 20 C90 40 90 70 98 96 L86 96 C80 70 82 40 82 20Z" fill="${fill}" ${S}/><path d="M90 24 C87 44 87 70 92 94" stroke="${INK}" stroke-width="1" opacity=".25" fill="none"/>
-    <path d="M18 62 q6 4 12 0M82 62 q6 4 12 0" stroke="#c9a65a" stroke-width="2.4" fill="none"/>`;
-}
 const SHELF = `<rect x="108" y="96" width="64" height="5" rx="1.5" fill="#a87447" ${S}/><path d="M114 101 l0 5M166 101 l0 5" ${S}/>`;
 const DECOR = {
   ceiling: {
@@ -656,69 +508,110 @@ const TABLES = {
 };
 const TOWEL = { madera: "#cfe0e6", rustica: "#efdcb6", t_laca: "#f6efe0", t_azulejo: "#dfeef2", t_diner: "#fbf7ef" };
 
+/* ---------------- la escena completa ----------------
+   opts: eq (equipamiento; por defecto el de la partida), patient {species, name}, mood (del paciente),
+   vetMood, viewBox (recorte), static (sin animaciones: miniaturas de la tienda) */
+function still(fn) { const p = ANIM; ANIM = false; try { return fn(); } finally { ANIM = p; } }
+const REDUCED = typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 function sceneSVG(opts = {}) {
+  const p = ANIM;
+  ANIM = !opts.static && !REDUCED;
+  try { return paintScene(opts); } finally { ANIM = p; }
+}
+/* altura de la superficie de cada camilla: el paciente se apoya encima, sobre la toalla */
+const TABLE_TOP = { cojin: 138, t_amor: 138, acolchada: 142, hidraulica: 144, t_laca: 144, t_diner: 144, madera: 146, rustica: 146, t_navidad: 146, t_halloween: 146 };
+function paintScene(opts) {
   const eq = opts.eq || G.eq, k = "s" + (uid++);
   const wall = findItem("wall", eq.wall) || SHOP.wall.items[0], floor = findItem("floor", eq.floor) || SHOP.floor.items[0];
   let defs = "", wallFill = wall.c;
   const pat = (body, w, h) => { defs += `<pattern id="${k}w" width="${w}" height="${h}" patternUnits="userSpaceOnUse">${body}</pattern>`; wallFill = `url(#${k}w)`; };
   const usePat = (p, bg, fg) => { defs += patternDef(k + "w", p, bg, fg); wallFill = `url(#${k}w)`; };
   if (eq.wall === "huellas") pat(`<rect width="38" height="38" fill="${wall.c}"/>${PAWP(10, 12, 1.2, wall.d)}${PAWP(29, 30, 1.2, wall.d)}`, 38, 38);
-  if (eq.wall === "flores") pat(`<rect width="34" height="34" fill="${wall.c}"/>${FLOWER(8, 9, 2, "#e6a77f")}${FLOWER(26, 25, 2, "#a9c49a", "#f3d36b")}`, 34, 34);
-  if (eq.wall === "rayas") pat(`<rect width="22" height="10" fill="${wall.c}"/><rect width="8" height="10" fill="${wall.d}" opacity=".45"/>`, 22, 10);
-  if (eq.wall === "azulejo") pat(`<rect width="16" height="12" fill="${wall.c}"/><path d="M0 11.5 H16 M15.5 0 V12" stroke="${wall.d}" stroke-width="1"/>`, 16, 12);
-  if (eq.wall === "madera") pat(`<rect width="30" height="60" fill="${wall.c}"/><path d="M0 0 V60" stroke="${wall.d}" stroke-width="2"/>`, 30, 60);
-  if (eq.wall === "noche") pat(`<rect width="60" height="50" fill="${wall.c}"/><circle cx="10" cy="12" r="1.2" fill="#f3e6cf"/><circle cx="40" cy="8" r=".9" fill="#f3e6cf"/><circle cx="28" cy="34" r="1.4" fill="#f3d36b"/>`, 60, 50);
+  if (eq.wall === "flores") pat(`<rect width="34" height="34" fill="${wall.c}"/>${FLOWER(8, 9, 2, "#e6a77f")}${FLOWER(26, 25, 2, "#a9c49a", "#f3d36b")}<path d="M15 20 q2 -3 5 -2" stroke="#a9c49a" stroke-width=".8" fill="none"/>`, 34, 34);
+  if (eq.wall === "rayas") pat(`<rect width="22" height="10" fill="${wall.c}"/><rect width="8" height="10" fill="${wall.d}" opacity=".45"/><rect x="9.5" width="1" height="10" fill="${wall.d}" opacity=".3"/>`, 22, 10);
+  if (eq.wall === "azulejo") pat(`<rect width="16" height="12" fill="${wall.c}"/><rect x="1" y="1" width="6" height="4" fill="#fff" opacity=".35"/><path d="M0 11.5 H16 M15.5 0 V12" stroke="${wall.d}" stroke-width="1"/>`, 16, 12);
+  if (eq.wall === "madera") pat(`<rect width="30" height="60" fill="${wall.c}"/><path d="M0 0 V60" stroke="${wall.d}" stroke-width="2"/><path d="M8 0 q3 20 0 40 q-2 12 1 20 M20 0 q-2 14 1 30 q2 18 -1 30" stroke="${wall.d}" stroke-width=".7" fill="none" opacity=".45"/><ellipse cx="15" cy="34" rx="1.6" ry="3" fill="none" stroke="${wall.d}" stroke-width=".7" opacity=".6"/>`, 30, 60);
+  if (eq.wall === "noche") pat(`<rect width="60" height="50" fill="${wall.c}"/><circle cx="10" cy="12" r="1.2" fill="#f3e6cf"/><circle cx="40" cy="8" r=".9" fill="#f3e6cf"/>${STARP(28, 34, 2.2, "#f3d36b")}<circle cx="50" cy="40" r=".7" fill="#f3e6cf" opacity=".7"/>`, 60, 50);
   if (eq.wall === "w_navidad") usePat("acebo", wall.c, wall.d);
   if (eq.wall === "w_halloween") usePat("murcielagos", wall.c, wall.d);
   if (eq.wall === "w_amor") usePat("corazones", wall.c, wall.d);
   if (eq.wall === "shoji") pat(`<rect width="24" height="30" fill="${wall.c}"/><path d="M0 0 V30 M0 0 H24 M12 0 V30 M0 15 H24" stroke="${wall.d}" stroke-width="1.6"/>`, 24, 30);
-  if (eq.wall === "cal") pat(`<rect width="20" height="20" fill="${wall.c}"/>`, 20, 20);
-  if (eq.wall === "ladrillo") pat(`<rect width="28" height="14" fill="${wall.c}"/><path d="M0 6.5 H28 M0 13.5 H28 M14 0 V6.5 M0 7 V14 M28 7 V14" stroke="${wall.d}" stroke-width="1.4"/>`, 28, 14);
+  if (eq.wall === "cal") pat(`<rect width="20" height="20" fill="${wall.c}"/><circle cx="6" cy="8" r="2" fill="#efe8dc" opacity=".6"/><circle cx="15" cy="15" r="1.4" fill="#efe8dc" opacity=".5"/>`, 20, 20);
+  if (eq.wall === "ladrillo") pat(`<rect width="28" height="14" fill="${wall.d}"/><rect x=".7" y=".7" width="12.6" height="5.6" rx=".8" fill="${wall.c}"/><rect x="14.7" y=".7" width="12.6" height="5.6" rx=".8" fill="${mixC(wall.c, wall.d, .25)}"/><rect x="-6.3" y="7.7" width="12.6" height="5.6" rx=".8" fill="${mixC(wall.c, "#e09a7a", .3)}"/><rect x="7.7" y="7.7" width="12.6" height="5.6" rx=".8" fill="${wall.c}"/><rect x="21.7" y="7.7" width="12.6" height="5.6" rx=".8" fill="${mixC(wall.c, "#e09a7a", .3)}"/>`, 28, 14);
   let floorFill = floor.c;
   const fpat = (body, w, h) => { defs += `<pattern id="${k}f" width="${w}" height="${h}" patternUnits="userSpaceOnUse">${body}</pattern>`; floorFill = `url(#${k}f)`; };
-  if (eq.floor === "tarima") fpat(`<rect width="80" height="16" fill="${floor.c}"/><path d="M0 15.5 H80M30 0 V16" stroke="#a87447" stroke-width="1.4"/>`, 80, 16);
-  if (eq.floor === "oscura") fpat(`<rect width="80" height="16" fill="${floor.c}"/><path d="M0 15.5 H80M50 0 V16" stroke="#6b4a32" stroke-width="1.4"/>`, 80, 16);
-  if (eq.floor === "espiga") fpat(`<rect width="24" height="24" fill="${floor.c}"/><path d="M0 12 L12 0 L24 12 L12 24Z" fill="none" stroke="#a87447" stroke-width="1.3"/>`, 24, 24);
-  if (eq.floor === "baldosa") fpat(`<rect width="32" height="20" fill="${floor.c}"/><path d="M0 19.5 H32 M31.5 0 V20" stroke="#b86d52" stroke-width="1.4"/>`, 32, 20);
-  if (eq.floor === "hidraulica") fpat(`<rect width="24" height="24" fill="${floor.c}"/><path d="M12 2 L22 12 L12 22 L2 12Z" fill="#9cc0cf" opacity=".6"/><circle cx="12" cy="12" r="3" fill="#c95b4a" opacity=".7"/>`, 24, 24);
+  const plank = (c, line) => `<rect width="80" height="16" fill="${c}"/><rect y="8" width="80" height="8" fill="${mixC(c, line, .12)}"/><path d="M0 15.5 H80M30 0 V8M62 8 V16" stroke="${line}" stroke-width="1.3"/><path d="M6 4 q14 -1.5 22 0 M40 12 q10 1.5 18 0" stroke="${line}" stroke-width=".6" fill="none" opacity=".5"/>`;
+  if (eq.floor === "tarima") fpat(plank(floor.c, "#a87447"), 80, 16);
+  if (eq.floor === "oscura") fpat(plank(floor.c, "#6b4a32"), 80, 16);
+  if (eq.floor === "espiga") fpat(`<rect width="24" height="24" fill="${floor.c}"/><path d="M0 12 L12 0 L24 12 L12 24Z" fill="${mixC(floor.c, "#a87447", .18)}" stroke="#a87447" stroke-width="1.2"/>`, 24, 24);
+  if (eq.floor === "baldosa") fpat(`<rect width="32" height="20" fill="${floor.c}"/><rect x="1" y="1" width="14" height="8" fill="#fff" opacity=".1"/><path d="M0 19.5 H32 M31.5 0 V20" stroke="#b86d52" stroke-width="1.4"/>`, 32, 20);
+  if (eq.floor === "hidraulica") fpat(`<rect width="24" height="24" fill="${floor.c}"/><path d="M12 2 L22 12 L12 22 L2 12Z" fill="#9cc0cf" opacity=".6"/><circle cx="12" cy="12" r="3" fill="#c95b4a" opacity=".7"/><path d="M0 0 h24 v24" stroke="#d6cbb8" stroke-width=".8" fill="none"/>`, 24, 24);
   if (eq.floor === "damero") fpat(`<rect width="32" height="24" fill="${floor.c}"/><rect width="16" height="12" fill="#8a6a55"/><rect x="16" y="12" width="16" height="12" fill="#8a6a55"/>`, 32, 24);
-  if (eq.floor === "verde") fpat(`<rect width="10" height="10" fill="${floor.c}"/><circle cx="3" cy="3" r=".8" fill="#7d9665"/>`, 10, 10);
+  if (eq.floor === "verde") fpat(`<rect width="10" height="10" fill="${floor.c}"/><circle cx="3" cy="3" r=".8" fill="#7d9665"/><circle cx="8" cy="7" r=".6" fill="#9fb886"/>`, 10, 10);
   if (eq.floor === "tatami") fpat(`<rect width="60" height="30" fill="${floor.c}"/><path d="M0 29 H60 M59 0 V30" stroke="#3e4f45" stroke-width="2.4"/><path d="M0 8 H60 M0 16 H60 M0 23 H60" stroke="#c4b277" stroke-width=".8"/>`, 60, 30);
-  defs += `<linearGradient id="${k}l" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fff6d8" stop-opacity=".5"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></linearGradient>
-    <radialGradient id="${k}v" cx=".5" cy=".45" r=".75"><stop offset=".6" stop-color="#4a3426" stop-opacity="0"/><stop offset="1" stop-color="#4a3426" stop-opacity=".22"/></radialGradient>
-    <clipPath id="${k}c"><rect x="20" y="24" width="72" height="68"/></clipPath>`;
-  const D = (cat) => eq[cat] && DECOR[cat][eq[cat]] ? DECOR[cat][eq[cat]]() : "";
   const night = ["noche", "luna"].includes(eq.view);
-  const wainscot = eq.wall === "cal" ? `<defs>${patternDef(k + "z", "flores", "#fbf8f2", wall.d)}</defs><rect y="128" width="360" height="49" fill="url(#${k}z)"/><path d="M0 128 H360" stroke="${wall.d}" stroke-width="3"/>`
-    : `<rect y="128" width="360" height="48" fill="${wall.d}" opacity=".55"/>${[30, 90, 150, 210, 270, 330].map(x => `<rect x="${x - 24}" y="135" width="48" height="34" rx="2" fill="none" stroke="${INK}" stroke-width="1" opacity=".18"/>`).join("")}`;
-  /* altura de la superficie de cada camilla: el paciente se sienta encima, sobre la toalla */
-  const TOP = { cojin: 138, t_amor: 138, acolchada: 142, hidraulica: 144, t_laca: 144, t_diner: 144, madera: 146, rustica: 146, t_navidad: 146, t_halloween: 146 }[eq.table] || 148;
-  const PS = .8, py = TOP - 2 - 101 * PS, px = 263 - 50 * PS;
-  const patient = opts.patient ? `${SH(263, TOP - 2, 30, 3, .16)}<g class="${opts.mood === "happy" ? "hop" : opts.mood === "sad" ? "droop" : "idle"}" style="transform-origin:263px ${TOP}px"><g transform="translate(${px} ${py.toFixed(1)}) scale(${PS})">${animalSVG(opts.patient.species, opts.patient.name, opts.mood || "neutral")}</g></g>` : "";
-  const table = (TABLES[eq.table] || TABLES.metal)();
+  const curt = eq.curtains ? findItem("curtains", eq.curtains) : null;
+  const lit = !night && !(curt && ["closed", "blind"].includes(curt.st));
+  defs += `<linearGradient id="${k}l" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#fff3cc" stop-opacity=".55"/><stop offset="1" stop-color="#fff3cc" stop-opacity="0"/></linearGradient>
+    <linearGradient id="${k}a" x1="0" x2=".35" y1="0" y2="1"><stop offset="0" stop-color="#fff4cf" stop-opacity=".42"/><stop offset=".7" stop-color="#fff4cf" stop-opacity=".12"/><stop offset="1" stop-color="#fff4cf" stop-opacity="0"/></linearGradient>
+    <radialGradient id="${k}sun" cx=".16" cy=".26" r=".8"><stop offset="0" stop-color="#fff1c8" stop-opacity=".38"/><stop offset=".55" stop-color="#fff1c8" stop-opacity=".08"/><stop offset="1" stop-color="#fff1c8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="${k}wl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2418" stop-opacity=".1"/><stop offset=".22" stop-color="#3a2418" stop-opacity="0"/><stop offset=".85" stop-color="#3a2418" stop-opacity="0"/><stop offset="1" stop-color="#3a2418" stop-opacity=".1"/></linearGradient>
+    <linearGradient id="${k}fl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a2418" stop-opacity=".26"/><stop offset=".3" stop-color="#3a2418" stop-opacity=".06"/><stop offset="1" stop-color="#fff6e4" stop-opacity=".1"/></linearGradient>
+    <linearGradient id="${k}gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset=".35" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#fff" stop-opacity="0"/><stop offset=".72" stop-color="#fff" stop-opacity=".16"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <radialGradient id="${k}v" cx=".5" cy=".45" r=".78"><stop offset=".62" stop-color="#3a2418" stop-opacity="0"/><stop offset="1" stop-color="#3a2418" stop-opacity=".26"/></radialGradient>
+    <clipPath id="${k}c"><rect x="20" y="24" width="72" height="68"/></clipPath>`;
+  /* la decoración antigua pasa por paintLegacy (contorno de color + sombreado) */
+  const D = cat => eq[cat] && DECOR[cat] && DECOR[cat][eq[cat]] ? paintLegacy(DECOR[cat][eq[cat]]()) : "";
+  const rail = mixC(wall.d, "#a87447", .45);
+  const wainscot = eq.wall === "cal"
+    ? `<defs>${patternDef(k + "z", "flores", "#fbf8f2", wall.d)}</defs><rect y="128" width="360" height="49" fill="url(#${k}z)"/><path d="M0 129 H360" stroke="${wall.d}" stroke-width="3"/>`
+    : `<rect y="128" width="360" height="48" fill="${wall.d}" opacity=".55"/>` + [30, 90, 150, 210, 270, 330].map(x => `<rect x="${x - 24}" y="135" width="48" height="34" rx="2" fill="${darken(wall.d, .9)}" opacity=".16"/>` +
+      LINE(`M${x - 24} 169 V135 H${x + 24}`, darken(wall.d, .62), 1, 'opacity=".45"') + LINE(`M${x + 24} 135 V169 H${x - 24}`, lighten(wall.d, .55), 1, 'opacity=".6"')).join("");
+  /* ventana: vista animada + cristal + marco pintado + cortinas */
+  const win = `<g clip-path="url(#${k}c)">${windowView(eq.view || "campo")}</g><rect x="20" y="24" width="72" height="68" fill="url(#${k}gl)"/>` +
+    SOFT(56, 26, 36, 3, .35) +
+    VP("M16 20 H96 V96 H16 Z M20.5 24.5 V91.5 H91.5 V24.5 Z", "#fbf4e6", { x: 'fill-rule="evenodd"', w: 1.5, lc: "#d9c4a4" }) +
+    VR(54.6, 24, 2.8, 68, .4, "#fbf4e6", { w: 1, lc: "#d9c4a4", hl: 0 }) + VR(20, 56.6, 72, 2.8, .4, "#fbf4e6", { w: 1, lc: "#d9c4a4", hl: 0 }) +
+    `<path d="M24 28 l12 0 l-12 12Z M60 28 l7 0 l-7 7Z" fill="#fff" opacity=".22"/>` +
+    curtainsSVG(eq.curtains, k) +
+    VR(9, 15.5, 94, 5, 2.5, "#a87447", { w: 1.3 }) + VC(9, 18, 3.4, "#c9a26f", { w: 1.1 }) + VC(103, 18, 3.4, "#c9a26f", { w: 1.1 }) +
+    SOFT(56, 99.6, 42, 3, .5) + VR(13, 91, 86, 6.5, 2, "#f6ecdc", { w: 1.3, lc: "#d9c4a4" }) + LINE("M15 92.6 H97", "#ffffff", 1, 'opacity=".7"');
+  /* camilla y paciente */
+  const TOP = TABLE_TOP[eq.table] || 148;
+  const sp = opts.patient && opts.patient.species, big = BIG.includes(sp);
   const towelC = TOWEL[eq.table] || "#f2d6cd";
-  const towel = opts.patient ? `<path d="M226 ${TOP - 1} q6 -6 18 -4 h38 q10 -2 16 4 v4 h-72Z" fill="${towelC}" ${S1}/>` : `<path d="M226 147 q8 -10 22 -4 q12 -6 22 2 q10 -2 14 2" fill="${towelC}" ${S}/>`;
+  const towel = opts.patient ? VP(`M226 ${TOP - 1} q6 -6 18 -4 h38 q10 -2 16 4 v4 h-72Z`, towelC, { w: 1.2 }) + LINE(`M232 ${TOP - 3} h56`, darken(towelC, .85), .8, 'stroke-dasharray="2 2" opacity=".6"')
+    : VP("M226 147 q8 -10 22 -4 q12 -6 22 2 q10 -2 14 2 q-26 4 -58 0Z", towelC, { w: 1.3 });
+  const table = big ? "" : SOFT(263, 207, 70, 6, .6) + paintLegacy((TABLES[eq.table] || TABLES.metal)()) + towel;
+  const straw = big ? VE(262, 231, 78, 8, "#e9cd85", { w: 1, hl: 0, lc: "#c9a04a" }) + Array.from({ length: 26 }, (_, i) => { const x = 190 + (i * 41) % 146, y = 225 + (i * 7) % 12; return LINE(`M${x} ${y} l${(i % 3 - 1) * 5} ${-1.5 - (i % 2)}`, i % 2 ? "#d9b45a" : "#b88a3a", 1.1); }).join("") : "";
+  const patient = opts.patient ? (big ? SOFT(262, 232, 70, 6, .7) : SOFT(263, TOP - 1, 30, 3.4, .55)) + patientInScene(sp, opts.patient.name, opts.mood || "neutral", TOP) : "";
+  /* tu personaje, de cuerpo entero, a la izquierda de la camilla */
+  const vm = opts.vetMood || "neutral";
+  const vet = SOFT(141, 234, 32, 4, .6) + `<g class="vet ${vm === "happy" ? "cheer" : ""}" style="transform-origin:141px 234px"><g transform="translate(98 94.3) scale(.72)">${avatarG(eq, vm)}</g></g>`;
+  /* rayo de sol con motas de polvo */
+  const beam = lit ? `<path d="M22 26 L90 26 L150 238 L60 238 Z" fill="url(#${k}a)" pointer-events="none"/>` +
+    (ANIM ? [[48, 70], [62, 104], [74, 136], [86, 160], [70, 186], [96, 200], [56, 150]].map(([x, y], i) => `<circle class="mote" cx="${x}" cy="${y}" r="${.6 + (i % 3) * .25}" fill="#fff8e0" style="animation-delay:${-i * 1.1}s;animation-duration:${6 + i % 4}s"/>`).join("") : "") : "";
   return `<svg class="scene" viewBox="${opts.viewBox || "0 0 360 240"}" role="img" aria-label="Tu clínica" preserveAspectRatio="xMidYMid meet">
     <defs>${defs}</defs>
-    <rect width="360" height="177" fill="${wallFill}"/>${wainscot}
-    <path d="M0 128 H360" stroke="${INK}" stroke-width="1.6" opacity=".6"/><rect y="170" width="360" height="7" fill="${eq.wall === "cal" ? "#4f7fae" : wall.d}"/><path d="M0 170 H360" stroke="${INK}" stroke-width="1" opacity=".4"/>
+    <rect width="360" height="177" fill="${wallFill}"/><rect width="360" height="177" fill="url(#${k}wl)"/>${wainscot}
+    ${VR(-2, 125.5, 364, 4.5, 1, rail, { w: 1.1 })}
+    ${VR(-2, 169, 364, 8.5, 1, eq.wall === "cal" ? "#4f7fae" : mixC(wall.d, "#8a6244", .3), { w: 1.2 })}${LINE("M0 170.4 H360", "#ffffff", .9, 'opacity=".35"')}
+    ${lit ? `<rect width="360" height="177" fill="url(#${k}sun)"/>` : ""}
     <g>${D("wallL")}${D("wallC")}${D("wallR")}</g>
-    <g><g clip-path="url(#${k}c)">${windowView(eq.view || "campo")}</g>
-      <rect x="20" y="24" width="72" height="68" rx="2" fill="none" ${S}/><path d="M56 24 V92M20 58 H92" stroke="${INK}" stroke-width="2"/><path d="M24 28 l14 0 l-14 14Z" fill="#fff" opacity=".25"/>
-      ${curtainsSVG(eq.curtains, k)}
-      <rect x="12" y="16" width="88" height="5" rx="2.5" fill="#a87447" ${S}/><rect x="16" y="91" width="80" height="6" rx="2" fill="#f3e6cf" ${S}/>${SH(56, 99, 38, 2, .12)}
-      ${D("sill")}</g>
+    <g>${win}${D("sill")}</g>
     ${D("shelf")}
-    <rect y="177" width="360" height="63" fill="${floorFill}"/><path d="M0 177 H360" stroke="${INK}" stroke-width="2"/><rect y="177" width="360" height="10" fill="${INK}" opacity=".08"/>
-    ${night ? "" : `<path d="M24 179 L94 179 L140 238 L54 238Z" fill="url(#${k}l)"/>`}
+    <rect y="177" width="360" height="63" fill="${floorFill}"/><rect y="177" width="360" height="63" fill="url(#${k}fl)"/>${LINE("M0 177.6 H360", darken(floor.c, .55), 1.6)}
+    ${lit ? `<path d="M24 179 L94 179 L140 238 L54 238Z" fill="url(#${k}l)"/>` : ""}
     ${D("cornerL")}
     ${D("rug")}
     ${D("plant")}
-    ${SH(263, 207, 66, 5, .14)}${table}${towel}
+    ${straw}${table}
     ${patient}
     ${D("pet")}
-    ${SH(146, 236, 40, 4, .1)}<g class="vet ${opts.vetMood === "happy" ? "cheer" : ""}" style="transform-origin:146px 240px"><g transform="translate(84 88) scale(1.08)">${avatarG(eq, opts.vetMood || "neutral")}</g></g>
+    ${vet}
+    ${beam}
     ${D("ceiling")}
+    ${night ? `<rect width="360" height="240" fill="#1d2a52" opacity=".1" pointer-events="none"/>` : ""}
     <rect width="360" height="240" fill="url(#${k}v)" pointer-events="none"/>
   </svg>`;
 }
