@@ -4,6 +4,7 @@
    APQ = preguntas de «Repasar apuntes»: solo salen en la pestaña Apuntes (no en el Test ni en Repaso).
    doc = id del documento, p = página, cita = texto literal de los apuntes que se enseña en la respuesta, n = nota breve opcional. */
 const APUNTES = [
+{id:"t2-eicosanoides",t:[2,3],from:{2:1,3:5},title:"Mediadores eicosanoides e inicio del Tema 3 (AINEs)",sub:"Prostaglandinas, tromboxanos, leucotrienos e introducción a los AINEs",dir:"apuntes/t2-eicosanoides/",pdf:"apuntes/t2-eicosanoides/apuntes.pdf",pages:6,w:2000,h:2826},
 {id:"t3-aines",t:3,title:"Farmacología de los Antiinflamatorios No Esteroideos (AINEs)",sub:"Continuación, mecanismos, farmacocinética y seguridad",dir:"apuntes/t3-aines/",pdf:"apuntes/t3-aines/apuntes.pdf",pages:8,w:2000,h:2826}
 ];
 
@@ -323,6 +324,266 @@ const APQ = [
  "Solo una cojera pasajera por irritación local",
  "Una úlcera gástrica a las pocas horas",
  "Hipotermia y bradicardia que ceden en minutos"],a:0,
- cita:"Peligro de administración intracarotídea accidental: La inyección accidental de fenilbutazona en la arteria carótida del caballo desencadena convulsiones del SNC, ceguera irreversible y muerte súbita."}
+ cita:"Peligro de administración intracarotídea accidental: La inyección accidental de fenilbutazona en la arteria carótida del caballo desencadena convulsiones del SNC, ceguera irreversible y muerte súbita."},
+/* ---------- Mediadores eicosanoides e inicio del Tema 3 (doc t2-eicosanoides) ---------- */
+{doc:"t2-eicosanoides",t:2,p:1,q:"Según tus apuntes, los eicosanoides:",o:[
+ "Son autacoides de vida media muy corta (unos 8 minutos) derivados de ácidos grasos de 20 carbonos, sobre todo el ácido araquidónico",
+ "Son hormonas de vida media larga (unas 8 horas) que se almacenan en los gránulos de los mastocitos y basófilos",
+ "Derivan de aminoácidos como la histidina y el triptófano, y se liberan por exocitosis desde las plaquetas",
+ "Se forman a partir del colesterol por la fosfolipasa C y circulan unidos a la albúmina durante varios días"],a:0,
+ cita:"Los eicosanoides son autóctonos de vida media muy corta (aproximadamente 8 minutos) derivados de ácidos grasos poliinsaturados de 20 carbonos, principalmente el ácido araquidónico liberado de los fosfolípidos de membrana por acción de la fosfolipasa A2 (PLA2)."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"¿Qué enzima libera el ácido araquidónico de los fosfolípidos de membrana?",o:[
+ "La fosfolipasa A₂ (PLA₂)","La ciclooxigenasa 1 (COX-1)","La 5-lipoxigenasa (5-LOX)","La enzima conversora de angiotensina"],a:0,
+ cita:"…principalmente el ácido araquidónico liberado de los fosfolípidos de membrana por acción de la fosfolipasa A2 (PLA2)."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Según tus apuntes, la COX-2 se induce por:",o:[
+ "Estímulos inflamatorios, citocinas (IL-1, TNF-α), hipoxemia o traumatismos tisulares",
+ "La PGE₂ y el moco protector que segrega la mucosa gástrica",
+ "Los glucocorticoides y la lipocortina (anexina-1) que estos inducen",
+ "La agregación plaquetaria y el tromboxano A₂ que liberan las plaquetas"],a:0,
+ cita:"Ciclooxigenasa 2 (COX-2): Enzima inducible por estímulos inflamatorios, citocinas (como IL-1 y TNF-α), hipoxemia o traumatismos tisulares. Su expresión aumenta significativamente en procesos patológicos provocando la cascada proinflamatoria."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Según la profesora, el uso prolongado de AINEs o glucocorticoides:",o:[
+ "Reduce la PGE₂ protectora del estómago (menos moco y bicarbonato) y obliga a asociar un protector gástrico o un IBP",
+ "Aumenta la PGE₂ gástrica, así que no hace falta ningún protector salvo en los gatos de edad avanzada",
+ "Solo daña el estómago si se da por vía oral; si se inyecta, no hace falta añadir ningún protector",
+ "Reduce la secreción ácida del estómago, así que protege frente a la úlcera y la peritonitis séptica"],a:0,
+ cita:"La inhibición de la isoforma constitutiva COX-1 mediante el uso prolongado de AINEs o glucocorticoides reduce la síntesis protectora de PGE2 en el estómago. Esto compromete la secreción de moco e hidrogenocarbonato, favoreciendo la aparición de gastritis y úlceras perforadas (con riesgo de peritonitis séptica). Ante tratamientos continuados, es imprescindible asociar un protector gástrico o un inhibidor de la bomba de protones (IBP)."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Los cisteinil-leucotrienos (LTC₄, LTD₄, LTE₄):",o:[
+ "Contienen cisteína y forman la sustancia de reacción lenta de la anafilaxia (SRS-A)",
+ "Son los leucotrienos A₄ y B₄, y forman la sustancia de reacción lenta de la anafilaxia",
+ "Se forman por la COX-2 y son potentes vasodilatadores y antiagregantes plaquetarios",
+ "Son quimiotácticos de eosinófilos y regulan la adhesión endotelial, como las lipoxinas"],a:0,
+ cita:"Cisteinil-Leucotrienos (LTC4, LTD4, LTE4): Contienen el aminoácido cisteína en su estructura. Constituyen la denominada Sustancia de Reacción Lenta de la Anafilaxia (SRS-A)."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Según tus apuntes, el leucotrieno B₄ (LTB₄) actúa como:",o:[
+ "Potente factor quimiotáctico para macrófagos y neutrófilos",
+ "Componente de la sustancia de reacción lenta de la anafilaxia",
+ "Regulador de la adhesión endotelial y de la quimiotaxis de eosinófilos",
+ "Potente broncodilatador, mil veces más que la adrenalina"],a:0,
+ cita:"Leucotrieno LTB4: Actúa como un potente factor quimiotáctico para macrófagos y neutrófilos."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Lipoxinas (LXA₄, LXB₄):",o:[
+ "Se sintetizan por la 12-LOX y regulan la adhesión endotelial y la quimiotaxis de eosinófilos",
+ "Se sintetizan por la COX-1 y protegen la mucosa gástrica junto con la PGE₂ y la PGI₂",
+ "Forman, junto con el LTB₄, la sustancia de reacción lenta de la anafilaxia (SRS-A)",
+ "Se sintetizan por la 5-LOX y son los broncoconstrictores más potentes que se conocen"],a:0,
+ cita:"Lipoxinas (LXA4, LXB4): Sintetizadas por acción de la 12-LOX, regulan la adhesión endotelial y la quimiotaxis de eosinófilos."},
+{doc:"t2-eicosanoides",t:2,p:1,q:"Según la profesora, la capacidad broncoconstrictora del LTC₄ y el LTD₄ es:",o:[
+ "Unas 1.000 veces superior a la de la histamina; son clave en el asma y el shock anafiláctico",
+ "Unas 10 veces inferior a la de la histamina; por eso apenas intervienen en el asma",
+ "Igual a la de la histamina, porque actúan sobre el mismo receptor H1 de los bronquios",
+ "Nula: los leucotrienos son broncodilatadores y protegen frente a la crisis asmática"],a:0,
+ cita:"Los cisteinil-leucotrienos LTC4 y LTD4 poseen una capacidad broncoconstrictora 1.000 veces superior a la de la histamina. Tienen un protagonismo crítico en el desencadenamiento del asma bronquial y en las reacciones de shock anafiláctico (\"¡Ojito con esto!\")."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Según la tabla de tus apuntes, la PGE₂ y la prostaciclina (PGI₂) producen en los bronquios y en las plaquetas:",o:[
+ "Broncodilatación y disminución de la agregación","Broncoconstricción y aumento de la agregación","Broncodilatación y aumento de la agregación","Broncoconstricción y disminución de la agregación"],a:0,
+ cita:"Prostaglandina E2 (PGE2): Relajación (Broncodilatación) · Contracción (Especialmente en útero grávido) · Disminuye secreción ácida; aumenta moco y peristaltismo · Vasodilatación arteriolar · Disminuye agregación.\nProstaciclina (PGI2): Relajación (Broncodilatación) · Relajación muscular · Disminuye secreción ácida; citoprotección · Vasodilatación potente · Disminuye agregación."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Según la tabla de tus apuntes, el tromboxano A₂ produce:",o:[
+ "Broncoconstricción, vasoconstricción potente y aumento de la agregación plaquetaria",
+ "Broncodilatación, vasodilatación potente y disminución de la agregación plaquetaria",
+ "Broncoconstricción, vasodilatación arteriolar y disminución de la agregación plaquetaria",
+ "Relajación uterina, vasoconstricción potente y efecto neutro sobre las plaquetas"],a:0,
+ cita:"Tromboxano A2 (TXA2): Contracción (Broncoconstricción) · Contracción · Contracción · Vasoconstricción potente · Aumenta agregación."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Según la tabla de tus apuntes, la PGF₂α:",o:[
+ "Contrae bronquios y útero (luteólisis, parto) y aumenta el peristaltismo; su efecto vascular es variable",
+ "Relaja bronquios y útero, disminuye el peristaltismo y produce una vasodilatación arteriolar potente",
+ "Contrae los bronquios pero relaja el útero, y aumenta mucho la agregación de las plaquetas",
+ "Produce una vasodilatación potente, relaja los bronquios y disminuye la agregación plaquetaria"],a:0,
+ cita:"Prostaglandina F2α (PGF2α): Contracción (Broncoconstricción) · Contracción potente (Luteólisis / Parto) · Aumenta contracción y peristaltismo · Variable · Neutral / Variable."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Según la tabla de tus apuntes, la PGE₂ en el tubo digestivo y en el útero:",o:[
+ "Disminuye la secreción ácida, aumenta el moco y el peristaltismo, y contrae el útero (sobre todo el grávido)",
+ "Aumenta la secreción ácida, reduce el moco y relaja el útero grávido para mantener la gestación",
+ "Disminuye el peristaltismo y la secreción de moco, y no tiene ninguna acción sobre el útero",
+ "Aumenta la secreción ácida y el peristaltismo, y relaja el útero tanto grávido como no grávido"],a:0,
+ cita:"Prostaglandina E2 (PGE2): Relajación (Broncodilatación) · Contracción (Especialmente en útero grávido) · Disminuye secreción ácida; aumenta moco y peristaltismo · Vasodilatación arteriolar · Disminuye agregación."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Metabolismo de las prostaglandinas. Señala la CORRECTA:",o:[
+ "La mayoría sale de la célula por el transportador PGT; la PGI₂ no lo usa y se inactiva sola en la sangre",
+ "Todas usan el transportador PGT y se inactivan sobre todo en el riñón, con vidas medias de horas",
+ "La PGI₂ es la única que se inactiva en el pulmón, y por eso su efecto dura varias horas",
+ "No necesitan ningún transportador y tienen vidas medias largas, de varias horas o días"],a:0,
+ cita:"• Transporte Facilitado: La mayoría de prostaglandinas se liberan mediante un transportador específico de eicosanoides (PGT).\n• Excepción de la Prostaciclina (PGI2): No utiliza el transportador PGT, no sufre biotransformación pulmonar y se inactiva de forma espontánea a nivel sanguíneo.\n• Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"¿Dónde se inactivan sobre todo las prostaglandinas y cuánto dura su vida media?",o:[
+ "En el pulmón y el hígado; vida media menor de 10 minutos",
+ "En el riñón; vida media de unas 8 horas",
+ "En la sangre, por la PLA₂; vida media de varios días",
+ "En el estómago; vida media de unos 30 minutos"],a:0,
+ cita:"Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Misoprostol, según tus apuntes:",o:[
+ "Análogo de PGE₁/PGE₂ que previene lesiones gastroduodenales en tratamientos crónicos con AINEs o corticoides",
+ "Análogo de PGF₂α que baja la presión intraocular y es el tratamiento de elección del glaucoma canino",
+ "Análogo de PGI₂ que se usa como antiagregante en la hemodiálisis para evitar trombos en el circuito",
+ "Análogo de PGE₁ que mantiene abierto el ductus arteriosus en neonatos con cardiopatías congénitas"],a:0,
+ cita:"Misoprostol (análogo sintético de PGE1 / PGE2): Indicado para prevenir lesiones gastroduodenales en pacientes sometidos a tratamientos crónicos con AINEs o corticoides."},
+{doc:"t2-eicosanoides",t:2,p:2,q:"Alprostadil (análogo de PGE₁):",o:[
+ "Mantiene abierto el ductus arteriosus en neonatos con cardiopatías; puede darse a la madre antes del parto",
+ "Cierra el ductus arteriosus persistente en los neonatos prematuros, igual que hacen los AINEs",
+ "Es un antiagregante que se usa en la hemodiálisis para evitar los trombos en el circuito extracorpóreo",
+ "Reduce la presión intraocular estimulando el drenaje del humor acuoso por la vía uveoescleral"],a:0,
+ cita:"Alprostadil (análogo de PGE1): Utilizado para mantener la permeabilidad del ductus arteriosus en neonatos con cardiopatías congénitas ducto-dependientes.\nEl Alprostadil puede administrarse a la madre durante la etapa gestacional previa al parto cuando se detectan malformaciones congénitas fetales, asegurando así que el conducto arterioso permanezca abierto hasta la cirugía."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Epoprostenol (análogo de PGI₂):",o:[
+ "Antiagregante plaquetario en la hemodiálisis, para evitar trombos en el circuito extracorpóreo",
+ "Inductor de la maduración del cuello uterino y del parto, asociado a la mifepristona",
+ "Gastroprotector en los tratamientos crónicos con AINEs o con glucocorticoides",
+ "Luteolítico que se usa para sincronizar los celos en las vacas y las yeguas"],a:0,
+ cita:"Epoprostenol (análogo de PGI2): Utilizado como antiagregante plaquetario durante procedimientos de hemodiálisis para evitar la formación de trombos en el circuito extracorpóreo."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Latanoprost (análogo de PGF₂α):",o:[
+ "Baja la presión intraocular estimulando el drenaje del humor acuoso por la vía uveoescleral; de elección en el glaucoma canino",
+ "Baja la presión intraocular reduciendo la producción de humor acuoso, igual que un β-bloqueante en colirio",
+ "Es un luteolítico de larga duración que se usa para sincronizar los celos en las yeguas y las vacas",
+ "Mantiene abierto el ductus arteriosus en los cachorros con cardiopatías congénitas hasta la cirugía"],a:0,
+ cita:"Latanoprost (análogo de PGF2α): Indicado en el glaucoma de ángulo cerrado para reducir la presión intraocular (PIO) mediante el estímulo del drenaje del humor acuoso por la vía uveoescleral.\n…\nLatanoprost en perros: Tratamiento de elección en el glaucoma canino."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Según la profesora, la hipertensión intraocular no controlada:",o:[
+ "Lesiona el nervio óptico de forma irreversible y reduce el campo visual («visión en ojo de cerradura»)",
+ "Produce cataratas reversibles, que desaparecen en cuanto se normaliza la presión del ojo con colirios",
+ "Solo causa dolor ocular, sin pérdida de visión, así que basta con un analgésico para controlarla",
+ "Provoca una miosis permanente y ceguera nocturna, pero el campo visual se mantiene intacto"],a:0,
+ cita:"La hipertensión intraocular no controlada genera lesión irreversible del nervio óptico, reduciendo el campo visual progresivamente hasta provocar una \"visión en ojo de cerradura\" (visión tubular). El uso de Latanoprost frena este deterioro."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Uso de las prostaglandinas en obstetricia (medicina humana), según tus apuntes:",o:[
+ "Dinoprostona y misoprostol maduran el cuello e inducen el parto o el aborto (con mifepristona); los análogos de PGF₂α tratan la atonía uterina",
+ "Dinoprostona y misoprostol relajan el útero y frenan los partos prematuros; los análogos de PGF₂α mantienen la gestación",
+ "El misoprostol solo se usa como gastroprotector y está contraindicado en obstetricia; la dinoprostona es un tocolítico",
+ "Los análogos de PGF₂α se usan para mantener la gestación, y la dinoprostona para cortar la hemorragia posparto"],a:0,
+ cita:"Dinoprostona y Misoprostol: Inductores de la maduración cervical y del parto, o como fármacos abortivos (asociados a mifepristona).\nAnálogos de PGF2α: Tratamiento de la atonia uterina y hemorragias posparto."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Cloprostenol en veterinaria. Señala la opción CORRECTA:",o:[
+ "Luteólisis, celos, parto, expulsión de placentas o fetos momificados, metritis, piometra y libido del verraco",
+ "Mantener la gestación, tratar el glaucoma canino, prevenir úlceras por AINEs y reducir la libido de los verracos",
+ "Gastroprotección en tratamientos con AINEs, antiagregación en la hemodiálisis y apertura del ductus arteriosus",
+ "Solo sincronización de celos en las vacas; en cerdas, yeguas, ovejas y cabras está prohibido por su toxicidad"],a:0,
+ cita:"Cloprostenol (análogo sintético de PGF2α):\n○ Reproducción en hembras (vaca, cerda, yegua, oveja, cabra): Inducción de la luteólisis, sincronización de celos, inducción del parto a término y expulsión de placentas retenidas o fetos momificados.\n○ Tratamiento de patologías uterinas: Metritis y piometra, al estimular las contracciones uterinas para la evacuación de exudados.\n○ Andrología: Administración en berracos para estimular la libido reducida y optimizar el rendimiento de eyaculados en centros de inseminación."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Efectos adversos más frecuentes de los análogos de prostaglandinas:",o:[
+ "Diarrea, cólico, náuseas, vómitos, fiebre, cefalea, hipotensión transitoria y sangrado vaginal",
+ "Estreñimiento, hipertensión, bradicardia y somnolencia intensa durante varios días",
+ "Hiperglucemia, poliuria, polidipsia y alopecia, como con los glucocorticoides",
+ "Úlceras gástricas, hiperpotasemia y fallo renal agudo, como con los AINEs"],a:0,
+ cita:"Los efectos secundarios más frecuentes tras la administración de análogos de prostaglandinas derivan de su acción sobre la musculatura lisa digestiva y vascular:\n• Diarrea, heces blandas y dolor cólico abdominal.\n• Náuseas, vómitos y episodios febriles.\n• Cefaleas, hipotensión transitoria y sangrado vaginal."},
+{doc:"t2-eicosanoides",t:2,p:3,q:"Efectos adversos raros pero graves de las prostaglandinas:",o:[
+ "Rotura uterina por sobredosis oxitócica, hipotensión grave o espasmos coronarios",
+ "Agranulocitosis, aplasia medular y anemia hemolítica con cuerpos de Heinz",
+ "Hipoglucemia grave, convulsiones y coma por exceso de insulina",
+ "Necrosis hepática fulminante por la formación de un metabolito tóxico"],a:0,
+ cita:"Efectos raros pero graves: Rotura uterina por sobredosificación oxitócica, hipotensión severa o espasmos coronarios."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"Contraindicaciones de las prostaglandinas según la profesora. Señala la opción CORRECTA:",o:[
+ "Hembras gestantes que deban seguir preñadas y animales con obstrucción intestinal; evitar el bolo IV rápido",
+ "Hembras en celo y animales con diarrea; evitar la vía intramuscular, que es muy dolorosa",
+ "Animales con glaucoma y hembras recién paridas; evitar la vía subcutánea por la necrosis",
+ "Machos reproductores y animales con estreñimiento; evitar la vía oral por el riesgo de rotura"],a:0,
+ cita:"1. Hembras Gestantes: Prohibida su administración si se desea mantener la gestación, debido al riesgo inminente de aborto por luteólisis y contracción uterina.\n2. Obstrucción / Impactación Gastrointestinal: No administrar en animales con obstrucción intestinal; el incremento del peristaltismo puede provocar la rotura del tubo digestivo.\n3. Vía de Administración: Queda totalmente desaconsejada la vía intravenosa rápida (bolus IV)."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"Riesgo profesional al manipular prostaglandinas:",o:[
+ "Se absorben con facilidad por la piel: embarazadas y personas asmáticas deben usar guantes (riesgo de aborto o broncoespasmo)",
+ "No se absorben por la piel, así que no hace falta ninguna precaución especial al manipularlas en la granja",
+ "Solo son peligrosas si se inhalan en forma de polvo, por eso basta con llevar una mascarilla al prepararlas",
+ "El único riesgo es una sensibilización alérgica en personas con dermatitis, sin peligro para las embarazadas"],a:0,
+ cita:"Riesgo Profesional en la Manipulación: Las prostaglandinas se absorben con extrema facilidad a través de la piel (vía percutánea). Mujeres embarazadas o personal asmático deben manipular estos fármacos con guantes obligatoriamente, para evitar abortos inducidos o crisis broncococonstrictoras accidentales."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"Tiempo de supresión de las prostaglandinas en animales de consumo:",o:[
+ "Hay que respetarlo; según tus apuntes suele ser como mínimo de 24 horas",
+ "No tienen tiempo de espera porque se inactivan en pocos minutos",
+ "Siempre es de 30 días, tanto en la carne como en la leche",
+ "Solo hay tiempo de espera en la leche, nunca en la carne"],a:0,
+ cita:"Tiempos de Supresión: Respetar los periodos de espera en animales destinados al consumo humano (habitualmente un mínimo de 24 horas)."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"Glucocorticoides frente a AINEs en la cascada del ácido araquidónico:",o:[
+ "Los GC bloquean la PLA₂ (inducen lipocortina) e impiden PGs y leucotrienos; los AINEs solo inhiben la COX",
+ "Los AINEs bloquean la PLA₂ y frenan toda la cascada; los glucocorticoides solo inhiben la COX-2",
+ "Los dos inhiben la 5-lipoxigenasa, y por eso ambos bloquean la formación de leucotrienos",
+ "Los GC inhiben la COX-1 de forma irreversible, como la aspirina, y los AINEs la PLA₂"],a:0,
+ cita:"1. Glucocorticoides: Bloquean la enzima PLA2 mediante la inducción de lipocortina (anexina-1). Inhiben la cascada completa (impiden la formación tanto de prostaglandinas como de leucotrienos).\n2. AINEs (Antiinflamatorios No Esteroideos): Inhiben específicamente las isoformas de la Ciclooxigenasa (COX-1 y COX-2), bloqueando la síntesis de prostaglandinas, prostaciclina y tromboxanos."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"Antileucotrienos. Señala la opción CORRECTA:",o:[
+ "Montelukast, zafirlukast y pranlukast antagonizan el receptor CysLT₁; el zileutón inhibe la 5-LOX",
+ "Montelukast y zafirlukast inhiben la 5-LOX; el zileutón antagoniza el receptor CysLT₁",
+ "Todos inhiben a la vez la COX-2 y la 5-LOX, como la tepoxalina",
+ "Antagonizan los receptores H1 y se usan sobre todo en la urticaria"],a:0,
+ cita:"Antagonistas de Receptores de Leucotrienos (Antileucotrienos):\n○ Fármacos: Montelukast, Zafirlukast y Pranlukast.\n○ Mecanismo: Antagonistas competitivos selectivos del receptor CysLT1 de leucotrienos.\n○ Inhibidores directos de 5-LOX: Zileutón."},
+{doc:"t2-eicosanoides",t:2,p:4,q:"¿Para qué sirven los antileucotrienos (montelukast, zafirlukast) según la profesora?",o:[
+ "Son preventivos: por vía oral reducen la frecuencia y la gravedad del asma (gatos, humana), pero no cortan la crisis",
+ "Son de elección para cortar una crisis asmática o anafiláctica aguda, porque actúan en pocos segundos",
+ "Solo se usan por vía intravenosa en el shock anafiláctico, junto con la adrenalina y los corticoides",
+ "Sustituyen a la adrenalina en la anafilaxia, porque son más rápidos y tienen menos efectos adversos"],a:0,
+ cita:"Los antileucotrienos (Montelukast, Zafirlukast) actúan de manera profiláctica o preventiva. No sirven para yugular una crisis asmática o anafiláctica aguda en curso. Su administración oral continuada reduce la frecuencia y severidad de los cuadros asmáticos en felinos y humana."},
+{doc:"t2-eicosanoides",t:3,p:5,q:"Tríada farmacológica de los AINEs según tus apuntes:",o:[
+ "Antiinflamatoria (↓ vasodilatación y permeabilidad), analgésica sobre todo periférica y antipirética (↓ PGE₂ hipotalámica)",
+ "Antiinflamatoria, analgésica central como la de los opioides y antiagregante en todos los AINEs por igual",
+ "Inmunosupresora, analgésica y antipirética, porque todos los AINEs inhiben la fosfolipasa A₂",
+ "Antiinflamatoria, sedante y antipirética, por bloqueo de los receptores opioides de la médula"],a:0,
+ cita:"1. Efecto Antiinflamatorio: Por disminución de la vasodilatación y permeabilidad vascular mediada por eicosanoides.\n2. Efecto Analgésico: Principalmente periférico, por bloqueo de la sensibilización nociceptiva.\n3. Efecto Antipirético: Por inhibición de la síntesis de PGE2 a nivel del centro termorregulador hipotalámico."},
+{doc:"t2-eicosanoides",t:3,p:5,q:"Comparativa AINEs, glucocorticoides y opiáceos. Señala la opción CORRECTA:",o:[
+ "AINEs: COX, acción periférica, dolor leve-moderado, sin narcosis; opiáceos: receptores μ, κ, δ, acción central, dolor intenso y dependencia",
+ "AINEs: receptores μ, acción central, dolor intenso y dependencia; opiáceos: COX, acción periférica, dolor leve y sin narcosis",
+ "AINEs: PLA₂, acción indirecta, inflamación inmunomediada; glucocorticoides: COX, acción periférica, dolor leve y sin efectos centrales",
+ "Los tres actúan sobre la COX: solo cambia la potencia, y ninguno de ellos produce tolerancia ni dependencia"],a:0,
+ cita:"Diana mecanística: AINEs → Inhibición de COX-1 / COX-2 · Glucocorticoides → Inhibición de la Fosfolipasa A2 (PLA2) · Opiáceos → Agonistas de receptores opioides (µ, κ, δ).\nSitio de acción analgésica: AINEs → Principalmente Periférico · Glucocorticoides → Indirecto (Antiinflamatorio potente) · Opiáceos → Central (Sustancia gris periaqueductual / Médula).\nIndicación del dolor: AINEs → Dolor leve a moderado (somático, articular, cólicos) · Glucocorticoides → Inflamación severa o inmunomediada · Opiáceos → Dolor intenso, visceral o neoplásico grave.\nEfectos sobre el SNC: AINEs → Sin narcosis ni somnolencia · Glucocorticoides → Alteraciones del estado de ánimo / Eje HPA · Opiáceos → Narcosis, sedación, tolerancia y dependencia."},
+{doc:"t2-eicosanoides",t:3,p:5,q:"Según la tabla de tus apuntes, los glucocorticoides:",o:[
+ "Inhiben la fosfolipasa A₂; su efecto analgésico es indirecto, por su potente acción antiinflamatoria",
+ "Inhiben la COX-1 y la COX-2 igual que los AINEs, y por eso son analgésicos periféricos directos",
+ "Son agonistas de los receptores opioides μ de la sustancia gris periacueductal y de la médula",
+ "Inhiben solo la 5-lipoxigenasa, por eso bloquean los leucotrienos pero no las prostaglandinas"],a:0,
+ cita:"Glucocorticoides: Diana mecanística → Inhibición de la Fosfolipasa A2 (PLA2) · Sitio de acción analgésica → Indirecto (Antiinflamatorio potente) · Indicación → Inflamación severa o inmunomediada · Efectos sobre el SNC → Alteraciones del estado de ánimo / Eje HPA."},
+{doc:"t2-eicosanoides",t:3,p:5,q:"Ácido acetilsalicílico (aspirina), según tus apuntes:",o:[
+ "Procede del sauce, reúne la tríada completa, antiagrega a dosis bajas y su uso continuado reduce el cáncer de colon",
+ "Procede de la adormidera como la morfina, no es antipirético y a dosis bajas aumenta la agregación plaquetaria",
+ "Es un coxib selectivo que no inhibe la COX-1 plaquetaria, por eso no es gastrolesivo ni antiagregante",
+ "Solo es analgésico: su acción antiinflamatoria es prácticamente nula, igual que la del paracetamol"],a:0,
+ cita:"• Descubrimiento: Extraído históricamente de la corteza del sauce (Salix alba) y caracterizado por Sir John Vane (Premio Nobel).\n• Propiedades Terapéuticas: Es el AINE prototípico que reúne de forma completa la tríada antiinflamatoria, analgésica y antipirética.\n• Acción Antiagregante: A dosis bajas inhibe de forma irreversible la COX-1 plaquetaria, reduciendo la síntesis de TXA2.\n• Acción Antineoplásica: Estudios epidemiológicos han demostrado que la administración continuada de ácido acetilsalicílico reduce significativamente la incidencia y mortalidad por cáncer de colon."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Clasificación química de los AINEs según tus apuntes. Señala la CORRECTA:",o:[
+ "Carboxílicos (salicilatos, indolacéticos, arilacéticos, propiónicos, fenamatos), enólicos (pirazolonas, oxicams) y no ácidos (paracetamol, coxibs)",
+ "Enólicos (salicilatos, fenamatos, propiónicos), carboxílicos (oxicams, pirazolonas, coxibs) y no ácidos (indolacéticos, arilacéticos)",
+ "Carboxílicos (pirazolonas, oxicams, coxibs), enólicos (salicilatos, propiónicos, indolacéticos) y no ácidos (fenamatos, arilacéticos)",
+ "Todos los AINEs son ácidos carboxílicos, salvo el paracetamol, que es un ácido enólico del grupo de los oxicams"],a:0,
+ cita:"Los AINEs se dividen fundamentalmente en compuestos acídicos (carboxílicos y enólicos) y no acídicos.\n7.1. Ácidos Carboxílicos: Salicilatos · Derivados del Ácido Indolacético · Derivados del Ácido Arilacético · Derivados del Ácido Propiónico · Fenamatos (Derivados Antranílicos y Nicotínicos).\n7.2. Ácidos Enólicos: Pirazolonas · Oxicams.\n7.3. Fármacos No Acídicos e Inhibidores Selectivos de COX-2 (COXIBs): Paraminofenoles (Paracetamol) · COXIBs."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"¿Qué fármacos son salicilatos, según tus apuntes?",o:[
+ "Ácido acetilsalicílico, lisina salicilato, benorilato (éster de aspirina y paracetamol) y diflunisal",
+ "Ácido acetilsalicílico, indometacina, diclofenaco y etodolaco, todos del mismo grupo químico",
+ "Ácido acetilsalicílico, meloxicam, piroxicam y fenilbutazona, todos ácidos enólicos",
+ "Ácido acetilsalicílico, paracetamol, celecoxib y robenacoxib, todos ellos no ácidos"],a:0,
+ cita:"Salicilatos: Ácido acetilsalicílico, Lisina salicilato, Benorilato (éster de aspirina y paracetamol) y Diflunisal."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Indometacina, según tus apuntes:",o:[
+ "Derivado del ácido indolacético, en desuso en pequeños animales por su elevada hepatotoxicidad",
+ "Oxicam preferencial COX-2, muy potente y ampliamente utilizado en la clínica veterinaria",
+ "Coxib diseñado para preservar la mucosa gástrica al no inhibir la COX-1 constitutiva",
+ "Pirazolona muy irritante por vía intramuscular, de elección en el cólico del caballo"],a:0,
+ cita:"Derivados del Ácido Indolacético: Indometacina (en desuso en pequeños animales por elevada hepatotoxicidad)."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Derivados del ácido propiónico, según tus apuntes:",o:[
+ "Ibuprofeno (muy lesivo y tóxico en el perro), naproxeno, ketoprofeno y carprofeno (muy seguro en pequeños animales)",
+ "Ibuprofeno (el más seguro en el perro), naproxeno, ketoprofeno y carprofeno (muy tóxico en pequeños animales)",
+ "Diclofenaco y etodolaco, que son los más utilizados en clínica veterinaria de pequeños animales",
+ "Meloxicam y piroxicam, muy potentes y preferenciales COX-2, activos a dosis muy bajas"],a:0,
+ cita:"Derivados del Ácido Propiónico: Ibuprofeno (muy lesivo y tóxico en perro), Naproxeno, Ketoprofeno y Carprofeno (de elevada seguridad en clínica veterinaria de pequeños animales)."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Fenamatos (flunixin meglumine, ácido mefenámico), según tus apuntes:",o:[
+ "Derivados antranílicos y nicotínicos con gran eficacia analgésica en el dolor visceral y el cólico equino",
+ "Ácidos enólicos muy irritantes por vía intramuscular, que se dan por vía IV lenta o IM profunda",
+ "Inhibidores selectivos de la COX-2 diseñados para preservar la mucosa gástrica de los perros",
+ "Paraminofenoles con acción analgésica y antipirética central, sin efecto antiinflamatorio"],a:0,
+ cita:"Fenamatos (Derivados Antranílicos y Nicotínicos): Flunixin meglumine y Ácido mefenámico. Presentan una gran eficacia analgésica en el tratamiento del dolor visceral y del cólico equino."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Pirazolonas (metamizol, fenilbutazona), según tus apuntes:",o:[
+ "Son ácidos enólicos muy irritantes por vía intramuscular; se dan por vía IV lenta o IM profunda",
+ "Son ácidos carboxílicos que no irritan los tejidos, así que se pueden dar por cualquier vía",
+ "Son coxibs selectivos que se dan siempre por vía oral para proteger la mucosa gástrica",
+ "Son paraminofenoles no ácidos, profármacos con acción analgésica y antipirética central"],a:0,
+ cita:"Pirazolonas: Metamizol (Dipirona / Nolotil) y Fenilbutazona.\nVía de administración: Muy irritantes por vía intramuscular; deben administrarse por vía IV lenta o intramuscular profunda.",
+ n:"Ojo: en tus apuntes de la continuación del Tema 3 se precisa que, en el caballo, la fenilbutazona por vía intramuscular o subcutánea está estrictamente contraindicada (solo oral o IV)."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Oxicams (meloxicam, piroxicam), según tus apuntes:",o:[
+ "Ácidos enólicos muy potentes y preferenciales COX-2, ampliamente utilizados en clínica veterinaria",
+ "Derivados del ácido propiónico, poco potentes y no selectivos, casi en desuso en veterinaria",
+ "Coxibs muy selectivos que no se usan en veterinaria por su riesgo cardiovascular",
+ "Fenamatos que neutralizan las PGs ya formadas en el foco inflamatorio del cólico"],a:0,
+ cita:"Oxicams: Meloxicam y Piroxicam.\nPotencia: Altamente potentes (activos a dosis de microgramos, ej. 10-20 mg), preferenciales COX-2, ampliamente utilizados en clínica veterinaria."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"El paracetamol, según la clasificación de tus apuntes, es:",o:[
+ "Un paraminofenol no ácido: profármaco con acción analgésica y antipirética central",
+ "Un salicilato del grupo de los ácidos carboxílicos y un potente antiinflamatorio",
+ "Una pirazolona del grupo de los ácidos enólicos, muy irritante por vía intramuscular",
+ "Un coxib selectivo diseñado para preservar la mucosa gástrica del perro y del gato"],a:0,
+ cita:"Paraminofenoles: Paracetamol (Acetaminofén). Profármaco con acción analgésica y antipirética central."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Coxibs (celecoxib, firocoxib, robenacoxib), según tus apuntes:",o:[
+ "Inhibidores selectivos de la COX-2, diseñados para preservar la mucosa gástrica al no inhibir la COX-1",
+ "Inhibidores irreversibles de la COX-1 plaquetaria, usados como antiagregantes a dosis bajas",
+ "Inhibidores duales de la COX y la 5-LOX, que bloquean prostaglandinas y leucotrienos a la vez",
+ "Derivados del ácido indolacético, en desuso en pequeños animales por su hepatotoxicidad"],a:0,
+ cita:"Inhibidores Selectivos de COX-2 (COXIBs): Celecoxib, Firocoxib, Robenacoxib. Diseñados para preservar la mucosa gástrica al no inhibir la COX-1 constitutiva."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Diflunisal, según la profesora:",o:[
+ "Es antiinflamatorio y analgésico eficaz, pero carece de actividad antipirética",
+ "Es antipirético y analgésico, pero su efecto antiinflamatorio es prácticamente nulo",
+ "No es analgésico ni antiinflamatorio: solo se usa como antiagregante plaquetario",
+ "Es el salicilato más antipirético, por eso se usa en el golpe de calor"],a:0,
+ cita:"Diflunisal: Es antiinflamatorio y analgésico eficaz, pero carece de actividad antipirética."},
+{doc:"t2-eicosanoides",t:3,p:6,q:"Ketorolaco, según la profesora:",o:[
+ "Su capacidad analgésica es muy elevada y predomina ampliamente sobre la antiinflamatoria",
+ "Es sobre todo antiinflamatorio, y su efecto analgésico es leve y de corta duración",
+ "No tiene efecto analgésico: solo es antipirético y se usa para bajar la fiebre",
+ "Es un opioide débil, y por eso es tan analgésico y produce algo de dependencia"],a:0,
+ cita:"Ketorolaco: Destaca por una capacidad analgésica muy elevada que predomina ampliamente sobre su acción antiinflamatoria."}
 ];
-APQ.forEach((q, i) => { q.id = i; if (!q.t) { const d = APUNTES.find(x => x.id === q.doc); q.t = d ? d.t : 0; } });
+APQ.forEach((q, i) => { q.id = i; if (!q.t) { const d = APUNTES.find(x => x.id === q.doc); q.t = d ? (Array.isArray(d.t) ? d.t[0] : d.t) : 0; } });

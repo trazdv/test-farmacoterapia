@@ -365,8 +365,10 @@ function renderStudy() {
 let apTopic = null, apTab = "docs";
 let apCfg = store.get("ft_apcfg", { topics: null, limit: 0 });
 const apCount = docId => APQ.filter(q => q.doc === docId).length;
+/* un documento puede abarcar varios temas (t: [2, 3]); «from» dice en qué página empieza cada tema */
+const docIn = (d, t) => Array.isArray(d.t) ? d.t.includes(t) : d.t === t;
 function renderApuntes() {
-  const docTopics = ALL_TOPICS.filter(t => APUNTES.some(d => d.t === t));
+  const docTopics = ALL_TOPICS.filter(t => APUNTES.some(d => docIn(d, t)));
   if (apTopic == null) apTopic = docTopics[0] || 1;
   const pending = store.get("ft_test", null), pAp = pending && !pending.done && pending.bank === "ap" ? pending : null;
   const qTopics = ALL_TOPICS.filter(t => APQ.some(q => q.t === t));
@@ -374,7 +376,7 @@ function renderApuntes() {
   const pool = APQ.filter(q => sel.includes(q.t));
   const n = apCfg.limit && apCfg.limit < pool.length ? apCfg.limit : pool.length;
   const pend = ApStats.pending();
-  const docs = APUNTES.filter(d => d.t === apTopic);
+  const docs = APUNTES.filter(d => docIn(d, apTopic));
   const reviewHtml = APQ.length ? `<div class="card stack">
       <div class="row ap-head"><span class="ap-ico">${ICON.apuntes}</span><div><b>Repasar apuntes</b><br><span class="muted small">${APQ.length} preguntas hechas solo con tus apuntes. No salen en el Test ni en Repaso.</span></div></div>
       ${qTopics.length > 1 ? `<div><p class="label">Temas</p><div class="chips">${qTopics.map(t => `<button class="chip" data-aqt="${t}" aria-pressed="${sel.includes(t)}">Tema ${t}</button>`).join("")}</div></div>` : ""}
@@ -394,11 +396,12 @@ function renderApuntes() {
     <div class="seg"><button data-asv="docs" aria-selected="${apTab === "docs"}">Mis apuntes</button><button data-asv="repasar" aria-selected="${apTab === "repasar"}">Repasar apuntes${pend.length ? ` (${pend.length})` : ""}</button></div>
     ${apTab === "repasar" ? reviewHtml : `
     <p class="sub ap-sub">Tus resúmenes tal cual, por temas.</p>
-    <div class="chips topic-chips">${ALL_TOPICS.map(t => { const c = APUNTES.filter(d => d.t === t).length; return `<button class="chip" data-at="${t}" aria-pressed="${apTopic === t}">Tema ${t}${c ? ` · ${c}` : ""}</button>`; }).join("")}</div>
+    <div class="chips topic-chips">${ALL_TOPICS.map(t => { const c = APUNTES.filter(d => docIn(d, t)).length; return `<button class="chip" data-at="${t}" aria-pressed="${apTopic === t}">Tema ${t}${c ? ` · ${c}` : ""}</button>`; }).join("")}</div>
     ${docs.length ? docs.map(d => `<div class="card doc-card">
         <button class="doc-thumb" data-open="${d.id}" aria-label="Leer ${esc(d.title)}"><img src="${d.dir}p1.webp" alt="" loading="lazy" decoding="async"></button>
         <div class="doc-info"><b>${esc(d.title)}</b>${d.sub ? `<span class="muted small">${esc(d.sub)}</span>` : ""}
           <span class="muted small">${d.pages} páginas${apCount(d.id) ? ` · ${apCount(d.id)} preguntas` : ""}</span>
+          ${d.from ? `<span class="muted small">${Object.entries(d.from).map(([t, p], i, a) => `Tema ${t}: ${a[i + 1] ? `págs. ${p}-${a[i + 1][1] - 1}` : `págs. ${p}-${d.pages}`}`).join(" · ")}</span>` : ""}
           <div class="row doc-btns"><button class="btn primary" data-open="${d.id}">Leer</button>${apCount(d.id) ? `<button class="btn" data-arev="${d.id}">Repasar</button>` : ""}</div></div>
       </div>`).join("")
       : `<div class="card empty-state"><p><b>Aún no hay apuntes del ${TOPICS[apTopic].name}.</b></p><p class="muted">Cuando me pases tus resúmenes de este tema, aparecerán aquí tal cual.</p></div>`}`}`;
@@ -411,7 +414,7 @@ function renderApuntes() {
   if ($("#apstart")) $("#apstart").onclick = () => { let ids = shuffle(pool.map(q => q.id)); if (apCfg.limit) ids = ids.slice(0, apCfg.limit); startQuiz(ids, "test", "ap"); };
   if ($("#apfail")) $("#apfail").onclick = () => startQuiz(shuffle(pend.map(x => x.q.id)), "repaso", "ap");
   if ($("#apresume")) $("#apresume").onclick = () => { quiz = pAp; render(); };
-  $$("[data-open]").forEach(b => b.onclick = () => openViewer(b.dataset.open, 1));
+  $$("[data-open]").forEach(b => b.onclick = () => { const d = APUNTES.find(x => x.id === b.dataset.open); openViewer(d.id, (d.from && d.from[apTopic]) || 1); });
   $$("[data-arev]").forEach(b => b.onclick = () => startQuiz(shuffle(APQ.filter(q => q.doc === b.dataset.arev).map(q => q.id)), "test", "ap"));
 }
 
