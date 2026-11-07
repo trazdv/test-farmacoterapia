@@ -33,13 +33,30 @@ const Stats = {
   weight(e) { return e.w * 3 - e.r + (e.s === 0 ? 2 : 0) + e.t / 1e13; },
   reset() { store.del("ft_stats"); }
 };
+/* las preguntas de los apuntes llevan sus propias estadísticas: no salen en Repaso ni en Última hora */
+const ApStats = Object.assign({}, Stats, {
+  all() { return store.get("ft_apstats", {}); },
+  record(id, ok) {
+    const s = this.all(); const e = s[id] || { w: 0, r: 0, s: 0, t: 0 };
+    if (ok) { e.r++; e.s++; } else { e.w++; e.s = 0; e.t = Date.now(); }
+    s[id] = e; store.set("ft_apstats", s);
+  },
+  failed() {
+    const s = this.all();
+    return APQ.filter(q => s[q.id] && s[q.id].w > 0).map(q => ({ q, e: s[q.id], mastered: s[q.id].s >= 2 }));
+  },
+  reset() { store.del("ft_apstats"); }
+});
+const bankQ = b => b === "ap" ? APQ : QUESTIONS;
+const bankStats = b => b === "ap" ? ApStats : Stats;
 
 /* ============ iconos (trazo a mano) ============ */
 const ICON = {
   test: `<svg viewBox="0 0 24 24"><path d="M7 3.5h8.5L19 7v13.2a.8.8 0 0 1-.8.8H7a.8.8 0 0 1-.8-.8V4.3a.8.8 0 0 1 .8-.8Z"/><path d="M9.5 10.5l1.6 1.6 3-3.2M9.5 16h5"/></svg>`,
   repaso: `<svg viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 0 1 13-5.1M19.5 12a7.5 7.5 0 0 1-13 5.1"/><path d="M17.8 3.8v3.4h-3.4M6.2 20.2v-3.4h3.4"/></svg>`,
   estudiar: `<svg viewBox="0 0 24 24"><path d="M3.5 5.5c3-.9 5.8-.6 8.5 1.2v13c-2.7-1.8-5.5-2.1-8.5-1.2Z"/><path d="M20.5 5.5c-3-.9-5.8-.6-8.5 1.2v13c2.7-1.8 5.5-2.1 8.5-1.2Z"/></svg>`,
-  consulta: `<svg viewBox="0 0 24 24"><path d="M8 4.2c-1.3 0-2 .9-2 2.2v3.4a4.5 4.5 0 0 0 9 0V6.4c0-1.3-.7-2.2-2-2.2"/><path d="M10.5 14.3v1.9a3.6 3.6 0 0 0 7.2 0v-2.4"/><circle cx="17.7" cy="12.2" r="1.7"/></svg>`
+  consulta: `<svg viewBox="0 0 24 24"><path d="M8 4.2c-1.3 0-2 .9-2 2.2v3.4a4.5 4.5 0 0 0 9 0V6.4c0-1.3-.7-2.2-2-2.2"/><path d="M10.5 14.3v1.9a3.6 3.6 0 0 0 7.2 0v-2.4"/><circle cx="17.7" cy="12.2" r="1.7"/></svg>`,
+  apuntes: `<svg viewBox="0 0 24 24"><rect x="5.5" y="3.5" width="13" height="17" rx="1.6"/><path d="M9 3.5v17M11.8 8.2h4M11.8 11.6h4"/><path d="M3.8 7.2h2.6M3.8 12h2.6M3.8 16.8h2.6"/></svg>`
 };
 
 /* ============ estado global ============ */
@@ -58,7 +75,7 @@ function setView(v) { view = v; store.set("ft_view", v); if (quiz && quiz.done) 
 function setFocusMode(on) { document.body.classList.toggle("focus", on); }
 
 function renderTabs() {
-  const tabs = [["test", "Test"], ["repaso", "Repaso"], ["estudiar", "Estudiar"], ["consulta", "Consulta"]];
+  const tabs = [["test", "Test"], ["repaso", "Repaso"], ["estudiar", "Estudiar"], ["apuntes", "Apuntes"], ["consulta", "Consulta"]];
   const pend = Stats.pending().length;
   $("#tabs").innerHTML = `<div class="tabs-inner">${tabs.map(([k, l]) =>
     `<button data-view="${k}" aria-current="${view === k ? "page" : "false"}">${ICON[k]}<span>${l}</span>${k === "repaso" && pend ? `<i class="badge">${pend}</i>` : ""}</button>`).join("")}</div>`;
@@ -82,6 +99,7 @@ function render() {
   if (view === "test") return renderSetup();
   if (view === "repaso") return renderRepaso();
   if (view === "estudiar") return renderStudy();
+  if (view === "apuntes") return renderApuntes();
   if (view === "consulta") return renderConsulta();
 }
 
@@ -100,7 +118,7 @@ function renderSetup() {
   $("#app").innerHTML = `
     <header class="page-head"><h1>Test Farmacoterapia</h1>
     <p class="sub">1er parcial · ${QUESTIONS.length} preguntas. Respondes todas y al final ves la nota y los apuntes de lo que falles.</p></header>
-    ${pending && !pending.done ? `<div class="card note-card"><div class="row"><div><b>Tienes un test a medias</b><br><span class="muted">${pending.answers.filter(a => a != null).length} de ${pending.items.length} respondidas</span></div><span class="spacer"></span><button class="btn primary" id="resume">Continuar</button></div></div>` : ""}
+    ${pending && !pending.done && pending.bank !== "ap" ? `<div class="card note-card"><div class="row"><div><b>Tienes un test a medias</b><br><span class="muted">${pending.answers.filter(a => a != null).length} de ${pending.items.length} respondidas</span></div><span class="spacer"></span><button class="btn primary" id="resume">Continuar</button></div></div>` : ""}
     <div class="card stack">
       <div>
         <div class="row" style="margin-bottom:10px"><p class="label">Temas</p><span class="spacer"></span><button class="link" id="all">Todos</button></div>
@@ -135,20 +153,21 @@ function renderSetup() {
   if ($("#resume")) $("#resume").onclick = () => { quiz = pending; render(); };
 }
 
-function startQuiz(ids, mode) {
-  quiz = { mode, items: ids.map(id => ({ id, order: shuffle(QUESTIONS[id].o.map((_, i) => i)) })), answers: ids.map(() => null), idx: 0, done: false };
+function startQuiz(ids, mode, bank = "main") {
+  const B = bankQ(bank);
+  quiz = { mode, bank, items: ids.map(id => ({ id, order: shuffle(B[id].o.map((_, i) => i)) })), answers: ids.map(() => null), idx: 0, done: false };
   showGrid = false; saveQuiz(); render(); window.scrollTo(0, 0);
 }
 
 /* ============ TEST: preguntas ============ */
 function renderQuiz() {
-  const it = quiz.items[quiz.idx], Q = QUESTIONS[it.id], total = quiz.items.length;
+  const it = quiz.items[quiz.idx], Q = bankQ(quiz.bank)[it.id], total = quiz.items.length;
   const answered = quiz.answers.filter(a => a != null).length;
   const last = quiz.idx === total - 1;
   $("#app").innerHTML = `
     <div class="topbar">
       <button class="icon-btn" id="exit" aria-label="Salir"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      <div class="muted"><b class="ink">Pregunta ${quiz.idx + 1}</b> de ${total}${quiz.mode === "repaso" ? " · repaso" : ""}</div>
+      <div class="muted"><b class="ink">Pregunta ${quiz.idx + 1}</b> de ${total}${quiz.bank === "ap" ? " · apuntes" : quiz.mode === "repaso" ? " · repaso" : ""}</div>
       <span class="spacer"></span>
       <button class="icon-btn" id="gridbtn" aria-label="Ver todas"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1.5"/><rect x="14" y="4" width="6" height="6" rx="1.5"/><rect x="4" y="14" width="6" height="6" rx="1.5"/><rect x="14" y="14" width="6" height="6" rx="1.5"/></svg></button>
     </div>
@@ -157,7 +176,7 @@ function renderQuiz() {
       <div class="muted small">Toca un número para ir a esa pregunta</div>
       <div class="grid">${quiz.items.map((_, i) => `<button data-go="${i}" class="${quiz.answers[i] != null ? "answered" : ""} ${i === quiz.idx ? "current" : ""}">${i + 1}</button>`).join("")}</div>
     </div>
-    <span class="tag">${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}</span>
+    <span class="tag">${quiz.bank === "ap" ? "Tus apuntes · " + TOPICS[Q.t].name : `${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
     <h2 class="qtext">${esc(Q.q)}</h2>
     <div>${it.order.map((oi, k) => `<button class="opt" data-opt="${oi}" aria-pressed="${quiz.answers[quiz.idx] === oi}"><span class="letter">${LET[k]}</span><span>${esc(Q.o[oi])}</span></button>`).join("")}</div>
     <nav class="navbar"><div class="inner">
@@ -172,7 +191,7 @@ function renderQuiz() {
   $("#prev").onclick = () => go(-1);
   if ($("#next")) $("#next").onclick = () => go(1);
   if ($("#finish")) $("#finish").onclick = tryFinish;
-  $("#exit").onclick = () => confirmBox("¿Salir del test?", "Tu progreso se guarda y podrás continuarlo desde la pestaña Test.", "Salir", () => { quiz = null; render(); });
+  $("#exit").onclick = () => confirmBox("¿Salir del test?", `Tu progreso se guarda y podrás continuarlo desde la pestaña ${quiz.bank === "ap" ? "Apuntes" : "Test"}.`, "Salir", () => { quiz = null; render(); });
 }
 function go(d) { const n = quiz.idx + d; if (n < 0 || n >= quiz.items.length) return; quiz.idx = n; saveQuiz(); renderQuiz(); window.scrollTo(0, 0); }
 function tryFinish() {
@@ -182,11 +201,12 @@ function tryFinish() {
 }
 function finish() {
   quiz.done = true;
-  quiz.items.forEach((it, i) => Stats.record(it.id, quiz.answers[i] === QUESTIONS[it.id].a));
+  const B = bankQ(quiz.bank), S = bankStats(quiz.bank);
+  quiz.items.forEach((it, i) => S.record(it.id, quiz.answers[i] === B[it.id].a));
   store.del("ft_test");
   // energía para la consulta: +1 por cada 3 respondidas, +1 extra si nota >= 7 (con 10 o más preguntas)
   const answered = quiz.answers.filter(a => a != null).length;
-  const okN = quiz.items.filter((it, i) => quiz.answers[i] === QUESTIONS[it.id].a).length;
+  const okN = quiz.items.filter((it, i) => quiz.answers[i] === B[it.id].a).length;
   let e = Math.floor(answered / 3) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
   quiz.energy = e ? addEnergy(e, "por el test") : 0;
   if (okN / quiz.items.length >= 0.5) setTimeout(() => confetti(okN === quiz.items.length ? 120 : 60), 350);
@@ -196,7 +216,8 @@ function finish() {
 
 /* ============ TEST: resultados ============ */
 function renderResults() {
-  const rows = quiz.items.map((it, i) => { const Q = QUESTIONS[it.id]; const a = quiz.answers[i]; return { Q, a, status: a == null ? "blank" : a === Q.a ? "ok" : "bad", n: i + 1 }; });
+  const B = bankQ(quiz.bank), bank = quiz.bank;
+  const rows = quiz.items.map((it, i) => { const Q = B[it.id]; const a = quiz.answers[i]; return { Q, a, status: a == null ? "blank" : a === Q.a ? "ok" : "bad", n: i + 1 }; });
   const ok = rows.filter(r => r.status === "ok").length, bad = rows.filter(r => r.status === "bad").length, blank = rows.filter(r => r.status === "blank").length;
   const total = rows.length, pct = Math.round(ok / total * 100), nota = (ok / total * 10).toFixed(1).replace(".", ",");
   const pass = ok / total >= 0.5;
@@ -218,25 +239,25 @@ function renderResults() {
         ${bad + blank ? `<button class="btn primary" id="redo" style="flex:1">Repetir falladas (${bad + blank})</button>` : ""}
         <button class="btn" id="new" style="flex:1">Cerrar</button>
       </div>
-      <p class="muted small" style="margin:12px 0 0">Las falladas se han guardado en <b>Repaso</b>.${quiz.energy ? ` Has ganado ${BOLT}<b>+${quiz.energy}</b> de energía para la consulta.` : ""}</p>
+      <p class="muted small" style="margin:12px 0 0">${bank === "ap" ? "Las falladas se guardan en <b>Apuntes</b>, en «Solo las que he fallado»." : "Las falladas se han guardado en <b>Repaso</b>."}${quiz.energy ? ` Has ganado ${BOLT}<b>+${quiz.energy}</b> de energía para la consulta.` : ""}</p>
     </div>
     <div class="seg" role="tablist">${tabs.map(([k, l]) => `<button role="tab" data-tab="${k}" aria-selected="${reviewTab === k}">${l}</button>`).join("")}</div>
-    <div>${list.length ? list.map(reviewCard).join("") : `<div class="empty">${reviewTab === "bad" ? "¡No has fallado ninguna!" : "No hay preguntas aquí."}</div>`}</div>`;
+    <div>${list.length ? list.map(r => reviewCard(r, bank)).join("") :`<div class="empty">${reviewTab === "bad" ? "¡No has fallado ninguna!" : "No hay preguntas aquí."}</div>`}</div>`;
   $$("[data-tab]").forEach(b => b.onclick = () => { reviewTab = b.dataset.tab; renderResults(); });
-  $$("[data-info]").forEach(b => b.onclick = () => openInfo(+b.dataset.info));
-  if ($("#redo")) $("#redo").onclick = () => startQuiz(shuffle(rows.filter(r => r.status !== "ok").map(r => r.Q.id)), quiz.mode);
+  $$("[data-info]").forEach(b => b.onclick = () => openInfo(+b.dataset.info, bank));
+  if ($("#redo")) $("#redo").onclick = () => startQuiz(shuffle(rows.filter(r => r.status !== "ok").map(r => r.Q.id)), quiz.mode, bank);
   $("#new").onclick = () => { quiz = null; render(); window.scrollTo(0, 0); };
 }
-function reviewCard(r) {
+function reviewCard(r, bank) {
   const { Q, a, status } = r;
   const mine = a == null ? `<div class="ans blank"><span class="k">Tu respuesta</span><span>Sin responder</span></div>`
     : status === "ok" ? "" : `<div class="ans bad"><span class="k">Tu respuesta</span><span>${esc(Q.o[a])}</span></div>`;
   return `<div class="rev">
-    <div class="row"><span class="tag">${r.n} · ${TOPICS[Q.t].name}</span>${Q.d ? `<span class="tag warn">Dudosa</span>` : ""}</div>
+    <div class="row"><span class="tag">${r.n} · ${bank === "ap" ? "Tus apuntes · " : ""}${TOPICS[Q.t].name}</span>${Q.d ? `<span class="tag warn">Dudosa</span>` : ""}</div>
     <div class="qtext sm">${esc(Q.q)}</div>
     ${mine}
     <div class="ans ok"><span class="k">Correcta</span><span>${esc(Q.o[Q.a])}</span></div>
-    <button class="info-btn" data-info="${Q.id}">Ver apuntes</button>
+    <button class="info-btn" data-info="${Q.id}">${bank === "ap" ? "Ver en tus apuntes" : "Ver apuntes"}</button>
   </div>`;
 }
 
@@ -339,13 +360,162 @@ function renderStudy() {
   if ($("#print")) $("#print").onclick = () => window.print();
 }
 
+/* ============ APUNTES: los resúmenes del usuario, tal cual ============ */
+let apTopic = null, apTab = "docs";
+let apCfg = store.get("ft_apcfg", { topics: null, limit: 0 });
+const apCount = docId => APQ.filter(q => q.doc === docId).length;
+function renderApuntes() {
+  const docTopics = ALL_TOPICS.filter(t => APUNTES.some(d => d.t === t));
+  if (apTopic == null) apTopic = docTopics[0] || 1;
+  const pending = store.get("ft_test", null), pAp = pending && !pending.done && pending.bank === "ap" ? pending : null;
+  const qTopics = ALL_TOPICS.filter(t => APQ.some(q => q.t === t));
+  const sel = (apCfg.topics || qTopics).filter(t => qTopics.includes(t));
+  const pool = APQ.filter(q => sel.includes(q.t));
+  const n = apCfg.limit && apCfg.limit < pool.length ? apCfg.limit : pool.length;
+  const pend = ApStats.pending();
+  const docs = APUNTES.filter(d => d.t === apTopic);
+  const reviewHtml = APQ.length ? `<div class="card stack">
+      <div class="row ap-head"><span class="ap-ico">${ICON.apuntes}</span><div><b>Repasar apuntes</b><br><span class="muted small">${APQ.length} preguntas hechas solo con tus apuntes. No salen en el Test ni en Repaso.</span></div></div>
+      ${qTopics.length > 1 ? `<div><p class="label">Temas</p><div class="chips">${qTopics.map(t => `<button class="chip" data-aqt="${t}" aria-pressed="${sel.includes(t)}">Tema ${t}</button>`).join("")}</div></div>` : ""}
+      <div><p class="label">Número de preguntas</p><div class="chips">${[0, 10, 20].map(l => `<button class="chip" data-alim="${l}" aria-pressed="${apCfg.limit === l}">${l || "Todas"}</button>`).join("")}</div></div>
+      <button class="btn primary block" id="apstart" ${n ? "" : "disabled"}>${n ? `Repasar apuntes · ${n} preguntas` : "Elige al menos un tema"}</button>
+      ${pend.length ? `<button class="btn block" id="apfail">Solo las que he fallado (${pend.length})</button>` : ""}
+    </div>
+    ${pend.length ? `<h2 class="section-title">Lo que más fallas de tus apuntes</h2>
+    <div>${pend.sort((a, b) => ApStats.weight(b.e) - ApStats.weight(a.e)).slice(0, 20).map(x => `<button class="weak" data-apinfo="${x.q.id}">
+      <span class="weak-n" title="veces fallada">${x.e.w}×</span>
+      <span class="weak-q"><span class="tag">${TOPICS[x.q.t].name} · pág. ${x.q.p}</span><br>${esc(x.q.q)}</span>
+      <span class="weak-r">${x.e.r ? `✓${x.e.r}` : ""}</span></button>`).join("")}</div>` : ""}`
+    : `<div class="card empty-state"><p><b>Aún no hay preguntas de tus apuntes.</b></p></div>`;
+  $("#app").innerHTML = `
+    <header class="page-head row"><h1 style="flex:1">Apuntes</h1><span class="energy-chip" id="studychip"></span></header>
+    ${pAp ? `<div class="card note-card"><div class="row"><div><b>Tienes un repaso de apuntes a medias</b><br><span class="muted">${pAp.answers.filter(a => a != null).length} de ${pAp.items.length} respondidas</span></div><span class="spacer"></span><button class="btn primary" id="apresume">Continuar</button></div></div>` : ""}
+    <div class="seg"><button data-asv="docs" aria-selected="${apTab === "docs"}">Mis apuntes</button><button data-asv="repasar" aria-selected="${apTab === "repasar"}">Repasar apuntes${pend.length ? ` (${pend.length})` : ""}</button></div>
+    ${apTab === "repasar" ? reviewHtml : `
+    <p class="sub ap-sub">Tus resúmenes tal cual, por temas.</p>
+    <div class="chips topic-chips">${ALL_TOPICS.map(t => { const c = APUNTES.filter(d => d.t === t).length; return `<button class="chip" data-at="${t}" aria-pressed="${apTopic === t}">Tema ${t}${c ? ` · ${c}` : ""}</button>`; }).join("")}</div>
+    ${docs.length ? docs.map(d => `<div class="card doc-card">
+        <button class="doc-thumb" data-open="${d.id}" aria-label="Leer ${esc(d.title)}"><img src="${d.dir}p1.webp" alt="" loading="lazy" decoding="async"></button>
+        <div class="doc-info"><b>${esc(d.title)}</b>${d.sub ? `<span class="muted small">${esc(d.sub)}</span>` : ""}
+          <span class="muted small">${d.pages} páginas${apCount(d.id) ? ` · ${apCount(d.id)} preguntas` : ""}</span>
+          <div class="row doc-btns"><button class="btn primary" data-open="${d.id}">Leer</button>${apCount(d.id) ? `<button class="btn" data-arev="${d.id}">Repasar</button>` : ""}</div></div>
+      </div>`).join("")
+      : `<div class="card empty-state"><p><b>Aún no hay apuntes del ${TOPICS[apTopic].name}.</b></p><p class="muted">Cuando me pases tus resúmenes de este tema, aparecerán aquí tal cual.</p></div>`}`}`;
+  updateStudyChip();
+  $$("[data-asv]").forEach(b => b.onclick = () => { apTab = b.dataset.asv; renderApuntes(); });
+  $$("[data-apinfo]").forEach(b => b.onclick = () => openInfo(+b.dataset.apinfo, "ap"));
+  $$("[data-at]").forEach(b => b.onclick = () => { apTopic = +b.dataset.at; renderApuntes(); });
+  $$("[data-aqt]").forEach(b => b.onclick = () => { const t = +b.dataset.aqt; apCfg.topics = sel.includes(t) ? sel.filter(x => x !== t) : [...sel, t]; store.set("ft_apcfg", apCfg); renderApuntes(); });
+  $$("[data-alim]").forEach(b => b.onclick = () => { apCfg.limit = +b.dataset.alim; store.set("ft_apcfg", apCfg); renderApuntes(); });
+  if ($("#apstart")) $("#apstart").onclick = () => { let ids = shuffle(pool.map(q => q.id)); if (apCfg.limit) ids = ids.slice(0, apCfg.limit); startQuiz(ids, "test", "ap"); };
+  if ($("#apfail")) $("#apfail").onclick = () => startQuiz(shuffle(pend.map(x => x.q.id)), "repaso", "ap");
+  if ($("#apresume")) $("#apresume").onclick = () => { quiz = pAp; render(); };
+  $$("[data-open]").forEach(b => b.onclick = () => openViewer(b.dataset.open, 1));
+  $$("[data-arev]").forEach(b => b.onclick = () => startQuiz(shuffle(APQ.filter(q => q.doc === b.dataset.arev).map(q => q.id)), "test", "ap"));
+}
+
+/* visor de páginas: zoom con dos dedos, doble toque o botones; el botón «atrás» del móvil lo cierra */
+let viewer = null;
+const VZ = { min: 1, max: 4 }, VSTEPS = [1, 1.5, 2, 2.5, 3, 4];
+function openViewer(docId, page = 1) {
+  const d = APUNTES.find(x => x.id === docId); if (!d) return;
+  closeModal();
+  let root = $("#viewer-root"); if (!root) { root = document.createElement("div"); root.id = "viewer-root"; document.body.appendChild(root); }
+  viewer = { doc: d, z: Math.min(VZ.max, Math.max(VZ.min, +store.get("ft_apzoom", 1) || 1)) };
+  const nq = apCount(d.id);
+  root.innerHTML = `<div class="viewer" role="dialog" aria-modal="true" aria-label="${esc(d.title)}">
+    <div class="vbar">
+      <button class="icon-btn" id="vclose" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="vtitle"><b>${esc(d.title)}</b><span class="muted small" id="vpage">Página ${page} de ${d.pages}</span></div>
+      <button class="icon-btn" id="vzout" aria-label="Alejar"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
+      <button class="vzl" id="vzreset" aria-label="Ajustar al ancho">100 %</button>
+      <button class="icon-btn" id="vzin" aria-label="Acercar"><svg viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></svg></button>
+      <a class="icon-btn" href="${d.pdf}" target="_blank" rel="noopener" aria-label="Abrir el PDF original" title="Abrir el PDF original"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+    </div>
+    <div class="vscroll" id="vscroll"><div class="vpages" id="vpages">
+      ${Array.from({ length: d.pages }, (_, i) => `<div class="vpage" id="vp${i + 1}" style="aspect-ratio:${d.w}/${d.h}"><img src="${d.dir}p${i + 1}.webp" alt="Página ${i + 1} de ${d.pages}" decoding="async"${Math.abs(i + 1 - page) > 1 ? ' loading="lazy"' : ""}></div><div class="vpnum">${i + 1} / ${d.pages}</div>`).join("")}
+      ${nq ? `<button class="btn primary block" id="vrev">Repasar estos apuntes · ${nq} preguntas</button>` : ""}
+    </div></div></div>`;
+  document.body.style.overflow = "hidden";
+  const sc = $("#vscroll");
+  vApply();
+  const target = $("#vp" + page); if (target && page > 1) sc.scrollTop = target.offsetTop - 8;
+  $("#vzreset").textContent = Math.round(viewer.z * 100) + " %";
+  $("#vclose").onclick = () => closeViewer();
+  $("#vzin").onclick = () => vZoom(vStep(1));
+  $("#vzout").onclick = () => vZoom(vStep(-1));
+  $("#vzreset").onclick = () => vZoom(1);
+  if ($("#vrev")) $("#vrev").onclick = () => { closeViewer(); startQuiz(shuffle(APQ.filter(q => q.doc === d.id).map(q => q.id)), "test", "ap"); };
+  sc.addEventListener("scroll", vPageLabel, { passive: true });
+  vTouch(sc);
+  if (!(history.state && history.state.viewer)) { try { history.pushState({ viewer: 1 }, ""); } catch (e) { } }
+}
+function closeViewer(fromPop) {
+  if (!viewer) return;
+  viewer = null;
+  const r = $("#viewer-root"); if (r) r.innerHTML = "";
+  document.body.style.overflow = "";
+  if (!fromPop && history.state && history.state.viewer) { try { history.back(); } catch (e) { } }
+}
+window.addEventListener("popstate", () => { if (viewer) closeViewer(true); });
+window.addEventListener("resize", () => { if (viewer) vApply(); });
+function vStep(dir) { const z = viewer.z; return dir > 0 ? (VSTEPS.find(s => s > z + .01) || VZ.max) : ([...VSTEPS].reverse().find(s => s < z - .01) || VZ.min); }
+function vApply() {
+  const sc = $("#vscroll"), pg = $("#vpages"); if (!sc || !pg || !viewer) return;
+  pg.style.width = Math.round(Math.min(sc.clientWidth, 920) * viewer.z) + "px";
+}
+function vZoom(nz, cx, cy) {
+  const sc = $("#vscroll"); if (!sc || !viewer) return;
+  nz = Math.min(VZ.max, Math.max(VZ.min, nz));
+  const oz = viewer.z; if (Math.abs(nz - oz) < .001) return;
+  if (cx == null) { cx = sc.clientWidth / 2; cy = sc.clientHeight / 2; }
+  const x = sc.scrollLeft + cx, y = sc.scrollTop + cy, r = nz / oz;
+  viewer.z = nz; vApply();
+  sc.scrollLeft = x * r - cx; sc.scrollTop = y * r - cy;
+  $("#vzreset").textContent = Math.round(nz * 100) + " %";
+  clearTimeout(vZoom._t); vZoom._t = setTimeout(() => { if (viewer) store.set("ft_apzoom", viewer.z); }, 400);
+}
+function vPageLabel() {
+  const sc = $("#vscroll"); if (!sc || !viewer) return;
+  const mid = sc.scrollTop + sc.clientHeight * .35; let p = 1;
+  for (let i = 1; i <= viewer.doc.pages; i++) { const el = $("#vp" + i); if (el && el.offsetTop <= mid) p = i; }
+  const lab = $("#vpage"); if (lab) lab.textContent = `Página ${p} de ${viewer.doc.pages}`;
+}
+function vTouch(sc) {
+  let pinch = null, raf = 0, next = null, tap = null, lastTap = null;
+  const rel = (x, y) => { const r = sc.getBoundingClientRect(); return [x - r.left, y - r.top]; };
+  sc.addEventListener("touchstart", e => {
+    if (e.touches.length === 2) { const [a, b] = e.touches; pinch = { d: Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY) || 1, z: viewer.z }; tap = null; }
+    else if (e.touches.length === 1) tap = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+  }, { passive: true });
+  sc.addEventListener("touchmove", e => {
+    if (tap && e.touches.length === 1 && Math.hypot(e.touches[0].clientX - tap.x, e.touches[0].clientY - tap.y) > 10) tap = null;
+    if (!pinch || e.touches.length !== 2) return;
+    e.preventDefault();
+    const [a, b] = e.touches, d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    const [cx, cy] = rel((a.clientX + b.clientX) / 2, (a.clientY + b.clientY) / 2);
+    next = { z: pinch.z * d / pinch.d, cx, cy };
+    if (!raf) raf = requestAnimationFrame(() => { raf = 0; if (next && viewer) vZoom(next.z, next.cx, next.cy); next = null; });
+  }, { passive: false });
+  sc.addEventListener("touchend", e => {
+    if (pinch) { if (e.touches.length < 2) pinch = null; return; }
+    if (!tap || e.touches.length) return;
+    const now = Date.now(), t = tap; tap = null;
+    if (now - t.t > 300) return;
+    if (lastTap && now - lastTap.t < 320 && Math.hypot(t.x - lastTap.x, t.y - lastTap.y) < 30) {
+      const [cx, cy] = rel(t.x, t.y); vZoom(viewer.z > 1.2 ? 1 : 2.5, cx, cy); lastTap = null;
+    } else lastTap = { x: t.x, y: t.y, t: now };
+  }, { passive: true });
+  sc.addEventListener("dblclick", e => { const [cx, cy] = rel(e.clientX, e.clientY); vZoom(viewer.z > 1.2 ? 1 : 2.5, cx, cy); });
+}
+
 /* ============ energía por estudiar ============ */
 /* cuenta el tiempo con la pestaña Estudiar (o unos apuntes) abiertos, la app visible y actividad reciente */
 const STUDY_SECS = 60;
 let studyAcc = store.get("ft_studyacc", 0), lastInteract = Date.now(), infoOpen = false;
 ["scroll", "touchstart", "pointerdown", "keydown", "wheel"].forEach(ev => window.addEventListener(ev, () => { lastInteract = Date.now(); }, { passive: true, capture: true }));
 function isStudying() {
-  return document.visibilityState === "visible" && Date.now() - lastInteract < 120000 && ((view === "estudiar" && !quiz) || infoOpen);
+  return document.visibilityState === "visible" && Date.now() - lastInteract < 120000 && (((view === "estudiar" || view === "apuntes") && !quiz) || infoOpen || !!viewer);
 }
 function updateStudyChip() {
   const el = $("#studychip"); if (!el) return;
@@ -408,17 +578,20 @@ function modal(html) {
   document.body.style.overflow = "hidden";
   $("#bd").onclick = e => { if (e.target.id === "bd") closeModal(); };
 }
-function openInfo(id) {
-  const Q = QUESTIONS[id], e = Stats.get(id);
-  modal(`<span class="tag">${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}</span>
+function openInfo(id, bank = "main") {
+  const Q = bankQ(bank)[id], e = bankStats(bank).get(id);
+  const doc = bank === "ap" ? APUNTES.find(d => d.id === Q.doc) : null;
+  modal(`<span class="tag">${doc ? "Tus apuntes · " + TOPICS[Q.t].name : `${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
     <h3 style="margin-top:10px">${esc(Q.q)}</h3>
     <div class="callout okc"><b>Respuesta correcta:</b> ${esc(Q.o[Q.a])}</div>
-    <div class="note">${Q.n}</div>
+    ${doc ? `<div class="cita"><div class="cita-h">${ICON.apuntes}<span>En tus apuntes · página ${Q.p}</span></div><blockquote>${esc(Q.cita)}</blockquote><button class="btn block" id="gopage">Ver la página ${Q.p} de tus apuntes</button></div>` : ""}
+    ${Q.n ? `<div class="note">${Q.n}</div>` : ""}
     ${Q.m != null ? `<div class="callout warn"><b>Ojo:</b> en tus apuntes estaba marcada «${esc(Q.o[Q.m])}», que no es la correcta.</div>` : ""}
     ${Q.d ? `<div class="callout warn"><b>Pregunta dudosa:</b> el enunciado admite discusión; si tu profesor/a dio otra respuesta, prioriza la suya.</div>` : ""}
     ${e && e.w ? `<p class="muted small" style="margin-top:12px">La has fallado ${e.w} ${e.w === 1 ? "vez" : "veces"} y acertado ${e.r}.</p>` : ""}
     <button class="btn primary block" style="margin-top:16px" id="close">Cerrar</button>`);
   $("#close").onclick = closeModal;
+  if ($("#gopage")) $("#gopage").onclick = () => openViewer(doc.id, Q.p);
   infoOpen = true;
 }
 function confirmBox(title, text, okLabel, onOk) {
@@ -428,7 +601,7 @@ function confirmBox(title, text, okLabel, onOk) {
 }
 
 /* ============ copia de seguridad: exportar / importar partida ============ */
-const SAVE_KEYS = ["ft_game", "ft_stats", "ft_cstats", "ft_cfg", "ft_studyacc", "ft_test"];
+const SAVE_KEYS = ["ft_game", "ft_stats", "ft_cstats", "ft_cfg", "ft_studyacc", "ft_test", "ft_apstats", "ft_apcfg", "ft_apzoom"];
 const toB64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); };
 const fromB64 = b => Uint8Array.from(atob(b), ch => ch.charCodeAt(0));
 async function exportSave() {
@@ -522,6 +695,7 @@ try { if (localStorage.getItem("ft_imported")) { localStorage.removeItem("ft_imp
 
 /* ============ teclado ============ */
 document.addEventListener("keydown", e => {
+  if (viewer) { if (e.key === "Escape") closeViewer(); else if (e.key === "+" || e.key === "=") vZoom(vStep(1)); else if (e.key === "-") vZoom(vStep(-1)); return; }
   if ($("#modal-root").innerHTML) { if (e.key === "Escape") closeModal(); return; }
   if (!quiz || quiz.done) return;
   const k = e.key.toUpperCase(), it = quiz.items[quiz.idx];

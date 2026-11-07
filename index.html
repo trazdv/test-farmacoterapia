@@ -209,11 +209,36 @@ h1{font-size:1.9rem;margin:6px 0 4px;font-weight:900}
 .lh{border-top:2px dashed var(--border);padding:12px 0} .lh:first-of-type{border-top:none}
 .lh-q{font-weight:700} .lh-a{color:var(--ok);font-weight:800;margin:6px 0} .lh-n{font-size:.94rem;line-height:1.55}
 
+/* apuntes del usuario: lista por temas, visor de páginas y cita en las respuestas */
+.ap-sub{margin:-4px 0 14px}
+.ap-head{gap:12px;align-items:center;flex-wrap:nowrap} .ap-head>div{flex:1;min-width:0}
+.ap-ico{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:color-mix(in srgb,var(--pink) 18%,var(--surface));color:var(--pink);flex:none}
+.ap-ico svg,.cita-h svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.doc-card{display:flex;gap:14px;align-items:flex-start;margin-top:12px}
+.doc-thumb{width:86px;flex:none;aspect-ratio:2000/2826;border-radius:10px;overflow:hidden;border:2px solid var(--border);background:#fff;padding:0;cursor:pointer;box-shadow:var(--lift)}
+.doc-thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transform:scale(1.75);transform-origin:50% 7%}
+.doc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;line-height:1.3}
+.doc-btns{margin-top:6px;gap:8px} .doc-btns .btn{flex:1}
+.viewer{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:#56505c}
+.vbar{display:flex;align-items:center;gap:6px;padding:calc(6px + env(safe-area-inset-top)) 8px 8px;background:var(--surface);border-bottom:2px solid var(--border)}
+.vbar .icon-btn{width:40px;height:40px;border-radius:13px;box-shadow:0 3px 0 var(--border);color:var(--text)}
+.vtitle{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25;padding:0 2px}
+.vtitle b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.9rem}
+.vzl{border:none;background:none;font:inherit;font-weight:800;font-size:.76rem;color:var(--muted);min-width:42px;padding:0;cursor:pointer}
+.vscroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior:contain}
+.vpages{margin:0 auto;padding:10px 8px calc(28px + env(safe-area-inset-bottom));box-sizing:border-box}
+.vpage{background:#fff;box-shadow:0 2px 14px rgba(0,0,0,.4);width:100%}
+.vpage img{display:block;width:100%;height:100%}
+.vpnum{color:#ece6f0;font-size:.74rem;text-align:center;margin:5px 0 12px;font-weight:700}
+.cita{background:var(--surface-2);border:2px solid var(--border);border-left:5px solid var(--pink);border-radius:14px;padding:10px 12px 12px;margin-top:12px}
+.cita-h{display:flex;align-items:center;gap:6px;font-weight:800;font-size:.85rem;color:var(--pink)}
+.cita blockquote{margin:6px 0 10px;font-size:.95rem;line-height:1.55;white-space:pre-line}
+
 /* pestañas inferiores */
 #tabs{position:fixed;left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom));background:var(--surface);border:2px solid var(--border);border-radius:26px;padding:6px;z-index:15;box-shadow:0 8px 24px rgba(219,120,80,.22);max-width:560px;margin:0 auto}
 .tabs-inner{display:flex;gap:4px}
 #tabs button{flex:1;border:none;background:none;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 2px;color:var(--muted);font-size:.74rem;font-weight:800;font-family:var(--round);position:relative;border-radius:20px;transition:all .25s cubic-bezier(.3,1.5,.5,1)}
-#tabs button[data-view="test"]{--tc:var(--sky)} #tabs button[data-view="repaso"]{--tc:var(--lilac)} #tabs button[data-view="estudiar"]{--tc:var(--teal)} #tabs button[data-view="consulta"]{--tc:var(--accent)}
+#tabs button[data-view="test"]{--tc:var(--sky)} #tabs button[data-view="repaso"]{--tc:var(--lilac)} #tabs button[data-view="estudiar"]{--tc:var(--teal)} #tabs button[data-view="apuntes"]{--tc:var(--pink)} #tabs button[data-view="consulta"]{--tc:var(--accent)}
 #tabs button[aria-current="page"]{color:#fff;background:var(--tc);transform:translateY(-6px);box-shadow:0 5px 0 rgba(0,0,0,.15)}
 #tabs button[aria-current="page"] svg{animation:wiggle .5s}
 #tabs .badge{position:absolute;top:0;left:calc(50% + 6px);background:var(--bad);color:#fff;font-style:normal;font-size:.68rem;min-width:19px;height:19px;border-radius:10px;display:grid;place-items:center;padding:0 4px;border:2px solid var(--surface);animation:pulse 1.6s ease-in-out infinite}
@@ -497,6 +522,7 @@ body.focus #tabs{display:none}
 <div id="modal-root"></div>
 <script src="data.js"></script>
 <script src="study.js"></script>
+<script src="apuntes.js"></script>
 <script src="app.js"></script>
 <script src="consultas.js"></script>
 <script src="art.js"></script>
