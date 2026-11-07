@@ -209,7 +209,8 @@ function finish() {
   const okN = quiz.items.filter((it, i) => quiz.answers[i] === B[it.id].a).length;
   let e = Math.floor(answered / 3) + (quiz.items.length >= 10 && okN / quiz.items.length >= 0.7 ? 1 : 0);
   quiz.energy = e ? addEnergy(e, "por el test") : 0;
-  if (okN / quiz.items.length >= 0.5) setTimeout(() => confetti(okN === quiz.items.length ? 120 : 60), 350);
+  const allOk = okN === quiz.items.length;
+  if (okN / quiz.items.length >= 0.5) setTimeout(() => confetti(allOk ? 120 : 60), 350);
   reviewTab = "bad";
   render(); window.scrollTo(0, 0);
 }

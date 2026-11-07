@@ -1087,6 +1087,49 @@ const CONSULTAS = [
      "Sí: es la primera elección en todos los problemas respiratorios, porque además es antibiótica.",
      "Sí: es el broncodilatador más seguro que existe y por eso siempre se empieza el tratamiento por ella.",
      "No: la teofilina solo actúa sobre el corazón; sobre los bronquios no tiene absolutamente ningún efecto."],
-  why:"En el asma y la bronquitis crónica las metilxantinas son de 2ª elección (tras los corticoides y los β2-agonistas), por su margen estrecho y sus interacciones.",q:185}]}
+  why:"En el asma y la bronquitis crónica las metilxantinas son de 2ª elección (tras los corticoides y los β2-agonistas), por su margen estrecho y sus interacciones.",q:185}]},
+
+/* ---------------- Casos añadidos con el pack de 4 PDF ---------------- */
+{t:4,sp:"dog",pet:"Rayo",owner:"Leire",intro:"Rayo es un cachorro de pastor alemán de seis meses. Lleva tres meses con prednisona por una dermatitis muy intensa.",steps:[
+ {ask:"Casi no ha crecido desde que empezó la pastilla. ¿Puede ser por eso?",
+  o:["Sí: los corticoides frenan la liberación de la hormona del crecimiento (STH), sobre todo en animales jóvenes.",
+     "No: los corticoides estimulan la hormona del crecimiento, así que tendría que haber crecido más deprisa.",
+     "No: la prednisona solo actúa en la piel y no tiene ningún efecto en el resto del cuerpo del cachorro.",
+     "Sí, pero solo porque los corticoides le quitan el hambre y está comiendo menos de lo que necesita."],
+  why:"Los glucocorticoides inhiben la liberación de STH (hormona del crecimiento) y de TSH, por lo que en animales jóvenes pueden frenar el crecimiento. Por eso se busca la dosis mínima eficaz y se retiran poco a poco.",q:209},
+ {ask:"Además come muchísimo y en la analítica le han salido los linfocitos bajos. ¿Es normal?",
+  o:["Sí, es típico: los corticoides abren el apetito y producen linfopenia (el «leucograma de estrés»).",
+     "No: los linfocitos bajos indican que tiene una leucemia y hay que suspender ya mismo el corticoide.",
+     "Solo lo del apetito; los corticoides suben los linfocitos, así que algo más le está pasando por dentro.",
+     "No es por la prednisona: la prednisona le quita el hambre y le sube todas las defensas del cuerpo."],
+  why:"Los glucocorticoides son orexígenos (aumentan el apetito) y producen linfopenia, eosinopenia y neutrofilia: el «leucograma de estrés».",q:208}]},
+
+{t:3,sp:"cat",pet:"Canica",owner:"Fátima",intro:"Fátima le dio a Canica medio comprimido de paracetamol porque la veía decaída. Ahora tiene las encías azuladas, la cara hinchada y respira con dificultad.",steps:[
+ {ask:"¿Por qué le ha sentado tan mal el paracetamol, si a mí no me hace nada?",
+  o:["El gato no puede glucuronidarlo: lo convierte en NAPQI, que agota el glutatión, daña el hígado y oxida la hemoglobina.",
+     "Es una alergia al paracetamol, como la de algunas personas; con un antihistamínico se le pasa en unas horas.",
+     "El paracetamol le ha producido una úlcera en el estómago y la sangre perdida es lo que le pone las encías azules.",
+     "El gato elimina el paracetamol demasiado deprisa y eso le provoca una bajada brusca del azúcar en sangre."],
+  why:"Por su déficit de glucuronoconjugación, el gato desvía el paracetamol hacia el citocromo P-450 y forma NAPQI. Al agotarse el glutatión aparecen metahemoglobinemia (cianosis, sangre color chocolate), anemia con cuerpos de Heinz, edema facial y necrosis hepática.",q:123},
+ {ask:"¿Hay algún antídoto?",
+  o:["Sí: N-acetilcisteína cuanto antes, mejor en las primeras horas; repone el glutatión y neutraliza el NAPQI.",
+     "Sí: vitamina K durante varias semanas, porque el paracetamol impide que la sangre del gato coagule bien.",
+     "No hay antídoto; lo único que se puede hacer es darle otro AINE que contrarreste al paracetamol.",
+     "Sí: naloxona, porque en el gato el paracetamol actúa como un opioide y deprime la respiración."],
+  why:"El antídoto es la N-acetilcisteína (IV u oral), idealmente en las primeras 8 horas: es precursora del glutatión y aporta grupos sulfhidrilo que neutralizan el NAPQI. El paracetamol está contraindicado en el gato a cualquier dosis.",q:123}]},
+
+{t:3,sp:"horse",pet:"Centella",owner:"Rodrigo",intro:"Centella es una yegua con una cojera. Rodrigo quiere ponerle él mismo la fenilbutazona inyectable que le sobró la última vez.",steps:[
+ {ask:"¿Se la puedo poner en el músculo, que es más fácil?",
+  o:["No: en el músculo o bajo la piel causa necrosis y miositis graves. Solo por boca o en la vena.",
+     "Sí: en el músculo se absorbe despacio, así le dura todo el día y no le daña el estómago.",
+     "Sí, pero solo bajo la piel del cuello, que es la zona donde menos irrita a los caballos.",
+     "No: por vía intramuscular no se absorbe nada, aunque tampoco le haría ningún daño a la yegua."],
+  why:"La fenilbutazona es muy irritante: por vía intramuscular o subcutánea produce necrosis tisular y miositis graves. En el caballo se da por vía oral o intravenosa estricta."},
+ {ask:"¿Y en la vena del cuello tiene algún riesgo?",
+  o:["Sí, si se pincha la carótida por error: convulsiones, ceguera e incluso muerte súbita. Mejor que la ponga yo.",
+     "Ninguno: la vena del cuello y la arteria carótida están lejos y es imposible confundirlas al pinchar.",
+     "Solo que le puede bajar un poco la tensión arterial durante unos minutos, sin ninguna otra importancia.",
+     "Que la fenilbutazona puesta en la vena le produce úlceras en la boca durante unos días, nada más."],
+  why:"La inyección intracarotídea accidental de fenilbutazona en el caballo produce convulsiones, ceguera irreversible y muerte súbita. Además, su cinética es dosis-dependiente en el caballo y el perro."}]}
 
 ];

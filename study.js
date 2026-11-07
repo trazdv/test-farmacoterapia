@@ -46,7 +46,7 @@ sections: [
 <li><b>Ciproheptadina</b>: antiH1 y antagonista 5-HT2; asma felino y estimulante del apetito.</li></ul>`],
 ["Antihistamínicos H2",`<ul>
 <li>Cimetidina, ranitidina, famotidina, nizatidina. Inhiben la secreción gástrica: úlcera péptica, gastritis urémica, esofagitis por reflujo.</li>
-<li>Buena absorción oral <b>con efecto de primer paso</b>. Se biotransforman menos que los antiH1 y ~50 % se elimina activo por el riñón. Nizatidina: casi sin biotransformación → útil en insuficiencia hepática. Sin efectos centrales.</li>
+<li>Por vía oral su biodisponibilidad es baja o moderada (la clave de clase dice que «se absorben poco») por el <b>efecto de primer paso</b>; también se dan IM o IV. Se biotransforman menos que los antiH1 y ~50 % se elimina activo por el riñón. Nizatidina: casi sin biotransformación → útil en insuficiencia hepática. Sin efectos centrales.</li>
 <li>Bloquean el efecto crono e inotropo positivo de la histamina y la vasodilatación mediada por H2.</li>
 <li><b>Cimetidina</b>: <b>inhibe</b> el citocromo P450 (interacciones), ↑ prolactina (ginecomastia, galactorrea) y efecto antiandrogénico. La ranitidina apenas tiene estos efectos.</li></ul>`],
 ["Cromoglicato sódico",`<ul>
@@ -56,7 +56,7 @@ sections: [
 ["Serotonina (5-HT)",`<ul>
 <li>Se forma a partir del triptófano. ~90 % en <b>células enterocromafines</b>; también en plaquetas y neuronas. En la glándula pineal es precursora de la <b>melatonina</b>.</li>
 <li>La degrada la MAO (→ 5-HIAA) en hígado, pulmón y otros tejidos; se excreta por vía renal.</li>
-<li>Efectos: contrae vasos grandes y venas (cerebro, vísceras), pero <b>dilata las arteriolas</b> del músculo esquelético y del corazón; crono e inotropo positivo directo (posible bradicardia refleja por Bezold-Jarisch); <b>proagregante</b>; contrae bronquios, vejiga, útero e intestino (↑ motilidad); estimula las terminaciones del dolor; estimula la liberación de ACTH.</li>
+<li>Efectos: contrae vasos grandes y venas (cerebro, vísceras), pero <b>dilata las arteriolas</b> del músculo esquelético y del corazón; crono e inotropo positivo directo (posible bradicardia refleja por Bezold-Jarisch); plaquetas: en farmacología general es proagregante (5-HT2A), pero las claves de clase dan por buena la <b>actividad antiagregante</b> (un alumno anotó «en el hombre es agregante???»), así que en el examen sigue el criterio de tu profesora; contrae bronquios, vejiga, útero e intestino (↑ motilidad); estimula las terminaciones del dolor; estimula la liberación de ACTH.</li>
 <li>SNC: control del sueño, reduce la agresividad; estimulante a concentraciones bajas y depresora a altas.</li>
 <li><b>Agonistas 5-HT1A</b> (buspirona): ansiedad. <b>5-HT1B/1D</b> (sumatriptán): migraña. <b>ISRS</b> (fluoxetina, clomipramina): conductas compulsivas y automutilación. <b>Agonistas 5-HT4</b> (cisaprida, mosaprida): procinéticos (atonía ruminal, reflujo, megacolon).</li>
 <li><b>Antagonistas 5-HT3</b> (ondansetrón, granisetrón; «setrones»): antieméticos muy eficaces en quimioterapia, poco en la cinetosis; actúan a nivel central y periférico; <b>no son procinéticos</b>. Pueden darse por vía IV. Metabolismo hepático. Raramente hipotensión, bradicardia o broncoespasmo.</li>
@@ -73,12 +73,12 @@ sections: [
 <li><b>AT1</b>: vasoconstricción muy potente (respuesta hipertensora marcada), ↑ tono simpático central, liberación de aldosterona (es su <b>principal estímulo</b>), adrenalina, ADH y ACTH, sed, retención de Na⁺ y agua (antidiuresis), efecto crono e inotropo positivo (moderado), hipertrofia, fibrosis, superóxidos y agregación plaquetaria.</li>
 <li><b>AT2</b>: lo contrario: vasodilatación (NO), antiproliferativo, apoptosis.</li>
 <li><b>Péptidos natriuréticos</b>: ANP (aurículas, al distenderse), BNP (ventrículos). Natriuresis y diuresis <b>sin apenas pérdida de K⁺</b>, ↑ filtración glomerular, vasodilatación arterial y venosa, ↑ tono vagal y ↓ simpático, antiproliferativos y antifibróticos. Inhiben la renina, la aldosterona, la endotelina-1 y la <b>vasopresina</b>. El NT-proBNP indica la gravedad de la IC.</li>
-<li><b>Bradicinina</b> (B2): vasodilatación vía NO y PGI2 (la <b>atropina no la bloquea</b>), ↑ permeabilidad, broncoconstricción, dolor intenso. La degrada la ECA → tos por IECA.</li></ul>`],
+<li><b>Bradicinina</b> (B2): vasodilatación vía NO y PGI2 (la <b>atropina no la bloquea</b>), ↑ permeabilidad, broncoconstricción, dolor intenso (en parte por las prostaglandinas que libera, por eso la aspirina lo reduce). La degrada la ECA → tos por IECA.</li></ul>`],
 ["Eicosanoides",`<ul>
 <li>Derivados del <b>ácido araquidónico</b> (20 C): estructura lipídica. <b>No se almacenan</b>, se sintetizan a demanda en casi todas las células <b>excepto los eritrocitos</b>. Son muy potentes y de acción local.</li>
-<li><b>COX-1</b>: constitutiva (homeostasis: mucosa gástrica, riñón, plaquetas). <b>COX-2</b>: inducible (inflamación). <b>COX-3</b>: central (fiebre y dolor).</li>
-<li><b>5-LOX</b> → leucotrienos. LTB4: quimiotaxis (neutrófilos sobre todo). <b>LTC4, LTD4 y LTE4</b> (con cisteína) = sustancia de reacción lenta de la anafilaxia: broncoconstricción, ↑ permeabilidad vascular, vasoconstricción (coronaria).</li>
-<li><b>TXA2</b> (plaquetas): vasoconstrictor y proagregante, broncoconstrictor. <b>PGI2</b> (endotelio): vasodilatadora y antiagregante.</li>
+<li><b>COX-1</b>: constitutiva (homeostasis: mucosa gástrica, riñón, plaquetas). <b>COX-2</b>: inducible (inflamación). <b>COX-3</b>: se propuso como isoforma central (fiebre y dolor), pero según tus apuntes (actualización 2025/2026) en humanos está descartada: es una proteína truncada sin actividad.</li>
+<li><b>5-LOX</b> → leucotrienos. LTB4: quimiotaxis de <b>neutrófilos y eosinófilos</b> (según la clave de clase, no de linfocitos). <b>LTC4, LTD4 y LTE4</b> (con cisteína) = sustancia de reacción lenta de la anafilaxia: broncoconstricción, ↑ permeabilidad vascular, vasoconstricción (coronaria).</li>
+<li><b>TXA2</b> (plaquetas): vasoconstrictor y proagregante, broncoconstrictor. La clave de clase da también por buena que «su síntesis se inhibe por déficit de vitamina E». <b>PGI2</b> (endotelio): vasodilatadora y antiagregante.</li>
 <li><b>PGE2</b>: vasodilatadora e hipotensora (taquicardia refleja), ↑ permeabilidad, ↑ flujo renal, citoprotectora gástrica (↓ ácido), acelera el tránsito.</li>
 <li><b>PGF2α</b>: contrae bronquios, útero (oxitócica) e intestino (↑ peristaltismo); <b>luteolítica</b>.</li>
 <li>Usos veterinarios: PGF2α (dinoprost, <b>cloprostenol</b>) para cuerpo lúteo persistente, sincronización del celo, inducción del parto y del aborto, piómetra y, en el verraco, <b>aumentar</b> la libido y la producción seminal; latanoprost para el glaucoma (↓ PIO); misoprostol para prevenir úlceras por AINEs. <b>No</b> se usan en la CID ni como procinéticos.</li></ul>`],
@@ -91,7 +91,7 @@ sections: [
 intro: "AINEs: inhiben la ciclooxigenasa (COX) y la síntesis de prostaglandinas. Antiartríticos y modificadores de la artritis reumatoide.",
 sections: [
 ["Mecanismo y acciones",`<ul>
-<li>Inhibición de la <b>COX-2</b> → efecto <b>antiinflamatorio</b>; de la <b>COX-1</b> → la mayoría de los <b>efectos adversos</b>; de la <b>COX-3</b> (central) → analgesia y antipiresis.</li>
+<li>Inhibición de la <b>COX-2</b> → efecto <b>antiinflamatorio</b>; de la <b>COX-1</b> → la mayoría de los <b>efectos adversos</b>. Los exámenes antiguos atribuyen la analgesia y la antipiresis a la <b>COX-3</b> central; según tus apuntes, la profesora ya lo da por descartado: el paracetamol actúa por su metabolito AM404 (receptores CB₁), las vías serotoninérgicas y la inhibición de la peroxidasa de la COX donde hay pocos peróxidos.</li>
 <li><b>Antiinflamatoria</b>: requiere concentraciones <b>superiores</b> a las que inhiben la COX. En los derivados del ácido propiónico es estereoespecífica (enantiómero S). Tepoxalina (y diflunisal) inhiben también la 5-LOX. Los fenamatos además antagonizan las PGs ya formadas.</li>
 <li><b>Analgésica</b>: leve-moderada (son más «antiálgicos» que analgésicos), útil en el dolor inflamatorio; <b>no</b> en el dolor por estímulo mecánico o eléctrico. Gran variabilidad individual. <b>No dan tolerancia</b>.</li>
 <li><b>Antipirética</b>: inhiben la PGE2 hipotalámica; el calor se pierde por vasodilatación periférica y sudoración. <b>No</b> sirven en la hipertermia por golpe de calor o ejercicio, ni en la producida por PGE2 exógena. No causan hipotermia. El diflunisal casi no es antipirético.</li>
@@ -117,7 +117,15 @@ sections: [
 <tr><td>Otros biológicos</td><td>rituximab (anti-CD20, elimina linfocitos B), abatacept (CTLA4-Ig, coestimulación T), tocilizumab (anti-IL-6), anakinra (anti-IL-1)</td></tr></table>
 <ul><li><b>Metotrexato</b>: inhibe la <b>dihidrofolato reductasa</b> (la dihidropteroato sintetasa es de las sulfamidas). Inmunosupresor y antiinflamatorio; reduce los anticuerpos contra los biológicos. Toxicidad medular, hepática y <b>pulmonar</b>.</li>
 <li><b>Leflunomida</b>: inhibe la síntesis de pirimidinas en los linfocitos; retrasa el daño articular.</li>
-<li><b>Anticuerpos monoclonales</b> (-mab): proteínas, vía <b>parenteral</b>. En veterinaria, bedinvetmab (perro) y frunevetmab (gato): anti-NGF para el dolor de la artrosis.</li></ul>`]
+<li><b>Anticuerpos monoclonales</b> (-mab): proteínas, vía <b>parenteral</b>. En veterinaria, bedinvetmab (perro) y frunevetmab (gato): anti-NGF para el dolor de la artrosis.</li></ul>`],
+["Pregunta corta de examen: reacciones adversas de los AINEs",`<p class="muted">Cayó en el parcial de julio de 2021 («Enumera las reacciones adversas de los AINEs»). Respuesta modelo:</p><ul>
+<li><b>Gastrointestinales</b> (las más frecuentes, por inhibir la COX-1): erosiones, úlceras y hemorragia digestiva, retraso de la reepitelización. Prevención con IBP (omeprazol), misoprostol o antiH2.</li>
+<li><b>Renales</b>: ↓ flujo renal y filtración glomerular (grave con hipovolemia, ICC o nefropatía), retención de Na⁺ y agua (hipertensión, edemas) e hiperpotasemia por ↓ renina y aldosterona; nefropatía aguda (necrosis papilar) y nefropatía intersticial crónica. Reducen el efecto de diuréticos e IECA.</li>
+<li><b>Hematológicas</b>: ↓ agregación plaquetaria y diátesis hemorrágica (irreversible con la aspirina); discrasias sanguíneas (agranulocitosis por metamizol, aplasia medular por fenilbutazona).</li>
+<li><b>Hepáticas</b>: hepatotoxicidad, sobre todo el paracetamol (NAPQI; letal en el gato).</li>
+<li><b>Salicilismo</b> (sobredosis de aspirina): acúfenos, hipertermia, alcalosis respiratoria y después acidosis mixta.</li>
+<li><b>Otras</b>: hipersensibilidad (broncoespasmo, urticaria), hiperuricemia con dosis bajas de salicilatos, necrosis por fenilbutazona IM o SC y accidentes por inyección intracarotídea en el caballo, interacciones por desplazamiento de la albúmina (warfarina).</li>
+<li>No se deben asociar dos AINEs ni un AINE con un glucocorticoide (úlceras y perforación).</li></ul>`]
 ]},
 4: {
 intro: "Glucocorticoides (GC): antiinflamatorios e inmunosupresores potentes. Mineralocorticoides y fármacos del eje adrenal.",
@@ -139,7 +147,8 @@ sections: [
 <li>Vasos: <b>hipertensores</b>; potencian la vasoconstricción por catecolaminas (efecto permisivo) y ↑ el tono capilar.</li>
 <li>Antiinflamatorios: ↓ permeabilidad, edema y depósito de fibrina; estabilizan los lisosomas; inhiben el complemento, los eicosanoides y los macrófagos; retrasan la cicatrización.</li>
 <li>Hueso: inhiben los osteoblastos y estimulan los osteoclastos → osteoporosis.</li>
-<li>Otros: euforia y ↑ actividad (atraviesan la BHE); inducen la <b>PNMT</b> (síntesis de adrenalina); ↓ temporal de la producción de leche en vacas; antipiréticos, pero no se usan para eso.</li></ul>`],
+<li>Otros: euforia y ↑ actividad (atraviesan la BHE); inducen la <b>PNMT</b> (síntesis de adrenalina); ↓ temporal de la producción de leche en vacas; antipiréticos, pero no se usan para eso.</li>
+<li>Endocrino: <b>inhiben la liberación de STH</b> (frenan el crecimiento en animales jóvenes) <b>y de TSH</b>; son <b>orexígenos</b> (aumentan el apetito).</li></ul>`],
 ["Farmacocinética",`<ul>
 <li>Buena absorción oral. Alta unión a transcortina y albúmina. Atraviesan la BHE y la placenta.</li>
 <li>Biotransformación sobre todo hepática, pero <b>no exclusiva</b> (también riñón y otros tejidos).</li>
@@ -165,7 +174,16 @@ sections: [
 <li><b>Trilostano</b>: inhibe la 3β-hidroxiesteroide deshidrogenasa → tratamiento de elección.</li>
 <li>Mitotano: adrenolítico; uso limitado por su toxicidad digestiva y neurológica.</li>
 <li><b>Selegilina</b> (IMAO-B): ↑ dopamina → frena la ACTH hipofisaria (Cushing de origen hipofisario).</li>
-<li>Metopirona (inhibe la 11β-hidroxilasa; sobre todo en el gato), ketoconazol y aminoglutetimida (puede dar hipotiroidismo): menos usados.</li></ul>`]
+<li>Metopirona (inhibe la 11β-hidroxilasa; sobre todo en el gato), ketoconazol y aminoglutetimida (puede dar hipotiroidismo): menos usados.</li></ul>`],
+["Pregunta corta de examen: reacciones adversas de los glucocorticoides",`<p class="muted">Cayó en el parcial de 2019/2020. Respuesta modelo:</p><ul>
+<li><b>Supresión del eje hipotálamo-hipófisis-adrenal</b>: atrofia adrenal y crisis addisoniana si se retiran de golpe (hay que retirarlos poco a poco); Cushing iatrogénico en tratamientos largos.</li>
+<li><b>Metabólicas</b>: hiperglucemia y diabetes, catabolismo proteico (atrofia y debilidad muscular), redistribución de la grasa e hiperlipidemia, retraso del crecimiento en animales jóvenes (↓ STH).</li>
+<li><b>Agua y electrolitos</b>: retención de Na⁺ y agua (hipertensión, edemas), hipopotasemia, poliuria y polidipsia.</li>
+<li><b>Inmunosupresión</b>: más infecciones y peor cicatrización.</li>
+<li><b>Digestivas</b>: úlceras gastrointestinales (más si se asocian a AINEs), pancreatitis, polifagia; hepatomegalia (hepatopatía esteroidea del perro).</li>
+<li><b>Hueso y piel</b>: osteoporosis, piel fina, alopecia, comedones, calcinosis cutánea.</li>
+<li><b>Ojos</b>: cataratas, ↑ presión intraocular (glaucoma) y empeoramiento de las úlceras corneales.</li>
+<li><b>SNC y conducta</b>: euforia, inquietud, cambios de comportamiento. En vacas, ↓ temporal de la leche; al final de la gestación pueden desencadenar el parto o el aborto.</li></ul>`]
 ]},
 5: {
 intro: "Fármacos inotrópicos, vasodilatadores y antiarrítmicos.",
@@ -173,7 +191,7 @@ sections: [
 ["Digitálicos (digoxina, digitoxina)",`<ul>
 <li>Inhiben la Na⁺/K⁺-ATPasa → ↑ Ca²⁺ intracelular → <b>inotropo positivo</b>; batmotropo positivo. Efecto vagal: <b>cronotropo y dromotropo negativos</b> (↓ nodo SA, ↑ periodo refractario del nodo AV). A dosis altas ↑ automatismo (ectópicos). En el corazón insuficiente ↑ el gasto <b>sin ↑ el consumo de O₂</b>.</li>
 <li>En el <b>perro</b>, vida media de la digoxina (≈20–55 h) mayor que la de la digitoxina (≈8–12 h). La digoxina se elimina por vía <b>renal</b> sin metabolizar. Se acumulan en corazón, riñón, hígado y músculo, poco en grasa.</li>
-<li>Indicados en la ICC con <b>fibrilación auricular</b> o flúter y en taquicardias supraventriculares. <b>Contraindicados</b> en estenosis aórtica/subaórtica, CMH, arritmias ventriculares y bloqueo AV. No útiles en IC por hipertiroidismo; precaución en miocarditis.</li>
+<li>Indicados en la ICC con <b>fibrilación auricular</b> o flúter y en taquicardias supraventriculares. Eficaces en la ICC con disfunción sistólica (por ejemplo, secundaria a cardiopatía hipertensiva o valvular); poco eficaces si el problema es de llenado: estenosis mitral aislada, miocardiopatía restrictiva, pericarditis constrictiva. <b>Contraindicados</b> en estenosis aórtica/subaórtica, CMH, arritmias ventriculares y bloqueo AV. No útiles en IC por hipertiroidismo; precaución en miocarditis.</li>
 <li>Toxicidad aumentada por <b>hipopotasemia</b>, hipercalcemia, hipomagnesemia, insuficiencia renal e hipotiroidismo; el verapamilo ↑ la digoxinemia. Intoxicación: vómitos, anorexia, diarrea, arritmias y bloqueo AV, visión borrosa y discromatopsia, vasoconstricción mesentérica, ginecomastia.</li></ul>`],
 ["Simpaticomiméticos e inhibidores de PDE",`<ul>
 <li><b>Dobutamina</b>: β1 (algo β2 y α1), <b>más inotrópica que cronotrópica y que vasodilatadora</b>. Infusión IV continua. A dosis altas, taquiarritmias. Facilita la conducción AV: en la FA, <b>digitalizar antes</b>.</li>
@@ -187,7 +205,7 @@ sections: [
 ["IECA y sartanes",`<ul>
 <li><b>IECA</b> (enalapril, benazepril): ↓ angiotensina II y aldosterona → vasodilatación <b>mixta</b> (vasos de capacidad y de resistencia: ↓ pre y poscarga) <b>sin taquicardia ni activación simpática refleja</b>, natriuresis y diuresis, antiproliferativos (evitan la hipertrofia y la remodelación), mejoran la disfunción endotelial, ↑ flujo renal sin cambiar la FG, ↑ tolerancia al ejercicio. Actúan sobre los lechos renal, cerebral y coronario.</li>
 <li>Efectos adversos: <b>hiperpotasemia</b> (más con AINEs, espironolactona, diabetes o insuficiencia renal), hipotensión, azotemia, tos seca (bradicinina), fallo renal si hay hipovolemia u <b>oliguria</b>.</li>
-<li>Usos: ICC (dilatada, hipertrófica y restrictiva), HTA, proteinuria, nefropatía diabética, insuficiencia renal progresiva, cardiopatía isquémica.</li>
+<li>Usos: ICC (dilatada, hipertrófica y restrictiva), HTA, proteinuria, nefropatía diabética, insuficiencia renal progresiva, cardiopatía isquémica. Son los <b>vasodilatadores de elección en la insuficiencia renal</b> (nefroprotectores), salvo si hay oliguria o anuria.</li>
 <li><b>Sartanes</b> (ARA-II: losartán, telmisartán): antagonistas puros del <b>AT1</b>, orales; antihipertensivos, antiproliferativos y antiapoptóticos; favorecen la excreción de Na⁺ y agua; sin tos (sustituyen al IECA). Telmisartán: proteinuria en el gato.</li></ul>`],
 ["Otros vasodilatadores",`<ul>
 <li>Arteriodilatadores → ↓ <b>poscarga</b>; venodilatadores → ↓ <b>precarga</b>; mixtos → ambas.</li>
@@ -205,6 +223,11 @@ sections: [
 <li><b>Clase II</b> (β-bloqueantes): ↓ automatismo y ectópicos, <b>enlentecen el nodo AV</b>, previenen la taquicardia refleja; inotropos negativos e hipotensores (pueden agravar una ICC). Los no selectivos (propranolol, carvedilol) dan broncoconstricción. Indicados también en la estenosis aórtica, la CMH y las arritmias digitálicas. Retirada gradual (rebote).</li>
 <li><b>Clase III</b> (bloqueo de K⁺: amiodarona, sotalol, bretilio): <b>retrasan la repolarización</b> y prolongan el PA y el periodo refractario. Bretilio: fibrilación ventricular.</li>
 <li><b>Clase IV</b> (antagonistas del Ca²⁺): verapamilo y diltiazem.</li></ul>`],
-["Cardiomiopatía hipertrófica",`<ul><li>Disfunción diastólica. Se tratan con β-bloqueantes (atenolol), diltiazem o verapamilo, e IECA si hay ICC. <b>Evitar inotropos positivos</b> (dobutamina, digoxina, pimobendan) y vasodilatadores potentes.</li></ul>`]
+["Cardiomiopatía hipertrófica",`<ul><li>Disfunción diastólica. Se tratan con β-bloqueantes (atenolol), diltiazem o verapamilo, e IECA si hay ICC. <b>Evitar inotropos positivos</b> (dobutamina, digoxina, pimobendan) y vasodilatadores potentes.</li></ul>`],
+["Pregunta corta de examen: verapamilo y diltiazem",`<p class="muted">Cayó en el parcial de octubre de 2022 («Bloqueantes de los canales lentos de calcio: actividad, indicaciones y contraindicaciones»). Respuesta modelo:</p><ul>
+<li><b>Actividad</b>: bloquean los canales lentos de Ca²⁺ (tipo L) del corazón y de los vasos; son cationes anfófilos <b>no vasoselectivos</b> (antiarrítmicos de clase IV). En el corazón son cronotropos, dromotropos e inotropos negativos (deprimen el nodo SA y sobre todo el AV); en los vasos producen vasodilatación arterial sin taquicardia refleja.</li>
+<li><b>Indicaciones</b>: taquicardias supraventriculares agudas y control de la frecuencia en la fibrilación auricular (de elección), cardiomiopatía hipertrófica felina (diltiazem) e hipertensión arterial.</li>
+<li><b>Contraindicaciones</b>: bloqueo AV y enfermedad del seno, ICC grave o disfunción sistólica (por su efecto inotropo negativo), hipotensión e intoxicación digitálica (además, el verapamilo sube la digoxinemia).</li>
+<li><b>Interacciones</b>: no asociar a β-bloqueantes (bradicardia grave, bloqueo AV, insuficiencia cardiaca). Metabolismo hepático: reducir la dosis en la insuficiencia hepática.</li></ul>`]
 ]}
 };

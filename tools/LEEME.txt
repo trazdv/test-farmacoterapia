@@ -1,0 +1,9 @@
+Cómo añadir un PDF de apuntes a la pestaña Apuntes (sin instalar nada):
+1. Páginas a PNG (2000 px de ancho) con el lector de PDF de Windows:
+   powershell -NoProfile -ExecutionPolicy Bypass -File tools\render_pdf.ps1 -Pdf <ruta.pdf> -OutDir <carpeta> -Width 2000
+2. PNG a WebP sin pérdida (para texto pesa menos que con pérdida):
+   ffmpeg -i pN.png -c:v libwebp -lossless 1 -compression_level 6 pN.webp
+3. Copiar a apuntes/<id>/p1.webp…pN.webp y el PDF como apuntes/<id>/apuntes.pdf.
+4. Añadir el documento a APUNTES en apuntes.js y sus preguntas a APQ (doc, p, q, o, a, cita literal de los apuntes).
+   Las preguntas nuevas van al final de APQ (las estadísticas usan la posición).
+5. Añadir los archivos a FILES en sw.js y subir la versión de CACHE.
