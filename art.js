@@ -30,7 +30,7 @@ function patternDef(id, pat, bg, fg) {
     case "flores": return T(16, 16, FLOWER(5, 5, 1.6, fg) + FLOWER(13, 13, 1.6, fg, "#fff6d8"));
     case "sakura": return T(16, 16, FLOWER(5, 5, 1.7, fg, "#c9607e") + FLOWER(12.5, 12.5, 1.3, fg, "#c9607e"));
     case "copos": return T(16, 16, [[5, 5, 3], [12.5, 12, 2.3]].map(([x, y, r]) => `<path d="M${x - r} ${y}H${x + r}M${x} ${y - r}V${y + r}M${x - r * .7} ${y - r * .7}L${x + r * .7} ${y + r * .7}M${x - r * .7} ${y + r * .7}L${x + r * .7} ${y - r * .7}" stroke="${fg}" stroke-width=".9" stroke-linecap="round"/>`).join(""));
-    case "calabazas": return T(16, 16, [[5, 6], [12, 13]].map(([x, y]) => `<ellipse cx="${x}" cy="${y}" rx="2.8" ry="2.2" fill="${fg}"/><path d="M${x} ${y - 2} v-1.4" stroke="#5f8a55" stroke-width="1" stroke-linecap="round"/>`).join(""));
+    case "calabazas": return T(16, 16, miniPumpkin(5, 6.4, .95, fg) + miniPumpkin(12.4, 13.2, .8, fg));
     case "olas": return T(16, 9, `<path d="M0 5 q4 -4 8 0 t8 0" stroke="${fg}" stroke-width="1.4" fill="none"/>`);
     case "cactus": return T(16, 16, [[5, 6], [12, 13]].map(([x, y]) => `<path d="M${x} ${y + 3} v-6 M${x} ${y} h-2 v-2 M${x} ${y - 1} h2 v-2" stroke="${fg}" stroke-width="1.5" stroke-linecap="round" fill="none"/>`).join(""));
     case "cerezas": return T(16, 16, [[5, 7], [12, 13]].map(([x, y]) => `<circle cx="${x - 1.4}" cy="${y}" r="1.5" fill="${fg}"/><circle cx="${x + 1.4}" cy="${y + .4}" r="1.5" fill="${fg}"/><path d="M${x - 1.4} ${y - 1.4} Q${x} ${y - 4.5} ${x + 1.8} ${y - 4.4} M${x + 1.4} ${y - 1} L${x + 1.4} ${y - 4}" stroke="#5f8a55" stroke-width=".8" fill="none"/>`).join(""));
@@ -69,7 +69,7 @@ function V(tag, attrs, fill, o = {}) {
   if (VMODE === "sil") { if (!w || o.sil === 0) return ""; const lc = lineOf(o.lc || fill); return `<${tag} ${attrs} fill="${lc}" stroke="${lc}" stroke-width="${(w * 2).toFixed(2)}" stroke-linejoin="round"${x}/>`; }
   let s = `<${tag} ${attrs} fill="${fill}"${x}/>`;
   if (o.sh !== 0) s += `<${tag} ${attrs} fill="url(#${o.dir || "gSh"})"${o.sh && o.sh !== 1 ? ` opacity="${o.sh}"` : ""}${x}/>`;
-  if (o.hl !== 0) s += `<${tag} ${attrs} fill="url(#gHl)"${o.hl && o.hl !== 1 ? ` opacity="${o.hl}"` : ""}${x}/>`;
+  if (o.hl !== 0) s += `<${tag} ${attrs} fill="url(#${o.hlId || "gHl"})"${o.hl && o.hl !== 1 ? ` opacity="${o.hl}"` : ""}${x}/>`;
   if (w && o.in !== 0) s += VMODE === "fill" ? `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, +(w * .5).toFixed(2))} stroke-opacity=".85"${x}/>` : `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, w)}${x}/>`;
   return s;
 }

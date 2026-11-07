@@ -306,61 +306,128 @@ function avGlasses(id) {
   }
 }
 
-/* ---------- pelo ---------- */
-function avHair(style, hc, part) {
-  const P = (d, o) => VP(d, hc, o || {});
-  const shine = LINE("M46 33 Q53 28.5 61 29.5", "#ffffff", 2.2, 'opacity=".32"');
-  const fringe = "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z";
-  const curls = (pts) => pts.map(([x, y, r]) => VC(x, y, r, hc, { w: 1.5, hl: .6 })).join("");
-  const back = {
-    melena: "M34 52 C30 30 44 24 60 24 C78 24 90 32 86 54 L90 102 C80 106 74 100 76 86 L44 86 C46 100 40 106 30 102 Z",
-    media: "M34 54 C30 30 44 24 60 24 C78 24 90 30 86 54 L88 78 C80 83 74 79 74 72 L46 72 C46 79 40 83 32 78Z",
-    coleta: "M80 40 C100 44 102 72 90 90 C88 74 84 62 78 54 Z",
-    ondas: "M34 52 C28 32 44 22 60 22 C78 22 92 32 86 54 C92 64 86 72 90 82 C94 92 86 102 80 104 C78 96 76 90 76 86 L44 86 C44 90 42 96 40 104 C34 102 26 92 30 82 C34 72 28 64 34 52Z",
-    bob_flequillo: "M33 56 C29 30 44 22 60 22 C76 22 91 30 87 56 L88 76 C82 80 76 78 75 72 L45 72 C44 78 38 80 32 76Z",
-    raya_medio: "M34 50 C30 30 44 23 60 23 C76 23 90 30 86 50 L88 104 C80 106 76 100 76 92 L44 92 C44 100 40 106 32 104Z",
-    media_coleta: "M34 52 C30 30 44 24 60 24 C78 24 90 32 86 54 L89 96 C80 100 74 94 76 84 L44 84 C46 94 40 100 31 96 Z",
-    trenza_lateral: "M35 54 C31 32 44 24 60 24 C76 24 89 32 85 54 L86 70 L34 70Z"
-  }[style];
+/* ---------- pelo de una pieza ----------
+   Cada peinado es UNA forma: H, la silueta completa del pelo (en las coordenadas del pelo: cabeza en (60,55), radio 24).
+   Se pinta con el mismo color y el mismo sombreado (degradados en coordenadas fijas gHairSh / gHairHl) en dos capas:
+   · detrás de la cabeza, lo que cae por detrás (solo en los peinados largos; oscurecido un poco detrás del cuello);
+   · delante, la misma H recortada por sí misma y limitada por FE, el borde que enmarca la cara (flequillo y mechones).
+   Como color y sombreado coinciden, no se ve ningún corte: la melena es una sola pieza que tapa las orejas y cae por los
+   hombros. Los peinados cortos ("all") van enteros delante. FE es la única línea interior: donde el pelo toca la cara. */
+const scallop = (cx, cy, rx, ry, n, bump) => {
+  let d = "";
+  for (let i = 0; i <= n; i++) {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / n, x = cx + rx * Math.cos(a), y = cy + ry * Math.sin(a);
+    if (!i) { d += `M${x.toFixed(1)} ${y.toFixed(1)}`; continue; }
+    const m = a - Math.PI / n;
+    d += ` Q${(cx + rx * bump * Math.cos(m)).toFixed(1)} ${(cy + ry * bump * Math.sin(m)).toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
+  }
+  return d + " Z";
+};
+const hairO = { dir: "gHairSh", hlId: "gHairHl", w: 1.6 };
+const braidSeg = (x, y, rx, hc) => VE(x, y, rx, 5.7, hc, { w: 1.3, dir: "gHairSh", hlId: "gHairHl" });
+const MELENA_FE = "M42.6 112 L42.4 78 C42.2 70 41.2 62 39.4 55.4 C41.4 47 47.6 41.2 56 39.6 C64 38 72.4 40 77.6 45 C80.4 48 81.2 52 80.8 56 C79.2 63 78 70 77.6 78 L77.4 112";
+const HAIR = {
+  corto: { all: 1, shine: 1,
+    H: "M35.4 54 C33 36 44 25 60 25 C76 25 87 35.6 84.6 54 C82.6 47.6 77.6 42.4 70 41.2 C65.6 44.2 57.6 44.6 51.6 42 C45.6 43.6 39.4 47.6 35.4 54 Z",
+    FE: "M35.4 54 C39.4 47.6 45.6 43.6 51.6 42 C57.6 44.6 65.6 44.2 70 41.2 C77.6 42.4 82.6 47.6 84.6 54" },
+  rapado: { all: 1, op: .9,
+    H: "M37 50.6 C36 34.6 46 29 60 29 C74 29 84 34.6 83 50.6 C76 43 68 40.6 60 40.6 C52 40.6 44 43 37 50.6 Z",
+    FE: "M37 50.6 C44 43 52 40.6 60 40.6 C68 40.6 76 43 83 50.6" },
+  pixie: { all: 1, shine: 1,
+    H: "M35 54 C32 34 46 24 62 24 C77 24 88 33 85.6 50 C83 45 78 41.2 71 41.2 L72.6 47 C66.4 42.4 58.6 41.4 51.6 44 L53.6 38.4 C45.4 42.4 39.2 48 35 54 Z",
+    FE: "M35 54 C39.2 48 45.4 42.4 53.6 38.4 L51.6 44 C58.6 41.4 66.4 42.4 72.6 47 L71 41.2 C78 41.2 83 45 85.6 50" },
+  flequillo: { all: 1, shine: 1, strands: "M72 29 Q62 33 55 41M80 35 Q72 38 66 41.6",
+    H: "M35 55 C32 31 50 23.6 66 25.6 C80 27.6 88.6 38 84.6 54 C80.2 44.2 72.4 40.2 64.2 42 C56 44 45.6 48 35 55 Z",
+    FE: "M35 55 C45.6 48 56 44 64.2 42 C72.4 40.2 80.2 44.2 84.6 54" },
+  ondulado_corto: { all: 1, shine: 1,
+    H: "M35.4 53 C32.6 34.6 44 25.4 58 25.4 C72 25.4 86.6 31.6 84.6 50 C80.6 46 78 42 72 42 C70 46 64 44 60 42 C56 46 50 44 46 44 C42 48 38 48 35.4 53 Z",
+    FE: "M35.4 53 C38 48 42 48 46 44 C50 44 56 46 60 42 C64 44 70 46 72 42 C78 42 80.6 46 84.6 50" },
+  punta: { all: 1,
+    H: "M36 52 L34 40 L40 42 L40 30 L47 36 L50 24 L56 33 L61 22 L65 33 L71 24 L73 35 L80 30 L80 42 L86 40 L84 52 C78 44 70 40 60 40 C50 40 42 44 36 52 Z",
+    FE: "M36 52 C42 44 50 40 60 40 C70 40 78 44 84 52" },
+  undercut: { all: 1, shine: 1, shaved: "M36 55 C35 46 37 44.6 40 44.6 L40.4 56 Z M84 55 C85 46 83 44 80 44 L79.6 56 Z",
+    H: "M38.4 44.6 C38 28 52 22 66 23 C80 24 88 32 86 42 C80 36 70 36 62 38 C52 40 44.4 44.4 38.4 44.6 Z",
+    FE: "M38.4 44.6 C44.4 44.4 52 40 62 38 C70 36 80 36 86 42" },
+  tupe: { all: 1, shine: 1, strands: "M64 24 C70 22 74 26 72 30",
+    H: "M36 52 C33 30 46 22 62 20 C74 18 89 24 86 36 C88 44 85 50 84 52 C80 40 70 36 58 37 C48 38 41 44 36 52 Z",
+    FE: "M36 52 C41 44 48 38 58 37 C70 36 80 40 84 52" },
+  cresta: { all: 1, shaved: "M37 50 C36 36 46 30 60 30 C74 30 84 36 83 50 C76 43 68 41 60 41 C52 41 44 43 37 50 Z",
+    H: "M54 38 L50 14 L58 22 L61 6 L65 22 L73 13 L68 38 Z", FE: "M54 38 L68 38" },
+  rizos: { all: 1,
+    H: "M34.6 53 Q30.4 47.6 33.2 41.4 Q30.6 33.6 37.4 29 Q39 21.6 46.6 21.8 Q52.4 15.6 60 18.4 Q67.6 15.6 73.4 21.8 Q81 21.6 82.6 29 Q89.4 33.6 86.8 41.4 Q89.6 47.6 85.4 53 Q82.8 47.6 78.2 47.4 Q75 42.6 69.4 43.4 Q65.2 39.2 60 41.2 Q54.8 39.2 50.6 43.4 Q45 42.6 41.8 47.4 Q37.2 47.6 34.6 53 Z",
+    FE: "M34.6 53 Q37.2 47.6 41.8 47.4 Q45 42.6 50.6 43.4 Q54.8 39.2 60 41.2 Q65.2 39.2 69.4 43.4 Q75 42.6 78.2 47.4 Q82.8 47.6 85.4 53",
+    curls: "M40 34 q2.4 -2.4 4.8 0M50 27 q2.4 -2.4 4.8 0M62 26 q2.4 -2.4 4.8 0M73 31 q2.4 -2.4 4.8 0M45 39 q2 -2 4 0M57 34 q2 -2 4 0M68 37 q2 -2 4 0M79 40 q2 -2 4 0" },
+  coleta: { all: 1, shine: 1,
+    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C78 40 68 37 58 38 C50 39 42 43 36 52 Z M79 39 C98 42 103 70 90.6 90 C88.4 74 84 62 78 54 Z",
+    FE: "M36 52 C42 43 50 39 58 38 C68 37 78 40 84 52",
+    extra: () => VC(80.4, 43.8, 2.8, "#c0453a", { w: .9, sh: 0, hl: 0 }) },
+  coletas: { all: 1, shine: 1,
+    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z M35.6 45 C23 50 18 68 24 88 C27.6 76 31.6 64 38.6 55 Z M84.4 45 C97 50 102 68 96 88 C92.4 76 88.4 64 81.4 55 Z",
+    FE: "M36 52 C42 42 52 38 62 38 C72 38 80 42 84 52",
+    extra: () => VC(35.4, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) + VC(84.6, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) },
+  mono: { all: 1, shine: 1, strands: "M54 21 Q60 15 66 21 Q62 27 57 24",
+    H: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z M50 23 A10 10 0 1 1 70 23 A10 10 0 1 1 50 23 Z",
+    FE: "M36 52 C42 43 50 39 60 39 C70 39 78 42 84 52" },
+  mono_alto: { all: 1, shine: 1, strands: "M53 17 Q60 10 67 17 Q63 24 57 20",
+    H: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z M49 19 A11 11 0 1 1 71 19 A11 11 0 1 1 49 19 Z",
+    FE: "M36 52 C42 43 50 39 60 39 C70 39 78 42 84 52",
+    extra: () => VR(53.6, 27.6, 12.8, 3.6, 1.6, "#c0453a", { w: .8, sh: 0, hl: 0 }) },
+  trenzas: { all: 1, shine: 1, part: "M60 27 L60 38",
+    H: "M36 54 C34 32 46 26 60 26 C76 26 86 34 84 54 C80 42 70 38 60 38 C50 38 40 42 36 54 Z",
+    FE: "M36 54 C40 42 50 38 60 38 C70 38 80 42 84 54",
+    extra: hc => [36, 84].map(x => { const s = x < 60 ? -1 : 1; return [0, 1, 2, 3, 4].map(i => braidSeg(x + s * i * .5, 60 + i * 8.6, 5 - i * .2, hc)).join("") + VR(x - 3.4 + s * 2, 99.6, 6.8, 3.4, 1.4, "#c0453a", { w: .8, sh: 0, hl: 0 }); }).join("") },
+  trenza_lateral: { all: 1, shine: 1,
+    H: "M36 54 C33 31 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54 Z",
+    FE: "M36 54 C46 48 56 44 64 42 C72 40 80 44 84 54",
+    extra: hc => [0, 1, 2, 3, 4, 5].map(i => braidSeg(83.4 + i * .9, 58 + i * 8.4, 5.4 - i * .25, hc)).join("") + VR(84.6, 103.6, 7, 3.4, 1.4, "#5f8a55", { w: .8, sh: 0, hl: 0 }) },
+  media: { shine: 1,
+    H: "M29.6 52 C26 28 44 23 60 23 C76 23 94 28 90.4 52 L91 80 C85.6 85 78.6 84 76.6 78 L43.4 78 C41.4 84 34.4 85 29 80 Z",
+    FE: "M42.8 112 L42.4 76 C42 68 40.6 61 39.6 55 C40.6 49 45 45 51 44.4 C57 43.8 64 44 70 45.6 C75.6 47 79.4 50.4 80.4 55 C79.4 61 78 68 77.6 76 L77.2 112" },
+  bob_flequillo: { shine: 1, strands: "M46 47 L46.6 41.6M53 47 L53 40.6M60 47 L60 40.2M67 47 L67 40.6M74 47 L73.4 41.6",
+    H: "M29.6 56 C27 30 44 21 60 21 C76 21 93 30 90.4 56 L90.8 74 C85 79 79 77 77.4 71 L42.6 71 C41 77 35 79 29.2 74 Z",
+    FE: "M41.6 112 L41.6 66 C41.2 58 40.2 52 40 47 L80 47 C79.8 52 78.8 58 78.4 66 L78.4 112" },
+  melena: { deep: 1, shine: 1, strands: "M70 28 Q60 31 52 41M82 36 Q76 42 74 50",
+    H: "M30 50 C26 28 44 22 60 22 C76 22 94 28 90 50 C91.6 62 92 80 91.6 100 C84 106 76.6 102 76.4 90 L43.6 90 C43.4 102 36 106 28.4 100 C28 80 28.4 62 30 50 Z",
+    FE: MELENA_FE },
+  raya_medio: { deep: 1, shine: 1, part: "M60 23 L60 31.6",
+    H: "M30 50 C27 29 44 22 60 22 C76 22 93 29 90 50 C91.6 64 92 84 91.6 104 C84 108 76.4 103 76.6 93 L43.4 93 C43.6 103 36 108 28.4 104 C28 84 28.4 64 30 50 Z",
+    FE: "M43 112 L42.8 78 C42.6 68 41.4 60 40.8 53 C41.6 42 49 34 60 31.6 C71 34 78.4 42 79.2 53 C78.6 60 77.4 68 77.2 78 L77 112" },
+  ondas: { deep: 1, shine: 1,
+    H: "M30 52 C25 32 44 21 60 21 C76 21 95 32 90 52 C95 62 90 72 93 82 C96 92 88 102 82 104 C79 97 77 91 76.6 86 L43.4 86 C43 91 41 97 38 104 C32 102 24 92 27 82 C30 72 25 62 30 52 Z",
+    FE: "M42 112 L42.6 82 C43.6 74 40.4 68 41.4 61 C41.8 57 40.4 54 40.6 51 C44 45 50 42.6 56 42.4 C60 46 66 46 70 42.4 C76 42.4 80 46 80.8 52 C80.6 56 79 60 79.6 64 C80.6 70 77.4 76 78 82 L78 112" },
+  media_coleta: { deep: 1, shine: 1,
+    H: "M30 50 C26 28 44 22 60 22 C76 22 94 28 90 50 C91.4 62 91.8 78 91.4 96 C84 101 77 97 76.6 86 L43.4 86 C43 97 36 101 28.6 96 C28.2 78 28.6 62 30 50 Z M54 21.4 A6 6 0 1 1 66 21.4 A6 6 0 1 1 54 21.4 Z",
+    FE: MELENA_FE,
+    extra: () => VR(56, 25.6, 8, 2.8, 1.2, "#c0453a", { w: .8, sh: 0, hl: 0 }) },
+  rizada_larga: { deep: 1,
+    H: "M30 100 Q24 94 27 87 Q22 80 26 73 Q22 66 26 59 Q23 51 28 45 Q27 36 34 31 Q36 23 44 22 Q50 16 58 18.6 Q66 16 72 20.8 Q80 21 84 28 Q91 31 91.6 39 Q96 45 93 52 Q97 59 93.4 66 Q97 73 93 80 Q96 87 91.6 93 Q93 100 86 102 Q80 106 76 99 L76 90 L44 90 L44 99 Q40 106 34 103.6 Q28 104 30 100 Z",
+    FE: "M42 112 L42.6 84 Q40 78 42.4 72 Q39.6 66 42 60 Q39 55 41.6 50 Q42 44 48 43 Q51.6 38 57 40.6 Q61 36.6 65.4 40 Q71 38.4 74 43.4 Q79.6 44.4 79 50 Q81.6 55 79 60 Q81.4 66 78.4 72 Q81 78 78 84 L78 112",
+    curls: "M33 40 q2.4 -2.4 4.8 0M44 28 q2.4 -2.4 4.8 0M58 24 q2.4 -2.4 4.8 0M71 27 q2.4 -2.4 4.8 0M82 36 q2.4 -2.4 4.8 0M30 56 q2.4 -2.4 4.8 0M85 56 q2.4 -2.4 4.8 0M30 72 q2.4 -2.4 4.8 0M85 72 q2.4 -2.4 4.8 0M31 88 q2.4 -2.4 4.8 0M84 88 q2.4 -2.4 4.8 0" },
+  afro: {
+    H: scallop(60, 45, 32, 30, 18, 1.13),
+    FE: "M38.4 112 L38.4 76 Q35.6 69 38.6 62 Q35.8 55 40.2 50 Q40.2 43.6 46.4 42.4 Q49.6 37.4 55.4 39 Q60 35.6 64.6 39 Q70.4 37.4 73.6 42.4 Q79.8 43.6 79.8 50 Q84.2 55 81.4 62 Q84.4 69 81.6 76 L81.6 112",
+    curls: "M38 28 q2.4 -2.4 4.8 0M50 21 q2.4 -2.4 4.8 0M64 20 q2.4 -2.4 4.8 0M76 25 q2.4 -2.4 4.8 0M86 36 q2.4 -2.4 4.8 0M30 38 q2.4 -2.4 4.8 0M44 32 q2.4 -2.4 4.8 0M58 29 q2.4 -2.4 4.8 0M70 31 q2.4 -2.4 4.8 0M30 54 q2.4 -2.4 4.8 0M86 52 q2.4 -2.4 4.8 0M31 66 q2.4 -2.4 4.8 0M85 66 q2.4 -2.4 4.8 0" }
+};
+const HAIR_SHINE = "M44.6 33.4 Q51.6 28.8 59.6 29.6";
+function avHair(style, hc, part, k = "h") {
+  if (style === "calvo") return part === "front" ? LINE("M44 34 q4 -3 9 -3", "#ffffff", 2, 'opacity=".5"') : "";
+  const S = HAIR[style] || HAIR.corto;
+  const op = S.op ? ` opacity="${S.op}"` : "";
   if (part === "back") {
-    let s = back ? P(back, { hl: .5 }) : "";
-    if (style === "mono") s += VC(60, 23, 10, hc, { hl: .6 });
-    if (style === "mono_alto") s += VC(60, 20, 11, hc, { hl: .6 }) + `<rect x="54" y="28" width="12" height="3.4" rx="1.6" fill="#c0453a"/>`;
-    if (style === "trenzas") s += [36, 84].map(x => [0, 1, 2, 3].map(i => VE(x + (x < 60 ? -2 : 2) * i / 2, 66 + i * 9, 5, 6, hc, { w: 1.4, hl: .5 })).join("") + LINE(`M${x - 3} 103 h6`, "#c0453a", 3)).join("");
-    if (style === "coletas") s += [[34, -1], [86, 1]].map(([x, m]) => P(`M${x} 46 C${x + 12 * m} 52 ${x + 16 * m} 70 ${x + 10 * m} 88 C${x + 6 * m} 76 ${x + 2 * m} 64 ${x - 4 * m} 56 Z`, { hl: .5 }) + `<circle cx="${x}" cy="49" r="3" fill="#e58aa6" ${LN("#e58aa6", .9)}/>`).join("");
-    if (style === "afro") s += curls([[36, 44, 13], [44, 30, 13], [60, 24, 14], [76, 30, 13], [84, 44, 13], [88, 58, 10], [32, 58, 10], [48, 40, 12], [72, 40, 12]]);
-    if (style === "rizada_larga") s += curls([[34, 50, 9], [32, 64, 9], [34, 78, 9], [38, 92, 8], [86, 50, 9], [88, 64, 9], [86, 78, 9], [82, 92, 8], [42, 30, 10], [60, 24, 11], [78, 30, 10]]);
-    if (style === "trenza_lateral") s += [0, 1, 2, 3, 4].map(i => VE(82 + i * .8, 64 + i * 9, 5.2, 6, hc, { w: 1.4, hl: .5 })).join("") + LINE("M83 109 h7", "#5f8a55", 3);
-    if (style === "media_coleta") s += VC(60, 26, 6, hc, { hl: .5 }) + `<rect x="56" y="30" width="8" height="2.6" rx="1.2" fill="#c0453a"/>`;
-    return s;
+    if (SIL()) return VP(S.H, hc, hairO);          /* contorno de todo el peinado (una sola silueta) */
+    if (S.all) return "";                          /* los cortos van enteros delante */
+    return `<g${op}>${VP(S.H, hc, hairO)}${S.deep ? `<path d="${S.H}" fill="#2a1408" opacity=".16"/>` : ""}</g>`;
   }
-  switch (style) {
-    case "corto": return P(fringe) + shine;
-    case "rapado": return P("M37 50 C36 34 46 29 60 29 C74 29 84 34 83 50 C76 42 68 40 60 40 C52 40 44 42 37 50 Z", { hl: .5 });
-    case "calvo": return LINE("M44 34 q4 -3 9 -3", "#ffffff", 2, 'opacity=".5"');
-    case "melena": return P("M36 56 C34 32 48 26 62 26 C78 26 86 36 84 56 C78 44 70 36 56 38 C48 40 40 46 36 56Z") + shine;
-    case "media": return P("M36 52 C34 30 48 26 60 26 C74 26 86 30 84 52 C78 46 70 44 60 44 C50 44 42 46 36 52Z") + shine;
-    case "flequillo": return P("M36 54 C33 30 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54Z") + shine;
-    case "coleta": return P("M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C78 40 68 37 58 38 C50 39 42 43 36 52 Z") + shine;
-    case "mono": case "mono_alto": return P("M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z") + shine;
-    case "trenzas": return P("M36 54 C34 32 46 26 60 26 C76 26 86 34 84 54 C80 42 70 38 60 38 C50 38 40 42 36 54 Z") + LINE("M60 27 V38", darken(hc, .7), 1.2);
-    case "tupe": return P("M36 52 C33 30 46 22 62 20 C74 18 89 24 86 36 C88 44 85 50 84 52 C80 40 70 36 58 37 C48 38 41 44 36 52Z") + LINE("M64 24 c6 -2 10 2 8 6", darken(hc, .7), 1.2) + shine;
-    case "rizos": return curls([[40, 42, 9], [47, 32, 10], [60, 27, 10.5], [73, 32, 10], [80, 42, 9], [85, 52, 7], [35, 52, 7]]);
-    case "cresta": return P("M54 36 L50 14 L58 22 L61 6 L65 22 L73 13 L68 36 Z");
-    case "pixie": return P("M36 54 C33 34 46 25 62 25 C76 25 87 33 85 50 C82 44 76 40 70 41 L72 47 C66 42 58 41 52 44 L54 38 C46 42 40 48 36 54Z") + shine;
-    case "afro": return P("M38 50 C38 38 48 33 60 33 C72 33 82 38 82 50 C76 43 68 41 60 41 C52 41 44 43 38 50Z", { hl: .4 });
-    case "coletas": return P(fringe) + shine;
-    case "ondas": return P("M36 54 C33 32 48 25 62 26 C78 27 86 36 84 54 C80 46 76 42 70 42 C66 46 60 46 56 42 C50 44 42 48 36 54Z") + shine;
-    case "bob_flequillo": return P("M37 50 C36 34 46 27 60 27 C74 27 84 34 83 50 C83 47 81 46 78 46 L42 46 C39 46 37 47 37 50Z") + LINE("M46 46 L46.6 41M54 46 V40M62 46 V40M70 46 L69.4 41", darken(hc, .75), .9, 'opacity=".7"') + shine;
-    case "undercut": return `<path d="M36 55 C35 46 37 44 40 44 L40 56Z M84 55 C85 46 83 44 80 44 L80 56Z" fill="${hc}" opacity=".45"/>` + P("M38 44 C38 28 52 22 66 23 C80 24 88 32 86 42 C80 36 70 36 62 38 C52 40 44 44 38 44Z") + shine;
-    case "rizada_larga": return curls([[40, 40, 8], [50, 33, 8.5], [61, 30, 9], [72, 33, 8.5], [81, 41, 8]]);
-    case "punta": return P("M36 52 L34 40 L40 42 L40 30 L47 36 L50 24 L56 33 L61 22 L65 33 L71 24 L73 35 L80 30 L80 42 L86 40 L84 52 C78 44 70 40 60 40 C50 40 42 44 36 52Z");
-    case "raya_medio": return P("M60 27 C48 27 38 34 36 54 C40 45 48 38 60 33 Z") + P("M60 27 C72 27 82 34 84 54 C80 45 72 38 60 33 Z") + LINE("M60 27 V33", darken(hc, .7), 1);
-    case "media_coleta": return P("M36 54 C33 32 48 25 62 26 C78 27 86 36 84 54 C78 44 70 38 56 39 C48 40 40 46 36 54Z") + shine;
-    case "trenza_lateral": return P("M36 54 C33 31 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54Z") + shine;
-    case "ondulado_corto": return P("M36 52 C33 34 44 26 58 26 C72 26 86 32 84 50 C80 46 78 42 72 42 C70 46 64 44 60 42 C56 46 50 44 46 44 C42 48 38 48 36 52Z") + shine;
-    default: return P(fringe) + shine;
-  }
+  if (SIL()) return S.extra ? S.extra(hc) : "";
+  const id = k + "hc", dk = darken(hc, .6);
+  const fr = S.all ? null : `${S.FE} L130 112 L130 -10 L-10 -10 L-10 112 Z`, shape = fr || S.H;
+  return (S.shaved ? `<path d="${S.shaved}" fill="${hc}" opacity=".4"/>` : "") +
+    `<defs><clipPath id="${id}"><path d="${S.H}"/></clipPath>${fr ? `<clipPath id="${id}f"><path d="${fr}"/></clipPath>` : ""}</defs><g clip-path="url(#${id})"${op}>` +
+    VP(shape, hc, Object.assign({}, hairO, { in: 0, sil: 0 })) +
+    `<g${fr ? ` clip-path="url(#${id}f)"` : ""}>` + (S.strands ? LINE(S.strands, dk, .9, 'opacity=".55"') : "") + (S.curls ? LINE(S.curls, dk, 1, 'opacity=".5"') : "") +
+    (S.shine ? LINE(HAIR_SHINE, "#ffffff", 2.2, 'opacity=".3"') : "") + `</g>` +
+    (S.FE ? LINE(S.FE, lineOf(hc), 1) : "") + (S.part ? LINE(S.part, dk, 1) : "") + `</g>` +
+    (S.extra ? S.extra(hc) : "");
 }
 
 /* ---------- sombreros y gorros (mismo sistema que antes) ---------- */
@@ -403,7 +470,7 @@ function avEarrings(id) {
     case "perlas": return VC(35, 64.5, 2.2, "#fbf7ef", { w: .9 }) + VC(85, 64.5, 2.2, "#fbf7ef", { w: .9 });
     case "estrellas": return [35, 85].map(x => STARP(x, 65, 3, "#f3d36b")).join("");
     case "cascabeles": return [35, 85].map(x => VC(x, 66, 2.6, "#f0c25e", { w: .9 }) + LINE(`M${x - 1.5} 66.5 h3`, "#7a5638", .7)).join("");
-    case "calabacitas": return [35, 85].map(x => VE(x, 66.5, 2.8, 2.3, "#e8873f", { w: .8 }) + LINE(`M${x} 64.2 v-1.4`, "#5f8a55", 1)).join("");
+    case "calabacitas": return DET([35, 85].map(x => miniPumpkin(x, 66.6, .95, "#e8873f")).join(""));
     case "corazones": return [35, 85].map(x => HEART(x, 66, .9, "#e14f6c")).join("");
     case "borlas": return [35, 85].map(x => `<circle cx="${x}" cy="64" r="1.4" fill="#f0c25e"/><path d="M${x - 1.2} 65 L${x - 2} 72 L${x + 2} 72 L${x + 1.2} 65Z" fill="#c0453a"/>`).join("");
     case "coral": return [35, 85].map(x => VC(x, 65, 2, "#e8806b", { w: .8 }) + `<circle cx="${x}" cy="69" r="1.4" fill="#e8806b"/>`).join("");
@@ -411,16 +478,35 @@ function avEarrings(id) {
   }
 }
 function avNeckAcc(id, k) {
+  /* el cuello va de x 53 a 67 y se une a los hombros en y≈84: todo se coloca alrededor de esa base */
+  const tube = "#4f5a63", metal = "#c9d3d9";
+  /* pañuelo anudado: banda que rodea el cuello, pico que cae delante y nudo */
+  const kerchief = (c, dots, dotC, ring) => VP("M51.8 86.6 C56 89.4 64 89.4 68.2 86.6 L60.4 101.4 Z", c, { w: 1.2 }) +
+    VP("M52.2 81.4 C56 84 64 84 67.8 81.4 L68.8 87.6 C64 90.8 56 90.8 51.2 87.6 Z", c, { w: 1.2, hl: .5 }) +
+    VE(60, 89, 2.6, 2, darken(c, .85), { w: .9, sh: 0, hl: 0 }) +
+    DET(dots.map(([x, y]) => ring ? `<circle cx="${x}" cy="${y}" r="1.3" fill="none" stroke="${dotC}" stroke-width=".7"/>` : `<circle cx="${x}" cy="${y}" r="1.1" fill="${dotC}"/>`).join(""));
   switch (id) {
-    case "esteto": return LINE("M48 88 C46 104 52 114 60 114 C68 114 74 104 72 88", "#55626b", 2.6) + VC(60, 116.5, 4.5, "#c9d3d9", { w: 1.2 });
-    case "panuelo": return VP("M47 87 L73 87 L60 101 Z", "#c0453a", { w: 1.2 }) + `<circle cx="56" cy="91" r="1" fill="#fff"/><circle cx="63" cy="93" r="1" fill="#fff"/>`;
-    case "lunares": return VP("M46 87 L74 87 L60 103 Z", "#c0453a", { w: 1.2 }) + [[53, 90], [60, 90], [67, 90], [57, 95], [63, 95], [60, 99]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.4" fill="#fbf7ef"/>`).join("");
-    case "bandana": return VP("M46 87 L74 87 L60 102 Z", "#4f6fae", { w: 1.2 }) + [[54, 90], [64, 91], [59, 96]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.6" fill="none" stroke="#fbf7ef" stroke-width=".8"/>`).join("");
-    case "collar": return [0, 1, 2, 3, 4, 5, 6].map(i => { const t = i / 6, x = 48 + 24 * t, y = 90 + 9 * Math.sin(Math.PI * t); return VC(x.toFixed(1), y.toFixed(1), 2.2, ["#f29b8a", "#f3d36b", "#9cc0cf"][i % 3], { w: .8, sh: 0 }); }).join("");
-    case "collar_corazones": return LINE("M48 89 Q60 102 72 89", "#f3d36b", 1.2) + HEART(60, 98, 1.4, "#e14f6c");
-    case "pajarita": return VP("M60 92 L50 86 L50 98 Z", "#b8473a", { w: 1.1 }) + VP("M60 92 L70 86 L70 98 Z", "#b8473a", { w: 1.1 }) + VC(60, 92, 2.6, "#a03c31", { w: 1 });
-    case "bufanda": return VP("M43 86 Q60 95 77 86 L78 94 Q60 104 42 94Z", "#5f8a55") + VP("M66 96 L70 122 L62 123 L60 98Z", "#5f8a55");
-    case "bufanda_navidad": return DEFS(patternDef(k + "s", "rayas", "#fbf7ef", "#c0453a")) + VP("M43 86 Q60 95 77 86 L78 94 Q60 104 42 94Z", `url(#${k}s)`, { lc: "#c0453a" }) + VP("M66 96 L70 122 L62 123 L60 98Z", `url(#${k}s)`, { lc: "#c0453a" });
+    case "esteto": /* fonendo: el tubo rodea el cuello por detrás; a un lado cuelga la campana y al otro el auricular en Y con sus olivas */
+      return LINE("M52.6 84.4 C49.8 90 48.4 98 49 106 C49.2 109 49.6 110.6 49.8 112", tube, 2.4) + LINE("M67.4 84.4 C69 89 69.8 94 69.6 99", tube, 2.4) +
+        LINE("M69.6 99 C68.2 102 67.4 105 67.2 108.4M69.6 99 C70.6 102.4 71.2 105.4 71.6 108.2", "#aab6be", 1.3) + VC(69.6, 99, 1.3, metal, { w: .7, sh: 0, hl: 0 }) +
+        VE(67.1, 109.5, 1.2, 1.5, "#3a3536", { w: .6, sh: 0, hl: 0 }) + VE(71.7, 109.3, 1.2, 1.5, "#3a3536", { w: .6, sh: 0, hl: 0 }) +
+        VR(48.8, 110.4, 2, 2.8, .6, "#aab6be", { w: .6, sh: 0, hl: 0 }) + VC(49.8, 116.2, 4.1, "#d6dee3", { w: 1.1 }) +
+        DET(`<circle cx="49.8" cy="116.2" r="2.5" fill="none" stroke="#9aa6ae" stroke-width=".8"/><circle cx="48.6" cy="115" r="1" fill="#fff" opacity=".8"/>`);
+    case "panuelo": return kerchief("#c0453a", [[56, 92.4], [63.4, 93.6], [59.8, 97.4]], "#fbf7ef");
+    case "lunares": return kerchief("#c0453a", [[54, 88.6], [58, 92.2], [62.4, 92.2], [66.2, 88.6], [60.2, 96.6]], "#fbf7ef");
+    case "bandana": return kerchief("#4f6fae", [[55.6, 91.8], [64.6, 91.8], [60.2, 96.4]], "#fbf7ef", 1);
+    case "collar": /* collar de cuentas en la base del cuello */
+      return [0, 1, 2, 3, 4, 5, 6, 7].map(i => { const t = i / 7, x = 52.6 + 14.8 * t, y = 84.6 + 7.4 * Math.sin(Math.PI * t); return VC(x.toFixed(1), y.toFixed(1), 1.7, ["#f29b8a", "#f3d36b", "#9cc0cf"][i % 3], { w: .7, sh: 0 }); }).join("");
+    case "collar_corazones": return LINE("M52.6 84.2 Q60 97 67.4 84.2", "#e0b84e", 1.1) + HEART(60, 93.4, 1.3, "#e14f6c");
+    case "pajarita": return VP("M60 88.2 L52.8 84.6 L52.8 91.8 Z", "#b8473a", { w: 1 }) + VP("M60 88.2 L67.2 84.6 L67.2 91.8 Z", "#b8473a", { w: 1 }) + VC(60, 88.2, 2.2, "#a03c31", { w: .9 });
+    case "bufanda": case "bufanda_navidad": { /* bufanda enrollada al cuello (se mete bajo la barbilla) con una punta que cae delante */
+      const nav = id === "bufanda_navidad", c = nav ? "#c0453a" : "#5f8a55";
+      const fill = nav ? `url(#${k}s)` : c, defs = nav ? DEFS(patternDef(k + "s", "rayas", "#fbf7ef", "#c0453a")) : "";
+      return defs + VP("M63.4 88.6 C65.6 98 66.6 108 66.2 117.6 L59.6 118.4 C59.2 108 59.2 98 58.4 90.4 Z", fill, { lc: c }) +
+        LINE("M60.4 118.4 L60.2 121.4M62.6 118.2 L62.6 121.2M64.8 118 L65 121", c, 1) +
+        VP("M51 78.6 C56 81.6 64 81.6 69 78.6 C71.4 82 71.6 86 70.6 89.6 C64.6 93.4 55.4 93.4 49.4 89.6 C48.4 86 48.6 82 51 78.6 Z", fill, { lc: c, hl: .5 }) +
+        LINE("M50.4 84.4 C56 87.6 64 87.6 69.8 84.4", darken(c, .8), .8, 'opacity=".6"');
+    }
     default: return "";
   }
 }
@@ -471,16 +557,16 @@ function avatarBody(eq, mood, opt, k) {
   const head = `<g class="av-head">
       ${DET(`<ellipse cx="60" cy="79" rx="8" ry="3.4" fill="#2a1408" opacity=".14"/>`)}
       ${VC(35, 58, 5.5, sk, { w: 1.6, hl: 0 })}${VC(85, 58, 5.5, sk, { w: 1.6, hl: 0 })}${LINE("M34 56 q2 2 0 4M86 56 q-2 2 0 4", darken(sk, .75), 1)}
-      ${avEarrings(eq.ears)}
       ${VC(60, 54, 25, sk, { w: 1.9, dir: "gShR" })}
       ${avBeard(eq, hc)}${avBlush(eq)}${avEyes(eq, mood)}${avBrows(eq, mood, hc)}${avNose(eq, sk)}
       ${eq.face && eq.face !== "barba" && eq.face !== "bigote" ? avFaceExtra(eq, hc) : ""}${avMouth(eq, mood, sk)}${eq.face === "bigote" ? avFaceExtra(eq, hc) : ""}
       ${avMask(acc)}
-      <g ${hairT}>${avHair(eq.hair, hc, "front")}</g>
+      <g ${hairT}>${avHair(eq.hair, hc, "front", k)}</g>
+      ${avEarrings(eq.ears)}
       ${avGlasses(eq.glasses)}
       <g ${hairT}>${avHat(findItem("head", eq.head), k)}</g>
     </g>`;
-  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back")}</g>${neck}${head}`;
+  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back", k)}</g>${neck}${head}`;
   const sleeveFrom = coat && COAT_SLEEVE[coat.k] ? coat : (rep.includes("top") ? coat : top);
   const sleeveLen = coat && COAT_SLEEVE[coat.k] ? COAT_SLEEVE[coat.k] : (rep.includes("top") ? "short" : SLEEVE[top && top.k] || "short");
   const sPaint = sleeveFrom && sleeveFrom.pat ? `url(#${k}${sleeveFrom === top ? "t" : "d"})` : null;
@@ -488,7 +574,7 @@ function avatarBody(eq, mood, opt, k) {
   const arm = side => avArm(side, sk, sleeveLen, sPaint, sc, acc);
   const tallShoes = shoes && (shoes.k === "boot" || shoes.k === "cowboy");
   return `${avCoatBack(coat)}${avAccBack(acc)}
-    <g ${hairT}>${avHair(eq.hair, hc, "back")}</g>
+    <g ${hairT}>${avHair(eq.hair, hc, "back", k)}</g>
     ${avLegs(sk)}
     ${tallShoes ? "" : avShoes(shoes)}
     ${rep.includes("bottom") ? "" : avBottom(bottom, k)}

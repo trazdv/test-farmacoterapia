@@ -390,6 +390,8 @@ body.focus #tabs{display:none}
 .scene .steam{animation:twinkle 2s ease-in-out infinite}
 .scene .snow{animation:floaty 2.4s ease-in-out infinite}
 .scene .neon{animation:twinkle 1.6s steps(2) infinite;filter:drop-shadow(0 0 2px #ff7fb0)}
+@keyframes neonFlick{0%,86%,90%,94%,100%{opacity:1}88%{opacity:.45}92%{opacity:.7}}
+.scene .neon-on{animation:neonFlick 5s infinite}
 .scene .hop{animation:hop 1s ease-out 2}
 .scene .droop{animation:droop 2.4s ease-in-out infinite}
 .scene .idle{animation:idle 2.6s ease-in-out infinite}
@@ -479,6 +481,9 @@ body.focus #tabs{display:none}
   <defs>
     <linearGradient id="gSh" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#2a1408" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".24"/></linearGradient>
     <radialGradient id="gShR" cx=".4" cy=".34" r=".72"><stop offset=".55" stop-color="#2a1408" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".2"/></radialGradient>
+    <!-- pelo: degradados en coordenadas fijas del pelo, iguales en la capa de atrás y la de delante (no se nota el corte) -->
+    <linearGradient id="gHairSh" gradientUnits="userSpaceOnUse" x1="0" y1="22" x2="0" y2="108"><stop offset="0" stop-color="#fff" stop-opacity=".1"/><stop offset=".3" stop-color="#2a1408" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".32"/></linearGradient>
+    <radialGradient id="gHairHl" gradientUnits="userSpaceOnUse" cx="48" cy="32" r="20"><stop offset="0" stop-color="#fff" stop-opacity=".34"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <linearGradient id="gCyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a1408" stop-opacity=".16"/><stop offset=".38" stop-color="#fff" stop-opacity=".16"/><stop offset=".62" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".24"/></linearGradient>
     <radialGradient id="gHl" cx=".3" cy=".2" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <radialGradient id="gSoft"><stop offset="0" stop-color="#2a1408" stop-opacity=".42"/><stop offset=".55" stop-color="#2a1408" stop-opacity=".2"/><stop offset="1" stop-color="#2a1408" stop-opacity="0"/></radialGradient>
