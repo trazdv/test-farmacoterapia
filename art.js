@@ -625,7 +625,7 @@ function paintScene(opts) {
   const patient = opts.patient ? (big ? SOFT(262, 232, 70, 6, .7) : SOFT(263, TOP - 1, 30, 3.4, .55)) + patientInScene(sp, opts.patient.name, opts.mood || "neutral", TOP) : "";
   /* tu personaje, de cuerpo entero, a la izquierda de la camilla */
   const vm = opts.vetMood || "neutral";
-  const vet = SOFT(141, 234, 32, 4, .6) + `<g class="vet ${vm === "happy" ? "cheer" : ""}" style="transform-origin:141px 234px"><g transform="translate(98 94.3) scale(.72)">${avatarG(eq, vm)}</g></g>`;
+  const vet = SOFT(141, 234, 32, 4, .6) + `<g class="vet ${vm === "happy" && opts.wave !== false ? "cheer" : ""}" style="transform-origin:141px 234px"><g transform="translate(98 94.3) scale(.72)">${avatarG(eq, vm)}</g></g>`;
   /* rayo de sol con motas de polvo */
   const beam = lit ? `<path d="M22 26 L90 26 L150 238 L60 238 Z" fill="url(#${k}a)" pointer-events="none"/>` +
     (ANIM ? [[48, 70], [62, 104], [74, 136], [86, 160], [70, 186], [96, 200], [56, 150]].map(([x, y], i) => `<circle class="mote" cx="${x}" cy="${y}" r="${.6 + (i % 3) * .25}" fill="#fff8e0" style="animation-delay:${-i * 1.1}s;animation-duration:${6 + i % 4}s"/>`).join("") : "") : "";

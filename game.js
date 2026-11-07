@@ -195,20 +195,21 @@ function renderConsulta() {
   if ($("#open")) $("#open").onclick = () => { if (inDay) { gview = "patient"; render(); window.scrollTo(0, 0); } else openDay(); };
   if ($("#gotest")) $("#gotest").onclick = () => setView("test");
   if ($("#gostudy")) $("#gostudy").onclick = () => setView("estudiar");
-  $("#shop").onclick = () => { gview = "shop"; render(); window.scrollTo(0, 0); };
+  $("#shop").onclick = () => { gview = "shop"; shopFresh = true; render(); window.scrollTo(0, 0); };
   $$("[data-gt]").forEach(b => b.onclick = () => {
     const t = +b.dataset.gt;
     if (G.topics.includes(t)) {
       if (G.topics.length === 1) { b.classList.remove("nope"); void b.offsetWidth; b.classList.add("nope"); toast("Tiene que haber al menos un tema activado"); return; }
       G.topics = G.topics.filter(x => x !== t);
     } else G.topics = [...G.topics, t].sort();
-    saveGame(); renderConsulta();
+    saveGame();
+    $$("[data-gt]").forEach(x => x.setAttribute("aria-pressed", G.topics.includes(+x.dataset.gt)));
   });
   $("#rename").onclick = () => {
     modal(`<h3>Nombre de tu clínica</h3><input id="cn" class="field" maxlength="32" value="${esc(G.clinic)}">
       <div class="row" style="margin-top:14px"><button class="btn" id="no" style="flex:1">Cancelar</button><button class="btn primary" id="yes" style="flex:1">Guardar</button></div>`);
     $("#cn").focus(); $("#no").onclick = closeModal;
-    $("#yes").onclick = () => { const v = $("#cn").value.trim(); if (v) { G.clinic = v; saveGame(); } closeModal(); renderConsulta(); };
+    $("#yes").onclick = () => { const v = $("#cn").value.trim(); if (v) { G.clinic = v; saveGame(); $(".g-title").textContent = v; } closeModal(); };
   };
 }
 
@@ -340,7 +341,7 @@ function renderSummary() {
 }
 
 /* ---------- tienda ---------- */
-let preview = null, shopSet = "navidad";
+let preview = null, shopSet = "navidad", shopFresh = true;
 const SET_DISCOUNT = .85;
 function renderShop() {
   setFocusMode(false);
@@ -360,7 +361,8 @@ function renderShop() {
   const list = isSets ? setItems(shopSet) : SHOP[shopCat].items.map(it => ({ cat: shopCat, it }));
   const showRoom = isSets ? true : isRoomCat(shopCat);
   const stageEq = preview || G.eq;
-  const stage = showRoom ? sceneSVG({ eq: stageEq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(stageEq, "neutral")}</div></div>`;
+  const fresh = shopFresh; shopFresh = false;
+  const stage = showRoom ? sceneSVG({ eq: stageEq, vetMood: "happy", wave: fresh }) : `<div class="dress"><div class="dress-av ${fresh ? "wave" : ""}">${avatarSVG(stageEq, "neutral")}</div></div>`;
   const missing = isSets ? list.filter(x => !owned(x.cat, x.it.id)) : [];
   const setPrice = Math.round(missing.reduce((a, x) => a + x.it.price, 0) * SET_DISCOUNT);
   $("#app").innerHTML = `
@@ -380,7 +382,7 @@ function renderShop() {
           ${missing.length ? `<button class="btn primary" id="buyall" ${G.money < setPrice ? "disabled" : ""}>Comprar lo que falta ${COIN}${setPrice}</button>` : `<span class="worn">¡Colección completa!</span>`}
         </div>${missing.length ? `<p class="muted small center">Comprando la colección entera tienes un 15 % de descuento.</p>` : ""}` : ""}
       ${!isSets && SHOP[shopCat].opt && G.eq[shopCat] ? `<button class="link" id="none" style="margin:-4px 0 8px">Quitar ${SHOP[shopCat].label.toLowerCase()}</button>` : ""}
-      <div class="shop-grid">${list.map(({ cat, it }, i) => {
+      <div class="shop-grid ${fresh ? "" : "no-pop"}">${list.map(({ cat, it }, i) => {
         const have = owned(cat, it.id), on = G.eq[cat] === it.id;
         let btn;
         if (have) btn = on ? (SHOP[cat].opt ? `<button class="btn sm" data-off="${cat}">Quitar</button>` : `<span class="worn">Puesto</span>`) : `<button class="btn sm primary" data-wear="${cat}|${it.id}">${isRoomCat(cat) ? "Colocar" : "Ponérmelo"}</button>`;
@@ -394,13 +396,13 @@ function renderShop() {
   const restage = (eq, room) => {
     const fr = $(".scene-frame");
     fr.classList.toggle("dressing", !room);
-    fr.innerHTML = room ? sceneSVG({ eq, vetMood: "happy" }) : `<div class="dress"><div class="dress-av">${avatarSVG(eq, "neutral")}</div></div>`;
+    fr.innerHTML = room ? sceneSVG({ eq, vetMood: "happy", wave: false }) : `<div class="dress"><div class="dress-av">${avatarSVG(eq, "neutral")}</div></div>`;
     fr.classList.remove("pop"); void fr.offsetWidth; fr.classList.add("pop");
   };
   $("#back").onclick = () => { preview = null; gview = "hub"; render(); window.scrollTo(0, 0); };
-  $$("[data-sec]").forEach(b => b.onclick = () => { shopSec = b.dataset.sec; preview = null; renderShop(); });
-  $$("[data-cat]").forEach(b => b.onclick = () => { shopCat = b.dataset.cat; preview = null; renderShop(); });
-  $$("[data-set]").forEach(b => b.onclick = () => { shopSet = b.dataset.set; preview = null; renderShop(); });
+  $$("[data-sec]").forEach(b => b.onclick = () => { shopSec = b.dataset.sec; preview = null; shopFresh = true; renderShop(); });
+  $$("[data-cat]").forEach(b => b.onclick = () => { shopCat = b.dataset.cat; preview = null; shopFresh = true; renderShop(); });
+  $$("[data-set]").forEach(b => b.onclick = () => { shopSet = b.dataset.set; preview = null; shopFresh = true; renderShop(); });
   $$("[data-prev]").forEach(el => el.onclick = e => {
     if (e.target.closest("button")) return;
     const [cat, id] = el.dataset.prev.split("|");

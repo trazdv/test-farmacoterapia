@@ -448,7 +448,7 @@ function avArm(side, sk, sleeve, sPaint, sc, acc) {
     lowSleeve = VP(segPath(4.8, r2, len, false), fill, cloth) + hemLine(r2, len) + (sleeve === "long" ? LINE(`M-4.2 ${(len - 2.8).toFixed(2)} Q0 ${(len - 1).toFixed(2)} 4.2 ${(len - 2.8).toFixed(2)}`, hem, .9) : "");
   }
   const watch = L && acc && acc.id === "reloj" ? DET(`<rect x="-3.6" y="${ARM.low - 3.8}" width="7.2" height="3.2" rx="1.2" fill="#6b4430"/>`) + VC(0, ARM.low - 2.2, 2.2, "#f3e6cf", { w: 1, sh: 0 }) + LINE(`M0 ${ARM.low - 2.2} v-1.2M0 ${ARM.low - 2.2} h.9`, "#2e2630", .6) : "";
-  const hand = `<g transform="translate(0 ${ARM.low})">${VP(HAND, sk, { w: 1.5, hl: .6 })}${LINE("M3.5 7.4 Q2.9 5.9 3.3 4.2", darken(sk, .7), .8)}</g>`;
+  const hand = `<g transform="translate(0 ${ARM.low})"><g class="av-hand-${s}">${VP(HAND, sk, { w: 1.5, hl: .6 })}${LINE("M3.5 7.4 Q2.9 5.9 3.3 4.2", darken(sk, .7), .8)}</g></g>`;
   return `<g class="av-arm-${s}"><g class="av-upper-${s}"><g transform="translate(${L ? ARM.sx : 120 - ARM.sx} ${ARM.sy}) rotate(${sgn * ARM.rest})">` +
     `<g${mir}>${VP(segPath(4.2, 3.7, ARM.up, true), sk, skin)}${upSleeve}</g>` +
     `<g transform="translate(0 ${ARM.up})"><g class="av-lower-${s}"><g transform="rotate(${sgn * ARM.restLow})"><g${mir}>` +

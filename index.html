@@ -262,7 +262,9 @@ body.focus #tabs{display:none}
 /* acabado de ilustración: luz cálida de la ventana y grano de papel encima de la escena */
 .scene-frame::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:1;background:radial-gradient(120% 90% at 12% 10%,rgba(255,226,170,.5),rgba(255,226,170,0) 55%),linear-gradient(180deg,rgba(255,255,255,0) 60%,rgba(120,70,40,.18));mix-blend-mode:soft-light}
 .scene-frame::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:url(grain.png) 0 0/160px 160px;mix-blend-mode:multiply;opacity:.9}
-.scene-frame.pop{animation:popIn .35s}
+.scene-frame.pop{animation:stagePop .3s ease-out}
+@keyframes stagePop{0%{transform:scale(.985);filter:brightness(1.06)}100%{transform:none;filter:none}}
+.shop-grid.no-pop .item{animation:none}
 .scene{width:100%;height:auto;display:block}
 .g-actions{display:grid;gap:12px;margin:16px 0}
 .g-paper{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--lift)}
@@ -455,8 +457,11 @@ body.focus #tabs{display:none}
 .av-arm-l,.av-upper-l{transform-origin:40.5px 92.5px}.av-arm-r,.av-upper-r{transform-origin:79.5px 92.5px}.av-lower-l,.av-lower-r{transform-origin:0 0}
 .av-arm-l{animation:avArmL 3.8s ease-in-out infinite}.av-arm-r{animation:avArmR 3.8s ease-in-out infinite}
 .av-lower-l{animation:avElbowL 3.8s ease-in-out infinite}.av-lower-r{animation:avElbowR 3.8s ease-in-out infinite}
-.cheer .av-upper-r,.dress-av .av-upper-r{animation:avRaiseR 3s ease-in-out .4s 1}
-.cheer .av-lower-r,.dress-av .av-lower-r{animation:avWaveR 3s ease-in-out .4s 1}
+.cheer .av-upper-r,.dress-av.wave .av-upper-r{animation:avRaiseR 3s ease-in-out .4s 1}
+.cheer .av-lower-r,.dress-av.wave .av-lower-r{animation:avWaveR 3s ease-in-out .4s 1}
+@keyframes avHandR{0%,9%,88%,100%{transform:scaleX(1)}15%,80%{transform:scaleX(-1)}}
+.av-hand-l,.av-hand-r{transform-origin:0 0}
+.cheer .av-hand-r,.dress-av.wave .av-hand-r{animation:avHandR 3s ease-in-out .4s 1}
 .thumb svg *,.mini-pet *,.bub .face .av-head{animation:none!important}
 
 @media (max-width:380px){.g-rep-top span{display:none}}
