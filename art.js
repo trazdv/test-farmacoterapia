@@ -244,7 +244,7 @@ const SHOP = {
     cap("gorro_olas", "Gorro de olas", "#dfeef2", 110, "olas", "#4f7fae", "mediterraneo"), { id: "pamela", name: "Pamela de paja", price: 150, set: "mediterraneo" },
     cap("gorro_cactus", "Gorro de cactus", "#efdcb6", 110, "cactus", "#5f8a55", "americano"), { id: "vaquero", name: "Sombrero vaquero", price: 170, set: "americano" }] },
   neck: { label: "Cuello", opt: true, items: [
-    { id: "esteto", name: "Fonendo", price: 0 }, { id: "panuelo", name: "Pañuelo rojo", price: 50 }, { id: "collar", name: "Collar de cuentas", price: 70 },
+    { id: "esteto", name: "Fonendo", price: 200 }, { id: "panuelo", name: "Pañuelo rojo", price: 50 }, { id: "collar", name: "Collar de cuentas", price: 70 },
     { id: "pajarita", name: "Pajarita", price: 80 }, { id: "bufanda", name: "Bufanda verde", price: 110 },
     { id: "bufanda_navidad", name: "Bufanda de rayas", price: 110, set: "navidad" }, { id: "collar_corazones", name: "Collar de corazones", price: 90, set: "sanvalentin" },
     { id: "lunares", name: "Pañuelo de lunares", price: 70, set: "mediterraneo" }, { id: "bandana", name: "Bandana vaquera", price: 70, set: "americano" }] },
