@@ -266,7 +266,7 @@ function renderRepaso() {
       <div><p class="label">Preguntas por sesión</p>
       <div class="chips">${[10, 20, 0].map(l => `<button class="chip" data-rl="${l}" aria-pressed="${repasoLimit === l}">${l || "Todas"}</button>`).join("")}</div></div>
       <button class="btn primary block" id="smart">Repaso inteligente · ${smartN} preguntas</button>
-      <p class="muted small" style="margin:-4px 0 0">Empieza por las que más fallas y las más recientes.</p>
+      <p class="muted small" style="margin:10px 2px 0">Empieza por las que más fallas y las más recientes.</p>
       ${multi.length ? `<button class="btn block" id="multi">Solo las que fallo varias veces (${multi.length})</button>` : ""}`
       : `<p><b>¡Todo dominado!</b> No te quedan preguntas pendientes.</p>`}
       ${mastered.length ? `<button class="btn ghost block" id="mast">Repasar también las dominadas (${mastered.length})</button>` : ""}

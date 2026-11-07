@@ -403,11 +403,13 @@ const HAIR = {
     FE: "M34.6 53 Q37.2 47.6 41.8 47.4 Q45 42.6 50.6 43.4 Q54.8 39.2 60 41.2 Q65.2 39.2 69.4 43.4 Q75 42.6 78.2 47.4 Q82.8 47.6 85.4 53",
     curls: "M40 34 q2.4 -2.4 4.8 0M50 27 q2.4 -2.4 4.8 0M62 26 q2.4 -2.4 4.8 0M73 31 q2.4 -2.4 4.8 0M45 39 q2 -2 4 0M57 34 q2 -2 4 0M68 37 q2 -2 4 0M79 40 q2 -2 4 0" },
   coleta: { all: 1, shine: 1,
-    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C78 40 68 37 58 38 C50 39 42 43 36 52 Z M79 39 C98 42 103 70 90.6 90 C88.4 74 84 62 78 54 Z",
+    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C78 40 68 37 58 38 C50 39 42 43 36 52 Z",
+    mid: (hc, paint, o) => VP("M79 39 C98 42 103 70 90.6 90 C88.4 74 84 62 78 54 Z", paint, o) + LINE("M86 50 Q92 62 90.6 80", darken(hc, .6), .9, 'opacity=".5"'),
     FE: "M36 52 C42 43 50 39 58 38 C68 37 78 40 84 52",
     extra: () => VC(80.4, 43.8, 2.8, "#c0453a", { w: .9, sh: 0, hl: 0 }) },
   coletas: { all: 1, shine: 1,
-    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z M35.6 45 C23 50 18 68 24 88 C27.6 76 31.6 64 38.6 55 Z M84.4 45 C97 50 102 68 96 88 C92.4 76 88.4 64 81.4 55 Z",
+    H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z",
+    mid: (hc, paint, o) => VP("M35.6 45 C23 50 18 68 24 88 C27.6 76 31.6 64 38.6 55 Z", paint, o) + VP("M84.4 45 C97 50 102 68 96 88 C92.4 76 88.4 64 81.4 55 Z", paint, o),
     FE: "M36 52 C42 42 52 38 62 38 C72 38 80 42 84 52",
     extra: () => VC(35.4, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) + VC(84.6, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) },
   mono: { all: 1, flat: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z", shine: 1, strands: "M54 21 Q60 15 66 21 Q62 27 57 24",
@@ -420,11 +422,11 @@ const HAIR = {
   trenzas: { all: 1, shine: 1, part: "M60 27 L60 38",
     H: "M36 54 C34 32 46 26 60 26 C76 26 86 34 84 54 C80 42 70 38 60 38 C50 38 40 42 36 54 Z",
     FE: "M36 54 C40 42 50 38 60 38 C70 38 80 42 84 54",
-    extra: (hc, paint) => [36, 84].map(x => { const s = x < 60 ? -1 : 1; return [0, 1, 2, 3, 4].map(i => braidSeg(x + s * i * .5, 60 + i * 8.6, 5 - i * .2, hc, paint)).join("") + VR(x - 3.4 + s * 2, 99.6, 6.8, 3.4, 1.4, "#c0453a", { w: .8, sh: 0, hl: 0 }); }).join("") },
+    mid: (hc, paint) => [36, 84].map(x => { const s = x < 60 ? -1 : 1; return [0, 1, 2, 3, 4].map(i => braidSeg(x + s * i * .5, 60 + i * 8.6, 5 - i * .2, hc, paint)).join("") + VR(x - 3.4 + s * 2, 99.6, 6.8, 3.4, 1.4, "#c0453a", { w: .8, sh: 0, hl: 0 }); }).join("") },
   trenza_lateral: { all: 1, shine: 1,
     H: "M36 54 C33 31 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54 Z",
     FE: "M36 54 C46 48 56 44 64 42 C72 40 80 44 84 54",
-    extra: (hc, paint) => [0, 1, 2, 3, 4, 5].map(i => braidSeg(83.4 + i * .9, 58 + i * 8.4, 5.4 - i * .25, hc, paint)).join("") + VR(84.6, 103.6, 7, 3.4, 1.4, "#5f8a55", { w: .8, sh: 0, hl: 0 }) },
+    mid: (hc, paint) => [0, 1, 2, 3, 4, 5].map(i => braidSeg(83.4 + i * .9, 58 + i * 8.4, 5.4 - i * .25, hc, paint)).join("") + VR(84.6, 103.6, 7, 3.4, 1.4, "#5f8a55", { w: .8, sh: 0, hl: 0 }) },
   /* --- largos: ceñidos a la cabeza (unas 4 unidades de grosor arriba y 3 a los lados) y sin orejas, que quedan bajo el pelo --- */
   media: { shine: 1, noEars: 1,
     H: "M33.4 54 C33 38 44.6 27.4 60 27.4 C75.4 27.4 87 38 86.6 54 L87.4 79 C83 83.4 78.4 82.4 76.6 77 L43.4 77 C41.6 82.4 37 83.4 32.6 79 Z",
@@ -465,6 +467,7 @@ function avHair(style, hc, part, k = "h", hc2 = null, under = false) {
   }
   const op = S.op ? ` opacity="${S.op}"` : "";
   const paint = hc2 ? `url(#${k}hg)` : hc, o = Object.assign({}, hairO, { lc: hc });
+  if (part === "mid") return S.mid ? `<g${op}>${S.mid(hc, paint, o)}</g>` : "";
   if (part === "back") {
     if (SIL()) return VP(S.H, hc, hairO);          /* contorno de todo el peinado (una sola silueta) */
     if (S.all) return "";                          /* los cortos van enteros delante */
@@ -496,7 +499,8 @@ function avHat(it, k) {
   switch (it.id) {
     case "flor": return `<g transform="translate(79 35)">${[0, 72, 144, 216, 288].map(a => `<ellipse rx="3.6" ry="5.5" transform="rotate(${a}) translate(0 -5)" fill="#f29b8a" ${LN("#f29b8a", 1)}/>`).join("")}<circle r="3" fill="#f3d36b" ${LN("#f3d36b", 1)}/></g>`;
     case "diadema": return LINE("M37 46 C40 28 80 28 83 46", "#e58aa6", 4.5) + `<path d="M72 30 l-7 -5 v10Z M72 30 l7 -5 v10Z" fill="#e58aa6" ${LN("#e58aa6", 1)}/><circle cx="72" cy="30" r="2" fill="#c9607e"/>`;
-    case "lana": return VP("M34 50 C34 26 86 26 86 50 Z", "#c95b4a") + LINE("M44 30 v14M52 28 v16M60 27 v17M68 28 v16M76 30 v14", "#a8483a", 1.4) + VR(32, 44, 56, 9, 4, "#a8483a") + VC(60, 24, 6.5, "#f3e6cf");
+    case "lana": return VP("M33.4 45 C32.6 15 87.4 15 86.6 45 Z", "#c95b4a") + LINE("M43 28.6 V41M51.6 24.8 V41M60 23.8 V41M68.4 24.8 V41M77 28.6 V41", "#a8483a", 1.3, 'opacity=".8"') +
+      VR(31, 40, 58, 9.4, 4.6, "#a8483a") + LINE("M34.6 43 H85.4M34.6 46.4 H85.4", "#c95b4a", .8, 'opacity=".55"') + VC(60, 18.6, 6.6, "#f3e6cf", { hl: .5 }) + LINE("M56.6 16.4 q1.4 -1.4 2.8 0M60.6 20 q1.4 -1.4 2.8 0", "#d9cfc2", .8);
     case "boina": return VP("M34 44 C34 28 52 22 66 24 C82 26 92 34 86 42 C76 46 46 48 34 44Z", "#3f4a5c") + LINE("M62 24 l1 -5", "#3f4a5c", 2);
     case "paja": return VE(60, 40, 37, 8, "#e2c27a") + VP("M42 40 C42 22 78 22 78 40 Z", "#e8cc89") + LINE("M42 36 C52 39 68 39 78 36", "#c0453a", 3.5);
     case "corona": return VP("M42 36 L43 18 L51 28 L60 13 L69 28 L77 18 L78 36Z", "#f1c75b") + `<circle cx="60" cy="29" r="2.6" fill="#c0453a"/><circle cx="48" cy="31" r="1.6" fill="#4f6fae"/><circle cx="72" cy="31" r="1.6" fill="#5f8a55"/>`;
@@ -615,6 +619,7 @@ function avatarBody(eq, mood, opt, k) {
   const neck = VP("M53 70 L67 70 L67 89 C64 91 56 91 53 89 Z", sk, { w: 1.6, hl: 0 });
   const head = `<g class="av-head">
       ${DET(`<ellipse cx="60" cy="79" rx="8" ry="3.4" fill="#2a1408" opacity=".14"/>`)}
+      <g ${hairT}>${avHair(eq.hair, hc, "mid", k, hc2, hatCovers)}</g>
       ${(HAIR[eq.hair] || {}).noEars ? "" : VC(35, 58, 5.5, sk, { w: 1.6, hl: 0 }) + VC(85, 58, 5.5, sk, { w: 1.6, hl: 0 }) + LINE("M34 56 q2 2 0 4M86 56 q-2 2 0 4", darken(sk, .75), 1)}
       ${VC(60, 54, 25, sk, { w: 1.9, dir: "gShR" })}
       ${avBeard(eq, hc, "base")}${avBlush(eq)}${avEyes(eq, mood)}${avBrows(eq, mood, hc)}${avNose(eq, sk)}
