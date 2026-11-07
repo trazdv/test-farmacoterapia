@@ -4,8 +4,10 @@
    APQ = preguntas de «Repasar apuntes»: solo salen en la pestaña Apuntes (no en el Test ni en Repaso).
    doc = id del documento, p = página, cita = texto literal de los apuntes que se enseña en la respuesta, n = nota breve opcional. */
 const APUNTES = [
+{id:"t2-autacoides",t:2,title:"Tema 2: Autacoides o mediadores celulares",sub:"Tema completo con tus anotaciones (lo tachado no entra en el examen)",dir:"apuntes/t2-autacoides/",pdf:"apuntes/t2-autacoides/apuntes.pdf",pages:33,w:2000,h:2829},
 {id:"t2-eicosanoides",t:[2,3],from:{2:1,3:5},title:"Mediadores eicosanoides e inicio del Tema 3 (AINEs)",sub:"Prostaglandinas, tromboxanos, leucotrienos e introducción a los AINEs",dir:"apuntes/t2-eicosanoides/",pdf:"apuntes/t2-eicosanoides/apuntes.pdf",pages:6,w:2000,h:2826},
-{id:"t3-aines",t:3,title:"Farmacología de los Antiinflamatorios No Esteroideos (AINEs)",sub:"Continuación, mecanismos, farmacocinética y seguridad",dir:"apuntes/t3-aines/",pdf:"apuntes/t3-aines/apuntes.pdf",pages:8,w:2000,h:2826}
+{id:"t3-aines",t:3,title:"Farmacología de los Antiinflamatorios No Esteroideos (AINEs)",sub:"Continuación, mecanismos, farmacocinética y seguridad",dir:"apuntes/t3-aines/",pdf:"apuntes/t3-aines/apuntes.pdf",pages:8,w:2000,h:2826},
+{id:"t4-esteroideos",t:4,title:"Tema 4: Antiinflamatorios esteroideos",sub:"Tema completo con tus anotaciones",dir:"apuntes/t4-esteroideos/",pdf:"apuntes/t4-esteroideos/apuntes.pdf",pages:20,w:2000,h:2829}
 ];
 
 const APQ = [
@@ -397,13 +399,15 @@ const APQ = [
  "Todas usan el transportador PGT y se inactivan sobre todo en el riñón, con vidas medias de horas",
  "La PGI₂ es la única que se inactiva en el pulmón, y por eso su efecto dura varias horas",
  "No necesitan ningún transportador y tienen vidas medias largas, de varias horas o días"],a:0,
- cita:"• Transporte Facilitado: La mayoría de prostaglandinas se liberan mediante un transportador específico de eicosanoides (PGT).\n• Excepción de la Prostaciclina (PGI2): No utiliza el transportador PGT, no sufre biotransformación pulmonar y se inactiva de forma espontánea a nivel sanguíneo.\n• Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado."},
+ cita:"• Transporte Facilitado: La mayoría de prostaglandinas se liberan mediante un transportador específico de eicosanoides (PGT).\n• Excepción de la Prostaciclina (PGI2): No utiliza el transportador PGT, no sufre biotransformación pulmonar y se inactiva de forma espontánea a nivel sanguíneo.\n• Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado.",
+ n:"En el Tema 2 completo (p. 29) la vida media es «inferior a 8 minutos» (tu anotación: «muy baja»)."},
 {doc:"t2-eicosanoides",t:2,p:2,q:"¿Dónde se inactivan sobre todo las prostaglandinas y cuánto dura su vida media?",o:[
  "En el pulmón y el hígado; vida media menor de 10 minutos",
  "En el riñón; vida media de unas 8 horas",
  "En la sangre, por la PLA₂; vida media de varios días",
  "En el estómago; vida media de unos 30 minutos"],a:0,
- cita:"Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado."},
+ cita:"Biotransformación: Tienen vidas medias muy cortas (menores a 10 minutos) y sufren inactivación enzimática principalmente en el pulmón e hígado.",
+ n:"En el Tema 2 completo (p. 29) la vida media es «inferior a 8 minutos» (tu anotación: «muy baja»)."},
 {doc:"t2-eicosanoides",t:2,p:2,q:"Misoprostol, según tus apuntes:",o:[
  "Análogo de PGE₁/PGE₂ que previene lesiones gastroduodenales en tratamientos crónicos con AINEs o corticoides",
  "Análogo de PGF₂α que baja la presión intraocular y es el tratamiento de elección del glaucoma canino",
@@ -427,7 +431,8 @@ const APQ = [
  "Baja la presión intraocular reduciendo la producción de humor acuoso, igual que un β-bloqueante en colirio",
  "Es un luteolítico de larga duración que se usa para sincronizar los celos en las yeguas y las vacas",
  "Mantiene abierto el ductus arteriosus en los cachorros con cardiopatías congénitas hasta la cirugía"],a:0,
- cita:"Latanoprost (análogo de PGF2α): Indicado en el glaucoma de ángulo cerrado para reducir la presión intraocular (PIO) mediante el estímulo del drenaje del humor acuoso por la vía uveoescleral.\n…\nLatanoprost en perros: Tratamiento de elección en el glaucoma canino."},
+ cita:"Latanoprost (análogo de PGF2α): Indicado en el glaucoma de ángulo cerrado para reducir la presión intraocular (PIO) mediante el estímulo del drenaje del humor acuoso por la vía uveoescleral.\n…\nLatanoprost en perros: Tratamiento de elección en el glaucoma canino.",
+ n:"En el Tema 2 completo (p. 31-32) pone otra cosa sobre el tipo de glaucoma: en humana, «glaucoma de ángulo abierto, cuando otros fármacos están contraindicados»; en el perro, glaucoma agudo, como uno de los primeros fármacos a utilizar."},
 {doc:"t2-eicosanoides",t:2,p:3,q:"Según la profesora, la hipertensión intraocular no controlada:",o:[
  "Lesiona el nervio óptico de forma irreversible y reduce el campo visual («visión en ojo de cerradura»)",
  "Produce cataratas reversibles, que desaparecen en cuanto se normaliza la presión del ojo con colirios",
@@ -463,7 +468,8 @@ const APQ = [
  "Hembras en celo y animales con diarrea; evitar la vía intramuscular, que es muy dolorosa",
  "Animales con glaucoma y hembras recién paridas; evitar la vía subcutánea por la necrosis",
  "Machos reproductores y animales con estreñimiento; evitar la vía oral por el riesgo de rotura"],a:0,
- cita:"1. Hembras Gestantes: Prohibida su administración si se desea mantener la gestación, debido al riesgo inminente de aborto por luteólisis y contracción uterina.\n2. Obstrucción / Impactación Gastrointestinal: No administrar en animales con obstrucción intestinal; el incremento del peristaltismo puede provocar la rotura del tubo digestivo.\n3. Vía de Administración: Queda totalmente desaconsejada la vía intravenosa rápida (bolus IV)."},
+ cita:"1. Hembras Gestantes: Prohibida su administración si se desea mantener la gestación, debido al riesgo inminente de aborto por luteólisis y contracción uterina.\n2. Obstrucción / Impactación Gastrointestinal: No administrar en animales con obstrucción intestinal; el incremento del peristaltismo puede provocar la rotura del tubo digestivo.\n3. Vía de Administración: Queda totalmente desaconsejada la vía intravenosa rápida (bolus IV).",
+ n:"En el Tema 2 completo (p. 32) no se matiza «rápida»: «No administrar por vía intravenosa (se alcanzarían dosis demasiado elevadas)»."},
 {doc:"t2-eicosanoides",t:2,p:4,q:"Riesgo profesional al manipular prostaglandinas:",o:[
  "Se absorben con facilidad por la piel: embarazadas y personas asmáticas deben usar guantes (riesgo de aborto o broncoespasmo)",
  "No se absorben por la piel, así que no hace falta ninguna precaución especial al manipularlas en la granja",
@@ -475,7 +481,8 @@ const APQ = [
  "No tienen tiempo de espera porque se inactivan en pocos minutos",
  "Siempre es de 30 días, tanto en la carne como en la leche",
  "Solo hay tiempo de espera en la leche, nunca en la carne"],a:0,
- cita:"Tiempos de Supresión: Respetar los periodos de espera en animales destinados al consumo humano (habitualmente un mínimo de 24 horas)."},
+ cita:"Tiempos de Supresión: Respetar los periodos de espera en animales destinados al consumo humano (habitualmente un mínimo de 24 horas).",
+ n:"En el Tema 2 completo (p. 32), los tiempos de espera del cloprostenol son: en vacas, 0 días en carne y 0 horas en leche; en cerdas, 1 día en carne («debe transcurrir 1 día antes del sacrificio»). Es decir, dependen del producto y de la especie: las 24 horas de este resumen coinciden con las de la cerda."},
 {doc:"t2-eicosanoides",t:2,p:4,q:"Glucocorticoides frente a AINEs en la cascada del ácido araquidónico:",o:[
  "Los GC bloquean la PLA₂ (inducen lipocortina) e impiden PGs y leucotrienos; los AINEs solo inhiben la COX",
  "Los AINEs bloquean la PLA₂ y frenan toda la cascada; los glucocorticoides solo inhiben la COX-2",
@@ -584,6 +591,904 @@ const APQ = [
  "Es sobre todo antiinflamatorio, y su efecto analgésico es leve y de corta duración",
  "No tiene efecto analgésico: solo es antipirético y se usa para bajar la fiebre",
  "Es un opioide débil, y por eso es tan analgésico y produce algo de dependencia"],a:0,
- cita:"Ketorolaco: Destaca por una capacidad analgésica muy elevada que predomina ampliamente sobre su acción antiinflamatoria."}
+ cita:"Ketorolaco: Destaca por una capacidad analgésica muy elevada que predomina ampliamente sobre su acción antiinflamatoria."},
+/* ===== Tema 2 completo (t2-autacoides): págs. 1-11, histamina, antihistamínicos, cromoglicato e inicio de la serotonina ===== */
+/* ---------- Histamina: estructura, metabolismo y receptores (p. 1-3) ---------- */
+{doc:"t2-autacoides",t:2,p:1,q:"Histamina. Señala la opción CORRECTA:",o:[
+ "Amina biógena (anillo imidazólico) y base débil; se almacena sobre todo en gránulos con matriz compleja",
+ "Amina biógena con anillo indólico y ácido débil; se almacena sobre todo en forma agranular, libre",
+ "Péptido con anillo imidazólico y base fuerte; la síntesis por bacterias intestinales es la principal",
+ "Lípido derivado del ácido araquidónico; no se almacena y se sintetiza a demanda en casi todas las células"],a:0,
+ cita:"Es una amina biógena compuesta por un anillo imidazólico y una cadena lateral etilenamino. Es una base débil.\n…Su síntesis extracelular (bacterias intestinales) no tiene importancia práctica.\nSíntesis se da a partir de L-histidin-decarboxilasa en la célula, en dos formas distintas:\n-En su mayoría se crea en forma de gránulos con una matriz compleja de proteínas y heparina.\n-En menor medida se crea histamina agranular."},
+{doc:"t2-autacoides",t:2,p:2,q:"Biotransformación de la histamina (marcada IMP). Señala la opción CORRECTA:",o:[
+ "Sobre todo en el hígado, aunque todos los tejidos pueden metabolizarla, por metilación o desaminación",
+ "Solo en el hígado, porque el resto de tejidos no pueden metabolizarla, por metilación o desaminación",
+ "Sobre todo en el riñón, que la excreta casi toda sin biotransformar; el hígado apenas interviene",
+ "Sobre todo en el pulmón, por hidroxilación con el citocromo P450 y conjugación con glucurónico"],a:0,
+ cita:"Biotransformación (IMP): la histamina es capaz de llegar a numerosos tejidos. El hígado es el lugar de biotransformación más importante, pero todos los tejidos son capaces de metabolizar histamina. Existen 2 vías de biotransformación:\nMETILACIÓN\nHistamina-N-metiltransferasa\nDESAMINACIÓN\nDAO o histaminasa",
+ n:"Las dos vías del esquema: metilación (histamina-N-metiltransferasa) y desaminación (DAO o histaminasa)."},
+{doc:"t2-autacoides",t:2,p:2,q:"Eliminación de la histamina (marcada IMP):",o:[
+ "Renal, sobre todo como metabolitos no activos y en escasa proporción sin biotransformar",
+ "Renal, sobre todo sin biotransformar y en escasa proporción como metabolitos activos",
+ "Biliar, sobre todo como metabolitos no activos y en escasa proporción sin biotransformar",
+ "Pulmonar, tras su desaminación completa por la histaminasa circulante en el plasma"],a:0,
+ cita:"Eliminación (IMP): Es renal, fundamentalmente como metabolitos NO activos, y en una escasa proporción sin biotransformar."},
+{doc:"t2-autacoides",t:2,p:2,q:"¿A qué vía de señalización están acoplados los receptores histamínicos H1 y H2?",o:[
+ "H1: fosfolipasa C (↑ IP3, DAG y Ca²⁺ intracelular); H2: adenil ciclasa (↑ AMP cíclico)",
+ "H1: adenil ciclasa (↑ AMP cíclico); H2: fosfolipasa C (↑ IP3, DAG y Ca²⁺ intracelular)",
+ "H1: fosfolipasa C (↓ IP3, DAG y Ca²⁺ intracelular); H2: adenil ciclasa (↓ AMP cíclico)",
+ "H1: guanilato ciclasa (↑ GMP cíclico); H2: fosfolipasa A₂ (↑ ácido araquidónico)"],a:0,
+ cita:"H1:\n…\nAcoplados a Fosfolipasa C →activación→ ↑ Inositol trifosfato (IP3), Diacilglicerol (DAG) y Ca2+ intcel.\n…\nH2:\n…\nLa activación: ↑ AMP cíclico. Están acoplados a la adenil ciclasa.",
+ n:"Anotación a mano junto a H2: «se pueden utilizar sin tanto problema como los H1»."},
+{doc:"t2-autacoides",t:2,p:3,q:"Receptores H3 y H4 de la histamina. Señala la opción CORRECTA:",o:[
+ "H3: autorreceptor presináptico que reduce la liberación de neurotransmisores; H4: regulación inmune",
+ "H3: autorreceptor presináptico que aumenta la liberación de neurotransmisores; H4: secreción de HCl",
+ "H3: receptor de las células parietales que estimula el HCl; H4: autorreceptor presináptico del SNC",
+ "H3: receptor del músculo liso bronquial (broncoconstricción); H4: ya muy usado en la clínica diaria"],a:0,
+ cita:"H3: autorreceptor neuronal presináptico → modula síntesis y liberación de histamina en el SNC. Su activación se ha asociado con una reducción en la liberación de neurotransmisores (la propia histamina, norepinefrina, serotonina y aceticolina).\nLa activación: ↓ entrada de Calcio a la célula en las terminaciones nerviosas → reducción liberación de neurotransmisores en el espacio sináptico.\nH4:\n- Médula ósea\n- Timo\n- Células inmunocompetentes (linfocitos T, neutrófilos y eosinófilos).\n- Bazo, hígado y colon\n- Sugieren una función importante en la regulación del sistema inmune.\nLa activación se ha visto similitud con H3 (anotación a mano junto a H4: Todavía no muy claro ni muy usados por riesgo)"},
+/* ---------- Efectos farmacológicos de la histamina (p. 3-4) ---------- */
+{doc:"t2-autacoides",t:2,p:3,q:"Según tus apuntes (pregunta general, no por especie), la respuesta a los efectos farmacológicos de la histamina depende de:",o:[
+ "La distribución y densidad de receptores en cada tejido, y de la especie animal y la dosis",
+ "Solo de la dosis, porque los receptores se distribuyen por igual en todos los tejidos y órganos",
+ "Solo de la vía de administración, porque la histamina actúa igual en todas las especies",
+ "La cantidad de heparina de los gránulos y el pH del tejido en el que se libera la histamina"],a:0,
+ cita:"EFECTOS FARMACOLÓGICOS: la respuesta depende de (PREGUNTA EN GENERAL, NO ESPECÍFICO ESPECIE):\n- La distribución y densidad de receptores en los diversos tejidos y órganos\n- Respuesta variable según la especie animal y la dosis."},
+{doc:"t2-autacoides",t:2,p:3,q:"¿Cómo aumenta la histamina la permeabilidad capilar?",o:[
+ "Contrae las células endoteliales de las vénulas postcapilares y produce edema, sobre todo vía H1",
+ "Contrae las células endoteliales de las arteriolas terminales y produce edema, sobre todo vía H2",
+ "Relaja las células endoteliales de las vénulas postcapilares y reduce el edema, sobre todo vía H1",
+ "Contrae el músculo liso de las arterias de gran calibre y produce edema, sobre todo vía H3"],a:0,
+ cita:"En general aumentan la permeabilidad capilar por contracción de células endoteliales de vénulas postcapilares (ensancha poros intercelulares) que produce la salida de líquido, proteínas y plaquetas y extravasación plasmática (edema) por acción H1 principalmente. (anotación a mano: + nº receptores)",
+ n:"Aparte, la vasodilatación de vénulas y arteriolas terminales produce hiperemia, ↓ resistencia periférica e hipotensión (a mano: «→ produce edema»)."},
+{doc:"t2-autacoides",t:2,p:4,q:"Respuesta cardiovascular a la histamina según la dosis. Señala la opción CORRECTA:",o:[
+ "Dosis bajas: hipotensión breve seguida de hipertensión 2ª a la liberación de catecolaminas",
+ "Dosis bajas: hipertensión mantenida por vasoconstricción de vénulas y arteriolas terminales",
+ "Dosis altas: hipertensión intensa con aumento de la volemia, sin riesgo de colapso circulatorio",
+ "Dosis altas: bradicardia e hipotensión leve que ceden solas, sin riesgo de colapso circulatorio"],a:0,
+ cita:"La respuesta es variable según la dosis:\n- Bajas dosis: se comporta de forma normal y ↓ resistencia periférica e hipotensión breve→ hipertensión 2ª a liberación de catecolaminas de la médula adrenal.\n- Altas dosis: hipotensión intensa, edemas, disminución de la volemia y posibilidad de colapso circulatorio. (anotación a mano: ↳ reacción alérgica)"},
+{doc:"t2-autacoides",t:2,p:4,q:"Efectos cardiacos de la histamina. Señala la opción CORRECTA:",o:[
+ "Crono e inotropa positiva (H2), reduce la conducción AV (H1) y aplana la onda T del ECG",
+ "Crono e inotropa negativa (H2), reduce la conducción AV (H1) y aplana la onda T del ECG",
+ "Crono e inotropa positiva (H2), acelera la conducción AV (H1) y eleva la onda T del ECG",
+ "Crono e inotropa negativa (H1), acelera la conducción AV (H2) y eleva la onda T del ECG"],a:0,
+ cita:"2. Corazón:\n- Efecto cronotropo e inotropo positivo (H2).\n- Reducción de la conducción auriculoventricular (H1).\n- Puede existir estimulación secundaria a liberación de noradrenalina.\n- ECG: aplanamiento de onda T (puede incluso, invertirse).",
+ n:"Ojo: la tabla de la p. 3 pone inotropismo y cronotropismo (+) también en la columna H1; el texto de la p. 4 los atribuye a H2."},
+{doc:"t2-autacoides",t:2,p:4,q:"Broncoconstricción por histamina (marcada imp y con «!»). Señala la opción CORRECTA:",o:[
+ "Intensa en asmáticos y leve en animales sanos; muy común en el gato, y la cobaya es muy sensible",
+ "Solo aparece en pacientes asmáticos: en animales sanos la histamina no contrae nunca los bronquios",
+ "Intensa en animales sanos y leve en asmáticos; el gato es la especie más resistente a ella",
+ "Leve en todas las especies por igual; en la cobaya la histamina produce siempre broncodilatación"],a:0,
+ cita:"- Broncoconstricción (imp): intensa en pacientes con asma bronquial u otras enfermedades pulmonares y leve en animales sanos. Muy común en gato y la cobaya es muy sensible (broncoconstricción mortal). (anotación a mano: ASMA FELINA)"},
+{doc:"t2-autacoides",t:2,p:4,q:"Histamina en glándulas y SNC. Señala la opción CORRECTA:",o:[
+ "Estimula la secreción gástrica de ClH y pepsina vía H2, y no atraviesa la barrera hematoencefálica",
+ "Estimula la secreción gástrica de ClH y pepsina vía H1, y atraviesa bien la barrera hematoencefálica",
+ "Inhibe la secreción gástrica de ClH vía H2 y reduce las secreciones lagrimales y salivares",
+ "Inhibe la secreción gástrica vía H1 y, como atraviesa la BHE, produce somnolencia y sedación"],a:0,
+ cita:"4. Glándulas (H2):\n-↑ secreciones mucosas, lagrimales, salivares, pépticas y pancreáticas.\n-Estimulación de la secreción gástrica (ClH y pepsina) de células parietales.\n5. SNC:\n-No atraviesa BHE."},
+/* ---------- Acciones contra la histamina y antihistamínicos H1 (p. 5-8) ---------- */
+{doc:"t2-autacoides",t:2,p:5,q:"Acciones contra la histamina (marcadas con «¡!»). Señala la asociación CORRECTA:",o:[
+ "Acelerar su biotransformación: histaminasa; antagonismo funcional: adrenalina",
+ "Acelerar su biotransformación: decarboxilasas; antagonismo funcional: cimetidina",
+ "Inhibir su síntesis: histaminasa; antagonismo competitivo: adrenalina y aminofilina",
+ "Inhibir su liberación: antihistamínicos H1; antagonismo funcional: cromoglicato"],a:0,
+ cita:"ACCIONES CONTRA LA HISTAMINA:\n- Acelerar su biotransformación: aplicar histaminasa\n- Inhibición de su síntesis: inhibición de decarboxilasas.\n- INHIBICIÓN DE LIBERACIÓN (imp): ↓ degranulación mastocitaria que proviene de la interacción Antígeno-IgE. Esa liberación tendría que ser de forma profiláctica y administrar CROMOGLICATO SÓDICO…\n- ANTAGONISMO FUNCIONAL: antagonistas de efecto, con acciones sobre el músculo liso opuestas a las de la histamina, aunque actúan sobre otros receptores. Por ejemplo: ADRENALINA, AMINOFILINA, GLUCOCORTICOIDES,...\n- ANTAGONISMO COMPETITIVO: son los antagonistas de los receptores histaminérgicos antihistamínicos H1 y antihistamínicos H2.",
+ n:"A mano, junto al antagonismo funcional: «efecto activo»."},
+{doc:"t2-autacoides",t:2,p:5,q:"Antihistamínicos H1 de 1ª frente a 2ª generación (tabla marcada IMP). Señala la opción CORRECTA:",o:[
+ "1ª gen.: más sedación (50 %) y metabolismo por enzimas microsomales; 2ª gen.: menos sedación (7 %) y CYP3A4",
+ "1ª gen.: menos sedación (7 %) y metabolismo por CYP3A4; 2ª gen.: más sedación (50 %) y enzimas microsomales",
+ "1ª gen.: más sedación (50 %) y pocos efectos autonómicos; 2ª gen.: menos sedación (7 %) y bloqueo α y ACh",
+ "1ª gen.: menor paso al SNC y pocos efectos autonómicos; 2ª gen.: mayor paso al SNC y más bloqueo α y ACh"],a:0,
+ cita:"•Fármacos de 1ª y 2ª generación: Primera Generación | Segunda Generación\nSNC: Mayor penetración | Menor penetración\nEfecto Sedante: Mayor efecto sedante (50%) | Menor posibilidad de sedación (7%)\nEfectos autonómicos: Mayor probabilidad de bloqueo de receptores autonómicos (alfa, Ach), serotonina | Pocos efectos autonómicos\nMetabolismo: Metabolismo por enzimas microsomales | Metabolismo por Citocromo CYP3A4\nVida Media: Más cortas | Más prolongadas"},
+{doc:"t2-autacoides",t:2,p:6,q:"Farmacocinética de los antihistamínicos H1 de 1ª generación. Señala la opción CORRECTA:",o:[
+ "Buena absorción oral con elevado efecto de 1er paso, efecto corto (3-6 h) y eliminación sobre todo biliar",
+ "Buena absorción oral con elevado efecto de 1er paso, efecto corto (3-6 h) y eliminación sobre todo renal",
+ "Mala absorción oral y sin efecto de 1er paso, efecto largo (12-24 h) y eliminación sobre todo biliar",
+ "Absorción rápida (tmax 1-2 h), no atraviesan la BHE y se eliminan sobre todo por vía renal"],a:0,
+ cita:"FARMACOCINÉTICA ANTHISTAMÍNICOS H1 (1ª generación)\n- Presentan buena absorción oral pero elevado efecto de 1er paso (hay que administrarlos a dosis altas). Pueden usarse iv, im, id.\n- Distribución amplia, pueden atravesar BHE → depresores del SNC\n- Biotransformación rápida (1ª generación) por lo que su efecto es corto 3-6 h, en preparaciones farmacéuticas especiales se consiguen niveles terapéuticos 8-12 h.\n- Eliminación fundamentalmente biliar",
+ n:"No confundir con la 2ª generación, cuya excreción es renal."},
+{doc:"t2-autacoides",t:2,p:6,q:"Farmacocinética de los antihistamínicos H1 de 2ª generación. Señala la opción CORRECTA:",o:[
+ "Alta unión a proteínas (posible desplazamiento de otro fármaco), vida media de 12-24 h y excreción renal",
+ "Baja unión a proteínas (sin desplazamientos), vida media de 12-24 h e inicio de acción inmediato",
+ "Alta unión a proteínas (posible desplazamiento de otro fármaco), vida media de 3-6 h e inicio inmediato",
+ "Baja unión a proteínas, gran paso al SNC y vida media de 3-6 h, por lo que se dan cada pocas horas"],a:0,
+ cita:"FARMACOCINÉTICA ANTIHISTAMÍNICOS H1 (2ª generación)\n- Absorción rápida vía oral (tmax 1 - 2 horas).\n- Distribución amplia con menor capacidad de penetrar al SNC\n- Unión elevada a proteínas plasmáticas\n- Vida media prolongada (12-24 h)\n- Retardo en inicio de la acción farmacológica\n…\n- Excreción renal (anotación a mano junto a la unión a proteínas: desplazamiento otro fármaco)",
+ n:"A mano: aunque penetran menos en el SNC, pueden afectar a su capacidad de precisión al saltar (cuidado con sitios altos)."},
+{doc:"t2-autacoides",t:2,p:6,q:"Metabolitos activos de los antihistamínicos H1. Señala la opción CORRECTA:",o:[
+ "Hidroxicina → cetirizina, que se comporta como un antiH1 de 2ª generación",
+ "Cetirizina → hidroxicina, que se comporta como un antiH1 de 1ª generación",
+ "Loratadina → fexofenadina, que se comporta como un antiH1 de 2ª generación",
+ "Terfenadina → desloratadina, que se comporta como un antiH1 de 2ª generación"],a:0,
+ cita:"- Algunos antihistamínicos tienen metabolitos activos:\n- Hidroxicina: Cetirizina\n- Tripolidina: Activastina\n…\n- Algunos con metabolitos activos:\n- Loratadina: desloratadina\n- Terfenadina: Fexofenadina\n- Ebastina: Carebastina (anotación a mano junto a «Hidroxicina: Cetirizina»: es su metabolito y se comporta como de segunda generación)"},
+{doc:"t2-autacoides",t:2,p:7,q:"Efectos de los antihistamínicos H1 independientes del antagonismo H1. Señala la opción CORRECTA:",o:[
+ "Depresión del SNC a dosis bajas, convulsiones a dosis altas y anestesia local por bloqueo de canales de Na⁺",
+ "Estimulación del SNC a dosis bajas, sedación a dosis altas y anestesia local por bloqueo de canales de K⁺",
+ "Depresión del SNC a dosis bajas, convulsiones a dosis altas y acortamiento del periodo refractario cardiaco",
+ "Aumento de la liberación de catecolaminas, depresión del SNC y aceleración de la conducción cardiaca"],a:0,
+ cita:"…aunque tienen otros efectos independientes de dicho antagonismo:\n- Pueden inhibir parcialmente la liberación de catecolaminas.\n…\n- Sobre SNC:\n1. Dosis bajas y terapéuticas producen efecto depresor (algunos antieméticos, inductores del sueño).\n2. Dosis altas pueden producir convulsiones.\n- Nervios periféricos: efecto anestésico local por bloqueo de canales de Na+ en membranas excitables.\n- Corazón: ↑ periodo refractario al reducir la velocidad de conducción cardiaca. (anotación a mano junto a las catecolaminas: Adrenalina y Nora)"},
+{doc:"t2-autacoides",t:2,p:8,q:"Según tus apuntes (marcado IMPPP), los antihistamínicos H1 son útiles en:",o:[
+ "Tos irritativa no productiva y tos alérgica (difenhidramina)",
+ "Tos productiva con expectoración abundante (difenhidramina)",
+ "Broncoespasmo y bronquitis asmática, en los que son muy eficaces",
+ "Rinitis infecciosa, siempre asociados a un antibiótico"],a:0,
+ cita:"- Rinitis alérgicas (con adrenalina). No efectivas en rinitis infecciosa.\n…\n- Eficacia escasa en broncoespasmos y bronquitis asmática.\n- Útiles en tos irritativa no productiva y tos alérgica (difenhidramina) IMPPP"},
+/* ---------- Antihistamínicos H2 y H3 (p. 8-9) ---------- */
+{doc:"t2-autacoides",t:2,p:8,q:"Farmacocinética de los antihistamínicos H2. Señala la opción CORRECTA:",o:[
+ "Buena absorción oral, pero con efecto de primer paso (leve en nizatidina); si hay urgencia, mejor IV",
+ "Mala absorción oral y sin efecto de primer paso, por lo que en la práctica solo se usan por vía IV",
+ "Buena absorción oral y sin efecto de primer paso; atraviesan la BHE y producen efectos centrales",
+ "Mala absorción oral y primer paso intenso en la nizatidina, que está contraindicada por vía IV"],a:0,
+ cita:"FARMACOCINÉTICA ANTIHISTAMÍNICOS H2:\n- Absorción: Buena absorción oral, iv y im.\n- Distribución: Efecto de primer paso (leve en nizatidina) que disminuye su biodisponibilidad.\n- No atraviesan BHE: no efectos centrales (anotación a mano junto al efecto de primer paso: menos que H1 pero tmb, si hay urgencia mejor IV)",
+ n:"Lo que reduce su biodisponibilidad oral es el efecto de primer paso, no una mala absorción."},
+{doc:"t2-autacoides",t:2,p:9,q:"Efectos de la cimetidina independientes del antagonismo H2. Señala la opción CORRECTA:",o:[
+ "↑ prolactina, efecto antiandrogénico e inhibición del sistema microsomal hepático",
+ "↓ prolactina, efecto androgénico e inducción del sistema microsomal hepático",
+ "↑ prolactina, efecto androgénico e inducción del sistema microsomal hepático",
+ "↓ prolactina, efecto antiandrogénico e inhibición del sistema microsomal hepático"],a:0,
+ cita:"- Independientemente del antagonismo H2 : Cimetidina\n○ Estímulo secreción de prolactina (ginecomastia, galactorrea), no ranitidina.\n○ Efecto antiandrogénico: ginecomastia e impotencia (no ranitidina, oximetidina y famotidina)\n○ Inhibición sistema microsomal hepático\n○ Afectación de la función tubular renal (anotaciones a mano: «los que usamos ahora no lo producen», bajo el paréntesis; «cuidado que esté bien», junto a la función renal)",
+ n:"Además, con todos los antiH2, en ancianos: confusión mental e insuficiencia renal."},
+{doc:"t2-autacoides",t:2,p:9,q:"Usos de los antihistamínicos H2 según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Úlcera péptica no maligna, gastritis urémica y reflujo esofágico en el perro",
+ "Úlcera péptica maligna, vómitos por cinetosis y reflujo esofágico en el perro",
+ "Gastritis urémica, retención de placenta y secuelas post-moquillo en el perro",
+ "Síndrome del intestino corto, asma bronquial y conjuntivitis alérgica"],a:0,
+ cita:"USOS ANTIHISTAMÍNICOS H2:\n- Úlcera péptica (gástrica y duodenal) no maligna. Su uso prolongado disminuye las exacerbaciones periódicas.\n- Gastritis “renal” crónica: desequilibrios electrolíticos que generan gastritis urémica.\n- Síndrome acido- péptico.\n- Síndrome del intestino corto.\n- Reflujo esofágico en el perro (esofagitis. por acción ácida) y reflujo gástrico-duodenal.\n- Hemorragias gastrointestinales superiores cuando no se deben a la erosión de los vasos sanguíneos principales.\n- En insuficiencia pancreática exocrina: administrado 30’ antes evitan la hidrólisis ácida y enzimática de las enzimas pancreáticas de reemplazo en el estómago. (anotaciones a mano: «→ seguros de forma crónica», junto a la úlcera; «por UREMIA», junto a la gastritis)",
+ n:"Vómitos por cinetosis, retención de placenta y secuelas post-moquillo son usos de los antiH1, no de los antiH2."},
+{doc:"t2-autacoides",t:2,p:9,q:"Antihistamínicos H3. Señala la opción CORRECTA:",o:[
+ "Son agonistas inversos (p. ej., tioperamida), diana en ensayos para narcolepsia, Alzheimer o esquizofrenia",
+ "Son agonistas puros (p. ej., tioperamida) y ya se usan de rutina en la úlcera péptica y en el reflujo",
+ "Son agonistas inversos (p. ej., cimetidina) y se usan sobre todo en rinitis y conjuntivitis alérgicas",
+ "Son antagonistas solo periféricos, sin acción en el SNC, y se usan en la artritis reumatoide y el prurito"],a:0,
+ cita:"Los antihistamínicos H3 son agonistas inversos. (Ej: broncoconstricción de H1 es antagonizada por broncodilatación de H3). Derivados Imidazólicos: Tioperamida, Benpropita, Ciproxifano, Proxifano.\n…\nDiana terapéutica para alteraciones del SNC, en pruebas clínicas para:\n- Narcolepsia. Se promueve la vigilia.\n- Deterioro cognitivo asociado a la enfermedad de Alzheimer y de Parkinson\n- Esquizofrenia\n- desórdenes de déficit de atención e hiperactividad (ADHD)\nReceptor H3→ alto grado de actividad constitutiva in vivo, por lo que su inhibición tiene importantes implicaciones clínicas (anotación a mano: → todavía en estudio)"},
+/* ---------- Cromoglicato sódico y serotonina (p. 10-11) ---------- */
+{doc:"t2-autacoides",t:2,p:10,q:"Cromoglicato sódico. Señala la opción CORRECTA:",o:[
+ "Es profiláctico (antes del contacto con el agente): impide la entrada de Ca²⁺ e inhibe la fosfodiesterasa",
+ "Es terapéutico (cuando la reacción ya se ha producido): impide la entrada de Ca²⁺ e inhibe la fosfodiesterasa",
+ "Es profiláctico (antes del contacto con el agente): facilita la entrada de Ca²⁺ y activa la fosfodiesterasa",
+ "Es terapéutico (cuando la reacción ya se ha producido): bloquea los receptores H1 y H2 y activa la fosfodiesterasa"],a:0,
+ cita:"Es un inhibidor de la liberación de histamina ya que inhibe el aumento de permeabilidad al Ca2+ que provocan los antígenos al formar complejos con estos iones en la superficie externa de la membrana, fijándose a los canales de Ca2+ e impidiendo su entrada.\nTambién inhibe la fosfodiesterasa, produciendo un aumento de AMPc intracelular que favorece estabilidad a nivel de membrana.\n…\n- En rinitis y conjuntivitis alérgica, aunque si ya se ha producido no tiene efecto porque la histamina ya se ha liberado.\n- Por este motivo su valor es principalmente profiláctico, no terapéutico. (anotación a mano junto al título: ES PROFILÁCTICO, PARA PREVENIR)",
+ n:"Ejemplo anotado a mano en la p. 5: al caballo, darlo preventivo antes de una carrera."},
+{doc:"t2-autacoides",t:2,p:10,q:"Almacenamiento de la serotonina (marcado IMPPPP). Señala la opción CORRECTA:",o:[
+ "Más del 90 % en células enterocromafines digestivas; también en plaquetas, mastocitos (roedores) y rafe",
+ "Más del 90 % en las plaquetas; también en células enterocromafines, mastocitos (rumiantes) y rafe",
+ "Más del 90 % en los mastocitos de todas las especies, almacenada junto a la histamina y la heparina",
+ "Más del 90 % en los núcleos del rafe; también en las células parietales gástricas y en los basófilos"],a:0,
+ cita:"Almacenamiento (IMPPPP): Se produce fundamentalmente en:\n• Células enterocromafines del aparato digestivo (> 90%): almacenada junto a gránulos formando complejos con ATP y otras sustancias\n• Plaquetas (Sangre)\n• Mastocitos (en roedores) junto a histamina y heparina\n• Núcleos del rafé del tallo (neurotransmisor)"},
+{doc:"t2-autacoides",t:2,p:11,q:"Serotonina: biotransformación y excreción (marcadas con «!»). Señala la opción CORRECTA:",o:[
+ "Hígado (MAO) y endotelio vascular; en la pineal, acetilasa + O-metil-transferasa → melatonina; excreción renal",
+ "Solo en el hígado (MAO); en la pineal, MAO + aldehído-deshidrogenasa → melatonina; excreción sobre todo biliar",
+ "Hígado (MAO) y endotelio vascular; en la pineal, ceruloplasmina + oxidasas → melatonina; excreción biliar",
+ "Riñón (DAO o histaminasa) y pulmón; en la pineal, acetilasa + O-metil-transferasa → 5-HIAA; excreción renal"],a:0,
+ cita:"Biotransformación: en hígado (MAO) principalmente y endotelio vascular:\nMAO + alcohol-deshidrogenasa→5-hidroxitriptofol\nMAO + aldehído-deshidrogenasa → 5HIAA+ sulfocinasa → Sulfoconjugado.\nCeruloplasmina + oxidasas → Adenocromo\nConjugación a glucurónico→ Glucuroconjugado.\nAcetilasa + O-metil-transferasa →Melatonina (glándula pineal).\n…\nExcreción: Renal"},
+/* ===== Tema 2 completo (t2-autacoides): págs. 12-22, serotonina, antieméticos, angiotensina e IECA ===== */
+/* ---------- Serotonina: efectos y receptores (pp. 12-13) ---------- */
+{doc:"t2-autacoides",t:2,p:12,q:"Según tus apuntes, ¿qué efecto tiene la serotonina sobre las plaquetas en el hombre?",o:[
+ "Actividad agregante plaquetaria reversible",
+ "Actividad antiagregante plaquetaria reversible",
+ "Actividad agregante plaquetaria irreversible",
+ "Ninguno: las plaquetas solo la captan y la almacenan"],a:0,
+ cita:"• Actividad agregante plaquetaria reversible (hombre).",
+ n:"Lo marcaste con «!». Ojo: alguna clave de examen da por buena la «actividad antiagregante»; tus apuntes dicen agregante. El antiagregante es la ketanserina, por bloqueo 5-HT₂ (p. 16)."},
+{doc:"t2-autacoides",t:2,p:12,q:"Efectos cardiovasculares de la serotonina. Señala la opción CORRECTA:",o:[
+ "Crono e inotropa positiva; dilata las arteriolas del músculo esquelético, del corazón y de la piel",
+ "Crono e inotropa negativa; dilata las arteriolas del músculo esquelético, del corazón y de la piel",
+ "Crono e inotropa positiva; dilata las arteriolas y las venas del cerebro y de las vísceras",
+ "Crono e inotropa negativa; contrae las arteriolas del músculo esquelético, del corazón y de la piel"],a:0,
+ cita:"• Vasoconstricción arteriolar y venosa: cerebro, vísceras y algunos territorios orgánicos\n• Vasodilatación arteriolar: músculo esquelético y cardiaco (no dañado) y piel.\n• Corazón: efecto cronotropo e inotropo positivo (IMMPPP)",
+ n:"El «(IMMPPP)» está en tus apuntes. La bradicardia solo aparece como reflejo de Bezold-Jarisch (primera fase de la respuesta trifásica de la presión arterial)."},
+{doc:"t2-autacoides",t:2,p:12,q:"Receptor 5-HT₄. Señala la opción CORRECTA:",o:[
+ "Está en el sistema nervioso entérico, SNC, vejiga y corazón; ↑ AMPc y aumenta la motilidad digestiva",
+ "Está en vasos, plaquetas y neuronas autónomas; activa la fosfolipasa C (↑ IP₃) y contrae el músculo liso",
+ "Es un canal iónico de las neuronas aferentes nociceptivas y entéricas, con efectos excitadores",
+ "Está en el SNC y en algunos vasos; inhibe la adenilatociclasa (↓ AMPc) y produce vasoconstricción"],a:0,
+ cita:"Receptores 5-HT4 : en sistema nervioso entérico, SNC, vejiga y corazón. Efectos excitadores y causan incremento de motilidad digestiva. Actúan estimulando adenilatociclasa (↑AMPc). (anotación a mano en la tabla: entérico, ↑ peristaltismo)",
+ n:"Las otras opciones describen el 5-HT₂ (fosfolipasa C/IP₃), el 5-HT₃ (el único que es un canal iónico) y el 5-HT₁ (↓ AMPc)."},
+{doc:"t2-autacoides",t:2,p:13,q:"Efecto de la serotonina sobre la liberación de hormonas hipofisarias:",o:[
+ "Estimula la de ACTH, LTH y TSH e inhibe la de FSH y LH",
+ "Inhibe la de ACTH, LTH y TSH y estimula la de FSH y LH",
+ "Estimula la de ACTH, FSH y LH e inhibe la de LTH y TSH",
+ "Estimula la de FSH, LH y TSH e inhibe la de ACTH y LTH"],a:0,
+ cita:"- Estimula la liberación de ACTH, LTH y TSH\n- Inhibe la liberación de FSH y LH",
+ n:"Lo marcaste con «!»."},
+{doc:"t2-autacoides",t:2,p:13,q:"Efecto de la serotonina sobre el SNC según la dosis:",o:[
+ "A dosis bajas estimula el SNC y a dosis altas lo deprime",
+ "A dosis bajas deprime el SNC y a dosis altas lo estimula",
+ "Lo estimula a cualquier dosis, y más cuanto mayor es esta",
+ "Lo deprime a cualquier dosis, y más cuanto mayor es esta"],a:0,
+ cita:"En general ↑ dosis producen efectos depresores centrales\n↓ dosis producen efectos estimulantes del SNC",
+ n:"Está recuadrado en azul en tus apuntes."},
+/* ---------- Serotoninérgicos y metoclopramida (pp. 14-15) ---------- */
+{doc:"t2-autacoides",t:2,p:14,q:"Usos terapéuticos de los serotoninérgicos. Señala la opción CORRECTA:",o:[
+ "Vómito: metoclopramida y zacoprida; automutilación y granuloma por lamido: buspirona y fluoxetina",
+ "Vómito: buspirona y fluoxetina; automutilación y granuloma por lamido: metoclopramida y zacoprida",
+ "Vómito: cisaprida y sumatriptán; automutilación y granuloma por lamido: buspirona y fluoxetina",
+ "Vómito: metoclopramida y zacoprida; automutilación y granuloma por lamido: ketanserina y pizolifeno"],a:0,
+ cita:"- Trastornos del comportamiento (ansiedad, depresión, comportamiento compulsivo, automutilación y granuloma por lamido, alopecia psicogénica en gato, estereotipias y agresividad): Buspirona, fluoxetina, etc. (anotación a mano: ↳ Acral)\n- Control del vómito: Metoclopramida y Zacoprida (otra Benzamida). Se utilizan además los anti 5-HT3 selectivos (ondansetrón, granisetrón, tropisetrón).",
+ n:"Según tus apuntes, el control del vómito sí figura entre los usos de los serotoninérgicos: metoclopramida y zacoprida (benzamidas agonistas 5-HT₄), y además los anti 5-HT₃. Anotaste «acral»: granuloma acral por lamido."},
+{doc:"t2-autacoides",t:2,p:14,q:"Doble acción de la metoclopramida según la dosis:",o:[
+ "Dosis bajas: agonista 5-HT₄ y antagonista D₂ (ZQD); dosis altas: bloquea los 5-HT₃ centrales",
+ "Dosis bajas: bloquea los 5-HT₃ centrales; dosis altas: agonista 5-HT₄ y antagonista D₂ (ZQD)",
+ "Dosis bajas: antagonista 5-HT₄ y agonista D₂ (ZQD); dosis altas: bloquea los 5-HT₃ centrales",
+ "Dosis bajas: agonista 5-HT₄ y antagonista D₂ (ZQD); dosis altas: bloquea los 5-HT₂ periféricos"],a:0,
+ cita:"Doble acción:\n1. A ↓ dosis es agonista del receptor 5-HT4 (responsable de la actividad procinética) y antagonista de receptores dopaminérgicos D2 y actúa en la ZQD, por lo que tiene poder antiemético.\n2. A ↑ dosis bloquean receptores 5-HT3 centrales (ZQD del área postrema y centro del vómito en el suelo del cuarto ventrículo). (anotación a mano: lo que nos interesa)",
+ n:"Marcado con «!» y «lo que nos interesa». El agonismo 5-HT₄ da la acción procinética; el bloqueo D₂ en la ZQD, la antiemética."},
+{doc:"t2-autacoides",t:2,p:14,q:"Reacciones adversas de la metoclopramida. Señala la opción CORRECTA:",o:[
+ "Extrapiramidales por bloqueo D₂ central; sobre todo en animales jóvenes y frecuentes en el caballo",
+ "Extrapiramidales por bloqueo D₂ central; sobre todo en animales viejos y raras en el caballo",
+ "Extrapiramidales por agonismo 5-HT₄ central; sobre todo en jóvenes y frecuentes en el caballo",
+ "Estreñimiento por bloqueo D₂ periférico; sobre todo en animales jóvenes y frecuentes en el caballo"],a:0,
+ cita:"Aparecen sobre todo en animales jóvenes. Efectos adversos relacionados con bloqueo de receptores dopaminérgicos del SNC (extrapiramidales): excitación (especialmente en perro y gato), trastornos del movimiento, somnolencia y fatiga, inquietud motora, tortícolis espasmódica y crisis oculógiras.\nEn perro y gato no es muy grave pero en caballo son frecuentes: nerviosismo, cambios de comportamiento, insomnio, temblores y dolor abdominal, que puede ser peligroso por el peso.\n•Diarrea por su acción periférica sobre motilidad intestinal.",
+ n:"Además estimula la producción de prolactina (galactorrea). Da diarrea, no estreñimiento (anotaste «cuidado con diarreas»)."},
+{doc:"t2-autacoides",t:2,p:15,q:"Ciproheptadina. Señala la opción CORRECTA:",o:[
+ "Antagonista H₁ y 5-HT₂ con efecto anticolinérgico; orexígena y útil en el asma felino",
+ "Antagonista H₁ y 5-HT₃ con efecto anticolinérgico; anorexígena y útil en el asma felino",
+ "Agonista 5-HT₁A con efecto anticolinérgico; orexígena y útil en la ansiedad felina",
+ "Antagonista H₂ y 5-HT₂ sin efecto anticolinérgico; orexígena y útil en la úlcera gástrica"],a:0,
+ cita:"1. Trastornos respiratorios en gatos (alta sensibilidad de esta especie a la 5-HT): Ciproheptadina, junto con broncodilatadores o glucocorticoides.\nCIPROHEPTADINA (5-HT2):\nPosee características anticolinérgicas, antihistamínicas (H1 ) y antiserotonínicas 5-HT2.\n- Aumenta el apetito (orexígeno) inhibiendo neuronas glucosensibles del hipotálamo ventromedial y estimulando ciertas neuronas del hipotálamo lateral. (anotaciones a mano: Antihistamínico 5 HT…; Asma gatos; ↑ apetito)",
+ n:"En el gato se da junto con broncodilatadores o glucocorticoides. Por su acción anti-H₁ también se usa como sedante y antiemético en carnívoros domésticos (p. 16)."},
+/* ---------- Antagonistas de la serotonina (pp. 16-17) ---------- */
+{doc:"t2-autacoides",t:2,p:16,q:"Ketanserina. Señala la opción CORRECTA:",o:[
+ "Bloquea 5-HT₂, H₁ y α₁: vasodilatación, hipotensión y actividad antiagregante plaquetaria",
+ "Bloquea 5-HT₂, H₁ y α₁: vasoconstricción, hipertensión y actividad agregante plaquetaria",
+ "Bloquea 5-HT₃, H₂ y β₁: vasodilatación, hipotensión y actividad antiagregante plaquetaria",
+ "Bloquea 5-HT₂, H₁ y α₁: vasodilatación, hipotensión y broncoconstricción por la 5-HT"],a:0,
+ cita:"Es un derivado quinazolidínico que bloquea receptores 5-HT2 , H1 y α1 . Por todo ello, produce:\n- Vasodilatación e hipotensión.\n- Tiene actividad antiagregante plaquetaria (bloqueo 5-HT2 )\n- Inhibe la broncoconstricción debida a la acción 5-HT. (anotación a mano: efecto mixto)",
+ n:"Se usa en la hipertensión arterial junto a otros hipotensores."},
+{doc:"t2-autacoides",t:2,p:16,q:"Alcaloides del cornezuelo del centeno (grupo de antagonistas de la serotonina). Señala la opción CORRECTA:",o:[
+ "Todos estimulan la fibra lisa; la ergometrina corta hemorragias posparto y la cabergolina induce el estro",
+ "Todos relajan la fibra lisa; la ergometrina corta hemorragias posparto y la cabergolina induce el estro",
+ "Todos estimulan la fibra lisa; la cabergolina corta hemorragias posparto y la ergometrina induce el estro",
+ "Todos estimulan la fibra lisa; la bromocriptina corta hemorragias posparto y la cabergolina induce el estro"],a:0,
+ cita:"Todos producen estimulación de fibra lisa, algunos con relativa selectividad sobre la vascular y otros sobre la uterina.\n- Ergometrina: útil en obstetricia para evitar y cortar hemorragias postparto al estimular las fibras lisas uterinas.\n- Cabergolina: mejor inductor del estro que el anterior. Mayor efectividad y rapidez, cuanto más tarde se administre en el anestro. Anestro prolongado.",
+ n:"La bromocriptina también induce el estro en perra y gata, pero la cabergolina es mejor inductor. Por la vasoconstricción, estos alcaloides están contraindicados en enfermedades vasculares periféricas como la infosura (p. 17)."},
+{doc:"t2-autacoides",t:2,p:17,q:"Mecanismo de los antagonistas 5-HT₃ (setrones). Señala la opción CORRECTA:",o:[
+ "Bloquean el efecto emético periférico (aferentes vagales) y central (ZQD) y no son procinéticos",
+ "Bloquean solo el efecto emético central (ZQD) y son procinéticos, como la metoclopramida",
+ "Bloquean el efecto emético periférico y central y también los D₂, con efectos extrapiramidales",
+ "Bloquean solo el efecto emético periférico (aferentes vagales), por eso no actúan sobre la ZQD"],a:0,
+ cita:"Antagonizan los efectos eméticos de la serotonina tanto periférico (aferentes del nervio vago desde vísceras al SNC) como central (zona quimiorreceptora gatillo en el área postrema). No antagonizan los receptores D2 (no son procinéticos), no tienen los efectos adversos extrapiramidales de la metoclopramida.",
+ n:"Ondansetrón, granisetrón, tropisetrón y palonosetrón. Según tus apuntes también pueden usarse como ansiolíticos."},
+{doc:"t2-autacoides",t:2,p:17,q:"Setrones: indicaciones y vía de administración. Señala la opción CORRECTA:",o:[
+ "Útiles en el vómito por quimioterapia, no en la cinetosis; la vía i.v. es útil si el animal vomita",
+ "Útiles en el vómito por cinetosis, no en la quimioterapia; la vía i.v. es útil si el animal vomita",
+ "Útiles en el vómito por quimioterapia, no en la cinetosis; la vía i.v. está contraindicada",
+ "Útiles tanto en la quimioterapia como en la cinetosis; se absorben muy mal por vía oral"],a:0,
+ cita:"- Prevención y tratamiento de náusea y vómito por quimioterapia y postoperatorio. Es conveniente aplicarlos antes del comienzo de la quimioterapia o radioterapia (i.v. inmediatamente antes; oral 1-2 h antes).\n- No son eficaces en vómitos de origen cinético (causados por movimiento).\nCINÉTICA (ondansetrón): Buena absorción oral (F = 60%). En ocasiones se administra por vía i.v.. (anotación a mano: si vomitan es útil)",
+ n:"El ondansetrón se absorbe bien por vía oral (F = 60 %). Para la cinetosis se usan los antihistamínicos H₁ (p. 17)."},
+/* ---------- Eje renina-angiotensina-aldosterona (pp. 18-20) ---------- */
+{doc:"t2-autacoides",t:2,p:18,q:"Sistema renina-angiotensina. Señala la opción CORRECTA:",o:[
+ "La renina (células granulares) actúa sobre el angiotensinógeno hepático; la ECA pulmonar forma la angiotensina II",
+ "La renina (mácula densa) actúa sobre la angiotensina I hepática; la ECA renal forma la angiotensina II",
+ "La ECA (células granulares) actúa sobre el angiotensinógeno hepático; la renina pulmonar forma la angiotensina II",
+ "La renina (células granulares) actúa sobre el angiotensinógeno renal; la ECA hepática forma la angiotensina I"],a:0,
+ cita:"Las células mioepiteliales granulares contienen el precursor de la renina.\nrenina ⇒ angiotensinógeno (sintetizado en el hígado) ⇒ Angiotensina I. ⇒ enzima conversora de angiotensina (Pulmón) ⇒ Angiotensina II (anotación a mano: la que nos preocupa !)",
+ n:"La cascada es un esquema de tus apuntes. La angiotensina II es el metabolito activo."},
+{doc:"t2-autacoides",t:2,p:19,q:"Liberación de renina. Señala la opción CORRECTA:",o:[
+ "La estimulan la ↓ de la presión de perfusión renal y los nervios simpáticos; la angiotensina II la inhibe",
+ "La estimulan la ↑ de la presión de perfusión renal y los nervios simpáticos; la angiotensina II la inhibe",
+ "La estimulan la ↓ de la presión de perfusión renal y la vasopresina; los nervios simpáticos la inhiben",
+ "La estimulan la ↓ de la presión de perfusión renal y la angiotensina II; los nervios simpáticos la inhiben"],a:0,
+ cita:"La Renina se produce ante los siguientes estímulos:\n1.↓ presión perfusión renal detectada por barorreceptores\n2. Cambios volumen/composición líquido tubular que llega a mácula densa\n3. Estimulación de los nervios simpáticos\nLa propia angiotensina es capaz, por un mecanismo de retroalimentación, de inhibir la secreción de renina al actuar sobre las células yuxtaglomerulares. La vasopresina también inhibe la liberación de renina en el perro. (anotación a mano: ↑AII → cél. yuxt → ↓renina)",
+ n:"La vasopresina también inhibe la liberación de renina (en el perro)."},
+{doc:"t2-autacoides",t:2,p:19,q:"Según tus apuntes, la renina actúa como «prohormona» porque, indirectamente:",o:[
+ "Aumenta la liberación de aldosterona y la reabsorción de Na⁺ en el túbulo contorneado distal",
+ "Disminuye la liberación de aldosterona y la reabsorción de Na⁺ en el túbulo contorneado distal",
+ "Aumenta la liberación de aldosterona y la excreción de Na⁺ en el túbulo contorneado proximal",
+ "Aumenta el péptido natriurético auricular y la excreción de Na⁺ en el túbulo contorneado distal"],a:0,
+ cita:"La renina actúa como PROHORMONA→ indirectamente ↑ liberación de aldosterona → ↑ reabsorción de sodio en túbulo contorneado distal. Esto se controla por la retroalimentación del volumen de líquido extracelular y de la tasa de filtración glomerular. (anotación a mano: para reabsorber agua y no perder tanto)",
+ n:"«PROHORMONA» está recuadrado en tus apuntes."},
+{doc:"t2-autacoides",t:2,p:20,q:"Receptores de las angiotensinas según tus apuntes. Señala la opción CORRECTA:",o:[
+ "AT1B en cápsula adrenal e hipófisis; el AT3 es hipotético y en el AT4 se ha demostrado funcionalidad",
+ "AT1B en riñón, corazón y vasos; el AT3 es hipotético y en el AT4 se ha demostrado funcionalidad",
+ "AT1B en cápsula adrenal e hipófisis; el AT4 es hipotético y en el AT3 se ha demostrado funcionalidad",
+ "AT1B en tejidos fetales; el AT3 y el AT4 son hipotéticos y en ninguno se ha demostrado funcionalidad"],a:0,
+ cita:"• AT1A en riñón, corazón, pulmón, vasos, hígado, testículos, SNC y SNA\n• AT1B en cápsula adrenal e hipófisis (va a potenciar la secreción de otros autacoides). (anotación a mano: Aldosterona, ADH↑)\nReceptor AT3 y AT4 de los que se sabe poco aún. (anotación a mano: AT3 → hipotético (no existe); AT4 → si se ha demostrado funcionalidad)",
+ n:"Lo del AT3 y el AT4 sale de tus anotaciones a mano; el texto solo dice que se sabe poco aún. El AT2 está en tejidos fetales y, en el adulto, solo en riñón, glándulas adrenales, ovario y miometrio."},
+{doc:"t2-autacoides",t:2,p:20,q:"Respuestas lentas tras la activación del receptor AT₁:",o:[
+ "Crecimiento y proliferación celular y ↑ matriz extracelular: hipertrofia y remodelación",
+ "Activación de la fosfolipasa C, ↑ Ca²⁺ citoplasmático y contracción muscular inmediata",
+ "Activación de fosfatasas, apertura de canales de K⁺ e inhibición de la vía MAP-cinasa",
+ "Inhibición de la adenilciclasa y ↓ del AMPc, que actúa como segundo mensajero inhibidor"],a:0,
+ cita:"Respuestas lentas: provocan estímulo del crecimiento y proliferación celular y ↑ síntesis de proteínas de la matriz extracelular → interviene en la hipertrofia, la hiperplasia y otras formas de remodelación cardiovascular y renal. (anotación a mano: actúan en el núcleo (genes))",
+ n:"La fosfolipasa C (↑ Ca²⁺) y la inhibición de la adenilciclasa son respuestas rápidas del AT₁; la activación de fosfatasas es la vía del AT₂."},
+/* ---------- Acciones de la angiotensina II e IECA (pp. 21-22) ---------- */
+{doc:"t2-autacoides",t:2,p:21,q:"Efecto de la angiotensina II sobre el corazón según tus apuntes:",o:[
+ "Débil actividad inotrópica positiva; es más probable una bradicardia refleja a la hipertensión",
+ "Potente actividad inotrópica positiva y taquicardia directa, sin ninguna bradicardia refleja",
+ "Débil actividad inotrópica negativa; es más probable una taquicardia refleja a la hipotensión",
+ "Ningún efecto cardiaco directo; solo una taquicardia refleja por la vasodilatación periférica"],a:0,
+ cita:"2. En corazón una débil actividad inotrópica positiva, aunque es más probable una bradicardia refleja a la HPT.",
+ n:"La figura de la p. 20 habla de «aumento de la fuerza y de la frecuencia de contracción», pero el texto resaltado de la p. 21 matiza: inotropismo débil y bradicardia refleja a la hipertensión (HPT)."},
+{doc:"t2-autacoides",t:2,p:21,q:"Acciones de la angiotensina II. Señala la opción CORRECTA:",o:[
+ "Libera adrenalina (médula adrenal) y aldosterona (corteza) y estimula la secreción de vasopresina y ACTH",
+ "Libera adrenalina (médula adrenal) y aldosterona (corteza) e inhibe la secreción de vasopresina y ACTH",
+ "Libera aldosterona (médula adrenal) y adrenalina (corteza) y estimula la secreción de vasopresina y ACTH",
+ "Inhibe la adrenalina (médula adrenal) y la aldosterona (corteza) y estimula la vasopresina y la ACTH"],a:0,
+ cita:"3. Sobre glándula adrenal:\n1. estímulo de médula adrenal →liberación de adrenalina.\n2. estímulo de corteza adrenal→ síntesis y liberación de aldosterona (↑ lento PA).\n5. Sobre SNC:\n2. También estimula la secreción de vasopresina y de ACTH.",
+ n:"Sobre el SNP también estimula la secreción de adrenalina y la liberación de NA (anotaste «catecolaminas»)."},
+{doc:"t2-autacoides",t:2,p:21,q:"Fármacos que actúan sobre el eje renina-angiotensina-aldosterona. Señala la opción CORRECTA:",o:[
+ "Los IECA impiden la formación de angiotensina II y los ARA II bloquean el receptor AT₁",
+ "Los IECA bloquean el receptor AT₁ y los ARA II impiden la formación de angiotensina II",
+ "Los IECA impiden la formación de angiotensina II y los ARA II bloquean el receptor AT₂",
+ "Los IECA inhiben la liberación de renina y los ARA II impiden la formación de angiotensina I"],a:0,
+ cita:"- Inhibidores de la enzima conversora de angiotensina (iECA)\n- Antagonistas de los receptores de angiotensina II (ARA II).\n- Impiden la formación de angiotensina II: evitan sus efectos presores y la retención de Na+ y H2O. (anotación a mano: ARA II inhiben AT1)",
+ n:"Las dos primeras líneas son de la p. 19 (resaltadas en rojo); la tercera y la anotación, de la p. 21."},
+{doc:"t2-autacoides",t:2,p:21,q:"IECA. Señala la opción CORRECTA:",o:[
+ "Actúan sobre vasos de capacidad y resistencia, sin activación simpática refleja, sobre todo en riñón, corazón y cerebro",
+ "Actúan solo sobre vasos de resistencia y producen activación simpática refleja, sobre todo en riñón, corazón y cerebro",
+ "Actúan sobre vasos de capacidad y resistencia, sin activación simpática refleja, sobre todo en el hígado y el intestino",
+ "Actúan sobre vasos de capacidad y resistencia y aumentan la contractilidad cardiaca, sobre todo en riñón, corazón y cerebro"],a:0,
+ cita:"- Actúan sobre vasos de capacidad y resistencia→ reducen carga cardíaca y presión arterial.\n- No modifican la contractilidad cardíaca ni producen activación simpática refleja.\nActúan preferentemente sobre lechos vasculares sensibles a angiotensina: riñón, corazón, cerebro: son ÚTILES PARA MANTENER LA PERFUSIÓN ADECUADA DE ESTOS ÓRGANOS (p.e. insuficiencia renal, especialmente con proteinuria). (anotación a mano: mantiene perfusión adecuada de los tejidos)",
+ n:"Lo marcaste con «!» y escribiste «IECAS» en grande en esa página."},
+{doc:"t2-autacoides",t:2,p:22,q:"Farmacocinética de los IECA. Señala la opción CORRECTA:",o:[
+ "El enalapril es un profármaco que el hígado transforma en enalaprilato; se excretan sobre todo por vía renal",
+ "El enalaprilato es un profármaco que el riñón transforma en enalapril; se excretan sobre todo por vía biliar",
+ "El enalapril es un profármaco que el hígado transforma en enalaprilato; se excretan sobre todo por vía biliar",
+ "El enalapril ya es activo y tiene menor biodisponibilidad que el enalaprilato; se excretan por vía renal"],a:0,
+ cita:"Los profármacos (enalapril) tienen mayor biodisponibilidad. (anotación a mano: → benazepril tmb)\nSe biotransforman a nivel hepático, en el caso del enalapril en enalaprilato que es el metabolito activo, altamente específico y de acción prolongada. Se excretan principalmente por vía renal.",
+ n:"Anotaste que el benazepril también es un profármaco. Se dan por vía oral y los alimentos no afectan a la absorción de algunos (enalapril)."},
+{doc:"t2-autacoides",t:2,p:22,q:"Reacciones adversas de los IECA (sobre todo si se sobredosifican):",o:[
+ "Hipotensión, azotemia, tos seca por bradicinina (en humanos) e hiperpotasemia",
+ "Hipertensión, azotemia, tos seca por bradicinina (en humanos) e hiperpotasemia",
+ "Hipotensión, azotemia, tos seca por histamina (en el perro) e hiperpotasemia",
+ "Hipotensión, azotemia, tos seca por bradicinina (en humanos) e hipopotasemia"],a:0,
+ cita:"1. Hipotensión. Puede ser exagerada con las primeras dosis (dosificar aumentando la dosis poco a poco), especialmente en pacientes con dietas hiposódicas o medicados previamente con diuréticos.\n2. Azotemia\n3. Tos seca por aumento de los niveles de bradicinina (en humanos)→ ↑ niveles de bradicinina al evitar su hidrólisis →produce vasodilatación por estímulo de la síntesis de NO y prostaglandinas.\n4. Otros: mareos, vómito, somnolencia, desorientación/incoordinación, diarrea e hiperpotasemia (por una menor producción de aldosterona).",
+ n:"La hiperpotasemia se debe a la menor producción de aldosterona. Además, los AINEs disminuyen su eficacia antihipertensiva."},
+{doc:"t2-autacoides",t:2,p:22,q:"¿Por qué los IECA pueden deteriorar la función renal si hay estenosis de la arteria renal?",o:[
+ "Porque evitan la vasoconstricción de la arteriola eferente y la filtración glomerular cae o se anula",
+ "Porque contraen la arteriola aferente y la filtración glomerular cae o incluso se anula del todo",
+ "Porque evitan la vasoconstricción de la arteriola aferente y la filtración glomerular aumenta mucho",
+ "Porque producen una nefritis intersticial alérgica con proteinuria masiva y oliguria persistente"],a:0,
+ cita:"Pueden provocar un deterioro de la función renal en casos de estenosis de la arteria renal al evitar mayor vasoconstricción en la arteriola glomerular eferente → se reduce, o incluso se anula, la filtración glomerular y aumenta el nitrógeno ureico sanguíneo (BUN) o de la creatinina sérica (controlar durante el tto).",
+ n:"Por eso hay que vigilar el BUN y la creatinina: evaluar la función renal antes y a los 2-7 días de tratamiento."},
+/* ===== Tema 2 completo (t2-autacoides): págs. 23-33, IECA y ARA II, cininas, péptidos natriuréticos, NO y eicosanoides ===== */
+/* ---------- Pág. 23 · resumen manuscrito de los IECAs ---------- */
+{doc:"t2-autacoides",t:2,p:23,q:"Según tu resumen de los IECAs, son vasodilatadores, antiproliferativos y antitrombóticos porque aumentan:",o:[
+ "Las cininas, el óxido nítrico y las prostaciclinas",
+ "La angiotensina II, la aldosterona y la vasopresina",
+ "Las catecolaminas, el tromboxano A₂ y la endotelina",
+ "Los leucotrienos, la histamina y la serotonina"],a:0,
+ cita:"(anotación a mano: VASODILATADORES ANTIPROLIFERATIVOS Y ANTITROMBÓTICOS · ↑ Cininas, Óxido Nítrico y prostaciclinas)"},
+/* ---------- Pág. 24 · IECAs en la ICC y ARA II ---------- */
+{doc:"t2-autacoides",t:2,p:24,q:"Usos de los IECA que resaltaste en tus apuntes. Señala la CORRECTA:",o:[
+ "Disfunción ventricular, tras un infarto, nefropatía diabética e insuficiencia renal progresiva",
+ "Disfunción ventricular, tras un infarto, nefropatía diabética y estenosis de la arteria renal",
+ "Hipotensión arterial, tras un infarto, nefropatía diabética e insuficiencia renal progresiva",
+ "Disfunción ventricular, shock hipovolémico, nefropatía diabética e insuficiencia renal progresiva"],a:0,
+ cita:"- DISFUNCIÓN VENTRICULAR, aunque no curse con IC grave. Actividad beneficiosa ya que produce vasodilatación, disminución del tono simpático y menor retención de Na+ y H2O. Todo ello mejora la hemodinámica.\n- TRAS INFARTO Y EN PACIENTES CON ALTO RIESGO DE CARDIOPATÍA ISQUÉMICA (en la especie humana).\n- NEFROPATÍA DIABÉTICA\n- INSUFICIENCIA RENAL PROGRESIVA/NEFROPATÍA CRÓNICA PROGRESIVA",
+ n:"En tu resumen manuscrito (pág. 23) la estenosis de la arteria renal va con «!» como precaución (↑ NU y creatinina), no como uso; y la hipotensión es una reacción adversa."},
+{doc:"t2-autacoides",t:2,p:24,q:"IECAs en la insuficiencia cardíaca congestiva (ICC). Señala la CORRECTA:",o:[
+ "Se empieza con dosis bajas y se sube según los síntomas; pueden asociarse a furosemida o digoxina",
+ "Se empieza con la dosis máxima y se baja según los síntomas; pueden asociarse a furosemida o digoxina",
+ "Se empieza con dosis bajas y se sube según los síntomas; nunca se asocian a diuréticos ni digitálicos",
+ "Se empieza con la dosis máxima y se baja según los síntomas; nunca se asocian a diuréticos ni digitálicos"],a:0,
+ cita:"- En ICC, asociados a diuréticos (furosemida) o cardiotónicos (digoxina en caballo, gato y perro, digitoxina en perro).\nPUEDEN ASOCIARSE A DIGITÁLICOS Y FUROSEMIDA. MEDICAMENTOS VETERINARIOS: ENACARD® (ENALAPRIL); PERRO. FORTEKOR (BENAZEPRIL) (anotación a mano: Se empieza con dosis bajas y se van subiendo hasta la óptima viendo síntomas.)",
+ n:"IECA veterinarios de tus apuntes: Enacard® (enalapril) y Fortekor® (benazepril, perro)."},
+{doc:"t2-autacoides",t:2,p:24,q:"Antagonistas de los receptores de la angiotensina II (ARA II). Señala la CORRECTA:",o:[
+ "La saralasina es agonista parcial y parenteral; los sartanes, antagonistas puros del AT1 por vía oral",
+ "La saralasina es antagonista pura y oral; los sartanes, agonistas parciales del AT1 por vía parenteral",
+ "La saralasina es agonista parcial y parenteral; los sartanes, antagonistas puros del AT2 por vía oral",
+ "Ambos son antagonistas puros del AT1 por vía oral y su uso en veterinaria ya está consolidado"],a:0,
+ cita:"La saralasina es un péptido análogo a la angiotensina II con actividad agonista parcial. No se utiliza ya que requiere administración parenteral.\nLos “sartanes” son antagonistas puros del receptor AT1 que se pueden administrar por vía oral. SU USO EN VETERINARIA ESTÁ EN ESTUDIO Y NO ESTÁ CONSOLIDADO. (anotación a mano: ARA II inhiben AT1)"},
+{doc:"t2-autacoides",t:2,p:24,q:"Sartanes frente a IECA según tus apuntes. Señala la CORRECTA:",o:[
+ "No favorecen la formación de bradicinina (sin tos seca) y eliminan mejor la proteinuria renal",
+ "Aumentan la bradicinina, con lo que suman su vasodilatación, y eliminan mejor la proteinuria renal",
+ "No favorecen la formación de bradicinina (sin tos seca), pero empeoran la proteinuria renal",
+ "Aumentan la bradicinina, con lo que suman su vasodilatación, pero empeoran la proteinuria renal"],a:0,
+ cita:"NO FAVORECEN LA FORMACIÓN DE BRADICININA, pueden sustituir a los IECA cuando existan RRAA relacionadas con dicha cinina (tos seca en el hombre, sobre todo en paciente hipertensos que toleran mal los golpes de tos). Un inconveniente es que se pierde el efecto vasodilatador de la misma.\nSe utiliza en el diagnóstico de la hipertensión renina dependiente y en pacientes con hipertensión que no toleran los IECA debido a la tos seca. (anotación a mano: Los sartanes funcionan mejor que los IECAS para eliminar la proteinuria en orina en animales con Inf. Renal)",
+ n:"Inconveniente: al no aumentar la bradicinina se pierde su efecto vasodilatador."},
+/* ---------- Pág. 25 · bradicinina, atriopeptinas y sustancia P ---------- */
+{doc:"t2-autacoides",t:2,p:25,q:"Según tus apuntes, la calidina y la bradicinina son importantes en:",o:[
+ "Coagulación, fibrinólisis y complemento, ↑ permeabilidad capilar, vasodilatación y dolor",
+ "Coagulación, fibrinólisis y complemento, ↓ permeabilidad capilar, vasoconstricción y analgesia",
+ "Agregación plaquetaria, ↓ permeabilidad capilar, broncodilatación, sedación y analgesia",
+ "Coagulación, fibrinólisis y complemento, ↑ permeabilidad capilar, vasoconstricción y dolor"],a:0,
+ cita:"Es una cinina plasmática con un potente efecto vasodilatador.\nEs uno de los mediadores fisiológicos liberados por el mastocito en la anafilaxia. La calidina y la bradicinina son importantes en:\n- Coagulación sanguínea\n- Fibrinólisis y actividad del complemento\n- ↑ permeabilidad capilar\n- Vasodilatación, edema, dolor y contracciones repetidas en músculo liso"},
+{doc:"t2-autacoides",t:2,p:25,q:"Factor natriurético auricular (FNA). Señala la CORRECTA:",o:[
+ "Se libera al distenderse la aurícula derecha y, como no hace perder K⁺, sirve si hay hipopotasemia",
+ "Se libera al distenderse el ventrículo izquierdo y, como no hace perder K⁺, sirve si hay hipopotasemia",
+ "Se libera al distenderse la aurícula derecha, pero como hace perder K⁺ se evita si hay hipopotasemia",
+ "Se libera cuando hay hipovolemia y, como hace perder K⁺, se evita si hay hipopotasemia"],a:0,
+ cita:"•se libera principalmente cuando se distiende la aurícula derecha por sobrecarga de volumen.\nPotentes diuréticos, natriuréticos y vasodilatadores, e inhibidores de la secreción de aldosterona.\nActúan principalmente sobre el glomérulo y podría ser útil en situaciones donde los diuréticos no son efectivos crónicamente, como en la injuria renal isquémica.\nEstas hormonas no producen pérdida de potasio como ocurre con los diuréticos convencionales. (anotación a mano: Como en caso de que haya hipopotasemia)"},
+{doc:"t2-autacoides",t:2,p:25,q:"Sustancia P. Señala la CORRECTA:",o:[
+ "Hipotensora potente no bloqueada por la atropina; estimula la motilidad intestinal y transmite el dolor",
+ "Hipotensora potente bloqueada por la atropina; estimula la motilidad intestinal y transmite el dolor",
+ "Hipotensora potente no bloqueada por la atropina; relaja el músculo liso intestinal y es analgésica",
+ "Hipertensora potente no bloqueada por la atropina; estimula la motilidad intestinal y transmite el dolor"],a:0,
+ cita:"- Presenta propiedades hipotensoras potentes no bloqueada por atropina.\n- Provoca: estimulación del músculo liso intestinal, estimulación de la secreción salival, diuresis y otras acciones centrales. (anotación a mano: ↳ movimiento gástrico)\nEs abundante en neuronas aferentes sensitivas primarias no mielinizadas y se asocia con la transmisión del dolor. (anotación a mano: ↓ dolor !)",
+ n:"En tus apuntes, «no bloqueada por atropina» se dice de la sustancia P, no de la bradicinina."},
+/* ---------- Págs. 26-27 · óxido nítrico ---------- */
+{doc:"t2-autacoides",t:2,p:26,q:"Formas de la óxido nítrico sintasa (NOS). Señala la CORRECTA:",o:[
+ "La endotelial y la neuronal son constitutivas y dependen del calcio; la inducible (iNOS), no",
+ "La endotelial y la neuronal son constitutivas e independientes del calcio; la inducible sí depende",
+ "La endotelial y la inducible son constitutivas y dependen del calcio; la neuronal, no",
+ "Las tres son inducibles y dependen del calcio; solo sintetizan NO cuando hay inflamación"],a:0,
+ cita:"Existen tres formas de NOS:\n1. Dos denominadas constitutivas y dependientes de calcio (cNOS): endotelial y neuronal, sintetizan NO en condiciones normales\n2. Una inducible e independiente del calcio (iNOS), que no se expresa o lo hace muy débilmente en condiciones fisiológicas."},
+{doc:"t2-autacoides",t:2,p:27,q:"Función del NO marcada «imp»: en la defensa cerebral frente a infecciones, la microglía expresa grandes cantidades de:",o:[
+ "La isoforma inducible de la NO sintasa (iNOS)",
+ "La isoforma endotelial de la NO sintasa (cNOS)",
+ "La isoforma neuronal de la NO sintasa (cNOS)",
+ "La ciclooxigenasa inducible del foco (COX-2)"],a:0,
+ cita:"4. Participación en mecanismos de defensa cerebral ante infecciones mediante la microglía, que en estas situaciones expresa grandes cantidades de la isoforma iNOS (inducible) (anotación a mano: imp)"},
+/* ---------- Pág. 28 · COX-1 ---------- */
+{doc:"t2-autacoides",t:2,p:28,q:"Junto a la COX-1 anotaste «Riesgo úlceras si tomas AINEs (pastillas)». ¿Qué lo explica según tus apuntes?",o:[
+ "La COX-1 es constitutiva y sintetiza, entre otras, la PGE₂ del estómago",
+ "La COX-2 es constitutiva y sintetiza, entre otras, la PGE₂ del estómago",
+ "La COX-1 es inducible y solo sintetiza el TXA₂ de plaquetas y macrófagos",
+ "La COX-1 es inducible y sintetiza los leucotrienos de la mucosa gástrica"],a:0,
+ cita:"La COX-1 es la enzima constitutiva que interviene en la síntesis de:\n-TXA2 en plaquetas y macrófagos\n-PGI2 en plaquetas y célula endotelial\n-PGE2 en útero, ovario, osteoclastos, riñón y estómago entre otros tejidos. (anotación a mano: → Riesgo úlceras si tomas Aines Pastillas)"},
+/* ---------- Pág. 29 · metabolismo y leucotrienos ---------- */
+{doc:"t2-autacoides",t:2,p:29,q:"Metabolismo de las prostaglandinas (anotaste «muy baja» y «+ imp»). Señala la CORRECTA:",o:[
+ "Vida media inferior a 8 minutos; lo que pasa a la sangre se biotransforma en hígado y pulmón",
+ "Vida media de unas 8 horas; lo que pasa a la sangre se biotransforma en hígado y pulmón",
+ "Vida media inferior a 8 minutos; lo que pasa a la sangre se elimina sin cambios por el riñón",
+ "Vida media de unas 8 horas; lo que pasa a la sangre se elimina sin cambios por el riñón"],a:0,
+ cita:"- El tiempo de vida media de PGs es inferior a 8 minutos por lo que actúan en el lugar de su síntesis. (anotación a mano: muy baja)\n- El resto: rápida biotransformación en numerosos tejidos como pulmón, hígado, riñón, bazo, tejido adiposo, intestino, etc. (anotación a mano: + imp, con una flecha hasta «nivel hepático y pulmonar»)\nLa biotransformación ocurre parcialmente en el tejido donde se sintetizan y la parte que pasa a circulación sistémica se biotransforma a nivel hepático y pulmonar."},
+{doc:"t2-autacoides",t:2,p:29,q:"Leucotrienos (lo marcaste con «!»). Señala la CORRECTA:",o:[
+ "La 5-LOX de las células inflamatorias forma LTC₄ y LTD₄, broncoconstrictores 1.000 veces más potentes que la histamina",
+ "La 5-LOX de las células inflamatorias forma LTA₄ y LTB₄, broncoconstrictores 1.000 veces más potentes que la histamina",
+ "La 5-LOX de las plaquetas forma LTC₄ y LTD₄, broncodilatadores 1.000 veces más potentes que la histamina",
+ "La COX-2 de las células inflamatorias forma LTC₄ y LTD₄, broncoconstrictores 10 veces menos potentes que la histamina"],a:0,
+ cita:"La 5-Lipooxigenasa está presente en las células inflamatorias (PMN, mastocitos, basófilos, macrófagos y eosinófilos) y está involucrada en la fisiopatología del asma y el shock anafiláctico\nLos leucotrienos C4, D4 y E4 poseen un radical cisteína y, por ello, se denominan conjuntamente: cisteinil-leucotrienos (CysLT). Los LTC4 y LTD4 son potentes broncoconstrictores hoy se reconocen como componentes 1º de: sustancia de reacción lenta en la anafilaxia (SRS-A,) un broncoconstrictor 1,000 más potente que la histamina. Tiene interés clínico  contrarrestar sus acciones.",
+ n:"La SRS-A la forman los cisteinil-leucotrienos (C₄, D₄ y E₄), los que llevan un radical cisteína."},
+/* ---------- Pág. 30 · efectos de los prostanoides ---------- */
+{doc:"t2-autacoides",t:2,p:30,q:"Tabla de efectos de los prostanoides: ¿qué hacen la PGE₂ y la PGI₂ (las celdas que rodeaste y tu nota sobre los bronquios)?",o:[
+ "Relajan los bronquios; bajan la PA con taquicardia y aumentan el flujo renal y la natriuresis",
+ "Contraen los bronquios; bajan la PA con taquicardia y aumentan el flujo renal y la natriuresis",
+ "Relajan los bronquios; suben la PA con bradicardia y aumentan el flujo renal y la natriuresis",
+ "Relajan los bronquios; bajan la PA con taquicardia y reducen el flujo renal y la diuresis"],a:0,
+ cita:"Músculo liso · Bronquial: PGE2 Relaja · PGF2α Contrae · PGI2 Relaja · TXA2 Contrae (anotación a mano: Broncoconstricción vs Broncodilatación)\nSistemas · Cardiovasc.: PGE2 Vasodilatador, ↓ PA, Taquicardia, ↑ Gasto cardiaco · PGI2 Vasodilatador, ↓↓ PA, Taquicardia (celdas rodeadas a mano)\nRenal: PGE2 ↑ Flujo sanguíneo, Diuresis, natriuresis, ↑ Secreción renina · PGI2 ↑ Flujo sanguíneo, ↑ Diuresis, natriuresis, ↑ Secreción renina (celdas rodeadas a mano)",
+ n:"La PGF₂α y el TXA₂, en cambio, contraen el bronquio."},
+{doc:"t2-autacoides",t:2,p:30,q:"PGF₂α según tus apuntes. Señala la CORRECTA:",o:[
+ "Es luteolítica (aborto en gestación temprana) y en el semen ↑ la motilidad uterina",
+ "Mantiene el cuerpo lúteo (protege la gestación) y en el semen ↑ la motilidad uterina",
+ "Es luteolítica (aborto en gestación temprana) y en el semen ↓ la motilidad uterina",
+ "Mantiene el cuerpo lúteo (protege la gestación) y en el semen ↓ la motilidad uterina"],a:0,
+ cita:"1. PGF2α :\n- Luteolisis → gestación →regresión del cuerpo lúteo→ aborto en gestación temprana.\n- Efecto oxitócico: en semen → ↑ motilidad uterina para favorecer progresión del esperma."},
+{doc:"t2-autacoides",t:2,p:30,q:"PGE₂ según tus apuntes. Señala la CORRECTA:",o:[
+ "Inhibe la secreción de ácido gástrico y, si se libera en el cerebro, produce fiebre",
+ "Estimula la secreción de ácido gástrico y, si se libera en el cerebro, produce fiebre",
+ "Inhibe la secreción de ácido gástrico y, si se libera en el cerebro, es antipirética",
+ "Estimula la secreción de ácido gástrico y, si se libera en el cerebro, es antipirética"],a:0,
+ cita:"- Inhibición de la secreción de ácido gástrico, aumento de la secreción de moco gástrico.\n- Es mediadora de la fiebre. (anotación a mano: → si se libera en cerebro produce fiebre)"},
+{doc:"t2-autacoides",t:2,p:30,q:"Efectos inflamatorios de las prostaglandinas (sobre todo PGE y PGF). Señala la CORRECTA:",o:[
+ "Vasodilatación sostenida, ↑ permeabilidad e hiperalgesia; potencian la bradicinina y la histamina",
+ "Vasoconstricción sostenida, ↑ permeabilidad e hiperalgesia; potencian la bradicinina y la histamina",
+ "Vasodilatación sostenida, ↑ permeabilidad y analgesia; antagonizan la bradicinina y la histamina",
+ "Vasodilatación sostenida, ↓ permeabilidad e hiperalgesia; potencian la adrenalina y la angiotensina"],a:0,
+ cita:"Efectos inflamatorios (fundamentalmente PGE y PGF):\n- Vasodilatación sostenida.\n- Contrarresta la acción de adrenalina y angiotensina.\n- Aumenta la permeabilidad vascular.\n- Potencian otros autacoides (bradicinina e histamina).\n- Hiperalgia.\n- Combinadas con histamina producen prurito.\n- Intermediarios en la fiebre",
+ n:"La bradicinina estimula la secreción de prostaglandinas (pág. 28) y estas potencian su dolor: por eso la aspirina reduce el dolor por bradicinina."},
+/* ---------- Pág. 31 · PGD2, PGI2, TXA2, leucotrienos e indicaciones ---------- */
+{doc:"t2-autacoides",t:2,p:31,q:"Prostanoides y agregación plaquetaria (junto al TXA₂ anotaste «asma»). Señala la CORRECTA:",o:[
+ "El TXA₂ es vasoconstrictor e induce la agregación; la PGD₂ y la PGI₂ la inhiben",
+ "El TXA₂ es vasodilatador e inhibe la agregación; la PGD₂ y la PGI₂ la inducen",
+ "El TXA₂ es vasoconstrictor e induce la agregación; la PGD₂ y la PGI₂ también la inducen",
+ "El TXA₂ es vasodilatador e induce la agregación; la PGD₂ y la PGI₂ la inhiben"],a:0,
+ cita:"3. PGD2 : Vasodilatación e inhibición de la agregación plaquetaria (liberado especialmente por mastocitos).\n4. Efectos de PGI2 : Vasodilatador potente, inhibe la agregación plaquetaria, interviene en el dolor, en la migración plaquetaria y en ↑ permeabilidad vascular.\n5. Efectos TXA2: vasoconstrictor e inductor de la agregación plaquetaria. (anotación a mano: ← ASMA)"},
+{doc:"t2-autacoides",t:2,p:31,q:"Efectos de los leucotrienos según tus apuntes. Señala la CORRECTA:",o:[
+ "Son quimiotácticos de neutrófilos y eosinófilos; el LTC₄ dilata casi todos los vasos salvo los coronarios",
+ "Son quimiotácticos de linfocitos y plaquetas; el LTC₄ dilata casi todos los vasos salvo los coronarios",
+ "Son quimiotácticos de neutrófilos y eosinófilos; el LTC₄ contrae casi todos los vasos salvo los coronarios",
+ "Son quimiotácticos de linfocitos y plaquetas; el LTC₄ contrae casi todos los vasos salvo los coronarios"],a:0,
+ cita:"6. En general todos los leucotrienos:\n•Efecto quimiotáctico potente sobre neutrófilos y eosinófilos.\n•Mediadores de la inflamación (sobre todo LTB4 ).\nLos Cis-LT: •Broncoconstricción (importantes en asma),\n•vasodilatación (LTC4 →vasodilatación en la mayoría de tejidos, pero vasoconstricción coronaria)\n•aumento de permeabilidad.",
+ n:"Coincide con la clave de clase de «Los leucotrienos NO ocasionan…»: sí dan vasodilatación, ↑ permeabilidad y quimiotaxis de neutrófilos; los linfocitos no aparecen."},
+{doc:"t2-autacoides",t:2,p:31,q:"Cloprostenol (análogo de PGF₂α) en veterinaria. ¿Qué indicaciones recogen tus apuntes?",o:[
+ "Inducción del parto en cerda y vaca, sincronización del celo y cuerpo lúteo persistente en la cerda",
+ "Inducción del parto en yegua y perra, sincronización del celo y cuerpo lúteo persistente en la cerda",
+ "Inducción del parto en cerda y vaca, mantenimiento de la gestación y cuerpo lúteo persistente",
+ "Inducción del parto en cerda y vaca, sincronización del celo y retraso de la involución uterina"],a:0,
+ cita:"GINECOLÓGICAS/OBSTÉTRICAS: CLOPROSTENOL (análogo de PGF2α )\n1. Inducción al parto (cerda y vaca)\n2. Para provocar aborto/expulsión fetos muertos/abortos incompletos (vaca, cerda y yegua)\n3. Sincronización del celo/salida en celo (vaca, oveja, cabra, cerda y yegua)\n4. Uso en el postparto temprano para mejorar la eficiencia reproductiva: Provocan una aceleración de la involución uterina.\n5. En patología ovárica:\na. CERDA:\ni. Degeneración ovárica quística: a partir del día 12 del ciclo.\nii. Cuerpo lúteo persistente-pseudogestación"},
+/* ---------- Pág. 32 · cloprostenol, latanoprost y contraindicaciones ---------- */
+{doc:"t2-autacoides",t:2,p:32,q:"Cloprostenol: mecanismo y uso en el verraco. Señala la CORRECTA:",o:[
+ "↓ receptores de LH del ovario → regresión del cuerpo lúteo y ↓ progesterona; en el verraco ↑ la producción seminal",
+ "↑ receptores de LH del ovario → persistencia del cuerpo lúteo y ↑ progesterona; en el verraco ↑ la producción seminal",
+ "↓ receptores de LH del ovario → regresión del cuerpo lúteo y ↓ progesterona; en el verraco ↓ la producción seminal",
+ "↑ receptores de LH del ovario → persistencia del cuerpo lúteo y ↑ progesterona; en el verraco ↓ la libido"],a:0,
+ cita:"7. En el verraco:\na. Tratamiento de la libido reducida\nb. Incremento de la producción seminal\nCLOPROSTENOL:\nInduce una caída en el número de receptores de hormona luteinizante (LH) en el ovario, lo que conduce a una rápida regresión del cuerpo lúteo y un descenso en los niveles de progesterona. En la adenohipófisis aumentan los niveles de hormona estimulante del folículo (FSH). Esto permite la maduración de un nuevo folículo, aparición del estro y la ovulación."},
+{doc:"t2-autacoides",t:2,p:32,q:"Contraindicaciones de los eicosanoides (junto a «alteraciones gastrointestinales» anotaste «Rotura!»). Señala la CORRECTA:",o:[
+ "No en preñadas (salvo para abortar), ni con alteraciones digestivas, ni por vía intravenosa",
+ "Sí en preñadas y con alteraciones digestivas, pero nunca por vía intravenosa",
+ "No en preñadas (salvo para abortar); la vía intravenosa es la de elección por su rapidez",
+ "No con alteraciones digestivas; en équidos de abasto se pueden usar sin ninguna restricción"],a:0,
+ cita:"No utilizar en animales preñados donde el aborto no está indicado, o animales con alteraciones gastrointestinales o del aparato respiratorio. No administrar por vía intravenosa (se alcanzarían dosis demasiado elevadas). No aplicar en ganado equino destinado al consumo humano. (anotación a mano: Rotura !, con una flecha hacia «alteraciones gastrointestinales»)",
+ n:"Advertencia para quien lo manipula: mujeres, niños y asmáticos, con extrema precaución (aborto o broncoconstricción aguda); se absorbe por la piel."},
+{doc:"t2-autacoides",t:2,p:32,q:"Latanoprost en el perro según tus apuntes:",o:[
+ "Reduce la PIO en el glaucoma agudo y es de los primeros fármacos a utilizar",
+ "Aumenta la PIO, por lo que está contraindicado en el glaucoma agudo canino",
+ "Reduce la PIO, pero se reserva para cuando fallan todos los demás fármacos",
+ "Previene las úlceras gástricas en perros que reciben AINEs de forma crónica"],a:0,
+ cita:"Para ↓ presión intraocular en perros con glaucoma agudo se utiliza latanoprost, ha demostrado ser, junto con otras PG las sustancias hipotensoras más eficaces en el perro, lográndose marcadas reducciones de la PIO. La experiencia clínica indica que es uno de los primeros fármacos a utilizar en glaucoma agudo."},
+/* ---------- Pág. 33 · acciones contra los eicosanoides y antileucotrienos ---------- */
+{doc:"t2-autacoides",t:2,p:33,q:"Antileucotrienos (zafirlukast, montelukast, pranlukast), marcado «imp». Señala la CORRECTA:",o:[
+ "Son profilácticos: se dan si sabemos que tiene asma (gatos), pero en pleno brote sirven poco",
+ "Son de rescate: muy eficaces en pleno brote asmático, pero no sirven como tratamiento preventivo",
+ "Son profilácticos, pero solo por vía inhalada o intravenosa, porque no se absorben por vía oral",
+ "Inhiben la COX y la síntesis de leucotrienos; son de elección en la crisis asmática grave"],a:0,
+ cita:"Nueva familia terapéutica que ofrece la ventaja de su administración oral: ZAFIRLUKAST y MONTELUKAST, PRANLUKAST.\nFármacos antiinflamatorios a través de un antagonismo eficaz con los receptores de los Leucotrienos (mediadores del proceso inflamatorio en el asma).\nEstán indicados en el tratamiento de mantenimiento en casos de asma persistente leve y persistente moderada, profiláctico. (anotación a mano: imp · Profilácticos en casos que sepamos que tiene algo (ASMA GATOS) → Previene. Si ya tiene el brote no sirve mucho)"},
+{doc:"t2-autacoides",t:2,p:33,q:"Acciones contra los eicosanoides. Relaciona cada fármaco con su diana:",o:[
+ "Glucocorticoides: fosfolipasa A₂; dazoxiben: TX sintetasa; daltroban: receptor del TXA₂",
+ "Glucocorticoides: COX-2; dazoxiben: receptor del TXA₂; daltroban: fosfolipasa A₂",
+ "Glucocorticoides: fosfolipasa A₂; dazoxiben: receptor del TXA₂; daltroban: TX sintetasa",
+ "Glucocorticoides: TX sintetasa; dazoxiben: fosfolipasa A₂; daltroban: receptor del TXA₂"],a:0,
+ cita:"•Inhibidores de la síntesis de eicosanoides: glucocorticoides (AIE)→ inhiben las fosfolipasa A2 (1).\n·Inhibidores de la síntesis de PGs y TXs:\n• AINE (COX) (2).\n• Derivados imidaxólicos (dazoxiben) indólicos y oxipiridazininas (inhibe TX sintetasa)(3).\n•Antagonistas de receptores de eicosanoides:\n• Daltroban (inhibe receptor TXA2)(4).\n• Antileucotrienos (inhiben receptores de leucotrienos)(5)."},
+/* ===== Tema 4 completo (t4-esteroideos): págs. 1-10, ACTH y glucocorticoides ===== */
+/* ---------- p. 1 · ACTH: estructura ---------- */
+{doc:"t4-esteroideos",t:4,p:1,q:"Según tus apuntes, el tetracosáctido es:",o:[
+ "El fragmento 1-24 de la ACTH, que tiene la actividad biológica y no produce reacciones alérgicas",
+ "El fragmento 25-33 de la ACTH, que da la especificidad de especie y no produce reacciones alérgicas",
+ "La proopiomelanocortina, el precursor que libera la ACTH y la β-lipotropina sin dar alergias",
+ "Un análogo sintético de la CRH que estimula la adenohipófisis y produce a menudo reacciones alérgicas"],a:0,
+ cita:"39 aa: 1-24 actividad biológica → tetracosáctido\n25-33 confieren especificidad especie. (anotación a mano: junto a tetracosáctido «→ no produce reacciones alérgicas»; junto a 25-33 «→ puede dar alergia»)",
+ n:"Por eso, en las RRAA de la ACTH: «Reacciones alérgicas, menos frecuentes si se administra tetracosáctido»."},
+
+/* ---------- p. 2 · ACTH: farmacocinética, usos y dosis ---------- */
+{doc:"t4-esteroideos",t:4,p:2,q:"Farmacocinética de la ACTH según tus apuntes:",o:[
+ "Solo parenteral (sobre todo IV) por ser un péptido; la degradan proteasas plasmáticas, hepáticas y renales",
+ "Buena absorción oral por ser muy liposoluble; la metabolizan sobre todo las enzimas microsomales del hígado",
+ "Solo vía parenteral (sobre todo SC); no se metaboliza y se elimina intacta por la bilis en unas pocas horas",
+ "Vía oral o IV indistintamente; la inactivan las proteasas digestivas y se elimina sobre todo por las heces"],a:0,
+ cita:"Administración: sólo por vía parenteral por su estructura peptídica.\nIV, sobre todo.\nIM y SC: sufren biotransformación por enzimas tisulares en el punto de inoculación pero accede en cantidad suficiente.\nMetabolismo por proteasas plasmáticas, hepáticas y renales. t½ ≅ 20 min.",
+ n:"Eliminación renal (escasa por la «recuperación» de aminoácidos). Hay preparaciones depot (12-24 h)."},
+
+{doc:"t4-esteroideos",t:4,p:2,q:"Usos y dosificación de la ACTH. Señala la opción CORRECTA según tus apuntes:",o:[
+ "Sirve para diferenciar la insuficiencia adrenal 1ª de la 2ª, y su uso prolongado exige suplementar K⁺ a diario",
+ "Sirve para diferenciar la insuficiencia adrenal 1ª de la 2ª, y su uso prolongado exige suplementar Na⁺ a diario",
+ "Duplica el cortisol plasmático en la neoplasia adrenocortical 1ª, y su uso prolongado exige suplementar K⁺",
+ "Su uso principal es la cetosis bovina, y a dosis excesivas produce atrofia de la corteza adrenal"],a:0,
+ cita:"Diagnóstico diferencial de hiperplasia adrenocortical 2ª y neoplasia adrenocortical 1ª: la aplicación de ACTH, en el primer caso, da lugar a que se dupliquen los niveles de cortisol plasmático; en la neoplasia este incremento es menos acusado.\nDiagnóstico diferencial de insuficiencia adrenal 1ª y 2ª.\nCetosis bovina: poco frecuente. RRAA\nDosis excesivas: hipertrofia adrenocortical.\nDOSIS DE LA ACTH: Su uso prolongado debe acompañarse del suplemento diario de K+. (anotación a mano: Suplementar con potasio)",
+ n:"El cortisol se duplica en la hiperplasia adrenocortical 2ª, no en la neoplasia 1ª. La cetosis bovina es un uso poco frecuente."},
+
+/* ---------- p. 3 · Síntesis de glucocorticoides ---------- */
+{doc:"t4-esteroideos",t:4,p:3,q:"Síntesis de glucocorticoides en la corteza adrenal, según tus apuntes:",o:[
+ "Se forman en la zona fasciculada a partir del colesterol de las LDL, sin reserva de hormona preformada",
+ "Se forman en la zona glomerular a partir del colesterol de las LDL y se almacenan en gránulos secretores",
+ "Se forman en la zona fasciculada a partir de la tirosina y se almacenan unidos a la transcortina",
+ "Se forman en la médula adrenal a partir del colesterol y se guardan como hormona ya preformada"],a:0,
+ cita:"SÍNTESIS DE GLUCOCORTICOIDES: Sintetizados en zona fasciculada de corteza adrenal (Cortisol o hidrocortisona, Corticosterona)\nPrecursor es colesterol → LDL interactúan con receptores específicos de membrana de células adrenales, el complejo es internado por endocitosis y sufre hidrólisis liberando colesterol\nCorteza no contiene reserva de hormonas preformadas (anotación a mano: → sólo sintetiza cuando se active por ACTH)",
+ n:"Por especies: cerdo, perro, hombre y primates → cortisol > corticosterona; roedores y conejo → corticosterona > cortisol; rumiantes → cantidades similares."},
+
+/* ---------- p. 4 · Estructura y clasificación ---------- */
+{doc:"t4-esteroideos",t:4,p:4,q:"Modificaciones estructurales de los corticoides. Señala la CORRECTA según tus apuntes:",o:[
+ "El doble enlace C1-C2 (prednisolona) baja la acción mineralocorticoide; un OH o metilo en C16 la minimiza",
+ "El doble enlace C1-C2 (prednisolona) sube la acción mineralocorticoide; un OH o metilo en C16 la minimiza",
+ "El doble enlace C1-C2 (prednisolona) baja la acción mineralocorticoide; un OH o metilo en C16 la anula del todo",
+ "El flúor en C9 (2ª generación) baja la acción mineralocorticoide; un OH o metilo en C16 la aumenta"],a:0,
+ cita:"Corticoides de 1ª generación: se ha introducido un doble enlace entre C1 y C2. Tienen menor actividad mineralocorticoide y más actividad glucocorticoide. Se incluyen aquí la prednisona y prednisolona.\nCorticoides de 2ª generación: derivados halogenados, se introduce un átomo de flúor en el C9 . Incremento de su actividad gluco y mineralocorticoide.\n*Se suprime la actividad mineralocorticoide si se introduce en C16 un grupo OH en posición α (triamcinolona). un metilo en posición α (dexametasona) o ß (betametasona). (anotación a mano: «suprime» tachado y corregido por «minimiza»; al margen: «se pueden regular añadiendo y tal… pero siempre queda algo!»)",
+ n:"Ojo a tu corrección: en triamcinolona, dexametasona y betametasona la acción mineralocorticoide se minimiza, pero no desaparece del todo."},
+
+{doc:"t4-esteroideos",t:4,p:4,q:"Corticoides de 3ª generación (deflazacort, budesonida). Según tus apuntes:",o:[
+ "Son menos antiinflamatorios que la prednisona, carecen de acción mineralocorticoide y afectan menos al hueso",
+ "Son más antiinflamatorios que la prednisona, carecen de acción mineralocorticoide y afectan menos al hueso",
+ "Son menos antiinflamatorios que la prednisona, conservan acción mineralocorticoide y afectan menos al hueso",
+ "Son más antiinflamatorios que la prednisona, conservan acción mineralocorticoide y afectan mucho más al hueso"],a:0,
+ cita:"Se ha introducido un anillo de condensación en C16-C17 (deflazacort, budesonida).\nMenor potencia antiinflamatoria que la prednisona.\nCarecen de actividad mineralocorticoide .\nMenos actividad glucocorticoide (metabolismo de glúcidos y del Ca2+). (anotación a mano: mejor en niños, no afecta tanto a huesos)"},
+
+/* ---------- p. 5 · Mecanismo: efectos genómicos ---------- */
+{doc:"t4-esteroideos",t:4,p:5,q:"Efectos genómicos y no genómicos de los glucocorticoides. Señala la CORRECTA:",o:[
+ "Genómicos: por receptores nucleares y lentos (horas); no genómicos: por receptores de membrana y rápidos",
+ "Genómicos: por receptores de membrana y rápidos (segundos); no genómicos: por receptores nucleares y lentos",
+ "Genómicos: por receptores nucleares y rápidos (segundos); no genómicos: por receptores de membrana y lentos",
+ "Genómicos y no genómicos van por receptores nucleares y tardan horas; solo cambia el gen que activan"],a:0,
+ cita:"Los receptores esteroides (GR, miembros de una superfamilia de proteínas estructuralmente relacionadas entre sí), son receptores nucleares que regulan la transcripción genética. … → Efectos genómicos lentos (requieren horas para iniciarse) (con signos de exclamación a mano a ambos lados)\nEsquema: «Efectos no genómicos ←—— rápidos» (anotación a mano: rápidos, señalando los receptores de membrana)",
+ n:"P. 6: los efectos rápidos no genómicos se deben a receptores de membrana específicos asociados a proteínas G (excitabilidad neuronal, comportamiento, secreción hormonal…)."},
+
+{doc:"t4-esteroideos",t:4,p:5,q:"Efectos genómicos de los glucocorticoides: acción directa e indirecta. Señala la CORRECTA:",o:[
+ "Directa: se unen a los GRE y sintetizan lipocortina 1 e IL-10; indirecta: inhiben NF-κB y AP-1",
+ "Directa: inhiben NF-κB y AP-1; indirecta: se unen a los GRE y sintetizan lipocortina 1 e IL-10",
+ "Directa: se unen a los GRE y sintetizan IL-1 y TNF; indirecta: activan los factores NF-κB y AP-1",
+ "Directa: activan receptores de membrana con proteína G; indirecta: inhiben NF-κB y AP-1"],a:0,
+ cita:"1. Acción directa: interacción con secuencias de ADN específicas, localizadas en zonas de regulación de genes (GRE) que ocasiona la formación de ARNm que originan la síntesis y liberación de proteínas “antiinflamatorias”:\na. lipocortina 1 (inhibe síntesis de eicosanoides por antagonizar la fosfolipasa A2 y PAF)…\nb. IL-10, antagonistas del receptor IL-1 y endopeptidasas neutras.\n2. Acción indirecta: inhibe la transcripción del factor nuclear Kappa (FN-κB) y proteína activadora 1 (AP-1) uniéndose a ellos→ Inhibición de expresión múltiples genes “inflamatorios” que codifican:\na. citoquinas (reguladoras de la inmunidad e inflamación)\nb. enzimas destructoras articulares (colagenasa y estromelisina)\nc. receptores de adhesión.",
+ n:"La lipocortina 1 inhibe la síntesis de eicosanoides porque antagoniza la fosfolipasa A₂ y el PAF."},
+
+/* ---------- p. 6 · 11β-HSD ---------- */
+{doc:"t4-esteroideos",t:4,p:6,q:"Isoformas de la 11β-hidroxiesteroide-dehidrogenasa (11β-HSD). Señala la CORRECTA:",o:[
+ "La tipo 2 inactiva el cortisol en riñón, colon y glándulas salivares; la tipo 1 lo regenera en hígado y tejido adiposo",
+ "La tipo 1 inactiva el cortisol en riñón, colon y glándulas salivares; la tipo 2 lo regenera en hígado y tejido adiposo",
+ "La tipo 2 inactiva la aldosterona en riñón, colon y glándulas salivares; la tipo 1 la regenera en hígado y pulmón",
+ "La tipo 2 activa la cortisona en riñón, colon y glándulas salivares; la tipo 1 la inactiva en hígado y tejido adiposo"],a:0,
+ cita:"Existe un mecanismo que permite la activación específica del RMC por la aldosterona: por la isoforma 2 de la enzima 11β-hidroxiesteroide-dehidrogenasa (11β-HSD).\nEsta enzima cataliza la conversión de cortisol y corticosterona a formas 11-ceto inactivas (cortisona y 11-dehidrocorticosterona) en tejidos con capacidad de reacción a mineralcorticoides como son riñón, colon y glándulas salivares. (anotación a mano: donde nos interesa que se active)\nLa isoforma 1 de la 11β-HSD actúa como 11β-reductasa regenerando los 11-ceto esteroides en hígado, tejido adiposo, cerebro, pulmón y otros tejidos, amplificando así la acción de los glucocorticoides.",
+ n:"Hace falta porque aldosterona y cortisol se unen con igual afinidad al RMC y el cortisol circula a concentraciones 100-1000 veces mayores. La aldosterona resiste a la enzima por ser un derivado hemiacetal."},
+
+/* ---------- p. 7 (marcada «imp!») · Efectos metabólicos ---------- */
+{doc:"t4-esteroideos",t:4,p:7,q:"Efectos de los glucocorticoides sobre los glúcidos (página marcada «imp!» en tus apuntes):",o:[
+ "Inducen en el hígado la glucogénesis y la gluconeogénesis, e inhiben la utilización periférica de glucosa",
+ "Inducen en el hígado la glucogenólisis y la gluconeogénesis, e inhiben la utilización periférica de glucosa",
+ "Inducen en el hígado la glucogénesis y la gluconeogénesis, y aumentan la utilización periférica de glucosa",
+ "Inducen en el hígado la glucogenólisis, inhiben la gluconeogénesis y aumentan la utilización periférica"],a:0,
+ cita:"A nivel hepático estimulan la síntesis de enzimas que intervienen en:\nGlucogénesis (triptófano 2,3 dioxigenasa y tirosina transferasa)\nGluconeogénesis (aa→glucosa; ↑ eliminación urinaria de N y ácido úrico) (fructosa 1, 6 difosfatasa y glucosa-6-fosfatasa)\nInhiben la utilización periférica de glucosa: ↑ glucemia y glucógeno (anotación a mano: HIPERGLUCEMIANTES; ¡Cuidado! Diabéticos)",
+ n:"Resultado: ↑ glucemia y ↑ glucógeno. Son hiperglucemiantes: cuidado en diabéticos."},
+
+{doc:"t4-esteroideos",t:4,p:7,q:"Glucocorticoides y grasas, según tus apuntes:",o:[
+ "Apenas son lipolíticos, pero permiten que catecolaminas, glucagón y STH activen la lipasa",
+ "Son muy lipolíticos por sí mismos y activan la lipasa sin necesidad de ninguna otra hormona",
+ "Apenas son lipolíticos y además bloquean la lipasa que activan las catecolaminas y la STH",
+ "Son lipogénicos: inhiben la lipasa y acumulan la grasa sobre todo en las extremidades"],a:0,
+ cita:"Sobre las grasas tienen poca o ninguna actividad lipolítica, pero ejercen un papel permisivo a hormonas como el glucagón, STH (somatostatina), y catecolaminas: activan la lipasa mediante una cinasa dependiente de AMPc, cuya síntesis requiere la presencia de glucocorticoides.\n↑ dosis de glucocorticoides durante periodos prolongados → redistribución peculiar de la grasa corporal: cuello, hombros, mejillas y no en extremidades. (anotación a mano: Similar a Cushing)",
+ n:"STH es la somatotropina u hormona del crecimiento (así aparece en la p. 6); en esta línea pone «somatostatina» por error."},
+
+{doc:"t4-esteroideos",t:4,p:7,q:"Efectos hidroelectrolíticos de los glucocorticoides (según el compuesto):",o:[
+ "Reabsorben Na⁺ y agua en el túbulo a cambio de K⁺, y aumentan la filtración glomerular",
+ "Reabsorben Na⁺ y agua en el túbulo a cambio de K⁺, y disminuyen la filtración glomerular",
+ "Eliminan Na⁺ y agua por el túbulo y retienen K⁺, y aumentan la filtración glomerular",
+ "Eliminan Na⁺ y agua por el túbulo y retienen K⁺, y disminuyen la filtración glomerular"],a:0,
+ cita:"Dependiendo del compuesto favorecen:\nReabsorción de agua por reabsorción tubular de Na+ (se intercambia por K+ que se pierde).\nFiltración glomerular: por aumento del flujo renal",
+ n:"La retención de agua en los tejidos (acción mineralcorticoide) produce un «engorde fraudulento» y una mejora aparente del animal."},
+
+{doc:"t4-esteroideos",t:4,p:7,q:"¿Por qué los glucocorticoides son hipertensores? Según tus apuntes:",o:[
+ "Aumentan la reactividad a catecolaminas, inhiben la NO sintetasa y aumentan la volemia",
+ "Disminuyen la reactividad a catecolaminas, activan la NO sintetasa y aumentan la volemia",
+ "Aumentan la reactividad a catecolaminas, activan la NO sintetasa y disminuyen la volemia",
+ "Bloquean los receptores β del corazón, inhiben la NO sintetasa y disminuyen la volemia"],a:0,
+ cita:"Son hipertensores por:\n1. Acciones cardiacas: efecto inotropo positivo directo. Efecto inotropo y cronotropo positivos indirecto (liberación de catecolaminas).\n2. Acciones vasculares:\na. Aumentan la reactividad a catecolaminas: vasoconstricción.\nb. Inhiben NO sintetasa: inhibición de la vasodilatación. (anotación a mano: no se sintetiza Óxido Nítrico → no vasodilata → vasoconstricción)\n3. Aumentan la volemia por retención de agua."},
+
+{doc:"t4-esteroideos",t:4,p:7,q:"Efectos de los glucocorticoides sobre la sangre, según tus apuntes:",o:[
+ "↓ eosinófilos, basófilos y linfocitos; ↑ neutrófilos, eritrocitos y plaquetas (efecto trombótico)",
+ "↑ eosinófilos, basófilos y linfocitos; ↓ neutrófilos, eritrocitos y plaquetas (efecto hemorrágico)",
+ "↓ eosinófilos, basófilos y linfocitos; ↓ neutrófilos, eritrocitos y plaquetas (efecto hemorrágico)",
+ "↓ neutrófilos, eritrocitos y linfocitos; ↑ eosinófilos, basófilos y plaquetas (efecto trombótico)"],a:0,
+ cita:"Disminuyen eosinófilos, basófilos y linfocitos: inmunosupresores.\nAumentan los neutrófilos, eritrocitos y plaquetas: favorecen los fenómenos trombóticos. (anotación a mano: se usan en caso de linfomas)"},
+
+/* ---------- p. 8 («¡EFECTOS ADVERSOS GLUCOCORTICOIDES!») ---------- */
+{doc:"t4-esteroideos",t:4,p:8,q:"Glucocorticoides, calcio y hueso. Señala la CORRECTA según tus apuntes:",o:[
+ "Reducen la absorción intestinal de Ca²⁺, aumentan la actividad paratiroidea y la eliminación de Ca, P y N",
+ "Aumentan la absorción intestinal de Ca²⁺, aumentan la actividad paratiroidea y la eliminación de Ca, P y N",
+ "Reducen la absorción intestinal de Ca²⁺, disminuyen la actividad paratiroidea y la eliminación de Ca, P y N",
+ "Aumentan la absorción intestinal de Ca²⁺, disminuyen la actividad paratiroidea y la eliminación de Ca, P y N"],a:0,
+ cita:"↑ catabolismo de la matriz ósea e inhiben la actividad osteoblástica y con ello la producción de osteocalcina.\nAlteran la absorción intestinal de Ca2+ al inhibir la actividad vitamina D, y ↑ actividad paratiroidea (estimulación osteoclástica): Aumentan la eliminación Ca, P y N (anotación a mano: ↓ delante de Ca2+; al margen: para intentar compensar ↓Ca2+)",
+ n:"En la p. 7 (imp): «Interfieren la absorción de calcio a nivel gastrointestinal (inhibición de la vitamina D)» y «A dosis elevadas→ aumenta la excreción renal de Ca2+». Además inhiben los osteoblastos → osteoporosis."},
+
+{doc:"t4-esteroideos",t:4,p:8,q:"Efectos de los glucocorticoides sobre el músculo según la dosis (tus apuntes):",o:[
+ "Dosis altas: catabolismo proteico y atrofia muscular; dosis bajas: debilidad y fatiga por mala adecuación circulatoria",
+ "Dosis altas: hipertrofia muscular por mejor perfusión vascular; dosis bajas: atrofia muscular por catabolismo proteico",
+ "Dosis altas: debilidad sin pérdida de masa muscular; dosis bajas: atrofia muscular por un catabolismo proteico intenso",
+ "Dosis altas: catabolismo proteico y atrofia muscular; dosis bajas: hipertrofia muscular por su efecto permisivo"],a:0,
+ cita:"A dosis altas:\nInducen catabolismo proteico, reducción de masa muscular debilidad y fatiga: atrofia muscular.\nMenor perfusión vascular del músculo que contribuye a una menor nutrición y desarrollo del mismo.\nDosis bajas (permisiva): falta de adecuación del sistema circulatorio, que ocasiona→ menor función del músculo estriado→ debilidad y fatiga."},
+
+{doc:"t4-esteroideos",t:4,p:8,q:"Efectos de los glucocorticoides sobre otras hormonas. Señala la CORRECTA:",o:[
+ "↓ ACTH y CRH (atrofia de la corteza adrenal), bloquean la STH y facilitan la síntesis de adrenalina",
+ "↑ ACTH y CRH (hipertrofia de la corteza adrenal), bloquean la STH y facilitan la síntesis de adrenalina",
+ "↓ ACTH y CRH (atrofia de la corteza adrenal), estimulan la STH y facilitan la síntesis de adrenalina",
+ "↓ ACTH y CRH (atrofia de la corteza adrenal), bloquean la STH e inhiben la síntesis de adrenalina"],a:0,
+ cita:"Administración exógena de GC (retroalimentación negativa): ↓ secreción de ACTH y CRH → inhibe secreción GC endógenos → atrofia de corteza adrenal\nAnimales en crecimiento, dosis ↑ →Inhibe el crecimiento\nBloquean liberación de STH\nInhiben directamente condrocitos\n…\nFacilitan la síntesis de adrenalina a partir de la noradrenalina en la médula adrenal.",
+ n:"Por esta retroalimentación negativa hay que retirarlos poco a poco (anotación a mano de la p. 1). Además inhiben la TSH (respuesta a TRH) y las gonadotropinas (respuesta a GnRH)."},
+
+{doc:"t4-esteroideos",t:4,p:8,q:"Efectos de los glucocorticoides sobre el SNC (dosis terapéuticas), según tus apuntes:",o:[
+ "Euforia, insomnio y más actividad motora; estimulan el apetito, salvo la triamcinolona",
+ "Sedación, somnolencia y menos actividad motora; estimulan el apetito, salvo la dexametasona",
+ "Euforia, insomnio y más actividad motora; quitan el apetito (anorexígenos), salvo la triamcinolona",
+ "Sedación, somnolencia y menos actividad motora; quitan el apetito y hacen adelgazar al animal"],a:0,
+ cita:"Dosis terapéuticas→ sensación de bienestar→ euforia, insomnio, inquietud e incremento de la actividad motora. A veces ansiedad y depresión (común en gatos).\nEn hipotálamo (excepto triamcinolona)→ estimulan el apetito (orexígenos: polifagia y aumento de peso), que suele interpretarse como mejoría.",
+ n:"En gatos suele aparecer depresión (buscan lugares tranquilos y aislados)."},
+
+{doc:"t4-esteroideos",t:4,p:8,q:"Actividad ulcerógena («ulcógena») de los glucocorticoides, según tus apuntes:",o:[
+ "↑ secreción clorhídrica y péptica e inhibición de las PG (PGE): hay que dar protector gástrico",
+ "↓ secreción clorhídrica y péptica e inhibición de las PG (PGE): no necesitan protector gástrico",
+ "↑ secreción clorhídrica y péptica y ↑ síntesis de PG (PGE): el daño es solo por contacto local",
+ "↓ secreción de moco y bicarbonato por bloqueo H₂: hay que darlos con un antihistamínico H₁"],a:0,
+ cita:"↑ secreción clorhídrica y péptica (aumento de la actividad lesiva)\nInhiben secreción de PGs (PGE) (pérdida de protección de la mucosa)\nActividad ulcógena\n¡Recordar dar protector gástrico junto con los glucocorticoides!"},
+
+/* ---------- p. 9 ---------- */
+{doc:"t4-esteroideos",t:4,p:9,q:"Glucocorticoides y vacunación, según tus apuntes:",o:[
+ "No darlos junto con una vacuna (15 días-1 mes): el animal no genera anticuerpos",
+ "Darlos junto con la vacuna mejora la respuesta, porque evitan las reacciones locales",
+ "Solo hay que evitarlos en adultos; en cachorros no alteran la respuesta a la vacuna",
+ "No interfieren con la vacunación si se administran por vía oral en lugar de inyectable"],a:0,
+ cita:"…tanto de los linfocitos B (a dosis altas ↓ producción de anticuerpos) como de los T…\nCuidado en cachorros y adultos que vayan a ser vacunados. (anotación a mano: No dar corticos junto con vacuna (15d-1 mes) no generan Anticuerpos)"},
+
+{doc:"t4-esteroideos",t:4,p:9,q:"Actividad inmunodepresora de los glucocorticoides (anotada «Principal uso»). Señala la CORRECTA:",o:[
+ "Actúan en las fases de reconocimiento y proliferativa, frenan linfocitos B y T y evitan el rechazo de trasplantes",
+ "Actúan solo en la fase efectora, frenan únicamente los linfocitos T y no sirven para evitar el rechazo de trasplantes",
+ "Actúan en las fases de reconocimiento y proliferativa, pero solo frenan los linfocitos B (la inmunidad humoral)",
+ "Aumentan la síntesis de IL-1, IL-2 y TNF y la actividad de los macrófagos, y así frenan el rechazo de trasplantes"],a:0,
+ cita:"Actividad INMUNODEPRESORA: afectan a la respuesta inmunitaria (anotación a mano: «Principal uso», al margen)\n…\nActúan a nivel de la fase de reconocimiento de la respuesta inmune y en la fase proliferativa. Quedan suprimidas las respuestas a los antígenos, tanto de los linfocitos B (a dosis altas ↓ producción de anticuerpos) como de los T; por lo que queda perturbada la inmunidad humoral y celular.\nClínicamente utilizados para evitar el rechazo de injertos o transplantes ya que suprimen el comienzo y la generación de la respuesta inmune.",
+ n:"Además ↓ la actividad de los macrófagos y la generación de citocinas (IL-1, IL-2… TNF)."},
+
+{doc:"t4-esteroideos",t:4,p:9,q:"Efecto antiinflamatorio y cicatrización. Señala la CORRECTA según tus apuntes:",o:[
+ "Inhiben la inflamación sea cual sea su causa, aumentan el tono capilar y retrasan la cicatrización",
+ "Solo inhiben la inflamación de causa inmunológica, aumentan el tono capilar y retrasan la cicatrización",
+ "Inhiben la inflamación sea cual sea su causa, disminuyen el tono capilar y retrasan la cicatrización",
+ "Inhiben la inflamación sea cual sea su causa, aumentan el tono capilar y aceleran la cicatrización"],a:0,
+ cita:"Independiente de la causa (infecciosa, inmunológica, física o química)\nInhibe manifestaciones inmediatas (rubor, dolor,..) y tardías (cicatrización y proliferación)\nAumentan tono capilar\nRetraso en la cicatrización: sólo útil para prevenir fibrosis excesiva en procesos crónicos.",
+ n:"Además favorecen la diseminación de la infección: frenan la proliferación fibroblástica y el acceso de neutrófilos y monocitos."},
+
+/* ---------- p. 10 ---------- */
+{doc:"t4-esteroideos",t:4,p:10,q:"Actividades antipirética y analgésica de los glucocorticoides, según tus apuntes:",o:[
+ "La antipirética no se usa (demasiados efectos adversos); la analgésica sí es útil en terapéutica",
+ "La antipirética es muy útil en terapéutica; la analgésica no, porque no inhiben la síntesis de PGE",
+ "Ninguna de las dos se usa, porque los glucocorticoides no inhiben la PGE, la histamina ni las cininas",
+ "Las dos son muy útiles en terapéutica y son su indicación principal en los pequeños animales"],a:0,
+ cita:"Actividad ANTIPIRÉTICA: no es útil en terapéutica porque produce demasiados efectos adversos. (anotación a mano: tiene pero no merece la pena)\nActividad ANALGÉSICA: inhiben la síntesis y liberación de mediadores del dolor: PGE, histamina y cininas. Útil en terapéutica. (anotación a mano: ayuda a dolor neurológico (AINE no hace nada porque no inflamatorio))"},
+
+{doc:"t4-esteroideos",t:4,p:10,q:"Administración tópica (cutánea) de glucocorticoides, según tus apuntes:",o:[
+ "Absorción escasa, pero con vendaje oclusivo o áreas grandes puede suprimir el eje hipotálamo-hipófisis-adrenal",
+ "Absorción nula aunque se use vendaje oclusivo o se trate gran parte de la piel, así que nunca da efectos sistémicos",
+ "Absorción escasa, y por eso se recomienda tapar siempre la zona con vendaje oclusivo para que se absorba más",
+ "Absorción muy alta en cualquier caso, por lo que da más efectos adversos sistémicos que las vías oral y parenteral"],a:0,
+ cita:"Cutánea (vía tópica): absorción escasa, aunque varía dependiendo del:\n…\nLa vía tópica (piel y mucosas) permite alcanzar altas concentraciones de fármaco en el lugar de administración y ↓ riesgos de efectos adversos sistémicos.\nCuando la administración es prolongada, el lugar de aplicación se cubre con vendaje oclusivo o cuando hay áreas grandes de piel afectadas, la absorción puede ser muy importante y puede originar efectos sistémicos, incluso supresión del eje hipotalámico-hipofisario-adrenal. (anotación a mano: nunca vendajes oclusivos)"},
+
+{doc:"t4-esteroideos",t:4,p:10,q:"Farmacocinética de los glucocorticoides. Señala la CORRECTA según tus apuntes:",o:[
+ "El cortisol va ≥ 75 % unido a transcortina, atraviesan BHE y placenta y se excretan sobre todo en orina",
+ "El cortisol va ≥ 75 % unido a albúmina, atraviesan BHE y placenta y se excretan sobre todo en orina",
+ "El cortisol va ≥ 75 % unido a transcortina, no atraviesan la BHE y se excretan sobre todo en orina",
+ "El cortisol va ≥ 75 % unido a transcortina, atraviesan BHE y placenta y se excretan sobre todo en heces"],a:0,
+ cita:"El cortisol y la corticosterona: ≥ 75 % a transcortina, un 10 % a albúmina y un 10-15 % libre. (anotación a mano: se unen bastante a proteínas)\nDistribución rápida a músculo, hígado, piel, intestino y riñón. Atraviesan BHE y BFP.\nSe excretan fundamentalmente en orina (75 %) o heces (25 %) y pueden eliminarse en leche.",
+ n:"Otros GC sintéticos se unen menos o nada (la prednisolona sí, y compite con el cortisol). El riñón reabsorbe el 80-90 % del cortisol libre (no conjugado), pero no el conjugado."},
+/* ===== Tema 4 completo (t4-esteroideos): págs. 11-20, toxicidad, terapia, Addison, Cushing y mineralocorticoides ===== */
+/* ---------- p. 11 · Toxicidad / RRAA («SUELE PREGUNTARLOS EN EL EXAMEN») ---------- */
+{doc:"t4-esteroideos",t:4,p:11,q:"Según la tabla de efectos secundarios de los GC (anotada: «suele preguntarlos en el examen»), a nivel inmunológico producen:",o:[
+ "Más infecciones, ↓ hipersensibilidad retardada, neutrofilia y linfocitopenia",
+ "Menos infecciones, ↑ hipersensibilidad retardada, neutrofilia y linfocitosis",
+ "Más infecciones, ↓ hipersensibilidad retardada, neutropenia y linfocitosis",
+ "Más infecciones, ↑ hipersensibilidad retardada, neutropenia y linfocitopenia"],a:0,
+ cita:"Inmunológicos: Aumento, susceptibilidad infecciones. ↓ respuesta inflamatoria ↓hipersensibilidad retardada Neutrofilia, linfocitopenia (anotación a mano junto a la tabla: «SUELE PREGUNTARLOS EN EL EXAMEN»)",
+ n:"Es el leucograma de estrés: neutrofilia con linfocitopenia."},
+{doc:"t4-esteroideos",t:4,p:11,q:"Efectos adversos oculares de los GC según tus apuntes:",o:[
+ "↑ presión intraocular y glaucoma, y catarata subcapsular posterior",
+ "↓ presión intraocular y miosis, y catarata subcapsular anterior",
+ "↑ presión intraocular y glaucoma, y catarata nuclear del cristalino",
+ "↓ presión intraocular, y queratitis seca por menor producción de lágrima"],a:0,
+ cita:"En ojo, pueden ↑ presión intraocular y glaucoma, catarata subcapsular posterior y úlcera corneal.\nOftalmológicos: Cataratas posteriores subcapsulares Glaucoma (anotación a mano junto a la tabla: «SUELE PREGUNTARLOS EN EL EXAMEN»)"},
+{doc:"t4-esteroideos",t:4,p:11,q:"Toxicidad aguda (a altas dosis) de los GC según tus apuntes. Señala la CORRECTA:",o:[
+ "Son ulcerógenos y diabetógenos, y aumentan la pancreatitis por ↑ viscosidad de la secreción",
+ "Son ulcerógenos e hipoglucemiantes, y aumentan la pancreatitis por ↑ viscosidad de la secreción",
+ "Son ulcerógenos y diabetógenos, y reducen la pancreatitis por ↓ viscosidad de la secreción",
+ "Protegen la mucosa gástrica, son diabetógenos y aumentan la pancreatitis por hipercalcemia"],a:0,
+ cita:"Actividad ulcógena\nIncrementa la incidencia de pancreatitis por aumento de la viscosidad de la secreción.\nActividad diabetógena, desenmascaran la diabetes latente o agravan la ya existente; tratarla corrigiendo la dieta o con insulina. (anotación a mano junto a «Actividad ulcógena»: «úlceras estómago»)",
+ n:"También son hiperlipemiantes (no usar en cardiópatas) y retienen agua y sodio, con hipertensión."},
+{doc:"t4-esteroideos",t:4,p:11,q:"Retirada brusca de un GC tras un tratamiento prolongado, según tus apuntes:",o:[
+ "Insuficiencia adrenal aguda; la función adrenal tarda 2-18 meses en recuperarse",
+ "Síndrome de Cushing de rebote; la función adrenal se recupera en 2-18 días",
+ "Insuficiencia adrenal aguda; la función adrenal se recupera en 24-48 horas",
+ "Hiperadrenocorticismo transitorio; el eje adrenal se normaliza en 1-2 semanas"],a:0,
+ cita:"Retirada brusca tras tratamiento prolongado → insuficiencia adrenal aguda (efecto dosis y tiempo dependiente). La recuperación de la función adrenal tarda de 2-18 meses."},
+{doc:"t4-esteroideos",t:4,p:11,q:"Toxicidad crónica de los GC según tus apuntes. Señala la CORRECTA:",o:[
+ "Perro: hepatomegalia y ↑ transaminasas, reversible al suspender; crean dependencia psicológica",
+ "Perro: hepatomegalia y ↑ transaminasas, siempre irreversible; crean dependencia psicológica",
+ "Perro: hepatomegalia y ↑ transaminasas, reversible al suspender; sedan sin crear dependencia",
+ "Perro: atrofia hepática sin cambios enzimáticos; sedan y no crean dependencia psicológica"],a:0,
+ cita:"Canidos: pueden inducir hepatopatías (hepatomegalia) y ↑ en plasma de transaminasas hepáticas. La degeneración hepática en algunos individuos es severa, pero sorprendentemente reversible al suspender el tratamiento.\nLas alteraciones de la conducta pueden ser de intensidad variable desde euforia, nerviosismo, insomnio, depresión, psicosis, etc.. crean dependencia psicológica."},
+
+/* ---------- p. 12 · Seguridad, interacciones y principios de la terapia («GRABAR A FUEGO») ---------- */
+{doc:"t4-esteroideos",t:4,p:12,q:"Contraindicaciones o uso con precaución de los GC según tus apuntes:",o:[
+ "Diabetes mellitus, hipertensión, cardiopatías, insuficiencia renal y última fase de la gestación",
+ "Diabetes mellitus, hipertensión, anemia hemolítica autoinmune, cetosis bovina y colitis canina",
+ "Cetosis bovina, choque circulatorio, cardiopatías, insuficiencia renal y miopatías",
+ "Anemia hemolítica, lupus eritematoso, pénfigo, hepatopatías y última fase de la gestación"],a:0,
+ cita:"SEGURIDAD: CONTRAINDICACIONES/USO CON PRECAUCIONES:\nÚltima fase de la gestación\nÚlcera corneal\nDiabetes mellitus (son hiperglucemiantes)\nHipertensión\nInsuficiencia renal\nCardiopatías\nHepatopatías\nMiopatías",
+ n:"Cetosis bovina, choque, anemia hemolítica, lupus, pénfigo y colitis canina son indicaciones de los GC (páginas 12-13), no contraindicaciones."},
+{doc:"t4-esteroideos",t:4,p:12,q:"Interacciones de los GC según tus apuntes. Señala la CORRECTA:",o:[
+ "Son inductores enzimáticos, ↑ la glucemia con tiacidas y antagonizan a la insulina",
+ "Son inhibidores enzimáticos, ↑ la glucemia con tiacidas y antagonizan a la insulina",
+ "Son inductores enzimáticos, ↓ la glucemia con tiacidas y potencian a la insulina",
+ "Son inhibidores enzimáticos, ↓ la glucemia con tiacidas y potencian a la insulina"],a:0,
+ cita:"No en vacunaciones.\nSon inductores enzimáticos: reducen su actividad terapéutica, inducen metabolismo de AINE y su eliminación.\nAumentan la glucemia con tiacidas (sinergia potenciativa).\nAntagonismo con hipoglucemiantes orales e insulina.",
+ n:"Como inductores enzimáticos reducen su propia actividad y aceleran el metabolismo y la eliminación de los AINE."},
+{doc:"t4-esteroideos",t:4,p:12,q:"Principios de la terapia con GC (anotado: «grabar a fuego»). En los tratamientos crónicos:",o:[
+ "Dosis mínima efectiva, a renovar por la inducción enzimática; retirada progresiva (≥ 2 semanas)",
+ "Dosis máxima tolerada, a renovar por la inhibición enzimática; retirada progresiva (≥ 2 días)",
+ "Dosis mínima efectiva, fija todo el tratamiento; retirada brusca en cuanto ceden los síntomas",
+ "Dosis de choque mantenida, a renovar por la inducción enzimática; retirada en 24-48 horas"],a:0,
+ cita:"Tratamientos crónicos→ individualizada y dar la dosis mínima efectiva → renovarse (inducción enzimática)\nTerapia prolongada → atrofia adrenal y supresión de la secreción endógena.\nInterrupción tto.→ disminuyendo las dosis de forma progresiva (2 o más semanas) (anotación a mano: «GRABAR A FUEGO»)"},
+{doc:"t4-esteroideos",t:4,p:12,q:"Principios de la terapia con GC («grabar a fuego»). Señala la CORRECTA:",o:[
+ "Mejoran los síntomas sin erradicar la causa, y se prefiere la vía local siempre que sea posible",
+ "Erradican la causa de la enfermedad, y se prefiere la vía sistémica siempre que sea posible",
+ "Mejoran los síntomas sin erradicar la causa, y pueden usarse en infecciones víricas no tratadas",
+ "Erradican la causa de la enfermedad, y frenan la diseminación de las infecciones fúngicas"],a:0,
+ cita:"Los CG producen mejora del animal al desaparecer los síntomas, pero no erradican la causa de la enfermedad.\nNo se deben usar en infecciones bacterianas, víricas o fúngicas, no específicamente tratadas porque favorecen su diseminación.\nEl tratamiento, siempre que sea posible, vía local (tópica, inhalatoria u oftálmica) para conseguir concentraciones altas en la zona de lesión y mínimas a nivel sistémico. (anotación a mano: «GRABAR A FUEGO»)"},
+{doc:"t4-esteroideos",t:4,p:12,q:"Uso oftálmico de los GC en las úlceras corneales, según tus apuntes:",o:[
+ "Contraindicados al inicio; solo una vez controlada la infección y cicatrizada la 1ª parte",
+ "De elección al inicio, porque aceleran la cicatrización y previenen la perforación",
+ "Indicados desde el inicio si se asocian a un antibiótico tópico, sin esperar a cicatrizar",
+ "Contraindicados siempre, aunque la infección esté controlada y la úlcera ya cicatrizada"],a:0,
+ cita:"La aplicación oftálmica está contraindicada en el tratamiento inicial de úlceras corneales. Sólo deben usarse una vez controlada la infección. (anotación a mano: «una vez cicatrizada la 1ª parte»)"},
+{doc:"t4-esteroideos",t:4,p:12,q:"Antiinflamatorios esteroideos disponibles en España para animales de producción:",o:[
+ "Dexametasona, prednisolona y triamcinolona",
+ "Betametasona, hidrocortisona y mometasona",
+ "Metilprednisolona, mometasona y dexametasona",
+ "Hidrocortisona, betametasona y prednisolona"],a:0,
+ cita:"AIE DISPONIBLES EN ESPAÑA:\nEn animales de producción: Dexametasona, Prednisolona, Triamcinolona.\nEn animales de compañía, además: Betametasona, Hidrocortisona, Metilprednisolona, Mometasona.",
+ n:"Betametasona, hidrocortisona, metilprednisolona y mometasona solo están disponibles, además, para animales de compañía."},
+{doc:"t4-esteroideos",t:4,p:12,q:"GC en las enfermedades respiratorias (EPOC, síndrome asmático), según tu anotación de clase:",o:[
+ "En la crisis, vía sistémica; después inhalatoria: primero el broncodilatador y luego el corticoide",
+ "En la crisis, vía inhalatoria; después sistémica: primero el corticoide y luego el broncodilatador",
+ "En la crisis, vía sistémica; después inhalatoria: primero el corticoide y luego el broncodilatador",
+ "Solo vía inhalatoria, también en la crisis: primero el corticoide y luego el broncodilatador"],a:0,
+ cita:"Enfermedades respiratorias (EPOC y el síndrome asmático). (anotación a mano: «1º … sistémico en crisis, luego inhalatorio (1º broncodilatador 2º córtico)»)",
+ n:"Lo dice la anotación manuscrita; el texto mecanografiado solo cita las enfermedades respiratorias entre las indicaciones."},
+
+/* ---------- p. 13 · Indicaciones, Addison y Cushing ---------- */
+{doc:"t4-esteroideos",t:4,p:13,q:"Uso de los GC en la cetosis bovina, según tus apuntes:",o:[
+ "Revierten los síntomas en 3-5 días por su efecto hiperglucemiante (gluconeogénesis)",
+ "Revierten los síntomas en 3-5 horas por su efecto lipolítico directo sobre la grasa",
+ "Están contraindicados, porque agotan el glucógeno hepático y agravan la cetosis",
+ "Revierten los síntomas en 3-5 días al aumentar la utilización periférica de glucosa"],a:0,
+ cita:"Cetosis bovina, revierten los síntomas en 3-5 días al inducir gluconeogénesis a partir de aminoácidos, aumenta los niveles de glucógeno hepático y disminuye la utilización periférica de glucosa. (anotación a mano: «por efecto hiperglucemiante»)"},
+{doc:"t4-esteroideos",t:4,p:13,q:"Hipoadrenocorticismo primario (enfermedad de Addison), según tus apuntes:",o:[
+ "Faltan GC y MC, pero hay que tratar sobre todo el déficit de MC, que puede ser letal",
+ "Solo faltan GC, y hay que tratar sobre todo ese déficit, que puede ser letal",
+ "Faltan GC y MC, pero hay que tratar sobre todo el déficit de GC, que puede ser letal",
+ "Solo faltan MC, y basta con suplementar sal de por vida, sin dar hormonas"],a:0,
+ cita:"Hipoadrenocorticalismo 1ª (enfermedad de Addison; en perro y gato, más raramente en caballo): déficit de GC y MC, pero debe tratarse sobre todo la deficiencia de MC (es más importante y puede ser letal).",
+ n:"Afecta al perro y al gato y, más raramente, al caballo."},
+{doc:"t4-esteroideos",t:4,p:13,q:"Tratamiento de la insuficiencia adrenal según tus apuntes. Señala la CORRECTA:",o:[
+ "Crisis: GC, glucosa y NaCl 0,9 % IV; forma crónica: MC de por vida; secundaria: solo GC",
+ "Crisis: MC orales y restricción de sal; forma crónica: solo GC; secundaria: solo MC",
+ "Crisis: GC, glucosa y NaCl 0,9 % IV; forma crónica: GC hasta curar; secundaria: solo MC",
+ "Crisis: KCl y glucosa IV; forma crónica: MC de por vida; secundaria: MC y GC de por vida"],a:0,
+ cita:"Infusión IV de GC, glucosa, cloruro sódico al 0’9% y tratamiento apropiado de las causas precipitantes.\nEl tratamiento de la forma crónica, requiere de administración de MC durante toda la vida y por lo general también de GC (fludrocortisona + prednisolona o hidrocortisona).\nEn insuficiencia adrenal secundaria sólo se requiere administración GC (prednisona o prednisolona), en periodos de estrés será necesario incrementar la dosis.",
+ n:"La sal solo se suplementa al comienzo, para corregir la hiponatremia. En la secundaria hay que subir la dosis de GC en periodos de estrés."},
+{doc:"t4-esteroideos",t:4,p:13,q:"Tratamiento del hipercorticalismo (Cushing) según su causa, en tus apuntes:",o:[
+ "Yatrogénico: suprimir los GC; hiperplasia adrenal por exceso de ACTH: GC a altas dosis",
+ "Yatrogénico: subir la dosis de GC; tumor adrenal: GC a altas dosis por retroalimentación",
+ "Yatrogénico: suprimir los GC; hiperplasia adrenal por exceso de ACTH: mineralocorticoides",
+ "Yatrogénico: mitotano de por vida; tumor adrenal: GC a altas dosis por retroalimentación"],a:0,
+ cita:"Yatrogénico: por exceso de GCs. Se debe suprimir su administración.\nPor procesos tumorales en glándula adrenal: Tratamiento quirúrgico o medicamentoso con inhibidores de los glucocorticoides.\nPor hiperplasia adrenal bilateral por exceso de ACTH: Glucocorticoides a altas dosis para ocasionar retroalimentación negativa.",
+ n:"El tumor adrenal se trata con cirugía o con inhibidores de los glucocorticoides. La hiperplasia por exceso de ACTH está al principio de la página 14."},
+
+/* ---------- p. 14 · Inhibición de la secreción de cortisol ---------- */
+{doc:"t4-esteroideos",t:4,p:14,q:"Inhibidores de la secreción de cortisol adrenal y su diana, según tus apuntes:",o:[
+ "Aminoglutetimida: P450scc; metopirona: P450c11; trilostano: 3βHSD",
+ "Aminoglutetimida: 3βHSD; metopirona: P450scc; trilostano: P450c11",
+ "Aminoglutetimida: P450c11; metopirona: 3βHSD; trilostano: P450scc",
+ "Aminoglutetimida: P450scc; metopirona: 3βHSD; trilostano: P450c11"],a:0,
+ cita:"2.2.2. Inhibición de la secreción cortisol adrenal:\n1. Adrenocorticolíticos: Mitotano.\n2. Inhibidores de la P450scc: Aminoglutetimida.\n3. Inhibidores de la P450c11: Metopirona.\n4. Inhibidores de la 3ßHSD: Trilostano, Cianocetona.\n5. Inhibidores múltiples: Ketoconazol y Etomidato. 6. Bloqueadores de receptores de cortisol: Mifepristone (RU 486) (anotación a mano junto al título: «tenemos adenoma...»)",
+ n:"El mitotano es adrenocorticolítico; el ketoconazol y el etomidato son inhibidores múltiples, y la mifepristona bloquea el receptor de cortisol."},
+
+/* ---------- p. 16-18 · Mitotano, trilostano, ketoconazol, etomidato ---------- */
+{doc:"t4-esteroideos",t:4,p:16,q:"Mitotano según tus apuntes. Señala la CORRECTA:",o:[
+ "Se usa en el carcinoma adrenal y, como destruye la glándula, después hay que dar GC",
+ "Se usa en el carcinoma adrenal y, como su efecto es reversible, no hace falta dar GC",
+ "Destruye sobre todo la zona glomerulosa, por lo que siempre hay que dar MC de por vida",
+ "Es un antagonista del receptor GC útil solo en urgencias, sin efectos sobre la glándula"],a:0,
+ cita:"Como tratamiento médico después de la cirugía en el carcinoma adrenal o en carcinomas inoperables. También se ha empleado para el control de la hipersecreción de cortisol en pacientes con síndrome de Cushing causado por carcinoma adrenal.\nTras su aplicación tendrán que suministrarse GCs. (anotación a mano: «se destruye glándula y ya no será capaz de producirlo nunca»)",
+ n:"Actúa más sobre las zonas reticular y fasciculada que sobre la glomerulosa, por eso la aldosterona suele conservarse. Su uso lo limita la toxicidad gastrointestinal y neurológica."},
+{doc:"t4-esteroideos",t:4,p:17,q:"Trilostano según tus apuntes. Señala la CORRECTA:",o:[
+ "Reduce cortisol y aldosterona: riesgo de hiperpotasemia con IECA o ahorradores de K⁺",
+ "Reduce solo el cortisol: riesgo de hipopotasemia con IECA o ahorradores de K⁺",
+ "Reduce cortisol y aldosterona: riesgo de hipopotasemia con tiacidas o furosemida",
+ "Destruye la corteza adrenal: riesgo de hiperpotasemia con tiacidas o furosemida"],a:0,
+ cita:"MECANISMO DE ACCIÓN: reduce la síntesis de cortisol y aldosterona y aumenta la eliminación de 17- ceto esteroides.\nINTERACCIONES: Riesgo de hiperpotasemia cuando se asocia a un diurético ahorrador de potasio o un IECA. Supone una contraindicación.",
+ n:"Disponible en veterinaria en España. Se usa en el Cushing pituitario o adrenal y en general se tolera bien. No usar en hepatopatía primaria, insuficiencia renal, animales de menos de 3 kg, gestantes, lactantes ni animales de producción."},
+{doc:"t4-esteroideos",t:4,p:17,q:"Ketoconazol como inhibidor de la esteroidogénesis, según tus apuntes:",o:[
+ "Inhibe sobre todo la C17,20-liasa, de forma reversible; no es la 1ª opción",
+ "Inhibe sobre todo la 3βHSD, de forma irreversible; es el de 1ª elección",
+ "Destruye la corteza adrenal como el mitotano; es el de 1ª elección en perros",
+ "Inhibe sobre todo la 11β-hidroxilasa, de forma irreversible; no es la 1ª opción"],a:0,
+ cita:"Inhibe predominantemente la actividad de la C17,20-liasa dependiente de citocromo P450, lo que explica el efecto inhibidor de la producción de testosterona en el hombre.\nLa acción es reversible y ha permitido el empleo de este fármaco en algunas situaciones en las que es necesario disminuir la producción de testosterona, tales como el cáncer de próstata, la pubertad precoz masculina y los síndromes virilizantes. (anotación a mano en la página 18: «no es la 1ª opción, solo si los anteriores no funcionan»)",
+ n:"Precisa dosis 4 veces superiores a las antimicóticas. Reacciones adversas destacadas: impotencia y ginecomastia, y toxicidad hepatocelular (vigilancia continua)."},
+{doc:"t4-esteroideos",t:4,p:18,q:"Etomidato como inhibidor de los glucocorticoides, según tus apuntes:",o:[
+ "Anestésico IV para el control rápido del Cushing en hospitalizados; no a largo plazo",
+ "Anestésico oral para el control crónico del Cushing en casa; de elección a largo plazo",
+ "Antifúngico IV para el control rápido del Cushing; es de elección a largo plazo",
+ "Antagonista oral del receptor GC para el Cushing crónico; carece de efecto sedante"],a:0,
+ cita:"Empleado para el control del hipercortisolismo en pacientes hospitalizados con síndrome de Cushing en infusión IV a dosis bajas que no causan un efecto hipnótico (0,3 mg/kg/h). Es útil para control rápido en estados de hipercortisolismo grave. Inconvenientes: necesidad de administración IV y sus efectos sedantes. (anotación a mano: «NO A LARGO PLAZO»)"},
+
+/* ---------- p. 19-20 · Mineralocorticoides ---------- */
+{doc:"t4-esteroideos",t:4,p:19,q:"Mineralocorticoides en clínica (DOCA y fludrocortisona), según tus apuntes:",o:[
+ "DOCA por vía parenteral y fludrocortisona oral; en la sobredosis, diuréticos y potasio",
+ "DOCA por vía oral y fludrocortisona parenteral; en la sobredosis, diuréticos y potasio",
+ "DOCA por vía parenteral y fludrocortisona oral; en la sobredosis, suero salino y GC",
+ "Aldosterona oral y DOCA por vía parenteral; en la sobredosis, suero salino y GC"],a:0,
+ cita:"Aldosterona: No se utiliza clínicamente.\nDOCA. Se administra por vía parenteral (PO su biodisponibilidad es escasa), con una semivida de 70 minutos.\nFludrocortisona. Derivado sintético con un índice mineralcorticoide/glucocorticoide muy elevado. Se administra por vía oral y tiene una semivida que permite administrarla cada 24 horas.\nSobredosificación: interrumpir el tratamiento y administrar diuréticos y potasio. (anotación a mano junto a DOCA: «oral no se absorbe»)",
+ n:"La sobredosificación está en la página 20: además se interrumpe el tratamiento. Sus RRAA son edemas, hipertensión y alcalosis hipopotasémica."},
+{doc:"t4-esteroideos",t:4,p:19,q:"Síndrome de Conn (hipersecreción de mineralocorticoides), según tus apuntes:",o:[
+ "Adenoma adrenocortical no descrito en animales: hipopotasemia, alcalosis e hipertensión",
+ "Adenoma adrenocortical frecuente en el perro: hipopotasemia, alcalosis e hipertensión",
+ "Adenoma adrenocortical no descrito en animales: hiperpotasemia, acidosis e hipotensión",
+ "Adenoma hipofisario frecuente en el gato: hiperpotasemia, acidosis e hipotensión"],a:0,
+ cita:"HIPERSECRECIÓN (Síndrome (Síndrome de Conn): adenoma adrenocortical, (no descrito en animales), que produce:\nUna marcada retención de sodio y agua (aumento del volumen extracelular, edemas)\nHipopotasemia, alcalosis, hipertensión y debilidad muscular. (anotación a mano: «Características del síndrome de Conn (no visto en perros, solo humano)»)",
+ n:"Ojo: en la bibliografía veterinaria actual el hiperaldosteronismo primario sí se describe, sobre todo en gatos; en el examen, responde según tus apuntes."},
+{doc:"t4-esteroideos",t:4,p:19,q:"Hiposecreción de mineralocorticoides (Addison), marcada «+ imp» en tus apuntes:",o:[
+ "Se pierde más sodio que agua, cae el volumen extracelular y hay hiperpotasemia (arritmias)",
+ "Se pierde más agua que sodio, sube el volumen extracelular y hay hipopotasemia (arritmias)",
+ "Se pierde más sodio que agua, sube el volumen extracelular y hay hipopotasemia (parálisis)",
+ "Se retiene más sodio que agua, aparecen edemas y hay hiperpotasemia con alcalosis"],a:0,
+ cita:"HIPOSECRECIÓN (Síndrome de Addison): que produce:\nUna pérdida más pronunciada de sodio que de agua (disminución de la presión osmótica del líquido extracelular, que origina un movimiento de líquido hacia el compartimento intracelular y un descenso marcado del volumen extracelular).\nConcomitantemente menor excreción de K+ (hiperpotasemia) y, de forma moderada, disminución del bicarbonato plasmático . (anotaciones a mano: «+ imp» y «Arritmias»)"},
+{doc:"t4-esteroideos",t:4,p:19,q:"Aldosterona y receptor mineralocorticoide (RMC), según tus apuntes. Señala la CORRECTA:",o:[
+ "Depende sobre todo de electrolitos y renina-angiotensina; el RMC cerebral prefiere el cortisol",
+ "Depende sobre todo de la ACTH, más que el cortisol; el RMC cerebral prefiere el cortisol",
+ "Depende sobre todo de electrolitos y renina-angiotensina; el RMC cerebral solo une aldosterona",
+ "Depende sobre todo de la ACTH, más que el cortisol; el RMC cerebral solo une aldosterona"],a:0,
+ cita:"REGULACIÓN DE LA SÍNTESIS Y LIBERACIÓN DE ALDOSTERONA: Menor dependencia de la secreción de ACTH que el cortisol, aunque la actividad hipofisaria puede facilitar su secreción. Principalmente depende de la composición de electrolitos del plasma y del sistema renina- angiotensina II.\nEl RMC en cerebro es más afín por glucocorticoides endógenos, al contrario que en tejidos periféricos. (anotación a mano: «Receptor se une más al CORTISOL»)",
+ n:"El RMC tiene la misma estructura primaria que el receptor glucocorticoide y es el único que pueden activar dos tipos de hormonas esteroideas."}
 ];
 APQ.forEach((q, i) => { q.id = i; if (!q.t) { const d = APUNTES.find(x => x.id === q.doc); q.t = d ? (Array.isArray(d.t) ? d.t[0] : d.t) : 0; } });
