@@ -9,8 +9,8 @@ const AVG = {
   wide: "M36 128 L84 128 L90 181 C90 184 88 185 85 185 L65 185 C63 185 62 184 62 181 L60.6 148 L59.4 148 L58 181 C58 184 57 185 55 185 L35 185 C32 185 30 184 30 181 Z",
   slim: "M37 128 L83 128 L80.4 174.5 C80.4 176.5 79.4 177.5 77.4 177.5 L66 177.5 C64 177.5 63 176.5 63 174.5 L60.6 148 L59.4 148 L57 174.5 C57 176.5 56 177.5 54 177.5 L42.6 177.5 C40.6 177.5 39.6 176.5 39.6 174.5 Z",
   shorts: "M36 128 L84 128 L86 154 C80 157 68 157 62 156 L60 146 L58 156 C52 157 40 157 34 154 Z",
-  skirt: "M38 128 L82 128 L91 160 C78 165 42 165 29 160 Z",
-  skirtL: "M38 128 L82 128 L94 178 C80 184 40 184 26 178 Z",
+  skirt: "M38 128 L82 128 L88.4 148 C77 152.6 43 152.6 31.6 148 Z",
+  skirtL: "M38 128 L82 128 L91.4 165 C79 170 41 170 28.6 165 Z",
   legL: "M41.5 134 L54.5 134 L54 182 C51 184 45 184 42 182 Z",
   legR: "M65.5 134 L78.5 134 L78 182 C75 184 69 184 66 182 Z",
   armL: "M40 93 C35 99 33 108 33 118 L33 126",
@@ -51,7 +51,7 @@ function avBottom(it, k) {
   if (it.style === "suit") s += LINE("M47 146 L46.6 175M73 146 L73.4 175", d, 1);
   if (it.style === "belt") s += `<rect x="36" y="128" width="48" height="5" fill="#6b4430"/><rect x="55" y="127" width="10" height="7" rx="1.5" fill="#d9b45a" ${LN("#d9b45a", 1)}/>`;
   if (it.cut === "skirt" || it.cut === "skirtL") {
-    const hem = it.cut === "skirt" ? 162 : 180;
+    const hem = it.cut === "skirt" ? 150 : 167;
     s += [44, 52, 60, 68, 76].map(x => LINE(`M${x + (x - 60) * .05} 131 L${x + (x - 60) * .28} ${hem - 2}`, d, 1, 'opacity=".45"')).join("");
     if (it.style === "denim") s += LINE(`M60 130 L60 ${hem - 1}`, "#e2a65a", .9, 'stroke-dasharray="1.6 1.4"');
   }
@@ -156,7 +156,7 @@ function avCoat(it, sk, k) {
     case "raincoat": return VP("M37 94 C37 88 44 85 52 85 L68 85 C76 85 83 88 83 94 L88 160 C76 165 44 165 32 160 Z", c) + LINE("M60 88 L60 162", d, 1.1) + [104, 120, 136, 150].map(y => `<rect x="62" y="${y}" width="6" height="2.4" rx="1" fill="#6b4430"/>`).join("") + VR(38, 132, 14, 10, 1.5, c, { w: 1, sh: .5, hl: 0 }) + VR(68, 132, 14, 10, 1.5, c, { w: 1, sh: .5, hl: 0 });
     case "dress": {
       const f = avFill(k, it, "d"), defs = avPat(k, it, "d");
-      return defs + VP("M38 93 C38 88 45 85 52 85 L68 85 C75 85 82 88 82 93 L82 124 L38 124 Z", f, { lc: c }) + `<path d="M51 85.2 Q60 93 69 85.2 Z" fill="${sk}"/>` + VP("M38 122 L82 122 L94 164 C80 170 40 170 26 164 Z", f, { lc: c }) + `<rect x="37.5" y="120" width="45" height="5" rx="2" fill="${it.belt || darken(c, .72)}"/>` + [46, 56, 64, 74].map(x => LINE(`M${x} 126 L${x + (x - 60) * .4} 164`, darken(c, .75), 1, 'opacity=".45"')).join("");
+      return defs + VP("M38 93 C38 88 45 85 52 85 L68 85 C75 85 82 88 82 93 L82 124 L38 124 Z", f, { lc: c }) + `<path d="M51 85.2 Q60 93 69 85.2 Z" fill="${sk}"/>` + VP("M38 122 L82 122 L90.4 151 C78 156 42 156 29.6 151 Z", f, { lc: c }) + `<rect x="37.5" y="120" width="45" height="5" rx="2" fill="${it.belt || darken(c, .72)}"/>` + [46, 56, 64, 74].map(x => LINE(`M${x} 126 L${x + (x - 60) * .3} 151`, darken(c, .75), 1, 'opacity=".45"')).join("");
     }
     case "cape": return `<circle cx="44" cy="90" r="3" fill="#f0c25e" ${LN("#f0c25e", 1)}/><circle cx="76" cy="90" r="3" fill="#f0c25e" ${LN("#f0c25e", 1)}/>` + LINE("M44 90 Q60 96 76 90", "#f0c25e", 1.4);
     case "vampire": return `<path d="M48 88 L60 96 L72 88" fill="none" stroke="#b8473a" stroke-width="2"/>` + `<circle cx="60" cy="96" r="2.4" fill="#f0c25e" ${LN("#f0c25e", .8)}/>`;
@@ -387,18 +387,18 @@ const HAIR = {
   ondulado_corto: { all: 1, shine: 1,
     H: "M35.4 53 C32.6 34.6 44 25.4 58 25.4 C72 25.4 86.6 31.6 84.6 50 C80.6 46 78 42 72 42 C70 46 64 44 60 42 C56 46 50 44 46 44 C42 48 38 48 35.4 53 Z",
     FE: "M35.4 53 C38 48 42 48 46 44 C50 44 56 46 60 42 C64 44 70 46 72 42 C78 42 80.6 46 84.6 50" },
-  punta: { all: 1,
+  punta: { all: 1, flat: "corto",
     H: "M36 52 L34 40 L40 42 L40 30 L47 36 L50 24 L56 33 L61 22 L65 33 L71 24 L73 35 L80 30 L80 42 L86 40 L84 52 C78 44 70 40 60 40 C50 40 42 44 36 52 Z",
     FE: "M36 52 C42 44 50 40 60 40 C70 40 78 44 84 52" },
   undercut: { all: 1, shine: 1, shaved: "M36 55 C35 46 37 44.6 40 44.6 L40.4 56 Z M84 55 C85 46 83 44 80 44 L79.6 56 Z",
     H: "M38.4 44.6 C38 28 52 22 66 23 C80 24 88 32 86 42 C80 36 70 36 62 38 C52 40 44.4 44.4 38.4 44.6 Z",
     FE: "M38.4 44.6 C44.4 44.4 52 40 62 38 C70 36 80 36 86 42" },
-  tupe: { all: 1, shine: 1, strands: "M64 24 C70 22 74 26 72 30",
+  tupe: { all: 1, flat: "corto", shine: 1, strands: "M64 24 C70 22 74 26 72 30",
     H: "M36 52 C33 30 46 22 62 20 C74 18 89 24 86 36 C88 44 85 50 84 52 C80 40 70 36 58 37 C48 38 41 44 36 52 Z",
     FE: "M36 52 C41 44 48 38 58 37 C70 36 80 40 84 52" },
-  cresta: { all: 1, shaved: "M37 50 C36 36 46 30 60 30 C74 30 84 36 83 50 C76 43 68 41 60 41 C52 41 44 43 37 50 Z",
+  cresta: { all: 1, flat: "none", shaved: "M37 50 C36 36 46 30 60 30 C74 30 84 36 83 50 C76 43 68 41 60 41 C52 41 44 43 37 50 Z",
     H: "M54 38 L50 14 L58 22 L61 6 L65 22 L73 13 L68 38 Z", FE: "M54 38 L68 38" },
-  rizos: { all: 1,
+  rizos: { all: 1, hatS: 1.12,
     H: "M34.6 53 Q30.4 47.6 33.2 41.4 Q30.6 33.6 37.4 29 Q39 21.6 46.6 21.8 Q52.4 15.6 60 18.4 Q67.6 15.6 73.4 21.8 Q81 21.6 82.6 29 Q89.4 33.6 86.8 41.4 Q89.6 47.6 85.4 53 Q82.8 47.6 78.2 47.4 Q75 42.6 69.4 43.4 Q65.2 39.2 60 41.2 Q54.8 39.2 50.6 43.4 Q45 42.6 41.8 47.4 Q37.2 47.6 34.6 53 Z",
     FE: "M34.6 53 Q37.2 47.6 41.8 47.4 Q45 42.6 50.6 43.4 Q54.8 39.2 60 41.2 Q65.2 39.2 69.4 43.4 Q75 42.6 78.2 47.4 Q82.8 47.6 85.4 53",
     curls: "M40 34 q2.4 -2.4 4.8 0M50 27 q2.4 -2.4 4.8 0M62 26 q2.4 -2.4 4.8 0M73 31 q2.4 -2.4 4.8 0M45 39 q2 -2 4 0M57 34 q2 -2 4 0M68 37 q2 -2 4 0M79 40 q2 -2 4 0" },
@@ -410,10 +410,10 @@ const HAIR = {
     H: "M36 52 C34 32 46 26 60 26 C76 26 86 34 84 52 C80 42 72 38 62 38 C52 38 42 42 36 52 Z M35.6 45 C23 50 18 68 24 88 C27.6 76 31.6 64 38.6 55 Z M84.4 45 C97 50 102 68 96 88 C92.4 76 88.4 64 81.4 55 Z",
     FE: "M36 52 C42 42 52 38 62 38 C72 38 80 42 84 52",
     extra: () => VC(35.4, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) + VC(84.6, 48.4, 3, "#e58aa6", { w: .9, sh: 0, hl: 0 }) },
-  mono: { all: 1, shine: 1, strands: "M54 21 Q60 15 66 21 Q62 27 57 24",
+  mono: { all: 1, flat: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z", shine: 1, strands: "M54 21 Q60 15 66 21 Q62 27 57 24",
     H: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z M50 23 A10 10 0 1 1 70 23 A10 10 0 1 1 50 23 Z",
     FE: "M36 52 C42 43 50 39 60 39 C70 39 78 42 84 52" },
-  mono_alto: { all: 1, shine: 1, strands: "M53 17 Q60 10 67 17 Q63 24 57 20",
+  mono_alto: { all: 1, flat: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z", shine: 1, strands: "M53 17 Q60 10 67 17 Q63 24 57 20",
     H: "M36 52 C34 33 46 28 60 28 C76 28 86 35 84 52 C78 42 70 39 60 39 C50 39 42 43 36 52 Z M49 19 A11 11 0 1 1 71 19 A11 11 0 1 1 49 19 Z",
     FE: "M36 52 C42 43 50 39 60 39 C70 39 78 42 84 52",
     extra: () => VR(53.6, 27.6, 12.8, 3.6, 1.6, "#c0453a", { w: .8, sh: 0, hl: 0 }) },
@@ -441,23 +441,28 @@ const HAIR = {
   ondas: { deep: 1, shine: 1, noEars: 1,
     H: "M33 54 C32 38 44 27.6 60 27.6 C76 27.6 88 38 87 54 C90.6 62 86.6 70 89.2 79 C91.8 88 86 98 81.6 101.6 C79 96 77 91 76.6 86 L43.4 86 C43 91 41 96 38.4 101.6 C34 98 28.2 88 30.8 79 C33.4 70 29.4 62 33 54 Z",
     FE: "M42 112 L42.4 82 C43.2 74 40 68 40.6 61 C41 57 39.4 54 39.6 51 C43.4 45 49.6 42.6 56 42.4 C60 46 66 46 70 42.4 C76 42.4 80.4 45 80.4 51 C80.6 54 79 57 79.4 61 C80 68 76.8 74 77.6 82 L78 112" },
-  media_coleta: { deep: 1, shine: 1, noEars: 1,
+  media_coleta: { deep: 1, shine: 1, noEars: 1, flat: "M33 55 C33 40.1 45.1 28 60 28 C74.9 28 87 40.1 87 55 C87 68 87.4 82 87.8 96 C82.6 100.4 77.4 98 76.6 88 L43.4 88 C42.6 98 37.4 100.4 32.2 96 C32.6 82 33 68 33 55 Z",
     H: "M33 55 C33 40.1 45.1 28 60 28 C74.9 28 87 40.1 87 55 C87 68 87.4 82 87.8 96 C82.6 100.4 77.4 98 76.6 88 L43.4 88 C42.6 98 37.4 100.4 32.2 96 C32.6 82 33 68 33 55 Z M54 24.6 A6 6 0 1 1 66 24.6 A6 6 0 1 1 54 24.6 Z",
     FE: MELENA_FE,
     extra: () => VR(56, 28.4, 8, 2.8, 1.2, "#c0453a", { w: .8, sh: 0, hl: 0 }) },
-  rizada_larga: { deep: 1, noEars: 1,
+  rizada_larga: { deep: 1, noEars: 1, hatS: 1.1,
     H: "M31 100 Q27 95 30.4 89 Q27 83 30.8 77 Q27.4 71 31 65 Q27.6 59 31.4 53 Q28.6 46 33.6 41 Q32.6 33.6 39.6 31 Q40.4 24.6 47.6 25 Q52 19.6 58.6 22.4 Q65 19 70.4 23.4 Q77.6 22.4 80.6 29 Q87.6 30.6 87 38 Q91.6 42.6 88.8 48.6 Q92.6 54 89 59.4 Q92.6 65 89.2 70.8 Q92.8 76.6 89.4 82.4 Q93 88.4 89.2 94 Q90.6 100.4 84.6 102 Q79 105 76 99 L76 90 L44 90 L44 99 Q41 105 35.4 102.6 Q29.4 103.4 31 100 Z",
     FE: "M41.6 112 L42 84 Q39.8 78 41.8 72 Q39.4 66 41.2 60 Q38.8 55 41 50 Q41.8 44.4 47.4 43.4 Q51 38.6 56.6 40.8 Q60.8 37 65 40.2 Q70.6 38.6 73.8 43.6 Q79.4 44.6 79 50 Q81.2 55 78.8 60 Q80.6 66 78.2 72 Q80.2 78 78 84 L78.4 112",
     curls: "M34 44 q2.4 -2.4 4.8 0M44 29 q2.4 -2.4 4.8 0M57 25.6 q2.4 -2.4 4.8 0M70 27.6 q2.4 -2.4 4.8 0M80 35 q2.4 -2.4 4.8 0M31.6 58 q2.4 -2.4 4.8 0M84 58 q2.4 -2.4 4.8 0M31.6 74 q2.4 -2.4 4.8 0M84 74 q2.4 -2.4 4.8 0M32 90 q2.4 -2.4 4.8 0M83.6 90 q2.4 -2.4 4.8 0" },
-  afro: { noEars: 1,
+  afro: { noEars: 1, hatS: 1.24,
     H: scallop(60, 48, 28.6, 26, 16, 1.1),
     FE: "M39.6 112 L39.6 74 Q37.4 68 39.8 62 Q37.4 56 41 51 Q41.2 45 46.8 43.6 Q50 39 55.4 40.4 Q60 37.2 64.6 40.4 Q70 39 73.2 43.6 Q78.8 45 79 51 Q82.6 56 80.2 62 Q82.6 68 80.4 74 L80.4 112",
     curls: "M40 30 q2.4 -2.4 4.8 0M52 24.4 q2.4 -2.4 4.8 0M65 24.4 q2.4 -2.4 4.8 0M76 30 q2.4 -2.4 4.8 0M33.6 42 q2.4 -2.4 4.8 0M82 42 q2.4 -2.4 4.8 0M46 33 q2 -2 4 0M58 31 q2 -2 4 0M69 33 q2 -2 4 0M33 58 q2.4 -2.4 4.8 0M83 58 q2.4 -2.4 4.8 0" }
 };
 const HAIR_SHINE = "M44.6 33.4 Q51.6 28.8 59.6 29.6";
-function avHair(style, hc, part, k = "h", hc2 = null) {
+function avHair(style, hc, part, k = "h", hc2 = null, under = false) {
   if (style === "calvo") return part === "front" ? LINE("M44 34 q4 -3 9 -3", "#ffffff", 2, 'opacity=".5"') : "";
-  const S = HAIR[style] || HAIR.corto;
+  let S = HAIR[style] || HAIR.corto;
+  /* bajo un gorro o sombrero que tapa la coronilla, el moño, la cresta o los pinchos quedan aplastados debajo */
+  if (under && S.flat) {
+    if (S.flat === "none") return part === "front" && !SIL() && S.shaved ? `<path d="${S.shaved}" fill="${hc}" opacity=".4"/>` : "";
+    S = S.flat === "corto" ? HAIR.corto : Object.assign({}, S, { H: S.flat, extra: null, strands: null });
+  }
   const op = S.op ? ` opacity="${S.op}"` : "";
   const paint = hc2 ? `url(#${k}hg)` : hc, o = Object.assign({}, hairO, { lc: hc });
   if (part === "back") {
@@ -478,6 +483,8 @@ function avHair(style, hc, part, k = "h", hc2 = null) {
     (S.extra ? S.extra(hc, paint) : "");
 }
 
+/* gorros y sombreros que tapan la coronilla (bajo ellos se aplastan moños, crestas y pinchos) */
+const HAT_COVERS = ["lana", "boina", "paja", "corona", "papanoel", "bruja", "pamela", "vaquero"];
 /* ---------- sombreros y gorros (mismo sistema que antes) ---------- */
 function avHat(it, k) {
   if (!it) return "";
@@ -506,7 +513,10 @@ function avHat(it, k) {
     case "bruja": return VE(60, 40, 38, 7, "#3a2f45") + VP("M42 40 C46 26 52 14 58 6 C62 2 70 4 72 10 C66 10 64 14 66 20 C70 28 76 34 78 40Z", "#4a3a5c") + LINE("M44 35 C54 38 68 38 77 35", "#e8873f", 4) + `<rect x="56" y="31" width="7" height="7" fill="none" stroke="#f3d36b" stroke-width="1.6"/>`;
     case "orejas_gato": return LINE("M37 46 C40 28 80 28 83 46", "#2e2630", 4) + VP("M38 36 L40 18 L52 30Z", "#2e2630", { w: 1.2 }) + VP("M82 36 L80 18 L68 30Z", "#2e2630", { w: 1.2 }) + `<path d="M42 31 L42.5 23 L48 29Z M78 31 L77.5 23 L72 29Z" fill="#e58aa6"/>`;
     case "diadema_corazones": return LINE("M37 46 C40 28 80 28 83 46", "#e58aa6", 3.5) + LINE("M48 31 L46 20M72 31 L74 20", "#7a3b2e", 1.2) + HEART(46, 18, 1.8, "#e14f6c") + HEART(74, 18, 1.8, "#e14f6c");
-    case "horquilla": return LINE("M70 26 L86 16M74 30 L90 22", "#2e2630", 2) + `<g transform="translate(70 28)">${FLOWER(0, 0, 3, "#f2b5c4", "#c9607e")}</g>`;
+    case "horquilla": return LINE("M66.4 38.6 L73.6 34.6M66.6 34.4 L73.4 38.6", "#c9a24a", 1.3) + VC(66.4, 38.6, .75, "#e2c06a", { w: .4, sh: 0, hl: 0 }) + VC(66.6, 34.4, .75, "#e2c06a", { w: .4, sh: 0, hl: 0 }) +
+      VP("M73.2 37.4 C71 39.2 70.6 41.8 72 43.2 C73.6 41.8 74 39.6 73.2 37.4 Z", "#7fae5a", { w: .6, sh: 0, hl: 0 }) +
+      DET(`<g transform="translate(77 33.4)">${[0, 72, 144, 216, 288].map(a => `<ellipse cx="0" cy="-3.1" rx="2.3" ry="3.1" fill="#f6b7c8" stroke="#d9708f" stroke-width=".5" transform="rotate(${a})"/><path d="M0 -1.2 L0 -4" stroke="#e58aa6" stroke-width=".45" transform="rotate(${a})"/>`).join("")}<circle r="1.4" fill="#f3d36b" stroke="#c9a24a" stroke-width=".4"/></g>`) +
+      VP("M80.6 38.6 C82.6 37 85 37.6 85.4 39.6 C84 41.6 81.6 41.4 80.6 38.6 Z", "#f6b7c8", { w: .7, sh: 0, hl: 0 });
     case "pamela": return VE(60, 40, 44, 9, "#ead39b") + VP("M40 40 C40 22 80 22 80 40Z", "#efdcab") + LINE("M40 36 C52 39 68 39 80 36", "#4f7fae", 3.5);
     case "vaquero": return VP("M18 40 C24 48 40 46 60 45 C80 46 96 48 102 40 C96 44 88 42 82 40 L78 22 C74 14 68 18 60 18 C52 18 46 14 42 22 L38 40 C32 42 24 44 18 40Z", "#a8724a") + LINE("M39 36 C50 39 70 39 81 36", "#6b4430", 3.5);
     default: return "";
@@ -597,6 +607,7 @@ function avatarG(eq, mood, opt = {}) {
   return `<g class="av ${mood}">${onePiece(body)}</g>`;
 }
 function avatarBody(eq, mood, opt, k) {
+  const hatIt = findItem("head", eq.head), hatCovers = !!hatIt && (hatIt.k === "cap" || HAT_COVERS.includes(hatIt.id)), hatS = hatIt ? (HAIR[eq.hair] || {}).hatS || 1 : 1;
   const hcI = findItem("hairColor", eq.hairColor) || { c: "#6b4430" }, hc = hcI.c, hc2 = hcI.c2 || null, sk = (findItem("skin", eq.skin) || { c: "#e8bd9a" }).c;
   const coat = findItem("coat", eq.coat), top = findItem("top", eq.top), bottom = findItem("bottom", eq.bottom), shoes = findItem("shoes", eq.shoes), acc = findItem("acc", eq.acc);
   const rep = coat ? (COAT_REPLACES[coat.k] || []) : [];
@@ -609,24 +620,25 @@ function avatarBody(eq, mood, opt, k) {
       ${avBeard(eq, hc, "base")}${avBlush(eq)}${avEyes(eq, mood)}${avBrows(eq, mood, hc)}${avNose(eq, sk)}
       ${avFaceExtra(eq, hc)}${avMouth(eq, mood, sk)}${avBeard(eq, hc, "top")}
       ${avMask(acc)}
-      <g ${hairT}>${avHair(eq.hair, hc, "front", k, hc2)}</g>
+      <g ${hairT}>${avHair(eq.hair, hc, "front", k, hc2, hatCovers)}</g>
       ${avEarrings(eq.ears)}
       ${avGlasses(eq.glasses)}
-      <g ${hairT}>${avHat(findItem("head", eq.head), k)}</g>
+      <g ${hairT}><g${hatS !== 1 ? ` transform="translate(60 48) scale(${hatS}) translate(-60 -48)"` : ""}>${avHat(hatIt, k)}</g></g>
     </g>`;
-  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2)}</g>${neck}${head}`;
+  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2, hatCovers)}</g>${neck}${head}`;
   const sleeveFrom = coat && COAT_SLEEVE[coat.k] ? coat : (rep.includes("top") ? coat : top);
   const sleeveLen = coat && COAT_SLEEVE[coat.k] ? COAT_SLEEVE[coat.k] : (rep.includes("top") ? "short" : SLEEVE[top && top.k] || "short");
   const sPaint = sleeveFrom && sleeveFrom.pat ? `url(#${k}${sleeveFrom === top ? "t" : "d"})` : null;
   const sc = (sleeveFrom && sleeveFrom.c) || "#cccccc";
   const arm = side => avArm(side, sk, sleeveLen, sPaint, sc, acc);
   const tallShoes = shoes && (shoes.k === "boot" || shoes.k === "cowboy");
+  const bootsOver = tallShoes && (rep.includes("bottom") || !bottom || ["shorts", "skirt", "skirtL"].includes(bottom.cut));
   return `${avCoatBack(coat)}${avAccBack(acc)}
-    <g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2)}</g>
+    <g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2, hatCovers)}</g>
     ${avLegs(sk)}
-    ${tallShoes ? "" : avShoes(shoes)}
+    ${bootsOver ? "" : avShoes(shoes)}
     ${rep.includes("bottom") ? "" : avBottom(bottom, k)}
-    ${tallShoes ? avShoes(shoes) : ""}
+    ${bootsOver ? avShoes(shoes) : ""}
     <g class="av-up">
       ${neck}
       ${rep.includes("top") ? "" : avTop(top, sk, k)}

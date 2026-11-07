@@ -368,7 +368,7 @@ function renderShop() {
     if (isRoomCat(c)) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[c], static: true })}</span>`;
     return `<span class="thumb">${still(() => avatarSVG(eq, "neutral", "", AV_FOCUS[c] || AV_CROP.full))}</span>`;
   };
-  const list = isSets ? setItems(shopSet) : SHOP[shopCat].items.map(it => ({ cat: shopCat, it }));
+  const list = (isSets ? setItems(shopSet) : SHOP[shopCat].items.map(it => ({ cat: shopCat, it }))).map((x, i) => [x, i]).sort((a, b) => a[0].it.price - b[0].it.price || a[1] - b[1]).map(([x]) => x);
   const showRoom = isSets ? true : isRoomCat(shopCat);
   const stageEq = preview || G.eq;
   const fresh = shopFresh; shopFresh = false;
