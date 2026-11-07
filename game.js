@@ -2,7 +2,7 @@
 /* ================= MODO CONSULTA (lógica) — los dibujos y el catálogo están en art.js ================= */
 const DEFAULT_EQ = {
   hair: "corto", hairColor: "castano", skin: "s2", eyeShape: "punto", eyeColor: "marron", brows: "finas", nose: "boton", mouth: "sonrisa", blush: "suave", face: null,
-  top: "camisa", bottom: "vaqueros", shoes: "zapatillas", coat: "bata", glasses: null, head: null, neck: "esteto", ears: null, acc: null,
+  top: "camisa", bottom: "vaqueros", shoes: "zapatillas", coat: null, glasses: null, head: null, neck: "esteto", ears: null, acc: null,
   wall: "crema", floor: "tarima", view: "campo", curtains: "terracota", table: "metal",
   ceiling: null, wallL: null, wallC: null, wallR: null, shelf: null, sill: null, cornerL: null, plant: null, rug: null, pet: null
 };
@@ -40,6 +40,8 @@ G.eq = Object.assign({}, DEFAULT_EQ, G.eq);
   if ("outfit" in G.eq) { if (G.eq.outfit) Object.assign(G.eq, OUTFIT(G.eq.outfit)); delete G.eq.outfit; }
   if ("eyes" in G.eq) { if (G.eq.eyes) G.eq.glasses = G.eq.eyes; delete G.eq.eyes; }
   G.owned = [...new Set(G.owned)];
+  /* v2: la bata blanca deja de venir regalada (hay que comprarla); solo se aplica una vez */
+  if ((G.ver || 1) < 2) { G.owned = G.owned.filter(o => o !== "coat:bata"); if (G.eq.coat === "bata") G.eq.coat = null; G.ver = 2; }
   DEFAULT_GAME.owned.forEach(o => { if (!G.owned.includes(o)) G.owned.push(o); });
   for (const c of SHOP_ORDER) if (G.eq[c] && !findItem(c, G.eq[c])) G.eq[c] = DEFAULT_EQ[c];
 })();

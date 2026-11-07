@@ -52,25 +52,63 @@ const lighten = (h, t = .3) => mixC(h, "#ffffff", t);
 const lineOf = fill => /^#[0-9a-f]{3,6}$/i.test(fill || "") ? mixC(darken(fill, .5), "#3a2418", .35) : "#5b3b28";
 const LN = (fill, w = 1.8) => `stroke="${lineOf(fill)}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"`;
 let ANIM = true;   /* false en miniaturas o con movimiento reducido */
+/* Figuras "de una pieza" (personajes y animales): se dibujan en dos pasadas.
+   1.ª pasada (sil): solo la silueta de cada forma con un trazo grueso → un único contorno exterior.
+   2.ª pasada (fill): rellenos con volumen y líneas interiores finas, que tapan la mitad interior de ese trazo.
+   Así no se ve "cabeza encima de cuerpo" ni brazos sueltos: solo el contorno de la figura entera. */
+let VMODE = "full";
+function onePiece(fn) {
+  const p = VMODE;
+  try { VMODE = "sil"; const a = fn(); VMODE = "fill"; const b = fn(); return `<g>${a}</g>${b}`; }
+  finally { VMODE = p; }
+}
+const SIL = () => VMODE === "sil";
 /* forma con volumen: color base + sombra (gradiente) + brillo + contorno de color */
 function V(tag, attrs, fill, o = {}) {
   const w = o.w === undefined ? 1.8 : o.w, x = o.x ? " " + o.x : "";
+  if (VMODE === "sil") { if (!w || o.sil === 0) return ""; const lc = lineOf(o.lc || fill); return `<${tag} ${attrs} fill="${lc}" stroke="${lc}" stroke-width="${(w * 2).toFixed(2)}" stroke-linejoin="round"${x}/>`; }
   let s = `<${tag} ${attrs} fill="${fill}"${x}/>`;
   if (o.sh !== 0) s += `<${tag} ${attrs} fill="url(#${o.dir || "gSh"})"${o.sh && o.sh !== 1 ? ` opacity="${o.sh}"` : ""}${x}/>`;
   if (o.hl !== 0) s += `<${tag} ${attrs} fill="url(#gHl)"${o.hl && o.hl !== 1 ? ` opacity="${o.hl}"` : ""}${x}/>`;
-  if (w) s += `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, w)}${x}/>`;
+  if (w && o.in !== 0) s += VMODE === "fill" ? `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, +(w * .5).toFixed(2))} stroke-opacity=".85"${x}/>` : `<${tag} ${attrs} fill="none" ${LN(o.lc || fill, w)}${x}/>`;
   return s;
 }
 const VP = (d, fill, o) => V("path", `d="${d}"`, fill, o);
 const VE = (cx, cy, rx, ry, fill, o) => V("ellipse", `cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"`, fill, o);
 const VC = (cx, cy, r, fill, o) => V("circle", `cx="${cx}" cy="${cy}" r="${r}"`, fill, o);
 const VR = (x, y, w, h, rx, fill, o) => V("rect", `x="${x}" y="${y}" width="${w}" height="${h}" rx="${rx}"`, fill, o);
-const LINE = (d, c, w = 1.4, extra = "") => `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
-const SOFT = (cx, cy, rx, ry, o = .5) => `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#gSoft)" opacity="${o}"/>`;
+/* detalles (trazos, sombras, definiciones): no cuentan para la silueta, así que se omiten en la 1.ª pasada */
+const LINE = (d, c, w = 1.4, extra = "") => VMODE === "sil" ? "" : `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${extra}/>`;
+const SOFT = (cx, cy, rx, ry, o = .5) => VMODE === "sil" ? "" : `<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="url(#gSoft)" opacity="${o}"/>`;
+const DEFS = s => VMODE === "sil" ? "" : `<defs>${s}</defs>`;
+const DET = s => VMODE === "sil" ? "" : s;
 /* animaciones SMIL (deformar trazos: llamas, colas, crines) */
 const MORPH = (ds, dur, extra = "") => ANIM ? `<animate attributeName="d" values="${ds.join(";")}" dur="${dur}s" repeatCount="indefinite" calcMode="spline" keySplines="${ds.slice(1).map(() => ".45 0 .55 1").join(";")}" ${extra}/>` : "";
 const ANI = (attr, values, dur, extra = "") => ANIM ? `<animate attributeName="${attr}" values="${values}" dur="${dur}s" repeatCount="indefinite" ${extra}/>` : "";
 const ANIT = (type, values, dur, extra = "") => ANIM ? `<animateTransform attributeName="transform" type="${type}" values="${values}" dur="${dur}s" repeatCount="indefinite" ${extra}/>` : "";
+/* forma rellena que se deforma (crines, colas, borlas) y que también cuenta para la silueta */
+function VPM(ds, dur, fill, o = {}) {
+  const m = MORPH(ds, dur), w = o.w === undefined ? 1.6 : o.w, lc = lineOf(o.lc || fill);
+  if (VMODE === "sil") return `<path d="${ds[0]}" fill="${lc}" stroke="${lc}" stroke-width="${w * 2}" stroke-linejoin="round">${m}</path>`;
+  const ln = VMODE === "fill" ? `${LN(o.lc || fill, +(w * .5).toFixed(2))} stroke-opacity=".85"` : LN(o.lc || fill, w);
+  return `<path d="${ds[0]}" fill="${fill}">${m}</path>` + (o.sh === 0 ? "" : `<path d="${ds[0]}" fill="url(#gSh)">${m}</path>`) + `<path d="${ds[0]}" fill="none" ${ln}>${m}</path>`;
+}
+/* trazo grueso tipo "extremidad" (colas finas) que se puede deformar */
+function TUBE(ds, w, color, dur) {
+  const m = dur ? MORPH(ds, dur) : "", lc = lineOf(color);
+  if (VMODE === "sil") return `<path d="${ds[0]}" fill="none" stroke="${lc}" stroke-width="${w + 3.4}" stroke-linecap="round" stroke-linejoin="round">${m}</path>`;
+  return (VMODE === "full" ? `<path d="${ds[0]}" fill="none" stroke="${lc}" stroke-width="${w + 2.6}" stroke-linecap="round" stroke-linejoin="round">${m}</path>` : "") +
+    `<path d="${ds[0]}" fill="none" stroke="${color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${m}</path>`;
+}
+/* la boca abierta y similares: el interior (lengua, dientes) se recorta dentro de la forma para que nunca se salga */
+let mouthK = 0;
+function openMouth(d, inside, line = "#7a3b2e", fill = "#9c3434", lw = 1.3) {
+  if (VMODE === "sil") return "";
+  const id = "mo" + (mouthK++);
+  return `<defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs><path d="${d}" fill="${fill}"/><g clip-path="url(#${id})">${inside}</g><path d="${d}" fill="none" stroke="${line}" stroke-width="${lw}" stroke-linejoin="round" stroke-linecap="round"/>`;
+}
+/* espejo horizontal de un trazo con coordenadas absolutas (para el brazo derecho, etc.) */
+const mirX = (d, axis = 60) => d.replace(/(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/g, (m, x, y) => `${+(2 * axis - x).toFixed(2)} ${y}`);
 /* la decoración antigua (contorno negro) pasa a contorno de color con sombreado */
 function paintLegacy(s) {
   const parts = s.split(/(<defs>[\s\S]*?<\/defs>)/);
@@ -176,7 +214,7 @@ const SHOP = {
     { id: "merceditas", name: "Merceditas rojas", k: "flat", c: "#c0453a", strap: 1, price: 100, set: "sanvalentin" }, { id: "zapatillas_tela", name: "Zapatillas de tela", k: "cloth", c: "#3f5878", price: 90, set: "asiatico" },
     { id: "alpargatas", name: "Alpargatas", k: "espadrille", c: "#4f7fae", price: 90, set: "mediterraneo" }, { id: "botas_vaqueras", name: "Botas vaqueras", k: "cowboy", c: "#8a5636", price: 140, set: "americano" }] },
   coat: { label: "Batas y vestidos", opt: true, items: [
-    { id: "bata", name: "Bata blanca", k: "lab", c: "#fbf8f2", price: 0 }, { id: "bata_botones", name: "Bata con botones de colores", k: "lab", c: "#fbf8f2", btn: 1, price: 90 },
+    { id: "bata", name: "Bata blanca", k: "lab", c: "#fbf8f2", price: 80 }, { id: "bata_botones", name: "Bata con botones de colores", k: "lab", c: "#fbf8f2", btn: 1, price: 90 },
     { id: "bata_huella", name: "Bata con huella bordada", k: "lab", c: "#fbf8f2", emb: "#e8a65a", price: 110 }, { id: "bata_rosa", name: "Bata rosa", k: "lab", c: "#f6d6dc", price: 80 },
     { id: "bata_azul", name: "Bata azul", k: "lab", c: "#d6e6f2", price: 80 }, { id: "bata_verde", name: "Bata verde menta", k: "lab", c: "#d8ead2", price: 80 },
     { id: "peto", name: "Peto de granja", k: "overalls", c: "#5f84a8", price: 160 }, { id: "delantal", name: "Delantal de granja", k: "apron", c: "#8fae8b", price: 90 },

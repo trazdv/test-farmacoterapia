@@ -34,7 +34,7 @@ function avLimb(d, w, color, paint) {
     `<path d="${d}" fill="none" stroke="${paint || color}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>` +
     `<path d="${d}" fill="none" stroke="#2a1408" stroke-opacity=".13" stroke-width="${(w * .38).toFixed(1)}" stroke-linecap="round" transform="translate(${(w * .27).toFixed(2)} 0)"/>`;
 }
-const avPat = (k, it, id) => it && it.pat ? `<defs>${patternDef(k + id, it.pat, it.c, it.pc)}</defs>` : "";
+const avPat = (k, it, id) => it && it.pat ? DEFS(patternDef(k + id, it.pat, it.c, it.pc)) : "";
 const avFill = (k, it, id) => it && it.pat ? `url(#${k}${id})` : (it ? it.c : "#cccccc");
 
 /* ---------- parte de abajo ---------- */
@@ -113,9 +113,9 @@ function avTop(it, sk, k) {
     case "vest": s = VP(AVG.torso, "#a9c7d9") + collar("#dfeef2") + VP("M37 94 C37 88 44 85 50 85 L57 133 C50 135 42 134 35 132 Z", c) + VP("M83 94 C83 88 76 85 70 85 L63 133 C70 135 78 134 85 132 Z", c) + LINE("M42 102 q4 2 8 0M41 114 q5 2 10 0M78 102 q-4 2 -8 0M79 114 q-5 2 -10 0", lighten(c, .2), 1.2); break;
     case "hoodie": s = `<path d="M44 92 Q60 104 76 92 L74 86 Q60 96 46 86Z" fill="${d}"/>` + VP(AVG.torso, c) + LINE("M45 90 Q60 101 75 90", d, 1.4) + LINE("M55 92 v10M65 92 v10", "#fbf7ef", 1.4) + VP("M44 134 L46 120 Q60 115 74 120 L76 134 Z", darken(c, .92), { w: 1.1 }) + PAWP(60, 107, 1.3, darken(c, .55)); break;
     case "hawaiian": s += collar(lighten(c, .15)) + `<path d="M52 85.5 L60 96 L68 85.5Z" fill="${sk}"/>` + [[43, 102], [74, 100], [50, 122], [70, 124], [80, 118], [40, 124], [62, 110]].map(([x, y], i) => FLOWER(x, y, 2.2, i % 2 ? "#f3d36b" : "#f29b8a", "#fff6d8")).join("") + LINE("M60 96 L60 133", d, .9); break;
-    case "breton": s = `<defs>${patternDef(k + "m", "marinera", "#fbf8f2", "#3f5878")}</defs>` + VP(AVG.torso, `url(#${k}m)`, { lc: "#3f5878" }) + LINE("M47 86.5 Q60 91 73 86.5", "#3f5878", 2.6); break;
+    case "breton": s = DEFS(patternDef(k + "m", "marinera", "#fbf8f2", "#3f5878")) + VP(AVG.torso, `url(#${k}m)`, { lc: "#3f5878" }) + LINE("M47 86.5 Q60 91 73 86.5", "#3f5878", 2.6); break;
     case "denim": s += collar(lighten(c, .12)) + LINE("M38 99 Q60 93 82 99", "#e2a65a", .9, 'stroke-dasharray="1.6 1.4"') + LINE("M60 92 L60 133", d, .9) + [102, 112, 122].map(y => `<circle cx="61.5" cy="${y}" r="1.1" fill="#fbf7ef"/>`).join("") + VP("M41 101 h12 l-1.5 5 h-9Z", darken(c, .9), { w: .9, sh: 0 }) + VP("M67 101 h12 l-1.5 5 h-9Z", darken(c, .9), { w: .9, sh: 0 }); break;
-    case "plaid": s = `<defs>${patternDef(k + "p", "cuadros", c, darken(c, .55))}</defs>` + VP(AVG.torso, `url(#${k}p)`, { lc: c }) + collar(lighten(c, .1)) + LINE("M60 92 L60 133", darken(c, .6), .9); break;
+    case "plaid": s = DEFS(patternDef(k + "p", "cuadros", c, darken(c, .55))) + VP(AVG.torso, `url(#${k}p)`, { lc: c }) + collar(lighten(c, .1)) + LINE("M60 92 L60 133", darken(c, .6), .9); break;
     case "blazer": s = VP(AVG.torso, "#fbf7ef") + `<path d="M57.5 92 L62.5 92 L63.5 110 L60 115 L56.5 110Z" fill="${it.tie || "#b8473a"}" ${LN(it.tie || "#b8473a", 1)}/>` + VP("M37 94 C37 88 44 85 51 85 L60 116 L57 134 C50 135 42 134 35 132 Z", c) + VP("M83 94 C83 88 76 85 69 85 L60 116 L63 134 C70 135 78 134 85 132 Z", c) + LINE("M51 85 L55 102 L52 106M69 85 L65 102 L68 106", lighten(c, .2), 1.1) + `<path d="M73 100 l6 -1 l.6 2.6 l-6 1Z" fill="#fbf7ef"/>`; break;
     default: s += crew();
   }
@@ -138,12 +138,13 @@ function avCoat(it, sk, k) {
   const panelR = (b) => `M83 94 C83 88 76 85 68 85 L64 85 L63 108 L62 ${b} L88 ${b} C89.5 ${b - 18} 87 120 85 108 Z`;
   switch (it.k) {
     case "lab": {
-      let s = VP("M49 85 Q60 79 71 85 L69 88 Q60 84 51 88 Z", d, { w: 1 }) + VP(panelL(166), c) + VP(panelR(166), c);
-      s += VP("M52 85 L58 85 L57.5 107 L49 95 Z", lighten(c, .3), { w: 1.1, sh: .6 }) + VP("M68 85 L62 85 L62.5 107 L71 95 Z", lighten(c, .3), { w: 1.1, sh: .6 });
-      s += VR(36, 136, 15, 12, 1.5, c, { w: 1.1, sh: .5, hl: 0 }) + VR(69, 136, 15, 12, 1.5, c, { w: 1.1, sh: .5, hl: 0 }) + LINE("M73 133 v6", "#4f6fae", 1.6) + LINE("M77 134 v5", "#c0453a", 1.6);
-      s += VR(40, 99, 12, 6, 1.2, "#f3e6cf", { w: .9, sh: 0, hl: 0 }) + LINE("M42.5 102 h7", "#c9a77d", 1.1);
-      s += [114, 128, 142].map((y, i) => `<circle cx="64.5" cy="${y}" r="${it.btn ? 2 : 1.3}" fill="${it.btn ? ["#e58aa6", "#7fb2cf", "#f3d36b"][i] : darken(c, .55)}" ${it.btn ? LN("#e58aa6", .8) : ""}/>`).join("");
-      if (it.emb) s += PAWP(76, 112, .9, it.emb);
+      const lab = "M37 94 C37 88 44 85 52 85 L53.6 85 L50.4 104 L49.6 152 L32.4 152 C31 136 33 120 35 108 Z";
+      let s = VP("M49 85 Q60 79.5 71 85 L69 88 Q60 84.4 51 88 Z", d, { w: 1 }) + VP(lab, c) + VP(mirX(lab), c);
+      s += VP("M52.4 85 L56.6 85 L51.4 102.6 L46.6 95 Z", lighten(c, .3), { w: 1.1, sh: .6 }) + VP(mirX("M52.4 85 L56.6 85 L51.4 102.6 L46.6 95 Z"), lighten(c, .3), { w: 1.1, sh: .6 });
+      s += LINE("M41.5 97.6 L41.5 103", "#4f6fae", 1.5) + LINE("M44.6 97.2 L44.6 103", "#c0453a", 1.5) + VR(38.6, 101, 9.6, 7, 1.2, c, { w: 1, sh: .5, hl: 0 });
+      s += VR(35.4, 127, 12.4, 11, 1.5, c, { w: 1.1, sh: .5, hl: 0 }) + VR(72.2, 127, 12.4, 11, 1.5, c, { w: 1.1, sh: .5, hl: 0 }) + VR(72, 100.4, 9.6, 5, 1, "#f3e6cf", { w: .8, sh: 0, hl: 0 }) + LINE("M74 103 h5.6", "#c9a77d", 1);
+      s += DET([112, 124, 136].map((y, i) => `<circle cx="71.6" cy="${y}" r="${it.btn ? 1.9 : 1.2}" fill="${it.btn ? ["#e58aa6", "#7fb2cf", "#f3d36b"][i] : darken(c, .55)}" ${it.btn ? LN("#e58aa6", .8) : ""}/>`).join(""));
+      if (it.emb) s += DET(PAWP(78, 114, .9, it.emb));
       return s;
     }
     case "overalls": {
@@ -160,7 +161,7 @@ function avCoat(it, sk, k) {
     case "cape": return `<circle cx="44" cy="90" r="3" fill="#f0c25e" ${LN("#f0c25e", 1)}/><circle cx="76" cy="90" r="3" fill="#f0c25e" ${LN("#f0c25e", 1)}/>` + LINE("M44 90 Q60 96 76 90", "#f0c25e", 1.4);
     case "vampire": return `<path d="M48 88 L60 96 L72 88" fill="none" stroke="#b8473a" stroke-width="2"/>` + `<circle cx="60" cy="96" r="2.4" fill="#f0c25e" ${LN("#f0c25e", .8)}/>`;
     case "haori": {
-      return `<defs>${patternDef(k + "h", "sakura", "#3f5878", "#e9a1b5")}</defs>` + VP(panelL(150), `url(#${k}h)`, { lc: "#3f5878" }) + VP(panelR(150), `url(#${k}h)`, { lc: "#3f5878" }) + LINE("M54 86 L56.5 150M66 86 L63.5 150", "#2d4058", 4.5) + LINE("M55 118 q5 3 10 0", "#f3e6cf", 1.6);
+      return DEFS(patternDef(k + "h", "sakura", "#3f5878", "#e9a1b5")) + VP(panelL(150), `url(#${k}h)`, { lc: "#3f5878" }) + VP(panelR(150), `url(#${k}h)`, { lc: "#3f5878" }) + LINE("M54 86 L56.5 150M66 86 L63.5 150", "#2d4058", 4.5) + LINE("M55 118 q5 3 10 0", "#f3e6cf", 1.6);
     }
     case "wintercoat": return VP("M37 94 C37 88 44 85 52 85 L68 85 C76 85 83 88 83 94 L87 158 C76 163 44 163 33 158 Z", c) + VP("M33 152 C44 158 76 158 87 152 L87.6 160 C76 166 44 166 32.4 160 Z", "#fbf7ef", { w: 1 }) + VP("M47 84 Q60 94 73 84 L74 89 Q60 99 46 89 Z", "#fbf7ef", { w: 1 }) + LINE("M60 92 L60 156", d, 1) + [106, 120, 134].map(y => `<circle cx="64" cy="${y}" r="1.9" fill="#f0c25e" ${LN("#f0c25e", .8)}/>`).join("") + `<rect x="34" y="124" width="52" height="4.5" rx="2" fill="#2e2630"/>`;
     case "denimvest": return VP("M37 94 C37 88 44 85 50 85 L57 134 C50 135 42 134 35 132 Z", c) + VP("M83 94 C83 88 76 85 70 85 L63 134 C70 135 78 134 85 132 Z", c) + LINE("M38 99 Q46 96 54 99M82 99 Q74 96 66 99", "#e2a65a", .9, 'stroke-dasharray="1.6 1.4"') + VR(41, 102, 10, 6, 1, darken(c, .9), { w: .8, sh: 0 }) + VR(69, 102, 10, 6, 1, darken(c, .9), { w: .8, sh: 0 }) + [36, 40, 44, 48, 52, 68, 72, 76, 80, 84].map(x => LINE(`M${x} 133 l${x < 60 ? -.5 : .5} 5`, c, 1.4)).join("");
@@ -175,7 +176,7 @@ function avAccBack(it) { if (!it || it.id !== "mochila") return ""; return VR(31
 function avAccFront(it) {
   if (!it) return "";
   switch (it.id) {
-    case "reloj": return `<rect x="29" y="119.5" width="8" height="3.6" rx="1.4" fill="#6b4430"/>` + VC(33, 121.3, 2.6, "#f3e6cf", { w: 1, sh: 0 }) + LINE("M33 121.3 v-1.4M33 121.3 h1", "#2e2630", .6);
+    case "reloj": return DET(`<path d="M30.4 118.4 L37.5 118.1 L37.3 121.5 L30.2 121.9 Z" fill="#6b4430"/>`) + VC(33.8, 120, 2.4, "#f3e6cf", { w: 1, sh: 0 }) + LINE("M33.8 120 v-1.3M33.8 120 h1", "#2e2630", .6);
     case "credencial": return LINE("M53 86 L58 108M67 86 L62 108", "#4f6fae", 1.6) + VR(54.5, 107, 11, 13, 1.5, "#fbf7ef", { w: .9, sh: 0 }) + `<rect x="56.5" y="109" width="4" height="5" fill="#9cc0cf"/>` + LINE("M61.5 110 h2.6M61.5 112.4 h2.6M56.5 116.5 h7", "#c9b48e", .9);
     case "bandolera": return LINE("M43 88 L80 126", "#8a5a3a", 2.6) + VR(72, 122, 17, 14, 3, "#a87447", { w: 1.2 }) + VP("M72 122 h17 v6 q-8.5 4 -17 0Z", "#8a5a3a", { w: 1, sh: 0 }) + `<circle cx="80.5" cy="128.5" r="1.3" fill="#f0c25e"/>`;
     case "mochila": return LINE("M44 88 L45 120M76 88 L75 120", "#a8483a", 3.4) + `<rect x="42.5" y="104" width="5" height="3" rx="1" fill="#f0c25e"/><rect x="72.5" y="104" width="5" height="3" rx="1" fill="#f0c25e"/>`;
@@ -183,10 +184,11 @@ function avAccFront(it) {
     default: return "";
   }
 }
-const avMask = it => it && it.id === "mascarilla" ? VP("M46.5 59.5 C52 58 68 58 73.5 59.5 L72.5 70 C66 75.5 54 75.5 47.5 70 Z", "#bfe0e8", { w: 1.1, sh: .5 }) + LINE("M49 63 h22M49 66.5 h22", "#9cc0cf", .9) + LINE("M46.5 61 L37 58M73.5 61 L83 58", "#dfeef2", 1) : "";
+const avMask = it => it && it.id === "mascarilla" && !SIL() ? VP("M46.5 59.5 C52 58 68 58 73.5 59.5 L72.5 70 C66 75.5 54 75.5 47.5 70 Z", "#bfe0e8", { w: 1.1, sh: .5 }) + LINE("M49 63 h22M49 66.5 h22", "#9cc0cf", .9) + LINE("M46.5 61 L37 58M73.5 61 L83 58", "#dfeef2", 1) : "";
 
 /* ---------- cara ---------- */
 function avEyes(eq, mood) {
+  if (SIL()) return "";
   const ic = (findItem("eyeColor", eq.eyeColor) || { c: "#5a3a26" }).c, ink = mixC(ic, "#1c1410", .72), shape = eq.eyeShape || "punto";
   if (shape === "alegres" || (mood === "happy" && shape === "punto")) return LINE("M46.5 58 Q50 53.5 53.5 58M66.5 58 Q70 53.5 73.5 58", ink, 2.2);
   const at = (x) => {
@@ -203,6 +205,7 @@ function avEyes(eq, mood) {
   return `<g class="av-blink">${at(50)}${at(70)}</g>${tear}`;
 }
 function avBrows(eq, mood, hc) {
+  if (SIL()) return "";
   const c = darken(hc, .82), b = eq.brows || "finas";
   if (mood === "sad") return LINE("M46.5 50.6 L53.8 47.8M66.2 47.8 L73.5 50.6", c, 2.2);
   switch (b) {
@@ -215,6 +218,7 @@ function avBrows(eq, mood, hc) {
   }
 }
 function avNose(eq, sk) {
+  if (SIL()) return "";
   const c = darken(sk, .7);
   switch (eq.nose) {
     case "punto": return `<ellipse cx="60" cy="62" rx="1.1" ry=".85" fill="${c}"/>`;
@@ -226,24 +230,39 @@ function avNose(eq, sk) {
   }
 }
 function avMouth(eq, mood, sk) {
-  const y = eq.face === "bigote" ? 1.2 : 0, ln = "#7a3b2e";
+  if (SIL()) return "";
+  const y = eq.face === "bigote" ? 1.2 : 0, ln = "#7a3b2e", Y = v => +(v + y).toFixed(2);
   const m = mood === "sad" ? "triste" : mood === "happy" ? (eq.mouth === "labios" ? "labios_feliz" : !eq.mouth || eq.mouth === "sonrisa" ? "abierta" : eq.mouth) : (eq.mouth || "sonrisa");
   const T = (d, w = 1.6) => LINE(d, ln, w);
+  const smile = `M54.5 ${Y(65)} Q60 ${Y(69.6)} 65.5 ${Y(65)}`;
+  const teeth = (bottom) => `<path d="M50 ${Y(60)} H70 V${Y(bottom)} Q60 ${Y(bottom + 1.3)} 50 ${Y(bottom)} Z" fill="#fffdf8"/>`;
   switch (m) {
-    case "triste": return T(`M55 ${67.5 + y} Q60 ${63.5 + y} 65 ${67.5 + y}`);
-    case "abierta": return `<path d="M54 ${64.5 + y} Q60 ${72.5 + y} 66 ${64.5 + y} Z" fill="#b8433f" stroke="${ln}" stroke-width="1.3" stroke-linejoin="round"/><ellipse cx="60" cy="${68.8 + y}" rx="3" ry="1.6" fill="#f08a8a"/><path d="M55.5 ${65 + y} Q60 ${66.6 + y} 64.5 ${65 + y}" fill="#fff" opacity=".9"/>`;
-    case "gatuna": return T(`M55 ${65 + y} Q57.5 ${67.6 + y} 60 ${65 + y} Q62.5 ${67.6 + y} 65 ${65 + y}`);
-    case "timida": return T(`M57.5 ${66 + y} Q60 ${67.6 + y} 62.5 ${66 + y}`);
-    case "dientes": return `<path d="M54 ${64.5 + y} Q60 ${71 + y} 66 ${64.5 + y} Z" fill="#fffdf8" stroke="${ln}" stroke-width="1.3" stroke-linejoin="round"/>` + LINE(`M54.6 ${65.6 + y} Q60 ${67.4 + y} 65.4 ${65.6 + y}`, "#d9cfc2", .8);
-    case "lengua": return T(`M54 ${64.5 + y} Q60 ${69.5 + y} 66 ${64.5 + y}`) + `<path d="M61 ${66.8 + y} q2.4 4.4 4.4 0Z" fill="#f08a8a" stroke="${ln}" stroke-width="1"/>`;
-    case "labios": return `<path d="M55 ${65.5 + y} Q57.5 ${64 + y} 60 ${65 + y} Q62.5 ${64 + y} 65 ${65.5 + y} Q60 ${70 + y} 55 ${65.5 + y}Z" fill="#d4566a" stroke="#a83a4e" stroke-width="1"/>` + `<path d="M56.5 ${66.5 + y} Q60 ${67.5 + y} 63.5 ${66.5 + y}" fill="none" stroke="#f3a3b0" stroke-width=".9"/>`;
-    case "labios_feliz": return `<path d="M54 ${64.5 + y} Q60 ${72 + y} 66 ${64.5 + y} Q60 ${66 + y} 54 ${64.5 + y}Z" fill="#d4566a" stroke="#a83a4e" stroke-width="1"/>`;
-    case "sorpresa": return `<ellipse cx="60" cy="${67 + y}" rx="2.2" ry="2.8" fill="#b8433f" stroke="${ln}" stroke-width="1.1"/>`;
-    case "seria": return T(`M56 ${66 + y} L64 ${66 + y}`);
-    default: return T(`M54 ${64.5 + y} Q60 ${70 + y} 66 ${64.5 + y}`);
+    case "triste": return T(`M55.5 ${Y(67.6)} Q60 ${Y(64)} 64.5 ${Y(67.6)}`);
+    case "abierta": /* boca muy contenta: dientes arriba y lengua abajo, siempre dentro de la boca */
+      return openMouth(`M53.8 ${Y(64.4)} Q60 ${Y(66)} 66.2 ${Y(64.4)} Q65.4 ${Y(72.4)} 60 ${Y(72.4)} Q54.6 ${Y(72.4)} 53.8 ${Y(64.4)} Z`,
+        teeth(66.4) + `<ellipse cx="60" cy="${Y(73)}" rx="4.8" ry="3.4" fill="#f08a8a"/><path d="M57.6 ${Y(70.8)} Q60 ${Y(70)} 62.4 ${Y(70.8)}" fill="none" stroke="#d96a6a" stroke-width=".7"/>`, ln);
+    case "gatuna": return T(`M55 ${Y(65)} Q57.5 ${Y(67.6)} 60 ${Y(65)} Q62.5 ${Y(67.6)} 65 ${Y(65)}`);
+    case "timida": return T(`M57.5 ${Y(66)} Q60 ${Y(67.6)} 62.5 ${Y(66)}`);
+    case "dientes":
+      return openMouth(`M53.8 ${Y(64.4)} Q60 ${Y(65.6)} 66.2 ${Y(64.4)} Q65 ${Y(70.6)} 60 ${Y(70.6)} Q55 ${Y(70.6)} 53.8 ${Y(64.4)} Z`,
+        `<rect x="50" y="${Y(60)}" width="20" height="14" fill="#fffdf8"/><path d="M50 ${Y(67.4)} Q60 ${Y(68.8)} 70 ${Y(67.4)}" fill="none" stroke="#d9cfc2" stroke-width=".8"/>` + [56.6, 60, 63.4].map(x => `<path d="M${x} ${Y(64.8)} V${Y(70.4)}" stroke="#e6ded2" stroke-width=".6"/>`).join(""), ln);
+    case "lengua": { /* lengua fuera: se recorta por debajo de la sonrisa, así nace justo de la línea de la boca */
+      if (SIL()) return "";
+      const id = "mo" + (mouthK++);
+      const below = `M48 ${Y(62)} L54.5 ${Y(65)} Q60 ${Y(69.6)} 65.5 ${Y(65)} L72 ${Y(62)} L72 ${Y(80)} L48 ${Y(80)} Z`;
+      return `<defs><clipPath id="${id}"><path d="${below}"/></clipPath></defs><g clip-path="url(#${id})"><path d="M58.2 ${Y(63)} L58.2 ${Y(70.4)} C58.2 ${Y(72.5)} 59.7 ${Y(73.3)} 61.3 ${Y(73.3)} C62.9 ${Y(73.3)} 64.4 ${Y(72.3)} 64.4 ${Y(70)} L64.4 ${Y(63)} Z" fill="#f08a8a" stroke="#b9555a" stroke-width=".9"/><path d="M61.3 ${Y(68.4)} L61.4 ${Y(71.2)}" stroke="#d36a70" stroke-width=".8" stroke-linecap="round"/></g>` + T(smile);
+    }
+    case "labios": return `<path d="M55 ${Y(65.5)} Q57.5 ${Y(64)} 60 ${Y(65)} Q62.5 ${Y(64)} 65 ${Y(65.5)} Q60 ${Y(70)} 55 ${Y(65.5)}Z" fill="#d4566a" stroke="#a83a4e" stroke-width="1"/>` + `<path d="M56.5 ${Y(66.5)} Q60 ${Y(67.5)} 63.5 ${Y(66.5)}" fill="none" stroke="#f3a3b0" stroke-width=".9"/>`;
+    case "labios_feliz":
+      return openMouth(`M54 ${Y(64.5)} Q60 ${Y(66)} 66 ${Y(64.5)} Q65 ${Y(71.4)} 60 ${Y(71.4)} Q55 ${Y(71.4)} 54 ${Y(64.5)} Z`, teeth(66.6) + `<ellipse cx="60" cy="${Y(72)}" rx="4" ry="2.8" fill="#f08a8a"/>`, "#c23f57", "#9c3434", 2);
+    case "sorpresa":
+      return openMouth(`M57.8 ${Y(67.2)} C57.8 ${Y(64.6)} 62.2 ${Y(64.6)} 62.2 ${Y(67.2)} C62.2 ${Y(70.6)} 57.8 ${Y(70.6)} 57.8 ${Y(67.2)} Z`, `<ellipse cx="60" cy="${Y(70)}" rx="2" ry="1.4" fill="#f08a8a"/>`, ln, "#9c3434", 1.1);
+    case "seria": return T(`M56 ${Y(66)} L64 ${Y(66)}`);
+    default: return T(smile);
   }
 }
 function avBlush(eq) {
+  if (SIL()) return "";
   switch (eq.blush) {
     case null: case undefined: case "": return "";
     case "intenso": return `<ellipse cx="45" cy="64" rx="5" ry="3.2" fill="#f07a70" opacity=".55"/><ellipse cx="75" cy="64" rx="5" ry="3.2" fill="#f07a70" opacity=".55"/>`;
@@ -253,6 +272,7 @@ function avBlush(eq) {
   }
 }
 function avFaceExtra(eq, hc) {
+  if (SIL()) return "";
   switch (eq.face) {
     case "pecas": return [[45, 61], [48, 63.5], [43, 64.5], [75, 61], [72, 63.5], [77, 64.5]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#a86a48"/>`).join("");
     case "lunar": return `<circle cx="70" cy="67" r="1.1" fill="#3a2418"/>`;
@@ -267,7 +287,7 @@ const avBeard = (eq, hc) => eq.face === "barba" ? VP("M37 58 C37 76 48 83 60 83 
 
 /* ---------- gafas ---------- */
 function avGlasses(id) {
-  if (!id) return "";
+  if (!id || SIL()) return "";
   const lens = `fill="#ffffff" fill-opacity=".22"`;
   switch (id) {
     case "gafas": return `<circle cx="50" cy="57" r="6.5" ${lens} ${LN("#6b4a35", 1.6)}/><circle cx="70" cy="57" r="6.5" ${lens} ${LN("#6b4a35", 1.6)}/>` + LINE("M56.5 56.5 L63.5 56.5", "#6b4a35", 1.6);
@@ -348,7 +368,7 @@ function avHat(it, k) {
   if (!it) return "";
   if (it.k === "cap") {
     const fill = it.pat ? `url(#${k}c)` : it.c, d = darken(it.c, .72);
-    return `${it.pat ? `<defs>${patternDef(k + "c", it.pat, it.c, it.pc)}</defs>` : ""}<path d="M83 42 l8 -4 l1 6Z M83 43 l7 4 l-2 4Z" fill="${it.c}" ${LN(it.c, 1)}/>` +
+    return `${it.pat ? DEFS(patternDef(k + "c", it.pat, it.c, it.pc)) : ""}${DET(`<path d="M83 42 l8 -4 l1 6Z M83 43 l7 4 l-2 4Z" fill="${it.c}" ${LN(it.c, 1)}/>`)}` +
       VP("M35 50 C34 30 46 22 60 22 C76 22 86 30 85 50 C76 45 44 45 35 50Z", fill, { lc: it.c }) + LINE("M35.5 48 C46 43.5 74 43.5 84.5 48", d, 3) + LINE("M44 30 q6 -4 14 -4", "#fff", 2, 'opacity=".35"');
   }
   switch (it.id) {
@@ -358,7 +378,15 @@ function avHat(it, k) {
     case "boina": return VP("M34 44 C34 28 52 22 66 24 C82 26 92 34 86 42 C76 46 46 48 34 44Z", "#3f4a5c") + LINE("M62 24 l1 -5", "#3f4a5c", 2);
     case "paja": return VE(60, 40, 37, 8, "#e2c27a") + VP("M42 40 C42 22 78 22 78 40 Z", "#e8cc89") + LINE("M42 36 C52 39 68 39 78 36", "#c0453a", 3.5);
     case "corona": return VP("M42 36 L43 18 L51 28 L60 13 L69 28 L77 18 L78 36Z", "#f1c75b") + `<circle cx="60" cy="29" r="2.6" fill="#c0453a"/><circle cx="48" cy="31" r="1.6" fill="#4f6fae"/><circle cx="72" cy="31" r="1.6" fill="#5f8a55"/>`;
-    case "papanoel": return VP("M36 46 C38 26 56 16 76 20 C88 23 94 34 92 46 L84 42 C84 34 80 30 74 30 C60 30 46 36 36 46Z", "#c0453a") + LINE("M76 20 C90 22 98 34 96 46", "#c0453a", 7) + VC(96, 48, 5.5, "#fbf7ef") + VR(32, 42, 56, 9, 4.5, "#fbf7ef");
+    case "papanoel": { const red = "#c63b35", fur = "#fbf7ef", fl = "#d9cfc2";
+      /* gorro: cono rojo que cae hacia un lado; el ribete y el pompón son "pelo" esponjoso (bolitas fundidas sin línea interior) */
+      return VP("M36.5 42 C37 28 46 17.5 60 14.8 C72 12.5 84.5 15.5 90.5 24.5 C94.5 30.5 96 38 94.6 43.6 C91.6 40.6 89 36.6 87 32.6 C86.2 36.4 85.6 39.4 85.4 42 Z", red) +
+        LINE("M58 17 C70 15.6 81 18.6 87 26.6", lighten(red, .3), 1.6, 'opacity=".5"') + LINE("M86.4 29.6 C88.2 33.4 88.8 36.8 88.4 40", darken(red, .7), 1, 'opacity=".6"') +
+        [[36.8, 47.4], [44.2, 48.2], [51.8, 47.6], [59.6, 47.4], [67.4, 47.6], [75, 48.2], [82.6, 47.4]].map(([x, y]) => VC(x, y, 2.9, fur, { lc: fl, w: 1.3, hl: 0, sh: 0, in: 0 })).join("") +
+        VP("M33 44 C33 38.6 45.5 35.4 60 35.4 C74.5 35.4 87 38.6 87 44 C87 48.6 84.4 49.6 80.4 48.6 C72.4 47 66 46.6 60 46.6 C54 46.6 47.6 47 39.6 48.6 C35.6 49.6 33 48.6 33 44 Z", fur, { lc: fl, hl: .35, sh: 0, in: 0 }) +
+        LINE("M38 41.4 q2 -1.2 4 0M48 39.4 q2 -1.2 4 0M58 38.8 q2 -1.2 4 0M68 39.4 q2 -1.2 4 0M78 41.4 q2 -1.2 4 0M43 45 q2 -1 4 0M63 44.6 q2 -1 4 0", "#e6ded2", .9) +
+        VC(91.4, 43.6, 2.6, fur, { lc: fl, w: 1.3, hl: 0, sh: 0, in: 0 }) + VC(98.8, 49.6, 2.6, fur, { lc: fl, w: 1.3, hl: 0, sh: 0, in: 0 }) + VC(94.6, 51, 2.4, fur, { lc: fl, w: 1.3, hl: 0, sh: 0, in: 0 }) +
+        VC(95.2, 46.4, 5.4, fur, { lc: fl, hl: .5, sh: 0, in: 0 }) + LINE("M93 45 q1.6 -1 3.2 0M94.6 48.6 q1.6 -1 3.2 0", "#e6ded2", .8); }
     case "reno": return LINE("M37 46 C40 28 80 28 83 46", "#8a6244", 4) + [[42, -1], [78, 1]].map(([x, s]) => LINE(`M${x} 32 C${x - 4 * s} 22 ${x - 2 * s} 14 ${x - 6 * s} 8 M${x - 2 * s} 22 l${-7 * s} -4 M${x - 3 * s} 15 l${4 * s} -6`, "#a87447", 3.4)).join("") + `<circle cx="40" cy="36" r="2" fill="#c0453a"/><circle cx="80" cy="36" r="2" fill="#c0453a"/>`;
     case "bruja": return VE(60, 40, 38, 7, "#3a2f45") + VP("M42 40 C46 26 52 14 58 6 C62 2 70 4 72 10 C66 10 64 14 66 20 C70 28 76 34 78 40Z", "#4a3a5c") + LINE("M44 35 C54 38 68 38 77 35", "#e8873f", 4) + `<rect x="56" y="31" width="7" height="7" fill="none" stroke="#f3d36b" stroke-width="1.6"/>`;
     case "orejas_gato": return LINE("M37 46 C40 28 80 28 83 46", "#2e2630", 4) + VP("M38 36 L40 18 L52 30Z", "#2e2630", { w: 1.2 }) + VP("M82 36 L80 18 L68 30Z", "#2e2630", { w: 1.2 }) + `<path d="M42 31 L42.5 23 L48 29Z M78 31 L77.5 23 L72 29Z" fill="#e58aa6"/>`;
@@ -392,21 +420,45 @@ function avNeckAcc(id, k) {
     case "collar_corazones": return LINE("M48 89 Q60 102 72 89", "#f3d36b", 1.2) + HEART(60, 98, 1.4, "#e14f6c");
     case "pajarita": return VP("M60 92 L50 86 L50 98 Z", "#b8473a", { w: 1.1 }) + VP("M60 92 L70 86 L70 98 Z", "#b8473a", { w: 1.1 }) + VC(60, 92, 2.6, "#a03c31", { w: 1 });
     case "bufanda": return VP("M43 86 Q60 95 77 86 L78 94 Q60 104 42 94Z", "#5f8a55") + VP("M66 96 L70 122 L62 123 L60 98Z", "#5f8a55");
-    case "bufanda_navidad": return `<defs>${patternDef(k + "s", "rayas", "#fbf7ef", "#c0453a")}</defs>` + VP("M43 86 Q60 95 77 86 L78 94 Q60 104 42 94Z", `url(#${k}s)`, { lc: "#c0453a" }) + VP("M66 96 L70 122 L62 123 L60 98Z", `url(#${k}s)`, { lc: "#c0453a" });
+    case "bufanda_navidad": return DEFS(patternDef(k + "s", "rayas", "#fbf7ef", "#c0453a")) + VP("M43 86 Q60 95 77 86 L78 94 Q60 104 42 94Z", `url(#${k}s)`, { lc: "#c0453a" }) + VP("M66 96 L70 122 L62 123 L60 98Z", `url(#${k}s)`, { lc: "#c0453a" });
     default: return "";
   }
 }
 
-/* ---------- personaje completo ---------- */
+/* ---------- brazos y manos: formas cerradas (el brazo se estrecha hacia la muñeca; mano tipo manopla con pulgar) ---------- */
+const ARM_L = "M41.6 88.4 C36 89.4 32.8 95 31.8 103 L30.6 121.4 Q33.7 123.2 36.8 121.8 L37.6 107 C37.9 101.5 39.5 97.5 42.6 95 Z";
+const HAND_L = "M30.4 120.6 C29.3 124.4 29.5 129.6 31.4 132.2 C33.2 134.5 36.4 134.1 37.3 131.2 C37.6 130.2 37.7 129.2 37.7 128.3 C39 128.4 39.8 127.2 39.4 125.9 C39.1 124.9 38.2 124.5 37.4 124.6 L37.1 120.8 Z";
+const SLEEVE_Y = { short: 107.5, "3q": 115.5, long: 121.6, wide: 118.5 };
+/* manga del brazo izquierdo que acaba en la altura Y (vuelo = ensanche de las mangas anchas) */
+function sleeveEdges(Y, flare) {
+  const xo = 31.8 - 1.2 * Math.max(0, Y - 103) / 18.5 - 1.1 - flare;
+  const xi = (Y <= 107 ? 38.4 : 37.6 - .8 * (Y - 107) / 14.8) + 1 + flare * .25;
+  return [xo, xi];
+}
+function sleevePath(Y, flare = 0) {
+  const [xo, xi] = sleeveEdges(Y, flare);
+  return `M42.8 86.6 C35 87.6 30.8 94 30.2 102.8 L${xo.toFixed(2)} ${Y} Q${((xo + xi) / 2).toFixed(2)} ${(Y + 1.8).toFixed(2)} ${xi.toFixed(2)} ${(Y - .4).toFixed(2)} L38.9 105 C39.4 100.5 41 96.8 44.6 94.2 Z`;
+}
+function sleeveCuff(Y, flare = 0) {
+  const [xo, xi] = sleeveEdges(Y - 3.2, flare);
+  return `M${(xo + .2).toFixed(2)} ${(Y - 3.2).toFixed(2)} Q${((xo + xi) / 2).toFixed(2)} ${(Y - 1.6).toFixed(2)} ${(xi - .1).toFixed(2)} ${(Y - 3.6).toFixed(2)}`;
+}
+
+/* ---------- personaje completo (de una pieza: silueta común + rellenos) ---------- */
 function avatarG(eq, mood, opt = {}) {
   mood = mood || "neutral";
   const k = "v" + (avK++) + "_";
+  const body = () => avatarBody(eq, mood, opt, k);
+  return `<g class="av ${mood}">${onePiece(body)}</g>`;
+}
+function avatarBody(eq, mood, opt, k) {
   const hc = (findItem("hairColor", eq.hairColor) || { c: "#6b4430" }).c, sk = (findItem("skin", eq.skin) || { c: "#e8bd9a" }).c;
   const coat = findItem("coat", eq.coat), top = findItem("top", eq.top), bottom = findItem("bottom", eq.bottom), shoes = findItem("shoes", eq.shoes), acc = findItem("acc", eq.acc);
   const rep = coat ? (COAT_REPLACES[coat.k] || []) : [];
   const hairT = `transform="translate(60 54) scale(1.04) translate(-60 -55)"`;
+  const neck = VP("M53 70 L67 70 L67 89 C64 91 56 91 53 89 Z", sk, { w: 1.6, hl: 0 });
   const head = `<g class="av-head">
-      <ellipse cx="60" cy="79" rx="8" ry="3.4" fill="#2a1408" opacity=".14"/>
+      ${DET(`<ellipse cx="60" cy="79" rx="8" ry="3.4" fill="#2a1408" opacity=".14"/>`)}
       ${VC(35, 58, 5.5, sk, { w: 1.6, hl: 0 })}${VC(85, 58, 5.5, sk, { w: 1.6, hl: 0 })}${LINE("M34 56 q2 2 0 4M86 56 q-2 2 0 4", darken(sk, .75), 1)}
       ${avEarrings(eq.ears)}
       ${VC(60, 54, 25, sk, { w: 1.9, dir: "gShR" })}
@@ -417,37 +469,35 @@ function avatarG(eq, mood, opt = {}) {
       ${avGlasses(eq.glasses)}
       <g ${hairT}>${avHat(findItem("head", eq.head), k)}</g>
     </g>`;
-  if (opt.headOnly) return `<g class="av ${mood}"><g ${hairT}>${avHair(eq.hair, hc, "back")}</g><path d="M53 70 L67 70 L67 89 L53 89Z" fill="${sk}"/>${head}</g>`;
+  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back")}</g>${neck}${head}`;
   const sleeveFrom = coat && COAT_SLEEVE[coat.k] ? coat : (rep.includes("top") ? coat : top);
   const sleeveLen = coat && COAT_SLEEVE[coat.k] ? COAT_SLEEVE[coat.k] : (rep.includes("top") ? "short" : SLEEVE[top && top.k] || "short");
   const sPaint = sleeveFrom && sleeveFrom.pat ? `url(#${k}${sleeveFrom === top ? "t" : "d"})` : null;
   const sc = (sleeveFrom && sleeveFrom.c) || "#cccccc";
-  const sleeve = (side) => {
-    const L = side === "L";
-    const d = sleeveLen === "long" || sleeveLen === "wide" ? (L ? AVG.slvLongL : AVG.slvLongR) : sleeveLen === "3q" ? (L ? AVG.slv3qL : AVG.slv3qR) : (L ? AVG.slvShortL : AVG.slvShortR);
-    return avLimb(d, sleeveLen === "wide" ? 15 : 12.4, sc, sPaint);
-  };
+  const Y = SLEEVE_Y[sleeveLen] || SLEEVE_Y.short, flare = sleeveLen === "wide" ? 3.2 : 0;
   const arm = (side) => {
-    const L = side === "L", x = L ? 33 : 87;
-    return `<g class="av-arm-${L ? "l" : "r"}">${avLimb(L ? AVG.armL : AVG.armR, 10, sk)}${sleeve(side)}${VC(x, 129.5, 5.2, sk, { w: 1.6 })}${LINE(`M${x + (L ? 3 : -3)} 127 q${L ? 1.6 : -1.6} 2.4 0 4.6`, darken(sk, .75), .9)}${L && acc && acc.id === "reloj" ? avAccFront(acc) : ""}</g>`;
+    const L = side === "L", m = d => L ? d : mirX(d);
+    return `<g class="av-arm-${L ? "l" : "r"}"><g transform="rotate(${L ? 7 : -7} ${L ? 40.5 : 79.5} 92)">` +
+      VP(m(ARM_L), sk, { w: 1.5, hl: 0 }) + VP(m(HAND_L), sk, { w: 1.5, hl: .6 }) + LINE(m("M37.5 128.1 Q36.9 126.5 37.3 124.8"), darken(sk, .7), .8) +
+      VP(m(sleevePath(Y, flare)), sPaint || sc, { lc: sc, w: 1.5 }) +
+      (sleeveLen === "long" ? LINE(m(sleeveCuff(Y, flare)), darken(sc, .78), 1) : "") +
+      (L && acc && acc.id === "reloj" ? avAccFront(acc) : "") + `</g></g>`;
   };
   const tallShoes = shoes && (shoes.k === "boot" || shoes.k === "cowboy");
-  return `<g class="av ${mood}">
-    ${avCoatBack(coat)}${avAccBack(acc)}
+  return `${avCoatBack(coat)}${avAccBack(acc)}
     <g ${hairT}>${avHair(eq.hair, hc, "back")}</g>
     ${avLegs(sk)}
     ${tallShoes ? "" : avShoes(shoes)}
     ${rep.includes("bottom") ? "" : avBottom(bottom, k)}
     ${tallShoes ? avShoes(shoes) : ""}
     <g class="av-up">
-      ${VP("M53 70 L67 70 L67 89 C64 91 56 91 53 89 Z", sk, { w: 1.6, hl: 0 })}
+      ${neck}
       ${rep.includes("top") ? "" : avTop(top, sk, k)}
       ${avCoat(coat, sk, k)}
       ${arm("L")}${arm("R")}
       ${acc && acc.id !== "reloj" && acc.id !== "mascarilla" ? avAccFront(acc) : ""}
       ${avNeckAcc(eq.neck, k)}
       ${head}
-    </g>
-  </g>`;
+    </g>`;
 }
 function avatarSVG(eq, mood, cls, vb) { return `<svg class="${cls || ""}" viewBox="${vb || AV_CROP.full}" aria-hidden="true">${avatarG(eq, mood || "neutral")}</svg>`; }
