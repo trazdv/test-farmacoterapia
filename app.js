@@ -44,6 +44,7 @@ const ICON = {
 
 /* ============ estado global ============ */
 let cfg = store.get("ft_cfg", { topics: topicsWithQ(), limit: 0, shuffleQ: true });
+if (!cfg.t1) { if (!cfg.topics.includes(1) && cfg.topics.length >= 4) cfg.topics = [1, ...cfg.topics]; cfg.t1 = 1; store.set("ft_cfg", cfg); }
 let view = store.get("ft_view", "test");
 let quiz = null;          // test en curso o terminado
 let reviewTab = "bad";
