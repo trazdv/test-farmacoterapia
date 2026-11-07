@@ -444,13 +444,19 @@ body.focus #tabs{display:none}
 @keyframes avBlink{0%,94%,100%{transform:scaleY(1)}96.5%{transform:scaleY(.08)}}
 @keyframes avArmL{0%,100%{transform:rotate(0)}50%{transform:rotate(2.4deg)}}
 @keyframes avArmR{0%,100%{transform:rotate(0)}50%{transform:rotate(-2.4deg)}}
-@keyframes avWave{0%,100%{transform:rotate(0)}14%{transform:rotate(-150deg)}24%{transform:rotate(-126deg)}34%{transform:rotate(-152deg)}44%{transform:rotate(-126deg)}54%{transform:rotate(-150deg)}70%{transform:rotate(0)}}
+@keyframes avElbowL{0%,100%{transform:rotate(0)}50%{transform:rotate(4deg)}}
+@keyframes avElbowR{0%,100%{transform:rotate(0)}50%{transform:rotate(-4deg)}}
+/* saludo: el brazo sube desde el hombro y el antebrazo se dobla por el codo y se balancea */
+@keyframes avRaiseR{0%,100%{transform:rotate(0)}16%,78%{transform:rotate(-100deg)}}
+@keyframes avWaveR{0%,100%{transform:rotate(0)}16%{transform:rotate(-60deg)}28%{transform:rotate(-28deg)}40%{transform:rotate(-64deg)}52%{transform:rotate(-28deg)}64%{transform:rotate(-60deg)}78%{transform:rotate(-46deg)}}
 .av-up{animation:avBreathe 3.8s ease-in-out infinite;transform-origin:60px 134px}
 .av-head{animation:avHead 8s ease-in-out infinite;transform-origin:60px 80px}
 .av-blink{animation:avBlink 4.8s infinite;transform-box:fill-box;transform-origin:50% 50%}
-.av-arm-l{animation:avArmL 3.8s ease-in-out infinite;transform-origin:40px 94px}
-.av-arm-r{animation:avArmR 3.8s ease-in-out infinite;transform-origin:80px 94px}
-.cheer .av-arm-r,.dress-av .av-arm-r{animation:avWave 2.8s ease-in-out .4s 1}
+.av-arm-l,.av-upper-l{transform-origin:40.5px 92.5px}.av-arm-r,.av-upper-r{transform-origin:79.5px 92.5px}.av-lower-l,.av-lower-r{transform-origin:0 0}
+.av-arm-l{animation:avArmL 3.8s ease-in-out infinite}.av-arm-r{animation:avArmR 3.8s ease-in-out infinite}
+.av-lower-l{animation:avElbowL 3.8s ease-in-out infinite}.av-lower-r{animation:avElbowR 3.8s ease-in-out infinite}
+.cheer .av-upper-r,.dress-av .av-upper-r{animation:avRaiseR 3s ease-in-out .4s 1}
+.cheer .av-lower-r,.dress-av .av-lower-r{animation:avWaveR 3s ease-in-out .4s 1}
 .thumb svg *,.mini-pet *,.bub .face .av-head{animation:none!important}
 
 @media (max-width:380px){.g-rep-top span{display:none}}
@@ -468,6 +474,7 @@ body.focus #tabs{display:none}
   <defs>
     <linearGradient id="gSh" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset=".5" stop-color="#2a1408" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".24"/></linearGradient>
     <radialGradient id="gShR" cx=".4" cy=".34" r=".72"><stop offset=".55" stop-color="#2a1408" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".2"/></radialGradient>
+    <linearGradient id="gCyl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2a1408" stop-opacity=".16"/><stop offset=".38" stop-color="#fff" stop-opacity=".16"/><stop offset=".62" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#2a1408" stop-opacity=".24"/></linearGradient>
     <radialGradient id="gHl" cx=".3" cy=".2" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
     <radialGradient id="gSoft"><stop offset="0" stop-color="#2a1408" stop-opacity=".42"/><stop offset=".55" stop-color="#2a1408" stop-opacity=".2"/><stop offset="1" stop-color="#2a1408" stop-opacity="0"/></radialGradient>
     <radialGradient id="gGlow"><stop offset="0" stop-color="#fff6cf" stop-opacity=".95"/><stop offset=".4" stop-color="#ffd98a" stop-opacity=".45"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>

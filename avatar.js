@@ -425,23 +425,34 @@ function avNeckAcc(id, k) {
   }
 }
 
-/* ---------- brazos y manos: formas cerradas (el brazo se estrecha hacia la muñeca; mano tipo manopla con pulgar) ---------- */
-const ARM_L = "M41.6 88.4 C36 89.4 32.8 95 31.8 103 L30.6 121.4 Q33.7 123.2 36.8 121.8 L37.6 107 C37.9 101.5 39.5 97.5 42.6 95 Z";
-const HAND_L = "M30.4 120.6 C29.3 124.4 29.5 129.6 31.4 132.2 C33.2 134.5 36.4 134.1 37.3 131.2 C37.6 130.2 37.7 129.2 37.7 128.3 C39 128.4 39.8 127.2 39.4 125.9 C39.1 124.9 38.2 124.5 37.4 124.6 L37.1 120.8 Z";
-const SLEEVE_Y = { short: 107.5, "3q": 115.5, long: 121.6, wide: 118.5 };
-/* manga del brazo izquierdo que acaba en la altura Y (vuelo = ensanche de las mangas anchas) */
-function sleeveEdges(Y, flare) {
-  const xo = 31.8 - 1.2 * Math.max(0, Y - 103) / 18.5 - 1.1 - flare;
-  const xi = (Y <= 107 ? 38.4 : 37.6 - .8 * (Y - 107) / 14.8) + 1 + flare * .25;
-  return [xo, xi];
+/* ---------- brazos articulados: hombro y codo ----------
+   Cada brazo son dos tramos (brazo y antebrazo) con los extremos redondos centrados en la articulación:
+   así, gire lo que gire el hombro o el codo, la unión queda cerrada y lisa (sin "bisagra" ni huecos).
+   Estructura: .av-arm (balanceo) > .av-upper (gira en el hombro) > brazo + manga > .av-lower (gira en el codo) > antebrazo, mano, puño. */
+const ARM = { sx: 40.5, sy: 92.5, up: 15.5, low: 14.2, rest: 10, restLow: 3 };
+/* tramo en su marco local: sale de (0,0) hacia abajo (+y). Arriba, extremo redondo; abajo, redondo (codo) o con bajo curvo (manga) */
+function segPath(r1, r2, len, round) {
+  return `M${-r1} 0 A${r1} ${r1} 0 0 1 ${r1} 0 L${r2} ${len} ` + (round ? `A${r2} ${r2} 0 0 1 ${-r2} ${len}` : `Q0 ${+(len + r2 * .45).toFixed(2)} ${-r2} ${len}`) + " Z";
 }
-function sleevePath(Y, flare = 0) {
-  const [xo, xi] = sleeveEdges(Y, flare);
-  return `M42.8 86.6 C35 87.6 30.8 94 30.2 102.8 L${xo.toFixed(2)} ${Y} Q${((xo + xi) / 2).toFixed(2)} ${(Y + 1.8).toFixed(2)} ${xi.toFixed(2)} ${(Y - .4).toFixed(2)} L38.9 105 C39.4 100.5 41 96.8 44.6 94.2 Z`;
-}
-function sleeveCuff(Y, flare = 0) {
-  const [xo, xi] = sleeveEdges(Y - 3.2, flare);
-  return `M${(xo + .2).toFixed(2)} ${(Y - 3.2).toFixed(2)} Q${((xo + xi) / 2).toFixed(2)} ${(Y - 1.6).toFixed(2)} ${(xi - .1).toFixed(2)} ${(Y - 3.6).toFixed(2)}`;
+/* mano tipo manopla, con la muñeca en (0,0) y los dedos hacia abajo; el pulgar mira hacia el cuerpo */
+const HAND = "M-3.1 -0.1 C-4.1 3.4 -3.9 8.2 -2.2 10.6 C-0.5 12.7 2.4 12.3 3.3 9.7 C3.5 8.8 3.6 7.9 3.6 7 C4.8 7.1 5.6 6 5.2 4.8 C4.9 3.9 4.1 3.5 3.4 3.6 L3.1 0.1 Z";
+function avArm(side, sk, sleeve, sPaint, sc, acc) {
+  const L = side === "L", s = L ? "l" : "r", sgn = L ? 1 : -1, mir = L ? "" : ' transform="scale(-1 1)"';
+  const skin = { w: 1.5, hl: 0, in: 0, dir: "gCyl" }, cloth = { lc: sc, w: 1.5, in: 0, hl: 0, dir: "gCyl" }, fill = sPaint || sc, hem = darken(sc, .78);
+  const hemLine = (r, y) => LINE(`M${(-r + .3).toFixed(2)} ${y.toFixed(2)} Q0 ${(y + r * .45).toFixed(2)} ${(r - .3).toFixed(2)} ${y.toFixed(2)}`, hem, 1);
+  let upSleeve, lowSleeve = "";
+  if (sleeve === "short") { const len = ARM.up * .7; upSleeve = VP(segPath(5.3, 5, len, false), fill, cloth) + hemLine(5, len); }
+  else {
+    upSleeve = VP(segPath(5.3, 4.8, ARM.up, true), fill, cloth);
+    const wide = sleeve === "wide", len = ARM.low * (sleeve === "3q" ? .5 : wide ? .8 : .93), r2 = wide ? 7.4 : sleeve === "3q" ? 4.5 : 4.2;
+    lowSleeve = VP(segPath(4.8, r2, len, false), fill, cloth) + hemLine(r2, len) + (sleeve === "long" ? LINE(`M-4.2 ${(len - 2.8).toFixed(2)} Q0 ${(len - 1).toFixed(2)} 4.2 ${(len - 2.8).toFixed(2)}`, hem, .9) : "");
+  }
+  const watch = L && acc && acc.id === "reloj" ? DET(`<rect x="-3.6" y="${ARM.low - 3.8}" width="7.2" height="3.2" rx="1.2" fill="#6b4430"/>`) + VC(0, ARM.low - 2.2, 2.2, "#f3e6cf", { w: 1, sh: 0 }) + LINE(`M0 ${ARM.low - 2.2} v-1.2M0 ${ARM.low - 2.2} h.9`, "#2e2630", .6) : "";
+  const hand = `<g transform="translate(0 ${ARM.low})">${VP(HAND, sk, { w: 1.5, hl: .6 })}${LINE("M3.5 7.4 Q2.9 5.9 3.3 4.2", darken(sk, .7), .8)}</g>`;
+  return `<g class="av-arm-${s}"><g class="av-upper-${s}"><g transform="translate(${L ? ARM.sx : 120 - ARM.sx} ${ARM.sy}) rotate(${sgn * ARM.rest})">` +
+    `<g${mir}>${VP(segPath(4.2, 3.7, ARM.up, true), sk, skin)}${upSleeve}</g>` +
+    `<g transform="translate(0 ${ARM.up})"><g class="av-lower-${s}"><g transform="rotate(${sgn * ARM.restLow})"><g${mir}>` +
+    `${VP(segPath(3.7, 3.2, ARM.low, false), sk, skin)}${hand}${watch}${lowSleeve}</g></g></g></g></g></g></g>`;
 }
 
 /* ---------- personaje completo (de una pieza: silueta común + rellenos) ---------- */
@@ -474,15 +485,7 @@ function avatarBody(eq, mood, opt, k) {
   const sleeveLen = coat && COAT_SLEEVE[coat.k] ? COAT_SLEEVE[coat.k] : (rep.includes("top") ? "short" : SLEEVE[top && top.k] || "short");
   const sPaint = sleeveFrom && sleeveFrom.pat ? `url(#${k}${sleeveFrom === top ? "t" : "d"})` : null;
   const sc = (sleeveFrom && sleeveFrom.c) || "#cccccc";
-  const Y = SLEEVE_Y[sleeveLen] || SLEEVE_Y.short, flare = sleeveLen === "wide" ? 3.2 : 0;
-  const arm = (side) => {
-    const L = side === "L", m = d => L ? d : mirX(d);
-    return `<g class="av-arm-${L ? "l" : "r"}"><g transform="rotate(${L ? 7 : -7} ${L ? 40.5 : 79.5} 92)">` +
-      VP(m(ARM_L), sk, { w: 1.5, hl: 0 }) + VP(m(HAND_L), sk, { w: 1.5, hl: .6 }) + LINE(m("M37.5 128.1 Q36.9 126.5 37.3 124.8"), darken(sk, .7), .8) +
-      VP(m(sleevePath(Y, flare)), sPaint || sc, { lc: sc, w: 1.5 }) +
-      (sleeveLen === "long" ? LINE(m(sleeveCuff(Y, flare)), darken(sc, .78), 1) : "") +
-      (L && acc && acc.id === "reloj" ? avAccFront(acc) : "") + `</g></g>`;
-  };
+  const arm = side => avArm(side, sk, sleeveLen, sPaint, sc, acc);
   const tallShoes = shoes && (shoes.k === "boot" || shoes.k === "cowboy");
   return `${avCoatBack(coat)}${avAccBack(acc)}
     <g ${hairT}>${avHair(eq.hair, hc, "back")}</g>
