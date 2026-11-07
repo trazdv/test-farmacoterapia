@@ -1489,6 +1489,47 @@ const APQ = [
  "Depende sobre todo de electrolitos y renina-angiotensina; el RMC cerebral solo une aldosterona",
  "Depende sobre todo de la ACTH, más que el cortisol; el RMC cerebral solo une aldosterona"],a:0,
  cita:"REGULACIÓN DE LA SÍNTESIS Y LIBERACIÓN DE ALDOSTERONA: Menor dependencia de la secreción de ACTH que el cortisol, aunque la actividad hipofisaria puede facilitar su secreción. Principalmente depende de la composición de electrolitos del plasma y del sistema renina- angiotensina II.\nEl RMC en cerebro es más afín por glucocorticoides endógenos, al contrario que en tejidos periféricos. (anotación a mano: «Receptor se une más al CORTISOL»)",
- n:"El RMC tiene la misma estructura primaria que el receptor glucocorticoide y es el único que pueden activar dos tipos de hormonas esteroideas."}
+ n:"El RMC tiene la misma estructura primaria que el receptor glucocorticoide y es el único que pueden activar dos tipos de hormonas esteroideas."},
+/* ===== Tema 2 completo (t2-autacoides): lo enmarcado con corchete rojo (importante), págs. 24-27 ===== */
+{doc:"t2-autacoides",t:2,p:24,q:"Usos de los ARA II (apartado que marcaste como importante). Señala la CORRECTA:",o:[
+ "Diagnóstico de la hipertensión renina-dependiente e hipertensos que no toleran los IECA por la tos seca",
+ "Tratamiento de elección de la hipertensión en el perro, porque su uso veterinario está muy consolidado",
+ "Diagnóstico del feocromocitoma y tratamiento de la hipotensión en el shock anafiláctico",
+ "Sustituir a los IECA cuando estos dan hiperpotasemia, porque los sartanes favorecen la bradicinina"],a:0,
+ cita:"Los “sartanes” son antagonistas puros del receptor AT1 que se pueden administrar por vía oral. SU USO EN VETERINARIA ESTÁ EN ESTUDIO Y NO ESTÁ CONSOLIDADO.\n…\nSe utiliza en el diagnóstico de la hipertensión renina dependiente y en pacientes con hipertensión que no toleran los IECA debido a la tos seca.",
+ n:"Todo el apartado de los ARA II lo enmarcaste con un corchete rojo: importante."},
+{doc:"t2-autacoides",t:2,p:24,q:"IECA: asociaciones y medicamentos veterinarios (lo marcaste como importante). Señala la CORRECTA:",o:[
+ "Pueden asociarse a digitálicos y furosemida; Enacard® (enalapril) en el perro y Fortekor (benazepril)",
+ "No deben asociarse nunca a la furosemida; Enacard® es benazepril y Fortekor es enalapril, para gatos",
+ "Solo se pueden usar solos; los únicos IECA veterinarios son el captopril y el lisinopril, en caballos",
+ "Están contraindicados con la digoxina; en veterinaria solo se usa el telmisartán, que es un IECA"],a:0,
+ cita:"PUEDEN ASOCIARSE A DIGITÁLICOS Y FUROSEMIDA. MEDICAMENTOS VETERINARIOS: ENACARD® (ENALAPRIL); PERRO. FORTEKOR (BENAZEPRIL)",
+ n:"Desde «tras infarto» hasta «Fortekor (benazepril)» lo marcaste con una línea roja al margen: importante. El telmisartán es un sartán (ARA II), no un IECA."},
+{doc:"t2-autacoides",t:2,p:26,q:"Óxido nítrico (lo marcaste como importante). ¿Cómo produce la vasodilatación?",o:[
+ "Difunde a la célula muscular lisa, activa la guanilato ciclasa y ↑ el GMPc, que la relaja",
+ "Se une a un receptor de membrana acoplado a una proteína Gs y ↑ el AMPc del endotelio",
+ "Necesita un transportador de membrana para entrar en la célula y bloquear sus canales de Ca²⁺",
+ "Inhibe la guanilato ciclasa y ↓ el GMPc, con lo que el músculo liso vascular se contrae menos"],a:0,
+ cita:"Actúa intercelularmente sin requerir ningún tipo de transportador de membrana.\nEn la célula muscular lisa de la pared vascular, estimula, tras difundir a través de las membranas celulares, la guanilato ciclasa → ↑ GMPc: Induce relajación muscular →vasodilatación→ regulando el flujo y PA.",
+ n:"El óxido nítrico hasta el punto 4 de sus funciones lo enmarcaste con un corchete rojo: importante."},
+{doc:"t2-autacoides",t:2,p:26,q:"Características del óxido nítrico según tus apuntes. Señala la CORRECTA:",o:[
+ "Gas radical libre, muy inestable y de vida corta; se sintetiza a partir de la L-arginina por la NOS",
+ "Péptido estable de vida media larga que se almacena en gránulos de las células endoteliales",
+ "Lípido derivado del ácido araquidónico que se sintetiza a partir de la L-citrulina por la COX",
+ "Gas estable que viaja unido a la albúmina y actúa sobre todo como una hormona a distancia"],a:0,
+ cita:"Regulador del tono vasomotor y neuromodulador del SNC y SNP. Es un gas con propiedades de radical libre, actúa como molécula mensajera muy inestable y de vida corta difundiendo por cualquier punto de la membrana de la célula productora.\n(Esquema) La síntesis de NO se realiza por acción: óxido nítrico sintetasa (NOS): L-arginina ⇒ NO + L-citrulina."},
+{doc:"t2-autacoides",t:2,p:26,q:"Óxido nítrico: ¿qué células lo producen y qué efecto tiene sobre el músculo liso?",o:[
+ "Epiteliales, nerviosas, endoteliales e inflamatorias; relaja el músculo liso: vaso y broncodilatación",
+ "Solo las endoteliales; contrae el músculo liso: vasoconstricción y broncoconstricción",
+ "Solo las plaquetas y los mastocitos; relaja el músculo liso vascular, pero contrae el bronquial",
+ "Los hepatocitos; no actúa sobre el músculo liso, solo sobre la coagulación sanguínea"],a:0,
+ cita:"Producido por una gran variedad de células: células epiteliales, nerviosas, endoteliales e inflamatorias.\nTiene un mecanismo de acción paracrino sobre la célula que actúa induciendo la síntesis de guanosin monofosfato cíclico (GMPc) que produce entre otros efectos, relajación de músculo liso: vaso y broncodilatación."},
+{doc:"t2-autacoides",t:2,p:26,q:"Funciones del óxido nítrico en el sistema nervioso según tus apuntes. Señala la CORRECTA:",o:[
+ "Autorregula el flujo vascular, activa las fibras parasimpáticas de los vasos cerebrales y ↑ el flujo en la hipercapnia",
+ "Reduce el flujo sanguíneo cerebral en la hipercapnia y activa las fibras simpáticas de los vasos cerebrales",
+ "Bloquea la plasticidad neuronal, el aprendizaje y la memoria, y suprime la defensa de la microglía",
+ "Solo actúa en el SNP como neurotransmisor de la placa motora; en el SNC no tiene funciones conocidas"],a:0,
+ cita:"Entre las funciones del NO en el Sistema Nervioso:\n1. Autorregulación del flujo vascular tanto periférico como central\n2. Activación de las fibras parasimpáticas que inervan los vasos cerebrales\n3. Incremento del flujo sanguíneo durante la hipercapnia",
+ n:"Además (p. 27): 4. defensa cerebral frente a infecciones mediante la microglía, que expresa mucha iNOS (lo marcaste «imp»); 5. plasticidad neuronal, aprendizaje y memoria."}
 ];
 APQ.forEach((q, i) => { q.id = i; if (!q.t) { const d = APUNTES.find(x => x.id === q.doc); q.t = d ? (Array.isArray(d.t) ? d.t[0] : d.t) : 0; } });
