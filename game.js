@@ -1,7 +1,7 @@
 "use strict";
 /* ================= MODO CONSULTA (lógica) — los dibujos y el catálogo están en art.js ================= */
 const DEFAULT_EQ = {
-  hair: "corto", hairColor: "castano", skin: "s2", eyeShape: "punto", eyeColor: "marron", brows: "finas", nose: "boton", mouth: "sonrisa", blush: "suave", face: null,
+  hair: "corto", hairColor: "castano", skin: "s2", eyeShape: "punto", eyeColor: "marron", brows: "finas", nose: "boton", mouth: "sonrisa", blush: "suave", face: null, beard: null,
   top: "camisa", bottom: "vaqueros", shoes: "zapatillas", coat: null, glasses: null, head: null, neck: null, ears: null, acc: null,
   wall: "crema", floor: "tarima", view: "campo", curtains: "terracota", table: "metal",
   ceiling: null, wallL: null, wallC: null, wallR: null, shelf: null, sill: null, cornerL: null, plant: null, rug: null, pet: null
@@ -43,7 +43,14 @@ G.eq = Object.assign({}, DEFAULT_EQ, G.eq);
   /* v2: la bata blanca deja de venir regalada (hay que comprarla); solo se aplica una vez */
   if ((G.ver || 1) < 2) { G.owned = G.owned.filter(o => o !== "coat:bata"); if (G.eq.coat === "bata") G.eq.coat = null; G.ver = 2; }
   /* v3: el fonendo tampoco viene regalado (cuesta 200) */
-  if (G.ver < 3) { G.owned = G.owned.filter(o => o !== "neck:esteto"); if (G.eq.neck === "esteto") G.eq.neck = null; G.ver = 3; }
+  /* v4: las barbas y bigotes pasan de "Detalles" a su propia categoría */
+  if (G.ver < 4) {
+    const BEARDS = ["barba", "bigote", "perilla"];
+    G.owned = G.owned.map(o => { const [c, id] = o.split(":"); return c === "face" && BEARDS.includes(id) ? "beard:" + id : o; });
+    if (BEARDS.includes(G.eq.face)) { G.eq.beard = G.eq.face; G.eq.face = null; }
+  }
+  if (G.ver < 3) { G.owned = G.owned.filter(o => o !== "neck:esteto"); if (G.eq.neck === "esteto") G.eq.neck = null; }
+  G.ver = 4;
   DEFAULT_GAME.owned.forEach(o => { if (!G.owned.includes(o)) G.owned.push(o); });
   for (const c of SHOP_ORDER) if (G.eq[c] && !findItem(c, G.eq[c])) G.eq[c] = DEFAULT_EQ[c];
 })();
@@ -109,7 +116,8 @@ function ownerEq(name, farm) {
     nose: pick(["boton", "punto", "redonda", "respingona", "larga", "triangulo", "boton"], 59),
     mouth: pick(["sonrisa", "timida", "sonrisa", "abierta", "seria"], 61),
     blush: pick(["suave", null, "suave", "intenso", null], 67),
-    face: pick([null, null, "pecas", "barba", null, "bigote", "lunar", "perilla", null], 29),
+    face: pick([null, null, "pecas", null, "lunar", null, "rubor_nariz"], 29),
+    beard: pick([null, null, null, "barba", null, "bigote", "perilla", "barba_corta", null, "candado", "bigote_manillar", null], 73),
     top, bottom: top === "traje" ? "pant_traje" : pick(farm ? ["vaqueros", "pana", "chinos"] : ["vaqueros", "chinos", "pana", "falda_larga", "falda_corta", "leggings", "pant_lino"], 19),
     shoes: pick(farm ? ["botas_verdes", "botas_agua", "botines"] : ["zapatillas", "mocasines", "botines", "manoletinas", "deportivas", "alpargatas"], 71),
     coat: farm && h % 4 === 0 ? "peto" : h % 9 === 0 ? "chubasquero" : null,
@@ -355,7 +363,7 @@ function renderShop() {
   const owned = (c, id) => G.owned.includes(c + ":" + id);
   const isRoomCat = c => ROOM_CATS.includes(c);
   const thumb = (c, it) => {
-    if (c === "hairColor" || c === "skin" || c === "eyeColor") return `<span class="swatch" style="background:${it.c}"></span>`;
+    if (c === "hairColor" || c === "skin" || c === "eyeColor") return `<span class="swatch" style="background:${it.c2 ? `linear-gradient(180deg,${it.c} 0%,${it.c} 30%,${it.c2} 100%)` : it.c}"></span>`;
     const eq = Object.assign({}, G.eq, { [c]: it.id });
     if (isRoomCat(c)) return `<span class="thumb room">${sceneSVG({ eq, viewBox: FOCUS[c], static: true })}</span>`;
     return `<span class="thumb">${still(() => avatarSVG(eq, "neutral", "", AV_FOCUS[c] || AV_CROP.full))}</span>`;

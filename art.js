@@ -147,36 +147,69 @@ const SHOP = {
     { id: "rizos", name: "Rizos", price: 140 }, { id: "rizada_larga", name: "Melena rizada", price: 150 }, { id: "afro", name: "Afro", price: 150 }, { id: "cresta", name: "Cresta", price: 260 }] },
   hairColor: { label: "Color de pelo", items: [
     { id: "castano", name: "Castaño", c: "#6b4430", price: 0 }, { id: "negro", name: "Negro", c: "#2c2524", price: 0 },
-    { id: "rubio", name: "Rubio", c: "#e2b65e", price: 40 }, { id: "pelirrojo", name: "Pelirrojo", c: "#c0602f", price: 40 },
-    { id: "miel", name: "Miel", c: "#b8803e", price: 40 }, { id: "caoba", name: "Caoba", c: "#7a3328", price: 50 }, { id: "canoso", name: "Canoso", c: "#cfc8c0", price: 60 },
-    { id: "lavanda", name: "Lavanda", c: "#a58bc9", price: 110 }, { id: "menta", name: "Menta", c: "#7fbfa4", price: 110 },
-    { id: "chicle", name: "Chicle", c: "#e58aa6", price: 110 }, { id: "azul", name: "Azul tinta", c: "#4f6fae", price: 110 }] },
+    { id: "castano_claro", name: "Castaño claro", c: "#8a5a3a", price: 30 }, { id: "chocolate", name: "Chocolate", c: "#4a2e22", price: 30 },
+    { id: "rubio", name: "Rubio", c: "#e2b65e", price: 40 }, { id: "rubio_ceniza", name: "Rubio ceniza", c: "#c9b48e", price: 50 }, { id: "rubio_platino", name: "Rubio platino", c: "#efdcae", price: 60 },
+    { id: "miel", name: "Miel", c: "#b8803e", price: 40 }, { id: "pelirrojo", name: "Pelirrojo", c: "#c0602f", price: 40 }, { id: "cobrizo", name: "Cobrizo", c: "#d9773a", price: 50 },
+    { id: "caoba", name: "Caoba", c: "#7a3328", price: 50 }, { id: "burdeos", name: "Burdeos", c: "#6e2430", price: 70 },
+    { id: "canoso", name: "Canoso", c: "#cfc8c0", price: 60 }, { id: "gris_plata", name: "Gris plata", c: "#9aa0a8", price: 80 }, { id: "blanco", name: "Blanco nieve", c: "#f1ece4", price: 80 },
+    { id: "lavanda", name: "Lavanda", c: "#a58bc9", price: 110 }, { id: "morado", name: "Morado", c: "#6e4a9c", price: 110 }, { id: "menta", name: "Menta", c: "#7fbfa4", price: 110 },
+    { id: "turquesa", name: "Turquesa", c: "#3fa9a6", price: 110 }, { id: "verde_bosque", name: "Verde bosque", c: "#4f7a4a", price: 110 },
+    { id: "chicle", name: "Chicle", c: "#e58aa6", price: 110 }, { id: "rosa_pastel", name: "Rosa pastel", c: "#f2b5c4", price: 110 }, { id: "coral", name: "Coral", c: "#e8806b", price: 110 },
+    { id: "rojo_cereza", name: "Rojo cereza", c: "#c0303f", price: 110 }, { id: "naranja", name: "Naranja", c: "#f08a3a", price: 110 },
+    { id: "azul", name: "Azul tinta", c: "#4f6fae", price: 110 }, { id: "azul_cielo", name: "Azul cielo", c: "#8cc4e0", price: 110 },
+    /* degradados (c = raíces, c2 = puntas) */
+    { id: "deg_castano_rojo", name: "Castaño a rojo oscuro", c: "#6b4430", c2: "#7a2228", price: 140 },
+    { id: "deg_castano_rubio", name: "Castaño a rubio", c: "#6b4430", c2: "#e2b65e", price: 140 },
+    { id: "deg_castano_cobre", name: "Castaño a cobre", c: "#5a3a28", c2: "#d9773a", price: 140 },
+    { id: "deg_negro_rojo", name: "Negro a rojo", c: "#2c2524", c2: "#b8303a", price: 150 },
+    { id: "deg_negro_azul", name: "Negro a azul", c: "#2c2524", c2: "#3f6fb4", price: 150 },
+    { id: "deg_negro_morado", name: "Negro a morado", c: "#2c2524", c2: "#7a4aa8", price: 150 },
+    { id: "deg_rubio_rosa", name: "Rubio a rosa", c: "#e8c070", c2: "#e58aa6", price: 150 },
+    { id: "deg_platino_lavanda", name: "Platino a lavanda", c: "#efdcae", c2: "#a58bc9", price: 150 },
+    { id: "deg_menta_azul", name: "Menta a azul", c: "#7fbfa4", c2: "#4f6fae", price: 160 },
+    { id: "deg_atardecer", name: "Atardecer", c: "#f3c94a", c2: "#e8606a", price: 160 },
+    { id: "deg_calabaza", name: "Negro a naranja", c: "#2c2524", c2: "#e8873f", price: 150, set: "halloween" }] },
   skin: { label: "Piel", items: [
-    { id: "s1", name: "Clara", c: "#f6d9c4", price: 0 }, { id: "s6", name: "Clara rosada", c: "#f3cdbc", price: 0 }, { id: "s2", name: "Media", c: "#e8bd9a", price: 0 },
-    { id: "s3", name: "Tostada", c: "#c48b65", price: 0 }, { id: "s4", name: "Oscura", c: "#8a5a40", price: 0 }, { id: "s5", name: "Muy oscura", c: "#5e3a28", price: 0 }] },
+    { id: "s7", name: "Porcelana", c: "#fbe6da", price: 0 }, { id: "s1", name: "Clara", c: "#f6d9c4", price: 0 }, { id: "s6", name: "Clara rosada", c: "#f3cdbc", price: 0 },
+    { id: "s8", name: "Beige", c: "#efc9a8", price: 0 }, { id: "s2", name: "Media", c: "#e8bd9a", price: 0 }, { id: "s9", name: "Oliva", c: "#d0a27a", price: 0 },
+    { id: "s3", name: "Tostada", c: "#c48b65", price: 0 }, { id: "s10", name: "Canela", c: "#a8704c", price: 0 }, { id: "s4", name: "Oscura", c: "#8a5a40", price: 0 },
+    { id: "s5", name: "Muy oscura", c: "#5e3a28", price: 0 }, { id: "s11", name: "Ébano", c: "#4a2c20", price: 0 }] },
   eyeShape: { label: "Ojos", items: [
     { id: "punto", name: "Puntito", price: 0 }, { id: "ovalados", name: "Ovalados", price: 40 }, { id: "almendra", name: "Almendrados", price: 60 },
     { id: "pestanas", name: "Con pestañas", price: 60 }, { id: "dormilones", name: "Dormilones", price: 50 }, { id: "finos", name: "Finos", price: 50 },
-    { id: "grandes", name: "Grandes y brillantes", price: 80 }, { id: "alegres", name: "Siempre sonrientes", price: 60 }, { id: "estrellas", name: "Estrellados", price: 120 }] },
+    { id: "grandes", name: "Grandes y brillantes", price: 80 }, { id: "alegres", name: "Siempre sonrientes", price: 60 }, { id: "estrellas", name: "Estrellados", price: 120 },
+    { id: "anime", name: "Anime", price: 120 }, { id: "gato", name: "De gato", price: 110 }, { id: "dibujos", name: "De dibujos animados", price: 120 }, { id: "kawaii", name: "Kawaii", price: 100 }, { id: "seguros", name: "Mirada segura", price: 90 }] },
   eyeColor: { label: "Color de ojos", items: [
-    { id: "marron", name: "Marrón", c: "#5a3a26", price: 0 }, { id: "avellana", name: "Avellana", c: "#8a6a3a", price: 30 }, { id: "verde", name: "Verde", c: "#5f8a55", price: 50 },
-    { id: "azul", name: "Azul", c: "#4f7fae", price: 50 }, { id: "gris", name: "Gris", c: "#7a8a96", price: 50 }, { id: "ambar", name: "Ámbar", c: "#c98a2a", price: 70 },
-    { id: "violeta", name: "Violeta", c: "#8a5ab4", price: 110 }, { id: "rojo", name: "Rojo vampiro", c: "#b8333a", price: 110, set: "halloween" }] },
+    { id: "marron", name: "Marrón", c: "#5a3a26", price: 0 }, { id: "negro", name: "Negro", c: "#2a2020", price: 0 }, { id: "chocolate", name: "Chocolate", c: "#4a3024", price: 20 },
+    { id: "avellana", name: "Avellana", c: "#8a6a3a", price: 30 }, { id: "miel", name: "Miel", c: "#b07a2e", price: 40 }, { id: "ambar", name: "Ámbar", c: "#c98a2a", price: 70 },
+    { id: "verde", name: "Verde", c: "#5f8a55", price: 50 }, { id: "verde_oliva", name: "Verde oliva", c: "#7a8a3e", price: 50 }, { id: "esmeralda", name: "Esmeralda", c: "#2f9a6a", price: 70 },
+    { id: "azul", name: "Azul", c: "#4f7fae", price: 50 }, { id: "azul_cielo", name: "Azul cielo", c: "#6aaed6", price: 60 }, { id: "azul_marino", name: "Azul marino", c: "#2f4a7a", price: 60 },
+    { id: "gris", name: "Gris", c: "#7a8a96", price: 50 }, { id: "turquesa", name: "Turquesa", c: "#3aa6a8", price: 80 }, { id: "dorado", name: "Dorado", c: "#d9a52a", price: 90 },
+    { id: "violeta", name: "Violeta", c: "#8a5ab4", price: 110 }, { id: "rosa", name: "Rosa", c: "#d9709a", price: 110 }, { id: "plata", name: "Plateado", c: "#a9b2bc", price: 110 },
+    { id: "rojo", name: "Rojo vampiro", c: "#b8333a", price: 110, set: "halloween" }] },
   brows: { label: "Cejas", items: [
     { id: "finas", name: "Finas", price: 0 }, { id: "gruesas", name: "Gruesas", price: 20 }, { id: "arqueadas", name: "Arqueadas", price: 30 },
-    { id: "rectas", name: "Rectas", price: 20 }, { id: "pobladas", name: "Pobladas", price: 40 }, { id: "puntitos", name: "Puntitos", price: 40 }] },
+    { id: "rectas", name: "Rectas", price: 20 }, { id: "pobladas", name: "Pobladas", price: 40 }, { id: "puntitos", name: "Puntitos", price: 40 },
+    { id: "cortas", name: "Cortas", price: 20 }, { id: "altas", name: "Muy arqueadas", price: 30 }, { id: "angulares", name: "Angulares", price: 30 },
+    { id: "decididas", name: "Decididas", price: 30 }, { id: "preocupadas", name: "Preocupadas", price: 30 }, { id: "anime", name: "De anime", price: 50 },
+    { id: "unicejo", name: "Unicejo", price: 40 }, { id: "seguras", name: "Seguras", price: 40 }] },
   nose: { label: "Nariz", items: [
     { id: "boton", name: "Botón", price: 0 }, { id: "punto", name: "Puntito", price: 20 }, { id: "redonda", name: "Redondita", price: 30 },
     { id: "respingona", name: "Respingona", price: 30 }, { id: "larga", name: "Larga", price: 30 }, { id: "triangulo", name: "Triangular", price: 30 }] },
   mouth: { label: "Boca", items: [
     { id: "sonrisa", name: "Sonrisa", price: 0 }, { id: "timida", name: "Tímida", price: 20 }, { id: "seria", name: "Seria", price: 20 }, { id: "abierta", name: "Muy contenta", price: 30 },
     { id: "gatuna", name: "Gatuna", price: 50 }, { id: "dientes", name: "Con dientes", price: 40 }, { id: "lengua", name: "Lengua fuera", price: 50 },
-    { id: "sorpresa", name: "Sorpresa", price: 40 }, { id: "labios", name: "Labios pintados", price: 60, set: "sanvalentin" }] },
+    { id: "sorpresa", name: "Sorpresa", price: 40 }, { id: "labios", name: "Labios pintados", price: 60, set: "sanvalentin" }, { id: "labios_rosa", name: "Labios rosa", price: 60 }, { id: "labios_granate", name: "Labios granate", price: 70 }, { id: "picara", name: "Sonrisa pícara", price: 60 }] },
   blush: { label: "Rubor", opt: true, items: [
-    { id: "suave", name: "Suave", price: 0 }, { id: "intenso", name: "Intenso", price: 30 }, { id: "rayitas", name: "Rayitas", price: 40 }, { id: "corazones", name: "Corazones", price: 60, set: "sanvalentin" }] },
+    { id: "suave", name: "Suave", price: 0 }, { id: "intenso", name: "Intenso", price: 30 }, { id: "melocoton", name: "Melocotón", price: 30 }, { id: "rosado", name: "Rosado", price: 30 }, { id: "rayitas", name: "Rayitas", price: 40 }, { id: "corazones", name: "Corazones", price: 60, set: "sanvalentin" }] },
   face: { label: "Detalles", opt: true, items: [
     { id: "pecas", name: "Pecas", price: 30 }, { id: "lunar", name: "Lunar", price: 20 }, { id: "tirita", name: "Tirita", price: 40 }, { id: "pegatina", name: "Pegatina de estrella", price: 50 },
-    { id: "bigote", name: "Bigote", price: 60 }, { id: "perilla", name: "Perilla", price: 60 }, { id: "barba", name: "Barba", price: 90 }] },
+    { id: "rubor_nariz", name: "Nariz sonrojada", price: 30 }, { id: "cicatriz", name: "Cicatriz de aventurero", price: 60 }] },
+  beard: { label: "Barba y bigote", opt: true, items: [
+    { id: "barba_corta", name: "Barba de tres días", price: 40 }, { id: "perilla", name: "Perilla", price: 60 }, { id: "candado", name: "Barba candado", price: 80 },
+    { id: "barba", name: "Barba", price: 90 }, { id: "barba_frondosa", name: "Barba frondosa", price: 120 }, { id: "barba_larga", name: "Barba de mago", price: 150 },
+    { id: "patillas", name: "Patillas", price: 50 }, { id: "bigote", name: "Bigote", price: 60 }, { id: "bigote_manillar", name: "Bigote de manillar", price: 90 },
+    { id: "bigote_morsa", name: "Bigote de morsa", price: 90 }] },
   /* --- tu ropa --- */
   top: { label: "Arriba", items: [
     { id: "camisa", name: "Camisa celeste", k: "shirt", c: "#a9c7d9", price: 0 }, { id: "camiseta", name: "Camiseta blanca", k: "tee", c: "#fbf8f2", price: 0 },
@@ -347,7 +380,7 @@ const SHOP = {
     { id: "gato", name: "Gato dormilón", price: 320 }, { id: "perro", name: "Beagle en su cama", price: 340 }, { id: "conejo", name: "Conejo", price: 300 }, { id: "tortuga", name: "Tortuga", price: 260 }] }
 };
 const SHOP_SECTIONS = [
-  { id: "face", label: "Cara", cats: ["hair", "hairColor", "skin", "eyeShape", "eyeColor", "brows", "nose", "mouth", "blush", "face"] },
+  { id: "face", label: "Cara", cats: ["hair", "hairColor", "skin", "eyeShape", "eyeColor", "brows", "nose", "mouth", "blush", "face", "beard"] },
   { id: "clothes", label: "Ropa", cats: ["top", "bottom", "shoes", "coat", "glasses", "head", "neck", "ears", "acc"] },
   { id: "room", label: "Clínica", cats: ["wall", "floor", "view", "curtains", "table", "ceiling", "wallL", "wallC", "wallR", "shelf", "sill", "cornerL", "plant", "rug", "pet"] },
   { id: "sets", label: "Colecciones", cats: Object.keys(PAT_SETS) }

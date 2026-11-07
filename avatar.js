@@ -23,7 +23,7 @@ const AV_CROP = { head: "27 16 66 72", face: "36 38 48 38", torso: "12 76 96 80"
 /* recorte de la miniatura de la tienda para cada categoría de tu personaje */
 const AV_FOCUS = {
   hair: "16 8 88 100", hairColor: "16 8 88 100", skin: AV_CROP.head, eyeShape: AV_CROP.face, eyeColor: AV_CROP.face, brows: AV_CROP.face, nose: AV_CROP.face,
-  mouth: AV_CROP.face, blush: AV_CROP.face, face: "30 30 60 56", glasses: AV_CROP.face, head: "18 2 84 88", ears: AV_CROP.head,
+  mouth: AV_CROP.face, blush: AV_CROP.face, face: "30 30 60 56", beard: "26 36 68 72", glasses: AV_CROP.face, head: "18 2 84 88", ears: AV_CROP.head,
   top: AV_CROP.torso, neck: AV_CROP.torso, acc: AV_CROP.coat, bottom: AV_CROP.legs, shoes: AV_CROP.feet, coat: AV_CROP.coat
 };
 let avK = 0;
@@ -198,6 +198,18 @@ function avEyes(eq, mood) {
       case "almendra": { const m = x < 60 ? 1 : -1; return `<path d="M${x - 4.8 * m} 57.4 Q${x} 52.6 ${x + 4.8 * m} 56.6 Q${x} 60.6 ${x - 4.8 * m} 57.4Z" fill="#fffdf8"/><circle cx="${x}" cy="57" r="2.5" fill="${ic}"/><circle cx="${x}" cy="57" r="1.3" fill="${ink}"/><circle cx="${x + .9}" cy="56" r=".7" fill="#fff"/>` + LINE(`M${x - 4.8 * m} 57.4 Q${x} 52.6 ${x + 4.8 * m} 56.6 L${x + 6.6 * m} 55.2`, ink, 1.6); }
       case "dormilones": return VE(x, 57.5, 3.6, 3.4, "#fffdf8", { w: .9, sh: 0, hl: 0 }) + `<circle cx="${x}" cy="58.2" r="2.4" fill="${ic}"/><circle cx="${x}" cy="58.2" r="1.2" fill="${ink}"/>` + `<path d="M${x - 4.2} 57.6 Q${x} 53 ${x + 4.2} 57.6 Z" fill="${(findItem("skin", eq.skin) || { c: "#e8bd9a" }).c}"/>` + LINE(`M${x - 4.2} 57.6 Q${x} 56 ${x + 4.2} 57.6`, ink, 1.5);
       case "finos": return `<path d="M${x - 4.4} 57.2 Q${x} 54.6 ${x + 4.4} 57.2 Q${x} 59.2 ${x - 4.4} 57.2Z" fill="#fffdf8"/><ellipse cx="${x}" cy="57.2" rx="1.9" ry="1.9" fill="${ink}"/>` + LINE(`M${x - 4.6} 57 Q${x} 54.2 ${x + 4.6} 57`, ink, 1.6);
+      case "anime": { const m = x < 60 ? -1 : 1;
+        return `<path d="M${x - 4.6} 55.4 Q${x} 50.8 ${x + 4.6} 55.4 L${x + 4.4} 59.4 Q${x} 62.6 ${x - 4.4} 59.4 Z" fill="#fffdf8"/><ellipse cx="${x}" cy="57.4" rx="3.5" ry="4.5" fill="${ic}"/><ellipse cx="${x}" cy="55.4" rx="3.5" ry="2.6" fill="${ink}" opacity=".5"/><ellipse cx="${x}" cy="57.8" rx="1.5" ry="2.5" fill="${ink}"/>` +
+          `<ellipse cx="${x + 1.4}" cy="55.2" rx="1.4" ry="1.9" fill="#fff" transform="rotate(-20 ${x + 1.4} 55.2)"/><circle cx="${x - 1.3}" cy="59.8" r=".8" fill="#fff"/>` + LINE(`M${x - 5 * m} 55.8 Q${x} 50 ${x + 5 * m} 55.2 L${x + 6.6 * m} 53.8`, ink, 2.1) + LINE(`M${x - 3.4} 61.4 Q${x} 62.6 ${x + 3.4} 61.4`, ink, .7, 'opacity=".6"'); }
+      case "gato": { const m = x < 60 ? -1 : 1, d = `M${x - 4.8 * m} 58.4 Q${x - .4 * m} 52.4 ${x + 5 * m} 54.6 Q${x + .6 * m} 61 ${x - 4.8 * m} 58.4 Z`;
+        return `<path d="${d}" fill="${ic}"/><path d="${d}" fill="#fff" opacity=".18"/><ellipse cx="${x + .2 * m}" cy="57" rx=".85" ry="3" fill="#1c1410"/><circle cx="${x + 1.7 * m}" cy="55.8" r=".75" fill="#fff"/>` + LINE(`M${x - 4.8 * m} 58.4 Q${x - .4 * m} 52.4 ${x + 5 * m} 54.6 L${x + 6.8 * m} 53.2`, ink, 1.7) + LINE(`M${x - 4.6 * m} 58.6 Q${x + .6 * m} 61 ${x + 5 * m} 54.8`, ink, .7, 'opacity=".6"'); }
+      case "dibujos": { const m = x < 60 ? -1 : 1, cx = x - .4 * m;
+        return VE(x, 56.4, 4.6, 5.8, "#fffdf8", { w: 1, sh: 0, hl: 0 }) + `<circle cx="${cx}" cy="57.8" r="3.5" fill="${ic}"/><circle cx="${cx}" cy="57.8" r="2" fill="${ink}"/><circle cx="${cx + .9}" cy="56.2" r="1.3" fill="#fff"/><circle cx="${cx - 1.2}" cy="59.2" r=".6" fill="#fff"/>` +
+          LINE(`M${x - 4.8} 54.6 Q${x} 49 ${x + 4.8} 54.6`, ink, 1.8) + LINE(`M${x + 3.6 * m} 51.8 l${1.8 * m} -1.8M${x + 4.6 * m} 53.6 l${2 * m} -1M${x + 2 * m} 50.8 l${1 * m} -2`, ink, 1.1); }
+      case "seguros": { const id = "ey" + (mouthK++), d = `M${x - 4.8} 57.6 Q${x} 54.8 ${x + 4.8} 56.8 Q${x + .4} 61.2 ${x - 4.8} 57.6 Z`;
+        return `<defs><clipPath id="${id}"><path d="${d}"/></clipPath></defs><path d="${d}" fill="#fffdf8"/><g clip-path="url(#${id})"><circle cx="${x + 1.3}" cy="58" r="2.5" fill="${ic}"/><circle cx="${x + 1.3}" cy="58" r="1.35" fill="${ink}"/><circle cx="${x + 2.1}" cy="57.3" r=".55" fill="#fff"/></g>` +
+          LINE(`M${x - 5.2} 57.2 Q${x} 54.2 ${x + 5.2} 56.4`, ink, 1.9) + LINE(`M${x - 4.4} 55.2 Q${x} 52.8 ${x + 4.6} 54.6`, ink, .6, 'opacity=".5"') + LINE(`M${x - 3.6} 59.8 Q${x} 61 ${x + 3.8} 59.2`, ink, .6, 'opacity=".55"'); }
+      case "kawaii": return `<ellipse cx="${x}" cy="57" rx="3.6" ry="4.4" fill="${ink}"/><ellipse cx="${x}" cy="59.2" rx="2.6" ry="1.8" fill="${ic}" opacity=".9"/><ellipse cx="${x + 1.2}" cy="55.4" rx="1.4" ry="1.6" fill="#fff"/><circle cx="${x - 1.4}" cy="58.6" r=".8" fill="#fff"/><circle cx="${x + 1.8}" cy="58.8" r=".45" fill="#fff"/>`;
       default: return `<ellipse cx="${x}" cy="57" rx="2.6" ry="3.3" fill="${ink}"/><circle cx="${x + 1}" cy="55.8" r=".95" fill="#fff"/><circle cx="${x - .8}" cy="58.4" r=".45" fill="#fff"/>`;
     }
   };
@@ -213,6 +225,14 @@ function avBrows(eq, mood, hc) {
     case "arqueadas": return LINE("M46 50 Q49.5 45.4 54 48.6M66 48.6 Q70.5 45.4 74 50", c, 1.8);
     case "rectas": return LINE("M46.5 48.6 L53.8 48.2M66.2 48.2 L73.5 48.6", c, 2.4);
     case "pobladas": return `<path d="M45.5 49.6 C47 46 53 45.4 54.6 48.4 C51 48 48 48.6 45.5 49.6Z" fill="${c}"/><path d="M74.5 49.6 C73 46 67 45.4 65.4 48.4 C69 48 72 48.6 74.5 49.6Z" fill="${c}"/>`;
+    case "cortas": return LINE("M48.4 48.6 L52.6 48.2M67.4 48.2 L71.6 48.6", c, 2.6);
+    case "altas": return LINE("M46.4 47.6 Q50 43.2 53.8 46.6M66.2 46.6 Q70 43.2 73.6 47.6", c, 1.8);
+    case "angulares": return LINE("M46.4 50 L51.4 46.8 L54 48.2M73.6 50 L68.6 46.8 L66 48.2", c, 1.9);
+    case "decididas": return LINE("M46.4 47.2 L53.8 49.6M66.2 49.6 L73.6 47.2", c, 2.4);
+    case "preocupadas": return LINE("M46.6 49.6 L53.8 47.2M66.2 47.2 L73.4 49.6", c, 2.2);
+    case "anime": return LINE("M46 49.6 Q49.6 46.4 54 48 L54.8 47.2M74 49.6 Q70.4 46.4 66 48 L65.2 47.2", c, 1.4);
+    case "unicejo": return LINE("M46.4 49 Q50 46.8 53.8 48.2 Q60 47.2 66.2 48.2 Q70 46.8 73.6 49", c, 2.3);
+    case "seguras": return `<path d="M45 50.6 C46.4 46.6 51.2 45.4 54.8 47.4 L54.4 48.8 C51 47.4 47.4 48 46.2 51 Z" fill="${c}"/><path d="M75 50.6 C73.6 46.6 68.8 45.4 65.2 47.4 L65.6 48.8 C69 47.4 72.6 48 73.8 51 Z" fill="${c}"/>`;
     case "puntitos": return `<ellipse cx="51" cy="48.4" rx="1.8" ry="1.2" fill="${c}"/><ellipse cx="69" cy="48.4" rx="1.8" ry="1.2" fill="${c}"/>`;
     default: return LINE("M46.5 49 Q50 47.2 53.6 48.6M66.4 48.6 Q70 47.2 73.5 49", c, 1.7);
   }
@@ -231,8 +251,9 @@ function avNose(eq, sk) {
 }
 function avMouth(eq, mood, sk) {
   if (SIL()) return "";
-  const y = eq.face === "bigote" ? 1.2 : 0, ln = "#7a3b2e", Y = v => +(v + y).toFixed(2);
-  const m = mood === "sad" ? "triste" : mood === "happy" ? (eq.mouth === "labios" ? "labios_feliz" : !eq.mouth || eq.mouth === "sonrisa" ? "abierta" : eq.mouth) : (eq.mouth || "sonrisa");
+  const y = ["bigote", "candado", "bigote_manillar", "barba", "barba_frondosa", "barba_larga"].includes(eq.beard) ? 1.2 : eq.beard === "bigote_morsa" ? 1.8 : 0, ln = "#7a3b2e", Y = v => +(v + y).toFixed(2);
+  const LIPS = { labios: ["#d4566a", "#a83a4e", "#f3a3b0"], labios_rosa: ["#ea8fae", "#c2607e", "#fbd0dc"], labios_granate: ["#9a2f45", "#6e1f30", "#d9707e"] }, lip = LIPS[eq.mouth] || LIPS.labios;
+  const m = mood === "sad" ? "triste" : LIPS[eq.mouth] ? (mood === "happy" ? "labios_feliz" : "labios") : mood === "happy" ? (!eq.mouth || eq.mouth === "sonrisa" ? "abierta" : eq.mouth) : (eq.mouth || "sonrisa");
   const T = (d, w = 1.6) => LINE(d, ln, w);
   const smile = `M54.5 ${Y(65)} Q60 ${Y(69.6)} 65.5 ${Y(65)}`;
   const teeth = (bottom) => `<path d="M50 ${Y(60)} H70 V${Y(bottom)} Q60 ${Y(bottom + 1.3)} 50 ${Y(bottom)} Z" fill="#fffdf8"/>`;
@@ -252,11 +273,12 @@ function avMouth(eq, mood, sk) {
       const below = `M48 ${Y(62)} L54.5 ${Y(65)} Q60 ${Y(69.6)} 65.5 ${Y(65)} L72 ${Y(62)} L72 ${Y(80)} L48 ${Y(80)} Z`;
       return `<defs><clipPath id="${id}"><path d="${below}"/></clipPath></defs><g clip-path="url(#${id})"><path d="M58.2 ${Y(63)} L58.2 ${Y(70.4)} C58.2 ${Y(72.5)} 59.7 ${Y(73.3)} 61.3 ${Y(73.3)} C62.9 ${Y(73.3)} 64.4 ${Y(72.3)} 64.4 ${Y(70)} L64.4 ${Y(63)} Z" fill="#f08a8a" stroke="#b9555a" stroke-width=".9"/><path d="M61.3 ${Y(68.4)} L61.4 ${Y(71.2)}" stroke="#d36a70" stroke-width=".8" stroke-linecap="round"/></g>` + T(smile);
     }
-    case "labios": return `<path d="M55 ${Y(65.5)} Q57.5 ${Y(64)} 60 ${Y(65)} Q62.5 ${Y(64)} 65 ${Y(65.5)} Q60 ${Y(70)} 55 ${Y(65.5)}Z" fill="#d4566a" stroke="#a83a4e" stroke-width="1"/>` + `<path d="M56.5 ${Y(66.5)} Q60 ${Y(67.5)} 63.5 ${Y(66.5)}" fill="none" stroke="#f3a3b0" stroke-width=".9"/>`;
+    case "labios": return `<path d="M55 ${Y(65.5)} Q57.5 ${Y(64)} 60 ${Y(65)} Q62.5 ${Y(64)} 65 ${Y(65.5)} Q60 ${Y(70)} 55 ${Y(65.5)}Z" fill="${lip[0]}" stroke="${lip[1]}" stroke-width="1"/>` + `<path d="M56.5 ${Y(66.5)} Q60 ${Y(67.5)} 63.5 ${Y(66.5)}" fill="none" stroke="${lip[2]}" stroke-width=".9"/>`;
     case "labios_feliz":
-      return openMouth(`M54 ${Y(64.5)} Q60 ${Y(66)} 66 ${Y(64.5)} Q65 ${Y(71.4)} 60 ${Y(71.4)} Q55 ${Y(71.4)} 54 ${Y(64.5)} Z`, teeth(66.6) + `<ellipse cx="60" cy="${Y(72)}" rx="4" ry="2.8" fill="#f08a8a"/>`, "#c23f57", "#9c3434", 2);
+      return openMouth(`M54 ${Y(64.5)} Q60 ${Y(66)} 66 ${Y(64.5)} Q65 ${Y(71.4)} 60 ${Y(71.4)} Q55 ${Y(71.4)} 54 ${Y(64.5)} Z`, teeth(66.6) + `<ellipse cx="60" cy="${Y(72)}" rx="4" ry="2.8" fill="#f08a8a"/>`, lip[0], "#9c3434", 2);
     case "sorpresa":
       return openMouth(`M57.8 ${Y(67.2)} C57.8 ${Y(64.6)} 62.2 ${Y(64.6)} 62.2 ${Y(67.2)} C62.2 ${Y(70.6)} 57.8 ${Y(70.6)} 57.8 ${Y(67.2)} Z`, `<ellipse cx="60" cy="${Y(70)}" rx="2" ry="1.4" fill="#f08a8a"/>`, ln, "#9c3434", 1.1);
+    case "picara": return T(`M51 ${Y(67)} Q59 ${Y(70.2)} 67.6 ${Y(65.6)}`, 1.5) + LINE(`M71 ${Y(59.8)} Q73 ${Y(63.6)} 71.4 ${Y(67.6)}`, darken(sk, .58), .9);
     case "seria": return T(`M56 ${Y(66)} L64 ${Y(66)}`);
     default: return T(smile);
   }
@@ -265,6 +287,8 @@ function avBlush(eq) {
   if (SIL()) return "";
   switch (eq.blush) {
     case null: case undefined: case "": return "";
+    case "melocoton": return `<ellipse cx="45" cy="64" rx="4.6" ry="2.9" fill="#f5b38a" opacity=".6"/><ellipse cx="75" cy="64" rx="4.6" ry="2.9" fill="#f5b38a" opacity=".6"/>`;
+    case "rosado": return `<ellipse cx="45" cy="64" rx="4.4" ry="2.8" fill="#f08ab0" opacity=".5"/><ellipse cx="75" cy="64" rx="4.4" ry="2.8" fill="#f08ab0" opacity=".5"/>`;
     case "intenso": return `<ellipse cx="45" cy="64" rx="5" ry="3.2" fill="#f07a70" opacity=".55"/><ellipse cx="75" cy="64" rx="5" ry="3.2" fill="#f07a70" opacity=".55"/>`;
     case "corazones": return HEART(45, 64, 1.1, "#f2879e") + HEART(75, 64, 1.1, "#f2879e");
     case "rayitas": return `<ellipse cx="45" cy="64" rx="4.4" ry="2.6" fill="#f09a86" opacity=".4"/><ellipse cx="75" cy="64" rx="4.4" ry="2.6" fill="#f09a86" opacity=".4"/>` + LINE("M42.5 65 l1.6 -2.6M45 65.4 l1.6 -2.6M47.5 65 l1.6 -2.6M72.5 65 l1.6 -2.6M75 65.4 l1.6 -2.6M77.5 65 l1.6 -2.6", "#e0607a", .8);
@@ -276,14 +300,35 @@ function avFaceExtra(eq, hc) {
   switch (eq.face) {
     case "pecas": return [[45, 61], [48, 63.5], [43, 64.5], [75, 61], [72, 63.5], [77, 64.5]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r=".9" fill="#a86a48"/>`).join("");
     case "lunar": return `<circle cx="70" cy="67" r="1.1" fill="#3a2418"/>`;
-    case "bigote": return VP("M52 64.5 Q56 60.5 60 63.5 Q64 60.5 68 64.5 Q64 66.5 60 65 Q56 66.5 52 64.5Z", hc, { w: 1, sh: 0 });
-    case "perilla": return VP("M55 74 Q60 81 65 74 Q60 76.5 55 74Z", hc, { w: 1, sh: 0 });
+    case "rubor_nariz": return `<ellipse cx="60" cy="61.6" rx="3.6" ry="2.4" fill="#f07a70" opacity=".45"/>`;
+    case "cicatriz": return LINE("M70.6 49 L74.6 58.4", "#c98a7a", 1.1) + LINE("M71 51.6 l2.4 -.8M71.9 54 l2.4 -.8M72.8 56.4 l2.4 -.8", "#c98a7a", .8);
     case "tirita": return `<g transform="rotate(-24 75 63)">${VR(70, 61, 11, 4.6, 2, "#f3d0a8", { w: .8, sh: 0, hl: 0 })}<rect x="73.6" y="61.4" width="3.8" height="3.8" rx=".8" fill="#e8b88a"/></g>`;
     case "pegatina": return STARP(75, 63, 3.2, "#f3d36b") + STARP(75, 63, 1.4, "#fff3c4");
     default: return "";
   }
 }
-const avBeard = (eq, hc) => eq.face === "barba" ? VP("M37 58 C37 76 48 83 60 83 C72 83 83 76 83 58 C79 70 70 75 60 75 C50 75 41 70 37 58Z", hc) : "";
+function avBeard(eq, hc, layer) {
+  const b = eq.beard; if (!b) return "";
+  const o = { w: 1, sh: 0 }, dk = darken(hc, .8);
+  if (layer === "base") switch (b) {
+    case "barba": return VP("M37 58 C37 76 48 83 60 83 C72 83 83 76 83 58 C79 70 70 75 60 75 C50 75 41 70 37 58Z", hc);
+    case "barba_frondosa": return VP("M36.4 55 C35 66 38 76 43 81 C46 85.4 52 88.6 60 88.6 C68 88.6 74 85.4 77 81 C82 76 85 66 83.6 55 C81.6 64 77 70.6 70 73.2 C66 74.6 63 74.8 60 74.8 C57 74.8 54 74.6 50 73.2 C43 70.6 38.4 64 36.4 55 Z", hc) + LINE("M44 78 q2 2.4 4.6 2.6M52 82.4 q2.6 1.4 5.4 1.2M63 83.4 q2.8 0 5.4 -1.4M72 79.4 q2.2 -.8 4 -3", dk, .9, 'opacity=".7"');
+    case "barba_larga": return VP("M37 58 C36.4 78 47 96 60 104 C73 96 83.6 78 83 58 C79 70 70 75 60 75 C50 75 41 70 37 58 Z", hc) + LINE("M51 84 Q55 94 60 100M69 84 Q65 94 60 100M60 78 V98", dk, .9, 'opacity=".6"');
+    case "barba_corta": return `<path d="M37 58 C37 76 48 81 60 81 C72 81 83 76 83 58 C79 70 70 74 60 74 C50 74 41 70 37 58Z" fill="${hc}" opacity=".32"/>` + DET(Array.from({ length: 26 }, (_, i) => { const a = Math.PI * (.08 + .84 * (i / 25)), r = 21 + (i % 3) * 1.6; return `<circle cx="${(60 - r * Math.cos(a)).toFixed(1)}" cy="${(57 + r * .9 * Math.sin(a)).toFixed(1)}" r=".45" fill="${dk}" opacity=".6"/>`; }).join(""));
+    case "perilla": return VP("M55 74 Q60 82 65 74 Q60 76.6 55 74Z", hc, o);
+    case "candado": return VP("M53.4 70.4 C53.2 77 56.4 80.6 60 80.6 C63.6 80.6 66.8 77 66.6 70.4 C65 72.8 62.6 73.6 60 73.6 C57.4 73.6 55 72.8 53.4 70.4 Z", hc, o) + VP("M52.6 64.6 C52 67.4 52.6 70.4 54 72 L55 71.4 C54 69.4 53.8 67 54.4 65.4 Z", hc, o) + VP("M67.4 64.6 C68 67.4 67.4 70.4 66 72 L65 71.4 C66 69.4 66.2 67 65.6 65.4 Z", hc, o);
+    case "patillas": return VP("M36.4 49 C35.6 55 36.2 61 38 66.4 L41.4 65.6 C40.4 60.6 40 55.4 40.6 49 Z", hc, o) + VP("M83.6 49 C84.4 55 83.8 61 82 66.4 L78.6 65.6 C79.6 60.6 80 55.4 79.4 49 Z", hc, o);
+    default: return "";
+  }
+  if (SIL()) return "";
+  switch (b) {   /* bigotes: encima de la boca */
+    case "bigote": case "candado": return VP("M52 64.5 Q56 60.5 60 63.5 Q64 60.5 68 64.5 Q64 66.5 60 65 Q56 66.5 52 64.5Z", hc, o);
+    case "bigote_manillar": return VP("M60 63.4 C57 61.2 53.6 61.6 51.6 63.8 C50.4 65 49 65.2 48.2 64 C48.6 66.6 51.6 67 53.6 65.6 C56 64.4 58.2 64.8 60 65.2 C61.8 64.8 64 64.4 66.4 65.6 C68.4 67 71.4 66.6 71.8 64 C71 65.2 69.6 65 68.4 63.8 C66.4 61.6 63 61.2 60 63.4 Z", hc, o);
+    case "bigote_morsa": return VP("M50 63.4 C52 59.6 57 59.6 60 61.6 C63 59.6 68 59.6 70 63.4 C70.6 66.6 69.6 69.6 67.6 70.4 C66.6 68.6 65.4 68 64.4 69.6 C63.6 68 62.6 67.6 61.6 69.4 C60.8 67.8 59.2 67.8 58.4 69.4 C57.4 67.6 56.4 68 55.6 69.6 C54.6 68 53.4 68.6 52.4 70.4 C50.4 69.6 49.4 66.6 50 63.4 Z", hc, o);
+    case "barba": case "barba_frondosa": case "barba_larga": return VP("M52.4 64.6 Q56 61.4 60 63.6 Q64 61.4 67.6 64.6 Q64 66.2 60 65.2 Q56 66.2 52.4 64.6Z", hc, o);
+    default: return "";
+  }
+}
 
 /* ---------- gafas ---------- */
 function avGlasses(id) {
@@ -324,7 +369,7 @@ const scallop = (cx, cy, rx, ry, n, bump) => {
   return d + " Z";
 };
 const hairO = { dir: "gHairSh", hlId: "gHairHl", w: 1.6 };
-const braidSeg = (x, y, rx, hc) => VE(x, y, rx, 5.7, hc, { w: 1.3, dir: "gHairSh", hlId: "gHairHl" });
+const braidSeg = (x, y, rx, hc, paint) => VE(x, y, rx, 5.7, paint || hc, { lc: hc, w: 1.3, dir: "gHairSh", hlId: "gHairHl" });
 const MELENA_FE = "M41.6 112 L41 80 C40.4 72 39.4 64 38.2 56 C40.6 47.4 47 41.4 55.6 39.6 C64 38 72.6 40 78 45 C80.8 48 81.8 52 81.6 56.4 C80.4 64 79.4 72 79 80 L78.4 112";
 const HAIR = {
   corto: { all: 1, shine: 1,
@@ -375,11 +420,11 @@ const HAIR = {
   trenzas: { all: 1, shine: 1, part: "M60 27 L60 38",
     H: "M36 54 C34 32 46 26 60 26 C76 26 86 34 84 54 C80 42 70 38 60 38 C50 38 40 42 36 54 Z",
     FE: "M36 54 C40 42 50 38 60 38 C70 38 80 42 84 54",
-    extra: hc => [36, 84].map(x => { const s = x < 60 ? -1 : 1; return [0, 1, 2, 3, 4].map(i => braidSeg(x + s * i * .5, 60 + i * 8.6, 5 - i * .2, hc)).join("") + VR(x - 3.4 + s * 2, 99.6, 6.8, 3.4, 1.4, "#c0453a", { w: .8, sh: 0, hl: 0 }); }).join("") },
+    extra: (hc, paint) => [36, 84].map(x => { const s = x < 60 ? -1 : 1; return [0, 1, 2, 3, 4].map(i => braidSeg(x + s * i * .5, 60 + i * 8.6, 5 - i * .2, hc, paint)).join("") + VR(x - 3.4 + s * 2, 99.6, 6.8, 3.4, 1.4, "#c0453a", { w: .8, sh: 0, hl: 0 }); }).join("") },
   trenza_lateral: { all: 1, shine: 1,
     H: "M36 54 C33 31 50 24 66 26 C80 28 88 38 84 54 C80 44 72 40 64 42 C56 44 46 48 36 54 Z",
     FE: "M36 54 C46 48 56 44 64 42 C72 40 80 44 84 54",
-    extra: hc => [0, 1, 2, 3, 4, 5].map(i => braidSeg(83.4 + i * .9, 58 + i * 8.4, 5.4 - i * .25, hc)).join("") + VR(84.6, 103.6, 7, 3.4, 1.4, "#5f8a55", { w: .8, sh: 0, hl: 0 }) },
+    extra: (hc, paint) => [0, 1, 2, 3, 4, 5].map(i => braidSeg(83.4 + i * .9, 58 + i * 8.4, 5.4 - i * .25, hc, paint)).join("") + VR(84.6, 103.6, 7, 3.4, 1.4, "#5f8a55", { w: .8, sh: 0, hl: 0 }) },
   /* --- largos: ceñidos a la cabeza (unas 4 unidades de grosor arriba y 3 a los lados) y sin orejas, que quedan bajo el pelo --- */
   media: { shine: 1, noEars: 1,
     H: "M33.4 54 C33 38 44.6 27.4 60 27.4 C75.4 27.4 87 38 86.6 54 L87.4 79 C83 83.4 78.4 82.4 76.6 77 L43.4 77 C41.6 82.4 37 83.4 32.6 79 Z",
@@ -410,25 +455,27 @@ const HAIR = {
     curls: "M40 30 q2.4 -2.4 4.8 0M52 24.4 q2.4 -2.4 4.8 0M65 24.4 q2.4 -2.4 4.8 0M76 30 q2.4 -2.4 4.8 0M33.6 42 q2.4 -2.4 4.8 0M82 42 q2.4 -2.4 4.8 0M46 33 q2 -2 4 0M58 31 q2 -2 4 0M69 33 q2 -2 4 0M33 58 q2.4 -2.4 4.8 0M83 58 q2.4 -2.4 4.8 0" }
 };
 const HAIR_SHINE = "M44.6 33.4 Q51.6 28.8 59.6 29.6";
-function avHair(style, hc, part, k = "h") {
+function avHair(style, hc, part, k = "h", hc2 = null) {
   if (style === "calvo") return part === "front" ? LINE("M44 34 q4 -3 9 -3", "#ffffff", 2, 'opacity=".5"') : "";
   const S = HAIR[style] || HAIR.corto;
   const op = S.op ? ` opacity="${S.op}"` : "";
+  const paint = hc2 ? `url(#${k}hg)` : hc, o = Object.assign({}, hairO, { lc: hc });
   if (part === "back") {
     if (SIL()) return VP(S.H, hc, hairO);          /* contorno de todo el peinado (una sola silueta) */
     if (S.all) return "";                          /* los cortos van enteros delante */
-    return `<g${op}>${VP(S.H, hc, hairO)}${S.deep ? `<path d="${S.H}" fill="#2a1408" opacity=".16"/>` : ""}</g>`;
+    return `<g${op}>${VP(S.H, paint, o)}${S.deep ? `<path d="${S.H}" fill="#2a1408" opacity=".16"/>` : ""}</g>`;
   }
-  if (SIL()) return S.extra ? S.extra(hc) : "";
+  if (SIL()) return S.extra ? S.extra(hc, hc) : "";
   const id = k + "hc", dk = darken(hc, .6);
   const fr = S.all ? null : `${S.FE} L130 112 L130 -10 L-10 -10 L-10 112 Z`, shape = fr || S.H;
-  return (S.shaved ? `<path d="${S.shaved}" fill="${hc}" opacity=".4"/>` : "") +
-    `<defs><clipPath id="${id}"><path d="${S.H}"/></clipPath>${fr ? `<clipPath id="${id}f"><path d="${fr}"/></clipPath>` : ""}</defs><g clip-path="url(#${id})"${op}>` +
-    VP(shape, hc, Object.assign({}, hairO, { in: 0, sil: 0 })) +
+  const grad = hc2 ? `<linearGradient id="${k}hg" gradientUnits="userSpaceOnUse" x1="0" y1="${S.all ? 24 : 32}" x2="0" y2="${S.all ? 56 : 100}"><stop offset="0" stop-color="${hc}"/><stop offset=".3" stop-color="${hc}"/><stop offset="1" stop-color="${hc2}"/></linearGradient>` : "";
+  return (S.shaved ? `<path d="${S.shaved}" fill="${paint}" opacity=".4"/>` : "") +
+    `<defs>${grad}<clipPath id="${id}"><path d="${S.H}"/></clipPath>${fr ? `<clipPath id="${id}f"><path d="${fr}"/></clipPath>` : ""}</defs><g clip-path="url(#${id})"${op}>` +
+    VP(shape, paint, Object.assign({}, o, { in: 0, sil: 0 })) +
     `<g${fr ? ` clip-path="url(#${id}f)"` : ""}>` + (S.strands ? LINE(S.strands, dk, .9, 'opacity=".55"') : "") + (S.curls ? LINE(S.curls, dk, 1, 'opacity=".5"') : "") +
     (S.shine ? LINE(HAIR_SHINE, "#ffffff", 2.2, 'opacity=".3"') : "") + `</g>` +
     (S.FE ? LINE(S.FE, lineOf(hc), 1) : "") + (S.part ? LINE(S.part, dk, 1) : "") + `</g>` +
-    (S.extra ? S.extra(hc) : "");
+    (S.extra ? S.extra(hc, paint) : "");
 }
 
 /* ---------- sombreros y gorros (mismo sistema que antes) ---------- */
@@ -550,7 +597,7 @@ function avatarG(eq, mood, opt = {}) {
   return `<g class="av ${mood}">${onePiece(body)}</g>`;
 }
 function avatarBody(eq, mood, opt, k) {
-  const hc = (findItem("hairColor", eq.hairColor) || { c: "#6b4430" }).c, sk = (findItem("skin", eq.skin) || { c: "#e8bd9a" }).c;
+  const hcI = findItem("hairColor", eq.hairColor) || { c: "#6b4430" }, hc = hcI.c, hc2 = hcI.c2 || null, sk = (findItem("skin", eq.skin) || { c: "#e8bd9a" }).c;
   const coat = findItem("coat", eq.coat), top = findItem("top", eq.top), bottom = findItem("bottom", eq.bottom), shoes = findItem("shoes", eq.shoes), acc = findItem("acc", eq.acc);
   const rep = coat ? (COAT_REPLACES[coat.k] || []) : [];
   const hairT = `transform="translate(60 54) scale(1.04) translate(-60 -55)"`;
@@ -559,15 +606,15 @@ function avatarBody(eq, mood, opt, k) {
       ${DET(`<ellipse cx="60" cy="79" rx="8" ry="3.4" fill="#2a1408" opacity=".14"/>`)}
       ${(HAIR[eq.hair] || {}).noEars ? "" : VC(35, 58, 5.5, sk, { w: 1.6, hl: 0 }) + VC(85, 58, 5.5, sk, { w: 1.6, hl: 0 }) + LINE("M34 56 q2 2 0 4M86 56 q-2 2 0 4", darken(sk, .75), 1)}
       ${VC(60, 54, 25, sk, { w: 1.9, dir: "gShR" })}
-      ${avBeard(eq, hc)}${avBlush(eq)}${avEyes(eq, mood)}${avBrows(eq, mood, hc)}${avNose(eq, sk)}
-      ${eq.face && eq.face !== "barba" && eq.face !== "bigote" ? avFaceExtra(eq, hc) : ""}${avMouth(eq, mood, sk)}${eq.face === "bigote" ? avFaceExtra(eq, hc) : ""}
+      ${avBeard(eq, hc, "base")}${avBlush(eq)}${avEyes(eq, mood)}${avBrows(eq, mood, hc)}${avNose(eq, sk)}
+      ${avFaceExtra(eq, hc)}${avMouth(eq, mood, sk)}${avBeard(eq, hc, "top")}
       ${avMask(acc)}
-      <g ${hairT}>${avHair(eq.hair, hc, "front", k)}</g>
+      <g ${hairT}>${avHair(eq.hair, hc, "front", k, hc2)}</g>
       ${avEarrings(eq.ears)}
       ${avGlasses(eq.glasses)}
       <g ${hairT}>${avHat(findItem("head", eq.head), k)}</g>
     </g>`;
-  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back", k)}</g>${neck}${head}`;
+  if (opt.headOnly) return `<g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2)}</g>${neck}${head}`;
   const sleeveFrom = coat && COAT_SLEEVE[coat.k] ? coat : (rep.includes("top") ? coat : top);
   const sleeveLen = coat && COAT_SLEEVE[coat.k] ? COAT_SLEEVE[coat.k] : (rep.includes("top") ? "short" : SLEEVE[top && top.k] || "short");
   const sPaint = sleeveFrom && sleeveFrom.pat ? `url(#${k}${sleeveFrom === top ? "t" : "d"})` : null;
@@ -575,7 +622,7 @@ function avatarBody(eq, mood, opt, k) {
   const arm = side => avArm(side, sk, sleeveLen, sPaint, sc, acc);
   const tallShoes = shoes && (shoes.k === "boot" || shoes.k === "cowboy");
   return `${avCoatBack(coat)}${avAccBack(acc)}
-    <g ${hairT}>${avHair(eq.hair, hc, "back", k)}</g>
+    <g ${hairT}>${avHair(eq.hair, hc, "back", k, hc2)}</g>
     ${avLegs(sk)}
     ${tallShoes ? "" : avShoes(shoes)}
     ${rep.includes("bottom") ? "" : avBottom(bottom, k)}
