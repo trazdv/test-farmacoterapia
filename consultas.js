@@ -520,7 +520,7 @@ const CONSULTAS = [
      "Sí: estimula la glándula para que vuelva a funcionar, y en unos meses se podrá retirar del todo.",
      "Sí: es un tratamiento etiológico, porque elimina la causa del hipotiroidismo en unos meses.",
      "No: es solo sintomático; le quitará el cansancio, pero no cambia sus niveles de hormona en sangre."],
-  why:"Tipos de terapéutica: etiológica (elimina la causa), sintomática (alivia síntomas), sustitutiva (aporta lo que falta, como la levotiroxina o la insulina) y preventiva (vacunas, antiparasitarios)."},
+  why:"Tipos de terapéutica: etiológica (elimina la causa), sintomática (alivia síntomas), sustitutiva (aporta lo que falta, como la levotiroxina o la insulina; es una forma de tratamiento patogénico, porque corrige el mecanismo sin eliminar la causa) y preventiva (vacunas, antiparasitarios)."},
  {ask:"¿Y las vacunas qué tipo de tratamiento son?",
   o:["Preventivo: se ponen antes de que aparezca la enfermedad para evitarla.",
      "Etiológico: atacan directamente al virus cuando el animal ya está enfermo.",
