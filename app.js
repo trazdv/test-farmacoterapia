@@ -525,7 +525,7 @@ document.addEventListener("keydown", e => {
   if ($("#modal-root").innerHTML) { if (e.key === "Escape") closeModal(); return; }
   if (!quiz || quiz.done) return;
   const k = e.key.toUpperCase(), it = quiz.items[quiz.idx];
-  const pos = "1234".indexOf(k) >= 0 ? "1234".indexOf(k) : "ABCD".indexOf(k);
+  const pos = "12345".indexOf(k) >= 0 ? "12345".indexOf(k) : "ABCDE".indexOf(k);
   if (k.length === 1 && pos >= 0 && pos < it.order.length) { quiz.answers[quiz.idx] = it.order[pos]; saveQuiz(); renderQuiz(); }
   else if (e.key === "ArrowRight") go(1);
   else if (e.key === "ArrowLeft") go(-1);
