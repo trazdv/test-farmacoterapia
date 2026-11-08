@@ -69,8 +69,8 @@ function addEnergy(n, reason) {
   G.energy = Math.min(MAX_ENERGY, G.energy + n);
   saveGame();
   const got = G.energy - before;
-  if (got > 0) toast(`${BOLT}<b>+${got}</b> de energía ${reason}`);
-  else toast(`${BOLT} Energía al máximo (${MAX_ENERGY})`);
+  // si ya estaba al máximo no se avisa (antes salía cada minuto mientras se estudiaba)
+  if (got > 0) toast(`${BOLT}<b>+${got}</b> de energía ${reason}${G.energy >= MAX_ENERGY ? ` · ya está al máximo (${MAX_ENERGY})` : ""}`);
   return got;
 }
 
@@ -192,7 +192,7 @@ function renderConsulta() {
       </div>
       <div class="g-paper">
         <p class="g-hand">Cómo funciona</p>
-        <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 3 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar (+1 cada minuto).</p>
+        <p>Abrir la consulta cuesta ${BOLT}${ENERGY_COST} de energía. La consigues <b>haciendo tests</b> (+1 por cada 3 preguntas, y +1 extra si sacas un 7 o más) y <b>leyendo apuntes</b> en Estudiar o Apuntes (+1 cada 2 minutos).</p>
         <p>Cada cliente te hará varias preguntas sobre su animal. Si respondes bien, cobras y ganas reputación; si te equivocas, la pierdes. Si respondes bien a todo, te deja propina. Cuanta más reputación, más clientes y mejor pagados.</p>
         <p class="muted small">Preguntas respondidas: <b>${G.served}</b> · Aciertos: <b>${G.okTotal}</b> · Mejor racha: <b>${G.best}</b></p>
         <p class="label" style="margin-top:12px">Temas de las consultas</p>

@@ -515,20 +515,23 @@ function vTouch(sc) {
 
 /* ============ energía por estudiar ============ */
 /* cuenta el tiempo con la pestaña Estudiar (o unos apuntes) abiertos, la app visible y actividad reciente */
-const STUDY_SECS = 60;
+const STUDY_SECS = 120;   // +1 de energía cada 2 minutos de estudio
 let studyAcc = store.get("ft_studyacc", 0), lastInteract = Date.now(), infoOpen = false;
 ["scroll", "touchstart", "pointerdown", "keydown", "wheel"].forEach(ev => window.addEventListener(ev, () => { lastInteract = Date.now(); }, { passive: true, capture: true }));
 function isStudying() {
   return document.visibilityState === "visible" && Date.now() - lastInteract < 120000 && (((view === "estudiar" || view === "apuntes") && !quiz) || infoOpen || !!viewer);
 }
+// con la energía llena el contador se para (no se gana nada ni salen avisos) hasta que se gaste
+function energyFull() { try { return G.energy >= MAX_ENERGY; } catch (e) { return false; } }
 function updateStudyChip() {
   const el = $("#studychip"); if (!el) return;
+  if (energyFull()) { el.innerHTML = `${BOLT}<span>Energía al máximo</span>`; el.classList.add("paused"); return; }
   const left = Math.max(0, STUDY_SECS - studyAcc), m = Math.floor(left / 60), s = String(left % 60).padStart(2, "0");
   el.innerHTML = `${BOLT}<span>+1 en ${m}:${s}</span>`;
   el.classList.toggle("paused", !isStudying());
 }
 setInterval(() => {
-  if (isStudying()) {
+  if (isStudying() && !energyFull()) {
     studyAcc += 5;
     if (studyAcc >= STUDY_SECS) { studyAcc -= STUDY_SECS; addEnergy(1, "por estudiar"); }
     store.set("ft_studyacc", studyAcc);
