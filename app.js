@@ -48,6 +48,9 @@ const ApStats = Object.assign({}, Stats, {
   reset() { store.del("ft_apstats"); }
 });
 const bankQ = b => b === "ap" ? APQ : QUESTIONS;
+/* nombre del tema de una pregunta de apuntes: el nombre corto de su documento si lo tiene («Tema 5 A»), si no el del tema */
+const apDoc = Q => APUNTES.find(d => d.id === Q.doc);
+const apName = Q => { const d = apDoc(Q); return d && d.short ? d.short : TOPICS[Q.t].name; };
 const bankStats = b => b === "ap" ? ApStats : Stats;
 
 /* ============ iconos (trazo a mano) ============ */
@@ -176,7 +179,7 @@ function renderQuiz() {
       <div class="muted small">Toca un número para ir a esa pregunta</div>
       <div class="grid">${quiz.items.map((_, i) => `<button data-go="${i}" class="${quiz.answers[i] != null ? "answered" : ""} ${i === quiz.idx ? "current" : ""}">${i + 1}</button>`).join("")}</div>
     </div>
-    <span class="tag">${quiz.bank === "ap" ? "Tus apuntes · " + TOPICS[Q.t].name : `${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
+    <span class="tag">${quiz.bank === "ap" ? "Tus apuntes · " + apName(Q) : `${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
     <h2 class="qtext">${esc(Q.q)}</h2>
     <div>${it.order.map((oi, k) => `<button class="opt" data-opt="${oi}" aria-pressed="${quiz.answers[quiz.idx] === oi}"><span class="letter">${LET[k]}</span><span>${esc(Q.o[oi])}</span></button>`).join("")}</div>
     <nav class="navbar"><div class="inner">
@@ -254,7 +257,7 @@ function reviewCard(r, bank) {
   const mine = a == null ? `<div class="ans blank"><span class="k">Tu respuesta</span><span>Sin responder</span></div>`
     : status === "ok" ? "" : `<div class="ans bad"><span class="k">Tu respuesta</span><span>${esc(Q.o[a])}</span></div>`;
   return `<div class="rev">
-    <div class="row"><span class="tag">${r.n} · ${bank === "ap" ? "Tus apuntes · " : ""}${TOPICS[Q.t].name}</span>${Q.d ? `<span class="tag warn">Dudosa</span>` : ""}</div>
+    <div class="row"><span class="tag">${r.n} · ${bank === "ap" ? "Tus apuntes · " + apName(Q) : TOPICS[Q.t].name}</span>${Q.d ? `<span class="tag warn">Dudosa</span>` : ""}</div>
     <div class="qtext sm">${esc(Q.q)}</div>
     ${mine}
     <div class="ans ok"><span class="k">Correcta</span><span>${esc(Q.o[Q.a])}</span></div>
@@ -371,15 +374,22 @@ function renderApuntes() {
   const docTopics = ALL_TOPICS.filter(t => APUNTES.some(d => docIn(d, t)));
   if (apTopic == null) apTopic = docTopics[0] || 1;
   const pending = store.get("ft_test", null), pAp = pending && !pending.done && pending.bank === "ap" ? pending : null;
-  const qTopics = ALL_TOPICS.filter(t => APQ.some(q => q.t === t));
-  const sel = (apCfg.topics || qTopics).filter(t => qTopics.includes(t));
-  const pool = APQ.filter(q => sel.includes(q.t));
+  // grupos del repaso: uno por tema, salvo los documentos con nombre corto propio (el Tema 5 A y el 5 B van por separado)
+  const apKey = q => { const d = apDoc(q); return d && d.short ? d.id : String(q.t); };
+  const groups = [];
+  ALL_TOPICS.forEach(t => {
+    if (APQ.some(q => q.t === t && apKey(q) === String(t))) groups.push({ k: String(t), name: TOPICS[t].name });
+    APUNTES.filter(d => d.short && !groups.some(g => g.k === d.id) && APQ.some(q => q.doc === d.id && q.t === t)).forEach(d => groups.push({ k: d.id, name: d.short }));
+  });
+  const keys = groups.map(g => g.k);
+  const sel = (apCfg.topics || keys).map(String).filter(k => keys.includes(k));
+  const pool = APQ.filter(q => sel.includes(apKey(q)));
   const n = apCfg.limit && apCfg.limit < pool.length ? apCfg.limit : pool.length;
   const pend = ApStats.pending();
   const docs = APUNTES.filter(d => docIn(d, apTopic));
   const reviewHtml = APQ.length ? `<div class="card stack">
       <div class="row ap-head"><span class="ap-ico">${ICON.apuntes}</span><div><b>Repasar apuntes</b><br><span class="muted small">${APQ.length} preguntas hechas solo con tus apuntes. No salen en el Test ni en Repaso.</span></div></div>
-      ${qTopics.length > 1 ? `<div><p class="label">Temas</p><div class="chips">${qTopics.map(t => `<button class="chip" data-aqt="${t}" aria-pressed="${sel.includes(t)}">Tema ${t}</button>`).join("")}</div></div>` : ""}
+      ${groups.length > 1 ? `<div><p class="label">Temas</p><div class="chips">${groups.map(g => `<button class="chip" data-aqt="${g.k}" aria-pressed="${sel.includes(g.k)}">${esc(g.name)}</button>`).join("")}</div></div>` : ""}
       <div><p class="label">Número de preguntas</p><div class="chips">${[0, 10, 20].map(l => `<button class="chip" data-alim="${l}" aria-pressed="${apCfg.limit === l}">${l || "Todas"}</button>`).join("")}</div></div>
       <button class="btn primary block" id="apstart" ${n ? "" : "disabled"}>${n ? `Repasar apuntes · ${n} preguntas` : "Elige al menos un tema"}</button>
       ${pend.length ? `<button class="btn block" id="apfail">Solo las que he fallado (${pend.length})</button>` : ""}
@@ -387,7 +397,7 @@ function renderApuntes() {
     ${pend.length ? `<h2 class="section-title">Lo que más fallas de tus apuntes</h2>
     <div>${pend.sort((a, b) => ApStats.weight(b.e) - ApStats.weight(a.e)).slice(0, 20).map(x => `<button class="weak" data-apinfo="${x.q.id}">
       <span class="weak-n" title="veces fallada">${x.e.w}×</span>
-      <span class="weak-q"><span class="tag">${TOPICS[x.q.t].name} · pág. ${x.q.p}</span><br>${esc(x.q.q)}</span>
+      <span class="weak-q"><span class="tag">${apName(x.q)} · pág. ${x.q.p}</span><br>${esc(x.q.q)}</span>
       <span class="weak-r">${x.e.r ? `✓${x.e.r}` : ""}</span></button>`).join("")}</div>` : ""}`
     : `<div class="card empty-state"><p><b>Aún no hay preguntas de tus apuntes.</b></p></div>`;
   $("#app").innerHTML = `
@@ -409,7 +419,7 @@ function renderApuntes() {
   $$("[data-asv]").forEach(b => b.onclick = () => { apTab = b.dataset.asv; renderApuntes(); });
   $$("[data-apinfo]").forEach(b => b.onclick = () => openInfo(+b.dataset.apinfo, "ap"));
   $$("[data-at]").forEach(b => b.onclick = () => { apTopic = +b.dataset.at; renderApuntes(); });
-  $$("[data-aqt]").forEach(b => b.onclick = () => { const t = +b.dataset.aqt; apCfg.topics = sel.includes(t) ? sel.filter(x => x !== t) : [...sel, t]; store.set("ft_apcfg", apCfg); renderApuntes(); });
+  $$("[data-aqt]").forEach(b => b.onclick = () => { const k = b.dataset.aqt; apCfg.topics = sel.includes(k) ? sel.filter(x => x !== k) : [...sel, k]; store.set("ft_apcfg", apCfg); renderApuntes(); });
   $$("[data-alim]").forEach(b => b.onclick = () => { apCfg.limit = +b.dataset.alim; store.set("ft_apcfg", apCfg); renderApuntes(); });
   if ($("#apstart")) $("#apstart").onclick = () => { let ids = shuffle(pool.map(q => q.id)); if (apCfg.limit) ids = ids.slice(0, apCfg.limit); startQuiz(ids, "test", "ap"); };
   if ($("#apfail")) $("#apfail").onclick = () => startQuiz(shuffle(pend.map(x => x.q.id)), "repaso", "ap");
@@ -588,7 +598,7 @@ function modal(html) {
 function openInfo(id, bank = "main") {
   const Q = bankQ(bank)[id], e = bankStats(bank).get(id);
   const doc = bank === "ap" ? APUNTES.find(d => d.id === Q.doc) : null;
-  modal(`<span class="tag">${doc ? "Tus apuntes · " + TOPICS[Q.t].name : `${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
+  modal(`<span class="tag">${doc ? "Tus apuntes · " + apName(Q) :`${TOPICS[Q.t].name} · ${esc(TOPICS[Q.t].desc.split(" (")[0])}`}</span>
     <h3 style="margin-top:10px">${esc(Q.q)}</h3>
     <div class="callout okc"><b>Respuesta correcta:</b> ${esc(Q.o[Q.a])}</div>
     ${doc ? `<div class="cita"><div class="cita-h">${ICON.apuntes}<span>En tus apuntes · página ${Q.p}</span></div><blockquote>${esc(Q.cita)}</blockquote><button class="btn block" id="gopage">Ver la página ${Q.p} de tus apuntes</button></div>` : ""}

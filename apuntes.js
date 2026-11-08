@@ -7,7 +7,10 @@ const APUNTES = [
 {id:"t2-autacoides",t:2,title:"Tema 2: Autacoides o mediadores celulares",sub:"Tema completo con tus anotaciones (lo tachado no entra en el examen)",dir:"apuntes/t2-autacoides/",pdf:"apuntes/t2-autacoides/apuntes.pdf",pages:33,w:2000,h:2829},
 {id:"t2-eicosanoides",t:[2,3],from:{2:1,3:5},title:"Mediadores eicosanoides e inicio del Tema 3 (AINEs)",sub:"Prostaglandinas, tromboxanos, leucotrienos e introducción a los AINEs",dir:"apuntes/t2-eicosanoides/",pdf:"apuntes/t2-eicosanoides/apuntes.pdf",pages:6,w:2000,h:2826},
 {id:"t3-aines",t:3,title:"Farmacología de los Antiinflamatorios No Esteroideos (AINEs)",sub:"Continuación, mecanismos, farmacocinética y seguridad",dir:"apuntes/t3-aines/",pdf:"apuntes/t3-aines/apuntes.pdf",pages:8,w:2000,h:2826},
-{id:"t4-esteroideos",t:4,title:"Tema 4: Antiinflamatorios esteroideos",sub:"Tema completo con tus anotaciones",dir:"apuntes/t4-esteroideos/",pdf:"apuntes/t4-esteroideos/apuntes.pdf",pages:20,w:2000,h:2829}
+{id:"t4-esteroideos",t:4,title:"Tema 4: Antiinflamatorios esteroideos",sub:"Tema completo con tus anotaciones",dir:"apuntes/t4-esteroideos/",pdf:"apuntes/t4-esteroideos/apuntes.pdf",pages:20,w:2000,h:2829},
+/* el Tema 5 va en dos documentos separados, cada uno con sus preguntas; «short» es el nombre que sale en las etiquetas y en el repaso */
+{id:"t5a-cardio",t:5,short:"Tema 5 A",title:"Tema 5 A: Terapéutica cardiovascular",sub:"El corazón: digitálicos, otros inotropos y antiarrítmicos (lo tachado y lo que pone «no lo pregunta» no entran)",dir:"apuntes/t5a-cardio/",pdf:"apuntes/t5a-cardio/apuntes.pdf",pages:21,w:2000,h:2829},
+{id:"t5b-cardio",t:5,short:"Tema 5 B",title:"Tema 5 B: Terapéutica cardiovascular",sub:"Insuficiencia cardiaca y vasodilatadores, lo más importante según tu nota (la clasificación tachada no entra)",dir:"apuntes/t5b-cardio/",pdf:"apuntes/t5b-cardio/apuntes.pdf",pages:15,w:2000,h:2829}
 ];
 
 const APQ = [
@@ -1530,6 +1533,902 @@ const APQ = [
  "Bloquea la plasticidad neuronal, el aprendizaje y la memoria, y suprime la defensa de la microglía",
  "Solo actúa en el SNP como neurotransmisor de la placa motora; en el SNC no tiene funciones conocidas"],a:0,
  cita:"Entre las funciones del NO en el Sistema Nervioso:\n1. Autorregulación del flujo vascular tanto periférico como central\n2. Activación de las fibras parasimpáticas que inervan los vasos cerebrales\n3. Incremento del flujo sanguíneo durante la hipercapnia",
- n:"Además (p. 27): 4. defensa cerebral frente a infecciones mediante la microglía, que expresa mucha iNOS (lo marcaste «imp»); 5. plasticidad neuronal, aprendizaje y memoria."}
+ n:"Además (p. 27): 4. defensa cerebral frente a infecciones mediante la microglía, que expresa mucha iNOS (lo marcaste «imp»); 5. plasticidad neuronal, aprendizaje y memoria."},
+/* ===== Tema 5 A (t5a-cardio): págs. 1-11, propiedades del miocardio, inotropos y digitálicos ===== */
+/* ---------- p. 1 · Propiedades del miocardio ---------- */
+{doc:"t5a-cardio",t:5,p:1,q:"Según tus apuntes, ¿qué propiedad del miocardio es la «capacidad de transmitir potenciales de acción siguiendo la ley del todo o nada mediante un sistema de células especializadas»?",o:[
+ "Dromotropismo o conductividad",
+ "Batmotropismo o excitabilidad",
+ "Cronotropismo o automatismo",
+ "Inotropismo o contractilidad"],a:0,
+ cita:"Dromotropismo o conductividad: capacidad de transmitir potenciales de acción siguiendo la ley del todo o el nada y coordinadamente mediante un sistema de células especializadas.",
+ n:"Batmotropismo = despolarizarse ante un estímulo eléctrico; cronotropismo = excitarse a sí misma de forma rítmica y automática (nodo sinusal y AV); inotropismo = desarrollar fuerza o tensión."},
+
+/* ---------- p. 2 · Arritmias e inotropos positivos ---------- */
+{doc:"t5a-cardio",t:5,p:2,q:"Según tus apuntes, ¿qué diferencia el aleteo atrial (flutter) de la fibrilación?",o:[
+ "Flutter: ritmo rápido (≈300 lpm) pero regular, con ondas P en diente de sierra; fibrilación: rápido e irregular o caótico",
+ "Flutter: ritmo rápido e irregular o caótico; fibrilación: rápido (≈300 lpm) pero regular, con ondas P en diente de sierra",
+ "Flutter: ritmo lento (<100 lpm) y regular, originado en el ventrículo; fibrilación: rápido pero con contracción coordinada",
+ "Flutter: reentrada en la aurícula izquierda con ritmo caótico; fibrilación: un solo foco ventricular con ritmo regular"],a:0,
+ cita:"FIBRILACIÓN: las células miocárdicas se contraen de forma desorganizada. Ritmo rápido (>300lpm) e irregular o caótico.\nALETEO ATRIAL (FLUTTER): ritmo cardiaco anormal que ocurre en la aurícula cardiaca. Arritmia auricular de alta frecuencia (300 lpm) pero regular.\n- Circuito de reentrada localizado en aurícula derecha\n- Clásicas ondas P en diente de sierra\n- Ritmo rápido pero regular",
+ n:"Fibrilación atrial: 350-500 lpm, ondas múltiples de reentrada y frecuencia ventricular irregular y rápida por bloqueo AV variable."},
+
+{doc:"t5a-cardio",t:5,p:2,q:"Según tus apuntes, ¿en qué cardiomiopatía están indicados los inotropos positivos y por qué?",o:[
+ "En la dilatada, por el adelgazamiento de las fibras musculares (quedan pocas fibras)",
+ "En la hipertrófica, porque el ventrículo engrosado necesita contraerse con más fuerza",
+ "En la restrictiva, porque mejoran el llenado diastólico de un ventrículo muy rígido",
+ "En la arritmogénica, porque normalizan el ritmo y suprimen los focos ectópicos"],a:0,
+ cita:"INOTROPOS POSITIVOS (estimulantes cardiacos): destinados a mejorar/normalizar el gasto cardiaco y la contracción cardiaca. Indicados en cardiomiopatía dilatada debido al adelgazamiento de las fibras musculares. (anotación a mano en la p. 3: inotropos cuando nos quedan pocas fibras (en cardiomiop dilatada))"},
+
+/* ---------- p. 3 · Regulación del trabajo cardiaco ---------- */
+{doc:"t5a-cardio",t:5,p:3,q:"Según tus apuntes, ¿qué efectos tiene sobre el corazón la estimulación β1 (simpática) frente a la M2 (parasimpática)?",o:[
+ "β1: inotropo, clinotropo, crono, dromo y batmotropo positivos y ↑ demanda de O₂; M2: cronotropo negativo e inhibe la conducción AV",
+ "β1: inotropo y cronotropo positivos, dromotropo negativo y ↓ demanda de O₂; M2: cronotropo positivo y acelera la conducción AV",
+ "β1: cronotropo negativo, ↓ contracción auricular e inhibe la conducción AV; M2: inotropo, cronotropo y dromotropo positivos",
+ "β1: inotropo positivo y batmotropo negativo, sin cambios en la demanda de O₂; M2: inotropo positivo sobre las aurículas"],a:0,
+ cita:"Simpático (adrenérgico):\n− β1 :\n- Inotropo positivo (fuerza)\n- Clonotropo positivo (acortamiento fibra muscular)\n- Cronotropo positivo (frecuencia)\n- Dromotropo positivo (v de conducción)\n- Batmotropo positivo (excitabilidad)\n- Aumento de la demanda de o2\n- Parasimpático (colinérgico) m2: cronotropo negativo, reducción contracción aurículas, inhibe conducción A-V.",
+ n:"En «Clonotropo» hay una «i» negra escrita sobre la «o»: es el efecto clinotropo (acortamiento de la fibra). M2 también reduce la contracción de las aurículas."},
+
+{doc:"t5a-cardio",t:5,p:3,q:"Según tus apuntes, ¿de qué depende la demanda de O₂ del corazón?",o:[
+ "De la frecuencia cardiaca, el estado inotropo, la tensión de la pared y el estiramiento del músculo",
+ "De la frecuencia cardiaca, la presión venosa central, el hematocrito y el tono vagal del nodo AV",
+ "Solo del estado inotropo: ni la frecuencia ni la tensión de la pared modifican el consumo de O₂",
+ "De la velocidad de conducción AV, la excitabilidad, la volemia y la concentración de K⁺ en plasma"],a:0,
+ cita:"La demanda de O2 depende de:\n- Frecuencia cardiaca\n- Estado inotropo\n- Tensión de la pared cardiaca\n- Alargamiento-estiramiento del músculo cardiaco"},
+
+/* ---------- p. 4 · Digitálicos: visión general ---------- */
+{doc:"t5a-cardio",t:5,p:4,q:"Digitálicos (glucósidos cardiotónicos). Según tus apuntes, ¿qué afirmación es CORRECTA?",o:[
+ "Son los únicos inotropos positivos adecuados para la ICC y no aumentan de forma significativa el consumo de O₂",
+ "Son los únicos inotropos positivos adecuados para la ICC, aunque a cambio aumentan mucho el consumo de O₂",
+ "Son inotropos negativos que reducen el consumo de O₂ y carecen de actividad vagotónica sobre el corazón",
+ "Son útiles en el flúter auricular por su efecto cronotropo positivo y por su acción vagolítica sobre el nodo"],a:0,
+ cita:"Se eleva la fuerza contráctil y la eficacia mecánica sin aumento significativo del consumo de o2.\nLos digitálicos son los únicos agentes inotropos positivos adecuados para el tratamiento de la ICC, pero a veces la respuesta es insuficiente. (anotación a mano: cronotropos ⊖)\nTienen además actividad vagotónica y efectos directos sobre las membranas cardiacas.\n- Aleteo (flutter). Por el efecto cronotropo -",
+ n:"La p. 6 explica por qué no sube el consumo: «El aumento de la demanda de O2 se contrarresta por: ↓ la longitud de la fibra, la tensión parietal ventricular y la frecuencia»."},
+
+/* ---------- p. 5 · Digitálicos: farmacocinética ---------- */
+{doc:"t5a-cardio",t:5,p:5,q:"Absorción y distribución de los digitálicos según tus apuntes:",o:[
+ "Oral salvo en rumiantes (se inactivan en el rumen); se dosifican por peso magro porque no se acumulan en la grasa",
+ "Oral también en los rumiantes; se dosifican por peso total porque se acumulan sobre todo en el tejido adiposo",
+ "Oral salvo en rumiantes (se inactivan en el rumen); se dosifican por peso total porque se acumulan en la grasa",
+ "Solo parenteral en todas las especies; se dosifican por peso magro porque no atraviesan la barrera hematoencefálica"],a:0,
+ cita:"Absorción: ORAL (excepto rumiantes porque son inactivados a nivel ruminal).\nDistribución amplia (BHE) y acumulo en corazón, riñón e hígado, no en tejido adiposo (dosificar según peso magro)",
+ n:"Las formas líquidas se absorben mejor y antes que las sólidas (pico a los 45-60 min frente a 90 min). En rumiantes, vía parenteral; en el gato se recomienda el elixir."},
+
+{doc:"t5a-cardio",t:5,p:5,q:"Biotransformación y eliminación de la digoxina frente a la digitoxina, según la tabla de tus apuntes:",o:[
+ "Digoxina: biotransformación escasa y eliminación renal en forma activa (75-80 %); digitoxina: biotransformación pronunciada y sobre todo biliar",
+ "Digitoxina: biotransformación escasa y eliminación renal en forma activa (75-80 %); digoxina: biotransformación pronunciada y sobre todo biliar",
+ "Las dos: biotransformación hepática pronunciada y eliminación sobre todo biliar en forma de metabolitos, con un ciclo enterohepático intenso",
+ "Las dos: biotransformación escasa y eliminación renal sin metabolizar (filtración y secreción tubular), sin ningún ciclo enterohepático"],a:0,
+ cita:"Biotransformación hepática (escasa en el caso de digoxina)\nEliminación: biliar y renal (Digoxina 75-80% inalterada) (ciclo enterohepático y reabsorción tubular).\nDigoxina — Escasa — Renal : 75-80% en forma activa (filtración y secreción tubular) Escasa vía biliar (ciclo enterohepático)\nDigitoxina — Pronunciada — Escasa renal en forma de metabolitos, mayoritariamente eliminación vía biliar. Ciclo enterohepático",
+ n:"Por eso: «Reducir dosis en insuficiencia renal y animales viejos» (en la diapositiva de dosis de la p. 8, un 50 % por cada 50 % de aumento del BUN)."},
+
+{doc:"t5a-cardio",t:5,p:5,q:"Vida media de los digitálicos según tus apuntes. Señala la opción CORRECTA:",o:[
+ "En el perro, digoxina 20-55 h y digitoxina 8-12 h: la digoxina se elimina más despacio (riesgo de sobredosificación)",
+ "En el perro, digoxina 8-12 h y digitoxina 20-55 h: la digitoxina se elimina más despacio (riesgo de sobredosificación)",
+ "Con digoxina, la vida media es de 35 h en el caballo y de 16-23 h en el gato, más larga en ambos que en el perro",
+ "En el perro, digoxina y digitoxina tienen la misma vida media (unas 35 h), por eso son totalmente intercambiables"],a:0,
+ cita:"- En perro menor reabsorción que en otras especies (t½ menor): digoxina (20-55 h) se elimina más lentamente que digitoxina (8-12 h)→ peligro sobredosificación (anotación a mano: perro digitoxina porque digoxina V. media ↑ larga)\n- En caballo (digoxina) t1/2 de 16-23 h\n- En gato (digoxina) 35 h",
+ n:"Con digoxina: 16-23 h en el caballo y 35 h en el gato."},
+
+/* ---------- p. 5 · Digitálicos: mecanismo y efectos ---------- */
+{doc:"t5a-cardio",t:5,p:5,q:"Mecanismo de acción de los glucósidos cardiotónicos según tus apuntes:",o:[
+ "Inhiben la bomba Na⁺/K⁺ → ↑ Na⁺ intracelular → el intercambio Na⁺/Ca²⁺ ↑ el Ca²⁺ intracelular y la contracción",
+ "Activan la bomba Na⁺/K⁺ → ↓ Na⁺ intracelular → el intercambio Na⁺/Ca²⁺ saca Ca²⁺ y relaja la fibra cardiaca",
+ "Inhiben la fosfodiesterasa III → ↑ AMPc intracelular → ↑ la entrada de Ca²⁺ por los canales lentos del miocito",
+ "Bloquean los canales de K⁺ → retrasan la repolarización → ↑ el Ca²⁺ guardado en el retículo sarcoplásmico"],a:0,
+ cita:"1. Los glucósidos inhiben la bomba Na+/k+\n2. El aumento de Na+ en músculo cardíaco estimula un mecanismo de intercambio, las células se deshacen del exceso de iones Na+ al intercambiarlos por iones Ca2+, los niveles de calcio se incrementan en el interior del músculo cardiaco y aumenta la formación de actinomiosina, lo cual produce una mayor contracción del miocardio.\n3. La concentración de Ca2+ aumentada se almacena en el retículo sarcoplásmico, con lo que se eleva la cantidad de Ca2+ liberada en cada potencial de acción."},
+
+{doc:"t5a-cardio",t:5,p:5,q:"Efectos cronotropo y batmotropo de los digitálicos según tus apuntes:",o:[
+ "Cronotropo negativo, por sensibilizar el vago y, de forma secundaria, por ↓ la presión venosa; batmotropo positivo solo con sobredosis",
+ "Cronotropo negativo, por bloqueo directo de los receptores β1 del nodo sinusal; batmotropo positivo ya a las dosis terapéuticas",
+ "Cronotropo positivo, por su acción vagolítica sobre el nodo sinusal; batmotropo negativo, que solo aparece con la sobredosificación",
+ "Cronotropo negativo, por ↑ de la presión venosa y activación del reflejo barorreceptor; batmotropo negativo a cualquier dosis"],a:0,
+ cita:"- Efecto cronotropo negativo: Disminuyen la capacidad del miocardio para producir su propio impulso. Tiene lugar por acción directa, sensibilizando el vago (vagotónico), y secundariamente a la acción inotropa por disminución de la presión venosa\n- Efecto batmotropo positivo: Aumenta la excitabilidad. A dosis terapéuticas esto no tiene lugar, y es en realidad un efecto de sobredosificación.",
+ n:"En la p. 6: «Aumentan la formación de impulsos ectópicos (exceso dosis)»."},
+
+/* ---------- p. 6 · Efectos sobre la frecuencia y la conducción ---------- */
+{doc:"t5a-cardio",t:5,p:6,q:"Según tus apuntes, ¿qué hacen los digitálicos sobre el nodo AV?",o:[
+ "Aumentan su periodo refractario y reducen su velocidad de conducción (↑ PR): baja la frecuencia ventricular",
+ "Acortan su periodo refractario y aceleran su velocidad de conducción (↓ PR): sube la frecuencia ventricular",
+ "Aumentan su periodo refractario pero aceleran su conducción (↓ PR), sin cambiar la frecuencia ventricular",
+ "Nada: solo deprimen el nodo sinusal, por eso no sirven para frenar la frecuencia en la fibrilación auricular"],a:0,
+ cita:"- Disminución de impulsos en nodo s-a (cronotropo negativo). Aumento del periodo refractario (S-T) del nodo a-v y ↓ velocidad de conducción a través del nodo a-v (reduce nº de impulsos y ↑ PR).\n- Deprimen velocidad conducción aurículo-ventricular (bloqueo)",
+ n:"Es lo que muestra el esquema D de la página: en la fibrilación auricular el glucósido produce «Disminución de la frecuencia ventricular». En exceso, bloqueo AV."},
+
+/* ---------- p. 7 · Efecto diurético e indicaciones ---------- */
+{doc:"t5a-cardio",t:5,p:7,q:"Según tus apuntes, ¿cómo producen diuresis y movilización de los edemas los digitálicos?",o:[
+ "Indirecta: al ↑ el gasto cardiaco ↓ la vasoconstricción renal y la activación del eje renina-angiotensina-aldosterona",
+ "Directa: inhiben la Na⁺/K⁺-ATPasa del túbulo renal como un diurético del asa, sin depender del gasto cardiaco",
+ "Indirecta: al ↓ el gasto cardiaco se activa el eje renina-angiotensina-aldosterona, que elimina Na⁺ y agua por la orina",
+ "Directa: bloquean los receptores de aldosterona del túbulo colector renal, igual que hace la espironolactona"],a:0,
+ cita:"EFECTO DIURÉTICO DE LOS DIGITÁLICOS\nLOS DIGITÁLICOS, COMO EFECTO INDIRECTO, OCASIONAN:\n-DIURESIS\n-MOVILIZACIÓN DE LOS EDEMAS PERIFÉRICOS (anotación a mano: Por no activar eje R-A-Aldost.)\nEL AUMENTO DEL GASTO CARDIACO DISMINUYE: VASOCONSTRICCIÓN RENAL Y LA ACTIVACIÓN DEL SISTEMA RENINA-ANGIOTENSINA-ALDOSTERONA\nAUMENTO DEL FLUJO RENAL Y LA FILTRACIÓN GLOMERULAR\nEFECTO NATRIURÉTICO (MENOR REABSORCIÓN DE Na+ y H2O)\nDISMINUCIÓN DE LA PRESIÓN VENOSA Y MEJORA CIRCULATORIA (anotación a mano: Para esto se utilizan los inotrópicos)"},
+
+{doc:"t5a-cardio",t:5,p:7,q:"PREGUNTA DE EXAMEN según tu nota: ¿por qué no se usan los digitálicos en las miocardiopatías hipertróficas?",o:[
+ "Porque en ellas ya hay un aumento del Ca²⁺ intracelular, que los digitálicos elevarían todavía más",
+ "Porque en ellas hay hipopotasemia crónica, que potencia mucho los efectos tóxicos de los digitálicos",
+ "Porque el ventrículo hipertrófico carece de bombas Na⁺/K⁺ sobre las que los digitálicos puedan actuar",
+ "Porque su efecto vagotónico acelera la conducción AV y desencadena taquicardias ventriculares graves"],a:0,
+ cita:"- No en aumento de Ca2+ intracelular: miocardiopatías hipertróficas (anotación a mano: ¡ ! PREGUNTA EXAMEN)",
+ n:"En la p. 8, con un «!» al margen: contraindicados en «Miocardiopatía hipertrófica (↑ Ca2+ intracelular) y estenosis dinámica (excepto en taquidisrritmias supraventriculares que no respondan al propanolol y al verapamilo)»."},
+
+{doc:"t5a-cardio",t:5,p:7,q:"Según tus apuntes («NO, cuidado!»), ¿en cuál de estas insuficiencias cardiacas NO se usan los digitálicos?",o:[
+ "IC asociada a hipertiroidismo, anemia o fístulas arteriovenosas",
+ "IC crónica asociada a fibrilación auricular (digoxina de elección)",
+ "IC sistólica en ritmo sinusal, asociados a diuréticos e IECA",
+ "IC grave con hipotensión si los diuréticos y vasodilatadores fallan"],a:0,
+ cita:"- No en I.C. asociada a:\n- Hipertiroidismo\n- Anemia\n- Fístulas arteriovenosas\n- Glomerulonefritis\n- Pericarditis constrictiva o deformante\n- Estenosis mitral (a menos que haya insuficiencia ventricular derecha o fibrilación auricular), e insuficiencia valvular\n- Enfermedad de Paget (hombre). (anotación a mano: NO cuidado!)",
+ n:"Las otras tres son indicaciones en la ICC: digoxina de elección si hay fibrilación auricular; asociada a diuréticos e IECAs en ritmo sinusal con IC sistólica; IC grave con hipotensión cuando diuréticos y vasodilatadores están contraindicados o son ineficaces."},
+
+{doc:"t5a-cardio",t:5,p:7,q:"Indicaciones de los digitálicos por especie según tus apuntes:",o:[
+ "Perro y gato: sobre todo arritmias supraventriculares; caballo: fibrilación auricular con ICC, junto a furosemida",
+ "Perro y gato: sobre todo arritmias ventriculares; caballo: fibrilación auricular sin ICC, siempre en monoterapia",
+ "Perro y gato: sobre todo la miocardiopatía hipertrófica; caballo: taquicardia ventricular, junto a furosemida",
+ "Perro y gato: sobre todo los bloqueos AV avanzados; caballo: de uso diario en cualquier arritmia sin ICC"],a:0,
+ cita:"- En perro y gato, la indicación más frecuente: arritmias supraventriculares\n- En el caballo útiles en control de fibrilación auricular junto a furosemida cuando existe icc (anotación a mano: se usan poco y asociado a, con una flecha hacia «furosemida»)",
+ n:"En la taquicardia supraventricular paroxística son mejores otros antiarrítmicos (flecainida, sotalol, amiodarona) y hay que «Descartar intoxicación digitálica»."},
+
+{doc:"t5a-cardio",t:5,p:7,q:"Según tus apuntes, ¿en qué cuadros NO son eficaces los digitálicos, salvo que coexista flúter o fibrilación auricular rápida?",o:[
+ "Estenosis mitral aislada, miocardiopatía restrictiva y taponamiento pericárdico",
+ "ICC secundaria a una cardiopatía hipertensiva, valvular, isquémica o congénita",
+ "ICC con fibrilación auricular o flúter con una respuesta ventricular rápida",
+ "ICC secundaria a miocarditis, a cor pulmonale o a una miocardiopatía congestiva"],a:0,
+ cita:"- Extraordinariamente eficaces en ICC y fibrilación auricular (flutter) con respuesta ventricular rápida\n- Eficaces en ICC secundaria a cardiopatía hipertensiva, valvular, isquémica y congénita.\n- Útiles, pero probablemente menos eficaces, en ICC secundaria a miocarditis, cuadros de volumen minuto elevado, cor pulmonale y miocardiopatía congestiva.\n- No eficaces en estenosis mitral aislada, miocardiopatía restrictiva y constricción o taponamiento pericárdico, excepto cuando coexisten con flútter o fibrilación auricular con respuesta ventricular rápida.",
+ n:"Ojo con la miocarditis: son «útiles, pero probablemente menos eficaces», no ineficaces."},
+
+/* ---------- p. 8 · Contraindicaciones, especies y margen de seguridad ---------- */
+{doc:"t5a-cardio",t:5,p:8,q:"Según tus apuntes, ¿en qué casos están CONTRAINDICADOS los digitálicos?",o:[
+ "Bloqueo AV de 2º grado sin marcapasos, intoxicación digitálica y contractilidad cardiaca normal",
+ "Bloqueo AV de 2º grado sin marcapasos, intoxicación digitálica y fibrilación auricular con ICC crónica",
+ "Estenosis aórtica grave, síndrome de Wolff-Parkinson-White e ICC por cardiopatía hipertensiva",
+ "Contractilidad normal, estenosis subaórtica hipertrófica y flúter auricular con ICC congestiva"],a:0,
+ cita:"CONTRAINDICADO EN:\n- Bloqueo AV de 2º grado o superior en ausencia de marcapasos electrónico.\n- Intoxicación digitálica\n- Pacientes con contractilidad cardiaca normal, aunque los síntomas de insuficiencia sean importantes (edema de pulmón, hpt arterial).\n- En estenosis subaórtica hipertrófica y en estenosis aórtica grave.",
+ n:"También el síndrome de Wolff-Parkinson-White con conducción anterógrada por vías anómalas. Contraindicación solo relativa: bloqueo AV avanzado, extrasístoles y taquicardias ventriculares, bradicardias marcadas e hipopotasemias crónicas no controladas."},
+
+{doc:"t5a-cardio",t:5,p:8,q:"Según tus apuntes, ¿qué glucósidos cardiotónicos NO están recomendados en el gato?",o:[
+ "La digitoxina (tampoco en el caballo) y la ouabaína",
+ "La digoxina (tampoco en el caballo) y la ouabaína",
+ "La digoxina en elixir y la digitoxina en comprimidos",
+ "Ninguno: en el gato se usan todos a la misma dosis"],a:0,
+ cita:"La digitoxina no está recomendada en el gato y el caballo.\nLa ouabaína no está recomendada en el gato.",
+ n:"En el gato se usa la digoxina (7-15 µg/kg/48 h p.o., mejor en formas líquidas: elixir). Esquema de la p. 3: «DIGOXINA: +++ en gato y caballo» y «DIGITOXINA: + en perro»."},
+
+{doc:"t5a-cardio",t:5,p:8,q:"Digoxina en el perro: según tus apuntes, ¿qué concentraciones plasmáticas estacionarias se buscan?",o:[
+ "Entre 0,8 y 2,3 ng/ml; por encima de 2,5-3 ng/ml la toxicidad es muy probable",
+ "Entre 2,5 y 3 ng/ml; por debajo de 0,8 ng/ml no hay ningún efecto inotropo",
+ "Entre 8 y 23 ng/ml, porque el margen de seguridad de la digoxina es amplio",
+ "Entre 0,8 y 2,3 ng/ml, pero en gato y caballo ya son tóxicas desde 1 ng/ml"],a:0,
+ cita:"Margen de seguridad estrecho: valorar estrictamente las dosis a aplicar en cada paciente.\nDigoxina: en perro se buscan concentraciones plasmáticas estacionarias entre 0’8 y 2’3 ng/ml:\n- Concentraciones> 2’5-3 ng/ml→ una gran probabilidad de toxicidad.\nConcentraciones plasmáticas de digoxina de hasta 2’3 ng/ml resultan también atóxicas en el gato y en el caballo hasta 2 ng/ml. (anotación a mano: MARGEN DE SEGURIDAD ESTRECHO)",
+ n:"Con una dosis inicial doble de la de mantenimiento se llega rápido al estado estacionario con mínimo riesgo tóxico. Tu nota junto a la tabla de dosis: «Rango de dosis muy pequeños»."},
+
+/* ---------- p. 9 · Toxicidad y su tratamiento ---------- */
+{doc:"t5a-cardio",t:5,p:9,q:"Según la diapositiva de tus apuntes, ¿qué factores aumentan la acción o la toxicidad de los digitálicos?",o:[
+ "Hipopotasemia (diarreas, diuréticos), hipercalcemia, hipotiroidismo y miocarditis activa",
+ "Hipopotasemia (diarreas, diuréticos), hipocalcemia, hipertiroidismo y miocarditis activa",
+ "Hipercalcemia, hipotiroidismo, edad avanzada y ↑ de la velocidad de eliminación renal",
+ "Hipocalcemia, hipertiroidismo, animales jóvenes y ↑ de la velocidad de eliminación"],a:0,
+ cita:"Factores que afectan a la dosificación:\n•La miocarditis activa ↑ sensibilidad a efectos tóxicos de digitálicos.\n•Disminución de la velocidad de eliminación.\n•Edad avanzada (↑ vida media)\n•Hipotiroidismo.\n•Hipopotasemia (diarreas, diuréticos,…) potencian efectos tóxicos de digitálicos\n•Hipercalcemia (promueve la acción de los glucósidos y puede dar lugar a arritmias)",
+ n:"La misma diapositiva pone también «Hiperpotasemia (↑↑ acción de glucósidos)». En los libros (y en la app) es al revés: el K⁺ alto compite con el digitálico por la Na⁺/K⁺-ATPasa y reduce su efecto; lo que lo potencia es la HIPOpotasemia. Si en clase lo explicaron de otra forma, haz caso a tu profesora."},
+
+{doc:"t5a-cardio",t:5,p:9,q:"Toxicidad digestiva y nerviosa de los digitálicos según tus apuntes:",o:[
+ "Vómito por estímulo de la ZQD, dolor abdominal por vasoconstricción mesentérica y discromatopsia del amarillo y el verde",
+ "Vómito por irritación gástrica directa, dolor abdominal por vasodilatación mesentérica y discromatopsia del rojo y el azul",
+ "Vómito por estímulo de la ZQD, dolor abdominal por vasodilatación mesentérica y discromatopsia del rojo y el azul",
+ "Vómito por irritación gástrica directa, dolor abdominal por vasoconstricción mesentérica y ceguera nocturna completa"],a:0,
+ cita:"2. DIGESTIVA: Náuseas, vómitos, diarrea, dolor abdominal (vasoconstricción arterial mesentérica)\n3. NERVIOSA: Vómito (estímulo ZQD), fatiga, neuralgias, paresias, delirio, desorientación, confusión, psicosis y alucinaciones, cefalea. Visión borrosa, halos, alteraciones percepción del color con discromatopsia del amarillo y el verde"},
+
+{doc:"t5a-cardio",t:5,p:9,q:"Signos de intoxicación digitálica en el ECG y endocrinos según tus apuntes:",o:[
+ "QT acortado, onda T aplanada o invertida y ST deprimido; hiperestrogenismo por ↓ del metabolismo del estradiol",
+ "QT alargado, ondas T picudas y ST elevado; hipoestrogenismo por ↑ del metabolismo del estradiol en el hígado",
+ "PR acortado, QT alargado y ondas P en diente de sierra; hipotiroidismo con galactorrea y ginecomastia",
+ "QT acortado y onda T invertida; hiperestrogenismo por ↑ de la síntesis ovárica de estradiol y progesterona"],a:0,
+ cita:"1. CARDIACA: Arritmias, bloqueo sinusal (paro cardiaco), bloqueo A-V, extrasístoles, taquicardias paroxísticas, prolongación intervalo PR, acortamiento intervalo QT, aplanamiento o inversión onda T, depresión del segmento ST.\n4. ENDOCRINA: Inhibición metabolismo de estradiol (hiperestrogenismo): ginecomastia, galactorrea, cornificaciones vaginales (post-menopausia)",
+ n:"El PR se alarga (no se acorta)."},
+
+{doc:"t5a-cardio",t:5,p:9,q:"Tratamiento de la intoxicación digitálica según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Atropina para frenar el tono vagal y, si hace falta, lidocaína, propranolol o fenitoína; con bloqueo AV, ni sales de K⁺ ni antiarrítmicos",
+ "Atropina para frenar el tono vagal y, si hace falta, lidocaína, propranolol o fenitoína; con bloqueo AV, las sales de K⁺ IV son de elección",
+ "Sales de calcio IV para frenar el tono vagal y, si hace falta, quinidina; con bloqueo AV, sales de K⁺ y antiarrítmicos a dosis plenas",
+ "Neostigmina para aumentar el tono vagal y seguir con el digitálico a mitad de dosis; con bloqueo AV, ClK por vía oral de elección"],a:0,
+ cita:"1. Interrumpir la administración y vigilar recuperación (ECG), junto a descanso (suficiente en intoxicaciones leves).\n3. Además, puede aplicarse atropina para frenar el tono vagal\n4. Si es preciso, antiarrítmicos: lidocaína, propanolol, fenitoína\nSi existe bloqueo A-V, están contraindicadas las sales de K y los antiarrítmicos.",
+ n:"Si las disritmias no mejoran (sin bloqueo AV): ClK (cloruro potásico) en el perro, p.o. 0,6-1 g de inicio y después 0,3-0,5 g cada 1-2 h; la vía IV, con mucho cuidado. También sales de Mg (no estudiado en animales) y, en medicina humana, anticuerpos específicos."},
+
+/* ---------- p. 10 · Interacciones, metilxantinas e ionodilatadores ---------- */
+{doc:"t5a-cardio",t:5,p:10,q:"Interacciones de los digitálicos según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Antiácidos, laxantes y colestiramina reducen su absorción; la quinidina aumenta sus niveles plasmáticos",
+ "Antiácidos, laxantes y colestiramina aumentan su absorción; la quinidina reduce sus niveles plasmáticos",
+ "Antiácidos, laxantes y colestiramina reducen su absorción; la quinidina reduce sus niveles plasmáticos",
+ "La quinidina y la colestiramina aumentan su absorción; los antiácidos aceleran su eliminación renal"],a:0,
+ cita:"Reducen la absorción de:\n- Glucósidos del conducto GI\n- Antiácidos\n- Laxantes\n- Caolín-Pectina\n- Colestiramina\nAumenta los niveles plasmáticos de cardiotónicos: Quinidína (antiarrítmico).",
+ n:"Las listas de «↑ / ↓ niveles plasmáticos» que siguen están marcadas a mano con «NO LO PREGUNTA»."},
+
+{doc:"t5a-cardio",t:5,p:10,q:"Metilxantinas (teofilina, aminofilina…) según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Broncodilatadores y diuréticos; alivian la tos de la ICC del perro y a dosis bajas pueden dar bradicardia",
+ "Broncodilatadores y diuréticos; alivian la tos de la ICC del perro y están indicadas en la cardiopatía aguda",
+ "Inotropos de elección en la ICC grave; a dosis bajas producen taquicardia refleja por bloqueo del vago",
+ "Agonistas de los receptores A2 que activan la PDE III; asociadas a digitálicos son útiles en la insuficiencia"],a:0,
+ cita:"Uso preferente como: broncodilatadores y diuréticos, aunque también poseen efectos cronotropo e inotropo positivos.\nSe han utilizado para aliviar la tos en insuficiencia cardíaca congestiva en perro. (anotación a mano: si no es muy grave)\nEstimulantes cardíacos, pero dosis ↓ pueden producir bradicardia por estímulación vagal.\n- Asociadas a digitálicos producen estimulación cardiaca (no usar en insuficiencias).\n- Contraindicadas en enfermedad cardiaca aguda.",
+ n:"Antagonizan los receptores A2 e inhiben las PDE sin especificidad por la PDE III (↑ AMPc)."},
+
+{doc:"t5a-cardio",t:5,p:10,q:"Ionodilatadores (inodilatadores) según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Inotropos y vasodilatadores mixtos: ↑ AMPc cardiaco y, en el músculo liso vascular, ↑ captación de Ca²⁺ por el retículo",
+ "Inotropos negativos y vasoconstrictores: ↓ AMPc en el corazón y ↑ entrada de Ca²⁺ en el músculo liso de arterias y venas",
+ "Inotropos positivos sin efecto vascular: inhiben la Na⁺/K⁺-ATPasa y ↑ el Ca²⁺ almacenado en el retículo del miocito",
+ "Vasodilatadores puros: bloquean los canales lentos de Ca²⁺ y no modifican en nada la fuerza de contracción del corazón"],a:0,
+ cita:"- Estos fármacos presentan actividad inotropa positiva y vasodilatadora mixta en arterias y venas.\n- En el corazón producen un ↑ AMPc intracelular, que induce el incremento de la frecuencia y la fuerza contráctil.\n- En fibra lisa vascular estimulan la captación de Ca2+ por el retículo sarcoplásmico, lo que genera relajación.",
+ n:"Incluyen adrenérgicos β (dobutamina —y dopamina, según tu nota— y prenalterol), inhibidores de la PDE III (amrinona y milrinona) y los de doble mecanismo (ibopamina y pimobendan)."},
+
+/* ---------- p. 11 · Dopamina y dobutamina ---------- */
+{doc:"t5a-cardio",t:5,p:11,q:"Dopamina en la ICC: según tus apuntes, ¿a qué dosis y cómo se administra?",o:[
+ "A 2-5 µg/kg/min (β1), en infusión IV continua y durante no más de 48-72 h",
+ "A más de 20 µg/kg/min (α), en bolos IV cada 8 h durante varias semanas",
+ "A menos de 2 µg/kg/min (D1), por vía oral en casa como tratamiento crónico",
+ "A 2-5 µg/kg/min (β1), por vía oral cada 12 h durante meses, sin desensibilizar"],a:0,
+ cita:"Dosis intermedias, entre 2 y 5 μg/kg/min:\n- Esta es la dosis recomendada en insuficiencia cardiaca. (anotación a mano: congestiva)\n(p. 10) Semivida muy corta (1 a 3 min)→ debe ser administrada en infusión intravenosa continua, incrementando la velocidad hasta conseguir el efecto deseado. Inconveniente no puede usarse durante más de 48-72 h, porque provoca desensibilización y disminución de la densidad de receptores β1 . (anotación a mano: no es útil como tto en casa)",
+ n:"< 2 µg/kg/min: receptores D1 (vasodilatación renal, mesentérica, cerebral y coronaria). > 5 µg/kg/min: α, «efecto contrario» (↑ resistencia vascular y presión); en el shock hacen falta unos 20 µg/kg/min o más."},
+
+{doc:"t5a-cardio",t:5,p:11,q:"Dopamina a dosis bajas (< 2 µg/kg/min). Según tus apuntes, ¿qué efecto tiene a través de los receptores D2?",o:[
+ "Inhibe la liberación de noradrenalina: hipotensión y bradicardia, efecto usado para controlar la HTA o aliviar la ICC",
+ "Estimula la liberación de noradrenalina: hipertensión y taquicardia, efecto usado para tratar el shock cardiogénico",
+ "Estimula la liberación de aldosterona: retención de Na⁺ y agua, efecto usado en los animales con hipovolemia grave",
+ "Inhibe la liberación de noradrenalina: hipotensión y bradicardia, por eso está contraindicada en la HTA y en la ICC"],a:0,
+ cita:"Dosis< 2 μg/kg/min→ receptores D1 (dopaminérgicos) vasculares y renales:\n- Por efecto sobre receptores D2 , inhibe la liberación de noradrenalina y puede ocasionar hipotensión y bradicardia, efecto usado para controlar la hipertensión arterial o aliviar la ICC.",
+ n:"Por D2 también se inhibe la liberación de aldosterona en la corteza adrenal (más excreción de sodio)."},
+
+{doc:"t5a-cardio",t:5,p:11,q:"Dobutamina según tus apuntes. Señala la opción CORRECTA:",o:[
+ "Agonista β1, β2 y α1, más inotropa que cronotropa: ↑ fuerza y gasto sin cambiar mucho la frecuencia ni la presión",
+ "Agonista D1 y D2, más cronotropa que inotropa: ↑ mucho la frecuencia cardiaca y la presión arterial del paciente",
+ "Agonista β1, β2 y α1, más vasodilatadora que inotropa: se usa por vía oral, de forma crónica, en la ICC leve",
+ "Agonista α1 puro y vasoconstrictor potente: es de elección en el shock a dosis superiores a 20 µg/kg/min"],a:0,
+ cita:"ADRENÉRGICOS BETA: DOBUTAMINA\n- Agonista β1 , β2 y α1\n- Mayor actividad inotropa que cronotropa, cierta actividad vasodilatadora (↓ postcarga y facilita trabajo cardíaco).\n- ↑ fuerza contráctil y gasto cardiaco sin modificación significativa de la frecuencia y la presión sanguínea.\nIndicaciones: En ICC grave mediante infusión continua.",
+ n:"Indicada en infusión continua en: cardiopatía isquémica, infarto, shock cardiogénico, embolia pulmonar y cirugía cardiaca. Ojo: en tus apuntes la dosis viene en «mg/kg/minuto»; debería ser µg/kg/min."},
+/* ===== Tema 5 A (t5a-cardio): págs. 12-21, otros inotropos, potencial de acción y antiarrítmicos ===== */
+/* ---------- p. 12 · Dobutamina (final) ---------- */
+{doc:"t5a-cardio",t:5,p:12,q:"Reacciones adversas e interacciones de la dobutamina que resaltaste en tus apuntes:",o:[
+ "Taquicardia y ↑ marcado de la presión sistólica; los β-bloqueantes (propranolol) antagonizan su acción",
+ "Bradicardia e hipotensión sistólica muy marcada; los β-bloqueantes (propranolol) antagonizan su acción",
+ "Taquicardia y ↑ marcado de la presión sistólica; los β-bloqueantes (propranolol) potencian su acción",
+ "Hipotensión por vasodilatación potente; los β-bloqueantes (propranolol) potencian su acción"],a:0,
+ cita:"RRAA: taquicardia y ↑ marcado de la presión sistólica.\nInteracciones: los beta-bloqueantes antagonizan su acción (p.e., propranolol).",
+ n:"Tus apuntes añaden «Similares a las anteriores»: el resto de RRAA son como las de la dopamina de la página anterior."},
+
+{doc:"t5a-cardio",t:5,p:12,q:"¿Por qué tus apuntes mandan dar digoxina (o digitoxina) antes de la dobutamina si hay fibrilación atrial?",o:[
+ "Porque la dobutamina incrementa la velocidad de conducción por el nodo AV",
+ "Porque la dobutamina enlentece la conducción por el nodo AV y causa bloqueo",
+ "Porque la digoxina evita la hipotensión intensa que produce la dobutamina",
+ "Porque la dobutamina sola no aumenta la fuerza de contracción del corazón"],a:0,
+ cita:"En fibrilación atrial, administrar digoxina ó digitoxina antes de la dobutamina.\nIncrementa la velocidad de conducción por el nodo AV, por lo que debe asociarse a digoxina en animales enfermos con IC que presentan taquicardias supraventriculares rápidas, para controlar la frecuencia ventricular.",
+ n:"La digoxina frena el nodo AV y así controla la frecuencia ventricular."},
+
+/* ---------- p. 12 · Inhibidores de la PDE III ---------- */
+{doc:"t5a-cardio",t:5,p:12,q:"Inhibidores de la PDE III (amrinona, milrinona). Señala la CORRECTA según tus apuntes:",o:[
+ "Más vasodilatadores que inotropos; solo a corto plazo en la ICC (son proarrítmicos); dan trombocitopenia",
+ "Más inotropos que vasodilatadores; solo a corto plazo en la ICC (son proarrítmicos); dan trombocitopenia",
+ "Más vasodilatadores que inotropos; de uso crónico en la ICC (no son proarrítmicos); dan trombocitopenia",
+ "Más vasodilatadores que inotropos; solo a corto plazo en la ICC (son proarrítmicos); dan trombocitosis"],a:0,
+ cita:"INHIBIDORES PDE III: BIPIRIDINAS: AMRINONA,MILRINONA, enoximona, vesnarinona\nEscasa actividad sobre frecuencia cardiaca y presión sanguínea.\nMayor acción sobre vasos (vasodilatación) que corazón (inotropo +)\nReducen la precarga y la poscarga: menor necesidad de O2\nIndicaciones: tratamiento a corto plazo de la ICC (son proarritmicos). Puede ser una alternativa en la IC resistente a los digitálicos.\nRRAA: disrritmias (ventriculares más frecuentes), trombocitopenia (realizar recuentos frecuentes de plaquetas durante el tto ,amrinona>milrinona,) e hipotensión.",
+ n:"La trombocitopenia es mayor con amrinona que con milrinona. Al reducir la precarga y la poscarga disminuyen la necesidad de O₂."},
+
+/* ---------- p. 12 · Pimobendan ---------- */
+{doc:"t5a-cardio",t:5,p:12,q:"Mecanismo de acción dual del pimobendan según tus apuntes:",o:[
+ "↑ la sensibilidad de los miofilamentos al Ca²⁺ e inhibe la PDE III y V en vasos (en el corazón, a dosis mayores)",
+ "↑ la entrada de Ca²⁺ por canales lentos e inhibe la PDE III y V en vasos (en el corazón, a dosis mayores)",
+ "↑ la sensibilidad de los miofilamentos al Ca²⁺ y activa la PDE III y V en vasos, lo que produce vasoconstricción",
+ "Inhibe la Na⁺/K⁺-ATPasa del miocardio e inhibe la PDE III y V en vasos (en el corazón, a dosis mayores)"],a:0,
+ cita:"IONODILATADORES DE ACCIÓN DUAL: PIMOBENDAN\n1. ↑ sensibilidad de los filamento miocárdicos al Ca2+ ( ↑ contractilidad cardíaca).\n2. Inhibe la PDE III y V en vasos (vasodilatación), y a dosis mayores en corazón ( ↑ AMPc y del flujo de Ca2+).",
+ n:"En los vasos la inhibición de la PDE da vasodilatación; en el corazón, a dosis mayores, ↑ el AMPc y el flujo de Ca²⁺."},
+
+{doc:"t5a-cardio",t:5,p:12,q:"Efectos del pimobendan que resaltaste. Señala la CORRECTA:",o:[
+ "No aumenta la necesidad de O₂, ↓ la hipertrofia cardiaca no fisiológica e inhibe la agregación plaquetaria",
+ "Aumenta la necesidad de O₂, ↓ la hipertrofia cardiaca no fisiológica e inhibe la agregación plaquetaria",
+ "No aumenta la necesidad de O₂, ↑ la hipertrofia cardiaca no fisiológica e inhibe la agregación plaquetaria",
+ "No aumenta la necesidad de O₂, ↓ la hipertrofia cardiaca no fisiológica y favorece la agregación plaquetaria"],a:0,
+ cita:"Actividad inotropa + y vasodilatadora potente (venosa y arterial): ↑ gasto y ↓ precarga y poscarga →reduce la resistencia vascular sistémica.\nNo hay aumento de la necesidad de O2\nNo efecto cronotropo + (sólo a dosis ↑ ↑ ) ni arritmogénico\n↓ la hipertrofia cardíaca no fisiológica.\nInhibe de forma potente la agregación plaquetaria.",
+ n:"Al inhibir la PDE V de las arterias pulmonares también mejora la hipertensión pulmonar que acompaña al ↑ de presión en la aurícula izquierda."},
+
+{doc:"t5a-cardio",t:5,p:12,q:"Indicaciones y contraindicaciones del pimobendan (con tu nota en rojo):",o:[
+ "Indicado en la ICC canina por CMD o por insuficiencia valvular; nunca en la cardiomiopatía hipertrófica",
+ "Indicado en la cardiomiopatía hipertrófica; contraindicado en la ICC canina por la insuficiencia valvular",
+ "Indicado en la ICC canina por CMD o por estenosis aórtica; contraindicado en la insuficiencia valvular",
+ "Indicado en la ICC canina por CMD; contraindicado en la regurgitación mitral y/o tricúspide del perro"],a:0,
+ cita:"Indicaciones: ICC canina originada por cardiomiopatía dilatada (CMD) o por insuficiencia valvular (regurgitación mitral y/o tricúspide).\nContraindicaciones: cardiomiopatías hipertróficas o cuando no sea posible un aumento del gasto debido a condiciones funcionales o anatómicas (p.e. estenosis aórtica, lesión valvular). (anotación a mano, en rojo: «Inotrópicos NO, NUNCA cuando hay hipertrófica»)",
+ n:"Dosis que marcaste: 0,5 mg/kg/día por vía oral, dividida en 2 (0,25 mg/kg/12 h), 1 h antes de la comida."},
+
+/* ---------- p. 13 · Pimobendan (final) y glucagón ---------- */
+{doc:"t5a-cardio",t:5,p:13,q:"Reacciones adversas e interacciones del pimobendan según tus apuntes:",o:[
+ "Muy bien tolerado; a dosis elevadas, vómitos, arritmia y taquicardias; antagonistas del Ca²⁺ y β-bloqueantes lo atenúan",
+ "Muy bien tolerado; a dosis elevadas, vómitos, arritmia y taquicardias; antagonistas del Ca²⁺ y β-bloqueantes lo potencian",
+ "Mal tolerado; a dosis terapéuticas, bradicardia y bloqueo AV; antagonistas del Ca²⁺ y β-bloqueantes lo atenúan",
+ "Muy bien tolerado; a dosis elevadas, hipertensión y bradicardia; los IECA y los diuréticos atenúan su efecto"],a:0,
+ cita:"RRAA: muy bien tolerado. En dosis elevadas: vómitos y arritmia, hipotensión sistémica, taquicardias dosis dependientes, incoordinación, convulsiones, polidipsia y poliuria.\nInteracciones: antagonistas del calcio y β -antagonistas atenúan su efecto.",
+ n:"A dosis elevadas también: hipotensión sistémica, incoordinación, convulsiones, polidipsia y poliuria."},
+
+{doc:"t5a-cardio",t:5,p:13,q:"Según tu anotación a mano, ¿en qué se usa el pimobendan en gatos?",o:[
+ "En la disfunción sistólica ventricular y otras patologías con insuficiencia sistólica",
+ "En la cardiomiopatía hipertrófica felina con obstrucción dinámica del tracto de salida",
+ "En la disfunción diastólica por cardiomiopatía restrictiva o hipertrófica felina",
+ "En la hipertensión sistémica del gato con enfermedad renal crónica avanzada"],a:0,
+ cita:"(anotación a mano en la p. 13, bajo las interacciones del pimobendan: «✱ Pimobendan en gatos: Disfunción sistólica ventricular y algunas patologías con insuficiencia Sistólica»)",
+ n:"Recuerda tu nota en rojo de la p. 12: nunca inotrópicos si hay cardiomiopatía hipertrófica."},
+
+{doc:"t5a-cardio",t:5,p:13,q:"El glucagón como inotropo, según tus apuntes:",o:[
+ "↑ la síntesis de AMPc; se ha usado en la IC aguda por un uso imprudente de β-bloqueantes",
+ "Inhibe la PDE III cardiaca; se ha usado en la IC aguda por un uso imprudente de β-bloqueantes",
+ "↑ la síntesis de AMPc; se usa en la IC crónica por cardiomiopatía hipertrófica felina",
+ "Bloquea los canales lentos de Ca²⁺; se usa en la intoxicación por agonistas β"],a:0,
+ cita:"GLUCAGÓN:\nAumenta la contractilidad miocárdica al ↑ la síntesis de AMPc.\nPor su efecto inotropo positivo se ha empleado para el tratamiento de insuficiencia cardiaca aguda provocada por un uso imprudente de β -bloqueantes.",
+ n:"Lógica: no actúa a través de los receptores β, así que sigue subiendo el AMPc aunque estén bloqueados."},
+
+/* ---------- p. 13-14 · Potencial de acción cardiaco ---------- */
+{doc:"t5a-cardio",t:5,p:13,q:"Potencial de acción cardiaco: iones y correspondencia con el ECG según tus apuntes:",o:[
+ "Fase 0: entra Na⁺ (con la fase 1, ondas R y S); fase 3: sale K⁺ por canales que siguen abiertos (onda T)",
+ "Fase 0: entra Ca²⁺ (con la fase 1, onda P); fase 3: sale K⁺ por canales que siguen abiertos (onda T)",
+ "Fase 0: entra Na⁺ (con la fase 1, ondas R y S); fase 3: entra K⁺ por canales que siguen abiertos (segmento ST)",
+ "Fase 0: sale K⁺ (con la fase 1, ondas R y S); fase 3: entra Na⁺ por los canales rápidos (onda T)"],a:0,
+ cita:"Fase 0 – apertura de canales rápidos de Na y despolarización rápida:\nConduce Na+ dentro de la célula , cambiando el potencial de membrana\nFase 1 – Repolarización inicial rápida\nCierre de los canales rápidos de Na+\nFase 0 y 1 juntas corresponden a las ondas R y S del ECG\nFase 3 – repolarización\nLos canales de K+ se mantienen abiertos\nPermite al K+ aumentar fuera de la célula, causando repolarización celular\nCorresponde a la onda T del ECG",
+ n:"Fase 4: reposo (−85 mV), asociada a la diástole. Ojo: tus apuntes ponen en la fase 0 la «corriente transitoria hacia afuera (Cl⁻ y K⁺)», que en realidad es de la fase 1."},
+
+{doc:"t5a-cardio",t:5,p:14,q:"Fase 2 (meseta) del potencial de acción cardiaco, junto a la que anotaste «Periodo refractario»:",o:[
+ "Balance entre la entrada de Ca²⁺ y la salida de K⁺; bloquea cualquier señal prematura de estimulación",
+ "Balance entre la entrada de Na⁺ y la salida de Ca²⁺; admite estímulos extra y suma así las contracciones",
+ "Balance entre la entrada de Ca²⁺ y la salida de K⁺; es más breve que en nervios y otros músculos",
+ "Despolarización lenta y continua, típica de las células marcapaso; equivale a la diástole"],a:0,
+ cita:"Fase 2 – fase de meseta\nSostenida mediante balance entre la corriente de entrada de Ca+ y la corriente de salida de K +.\nPosee una duración prolongada comparada con otros nervios y tejidos musculares.\nNormalmente bloquea cualquier señal prematura de estimulación (otros tejidos musculares pueden aceptar estimulación adicional e incrementar su contractilidad con un efecto sumatorio) (anotación a mano con flecha a esta línea: «Periodo Refractario»)\nCorresponde al segmento ST del ECG.",
+ n:"Corresponde al segmento ST. Tus apuntes escriben «Ca+»: es Ca²⁺."},
+
+{doc:"t5a-cardio",t:5,p:14,q:"Estados del canal de Na⁺ cardiaco y unión de los antiarrítmicos (resaltado en tus apuntes):",o:[
+ "Activado en la fase 0, inactivado en las fases 2-3; los fármacos se unen sobre todo a estos dos estados",
+ "Activado en la fase 0, inactivado en las fases 2-3; los fármacos se unen sobre todo al estado de reposo",
+ "Activado en las fases 2-3, inactivado en la fase 0; los fármacos se unen sobre todo a estos dos estados",
+ "Activado en la fase 4, inactivado en la fase 0; los fármacos se unen sobre todo al estado de reposo"],a:0,
+ cita:"Estado reposo: cuando hay potenciales electronegativos\nEstado activado o abierto: fase 0 del potencial de acción (al despolarizarse la mb)\nEstado inactivado: fase 2,3 y comienzo de fase 4 (mientras se mantienen la despolarización)\nA concentraciones terapéuticas los fármacos antiarrítmicos tienen preferencia de unión por los estados activado e inactivado más que por el estado de reposo"},
+
+/* ---------- p. 15 · Cronotropos y tabla de Vaughan Williams ---------- */
+{doc:"t5a-cardio",t:5,p:15,q:"Cronotropos positivos según tus apuntes. Señala la CORRECTA:",o:[
+ "Atropina e ipratropio: bradicardia sinusal y bloqueo AV incompleto; en el paro cardiaco, adrenalina",
+ "Atropina e ipratropio: taquicardia sinusal y fibrilación auricular; en el paro cardiaco, adrenalina",
+ "Atropina e ipratropio: bradicardia sinusal y bloqueo AV incompleto; en el paro cardiaco, lidocaína",
+ "Atropina e ipratropio: bloqueo AV completo y asistolia; en el paro cardiaco, propranolol i.v."],a:0,
+ cita:"A.1. Anticolinérgicos o parasimpaticolíticos:\nIPRATROPIO y ATROPINA (antimuscarinicos) Pueden ser útiles en bradicardia sinusal y bloqueo incompleto AV.\nA.2. Adrenérgicos o simpaticomiméticos:\nPueden ser utilizados en bradicardia sinusal y bloqueo AV. Su desventaja principal: aumentan, en general, la excitabilidad cardiaca, y pueden aparecer extrasístoles por la emisión de impulsos adicionales.\nEn caso de paro cardiaco, el fármaco de elección es la adrenalina, que inicia nuevas contracciones cardiacas. Se debe utilizar por vía i.v. (si existe todavía retorno venoso) o intracardiaca.",
+ n:"Los simpaticomiméticos también sirven en bradicardia y bloqueo AV, pero pueden dar extrasístoles. La dosis de atropina está tachada en tus apuntes: no entra."},
+
+{doc:"t5a-cardio",t:5,p:15,q:"En la tabla de Vaughan Williams anotaste «los más utilizados» y «los que suele preguntar». Señala la CORRECTA:",o:[
+ "Clase II: bloqueantes β-adrenérgicos (propranolol); clase IV: bloqueantes de canales de Ca²⁺ (verapamilo)",
+ "Clase II: bloqueantes de canales de K⁺ (amiodarona); clase IV: bloqueantes β-adrenérgicos (propranolol)",
+ "Clase II: bloqueantes β-adrenérgicos (propranolol); clase IV: bloqueantes de canales de Na⁺ (lidocaína)",
+ "Clase II: bloqueantes de canales de Ca²⁺ (diltiazem); clase IV: bloqueantes de los canales de K⁺ (sotalol)"],a:0,
+ cita:"Clasificación de los fármacos Antiarrítmicos de Vaughan Williams\nClase II · Bloqueantes de los receptores betaadrenérgicos · Propranolol, Esmolol, Atenolol, Metoprolol\nClase IV · Bloqueantes de los canales de calcio · Verapamilo, Diltiazem\n(anotaciones a mano junto a la tabla: «Los más utilizados en arritmias», con flecha junto a la clase II; «los más utilizados», con flecha a la clase IV; «Los que suele preguntar !»)",
+ n:"Clase I: bloqueantes de Na⁺ (IA procainamida, quinidina; IB lidocaína, mexiletina; IC flecainida, propafenona). Clase III: bloquean canales de K⁺ y prolongan el PA y el periodo refractario (amiodarona, sotalol, bretilio, ibutilide)."},
+
+/* ---------- p. 16 · Antiarrítmicos de clase I ---------- */
+{doc:"t5a-cardio",t:5,p:16,q:"Antiarrítmicos de clase I (bloqueantes de los canales rápidos de Na⁺) según tus apuntes:",o:[
+ "↓ la velocidad de despolarización, prolongan el periodo refractario y tienen un margen de seguridad estrecho",
+ "↑ la velocidad de despolarización, prolongan el periodo refractario y tienen un margen de seguridad estrecho",
+ "↓ la velocidad de despolarización, acortan el periodo refractario y tienen un margen de seguridad amplio",
+ "↓ la velocidad de despolarización, prolongan el periodo refractario y se usan en cualquier arritmia leve"],a:0,
+ cita:"Clase I- Bloqueantes de los canales rápidos de Na+\n↓ velocidad de despolarización y expansión del estímulo en miocardio\nReducen la formación de potenciales de acción ectópicos\nProlongan el periodo refractario (PR)\nBloqueo del canal Na dependiente del “estado”\nMARGEN DE SEGURIDAD ESTRECHO: sólo se utilizan cuando las alteraciones del ritmo son tan intensas que alteran la función de bombeo cardiaco o cuando existe el peligro de que aparezcan otras complicaciones.",
+ n:"Ojo: en los «efectos diferenciales» de tus apuntes, la Ib acorta el periodo refractario y la Ic no lo afecta."},
+
+{doc:"t5a-cardio",t:5,p:16,q:"Preferencia de cada subclase de clase I por el estado del canal de Na⁺ (resaltado en tus apuntes):",o:[
+ "Ia y Ic: canal activado o abierto (frecuencias altas, supraventriculares); Ib: inactivado (ventriculares)",
+ "Ia y Ic: canal inactivado (arritmias ventriculares); Ib: activado o abierto (frecuencias altas, supraventriculares)",
+ "Ia y Ic: canal en reposo (frecuencias bajas, bradiarritmias); Ib: inactivado (arritmias ventriculares)",
+ "Ia y Ic: canal activado o abierto (arritmias ventriculares); Ib: en reposo (arritmias supraventriculares)"],a:0,
+ cita:"Ia y Ic →preferencia por los canales activados o abiertos → más eficaces con frecuencias cardiacas elevadas (arritmias supraventriculares)\nIb →preferencia por el canal en estado inactivado →más eficaces arritmias ventriculares (periodos más prolongados de despolarización)",
+ n:"Por eso la lidocaína (Ib) es un antiarrítmico ventricular."},
+
+{doc:"t5a-cardio",t:5,p:16,q:"Quinidina (clase IA) según tus apuntes:",o:[
+ "Inotropo negativo y vasodilatador periférico (bloqueo α); se usa en la fibrilación auricular del caballo",
+ "Inotropo positivo y vasoconstrictor periférico (agonista α); se usa en la fibrilación auricular del caballo",
+ "Inotropo negativo y vasodilatador periférico (bloqueo α); de elección en arritmias ventriculares del perro",
+ "Inotropo negativo y vasodilatador periférico (bloqueo β); se usa en la fibrilación ventricular del cerdo"],a:0,
+ cita:"QUINIDINA (CLASE 1A)\nEfecto inotropo negativo, propiedades curarizantes (junto a fenitoína en espasmos musculares y calambres), antipiréticas, oxitotocicas, vagolíticas y antipalúdicas. Vasodilatación periférica (bloqueo α).\nPK: Absorción oral, ↑ UPP, 90% biotransformación hepática y excreción renal (acidificación acelera) -Usos: fibrilación auricular en el caballo y menos frecuentemente en el perro",
+ n:"En el caballo la fibrilación auricular a menudo no se debe a una cardiopatía y se resuelve con el tratamiento; en perros y gatos suele ser irreversible (p. 13)."},
+
+/* ---------- p. 17 · Quinidina (toxicidad) y procainamida ---------- */
+{doc:"t5a-cardio",t:5,p:17,q:"Toxicidad de la quinidina según tus apuntes:",o:[
+ "Cinconismo (acúfenos, dolor de cabeza), hipotensión grave y bloqueo A-V; contraindicada en hepatopatías",
+ "Cinconismo (visión amarilla, discromatopsia), hipertensión y bloqueo A-V; contraindicada en hepatopatías",
+ "Cinconismo (acúfenos, dolor de cabeza), hipotensión grave y bloqueo A-V; contraindicada en el caballo",
+ "Cinconismo (convulsiones, depresión respiratoria) y taquicardia sinusal; contraindicada en el asma"],a:0,
+ cita:"Toxicidad:\nDigestiva: anorexia, vómitos, cólicos y diarrea\nHemática: descenso de factores de la coagulación\nNerviosa: cinconismo (acúfenos, dolor de cabeza), ataxia\nCardiovascular: hipotensión grave, bloqueo A-V, fibrilación ventricular\nReacciones de hipersensibilidad: fiebre urticaria, anemia hemolítica, laminitis.\nCongestión mucosa nasal\nContraindicaciones: hepatopatías.\nPrecaución: insuficiencia renal, hipoalbuminemia.",
+ n:"Las interacciones de la quinidina están tachadas en tus apuntes (anotaste «muchas»): no entran."},
+
+{doc:"t5a-cardio",t:5,p:17,q:"Procainamida (clase IA) según tus apuntes:",o:[
+ "De elección en el perro en arritmias ventriculares; menos vagolítica que la quinidina; contraindicada en la intoxicación digitálica",
+ "De elección en el caballo en fibrilación auricular; más vagolítica que la quinidina; indicada en la intoxicación digitálica",
+ "De elección en el perro en arritmias supraventriculares; menos vagolítica que la quinidina; indicada en la intoxicación digitálica",
+ "De elección en el perro en arritmias ventriculares; más vagolítica que la quinidina; de primera elección en la intoxicación digitálica"],a:0,
+ cita:"PROCAINAMIDA (CLASE 1A):\nPropiedades estabilizantes de membrana semejantes a quinidina, pero menor actividad vagolítica.\nDe elección en perro en arritmias ventriculares (acción más selectiva). También actividad bloqueante ganglionar y vasodilatadora moderada.\nToxicidad:\nCardiovascular: hipotensión, bloqueo AV, extrasístoles, taquicardia, fibrilación ventricular, ↓ contractilidad, etc.\nContraindicada en intoxicación digitálica",
+ n:"Toxicidad cardiovascular que resaltaste: hipotensión y bloqueo AV. En insuficiencia renal, reducir un 50 % la dosis por cada 50 % de ↑ del BUN."},
+
+/* ---------- p. 17-18 · Subclase IB y lidocaína ---------- */
+{doc:"t5a-cardio",t:5,p:18,q:"Subclase IB (lidocaína, mexiletina, fenitoína) frente a IA e IC, según tus apuntes:",o:[
+ "Débil depresión de la fase 0, acortan la duración del PA y se asocian y disocian muy rápido (<1 s)",
+ "Fuerte depresión de la fase 0, no modifican el PA y se asocian y disocian lentamente (>10 s)",
+ "Moderada depresión de la fase 0, alargan la duración del PA y se disocian a velocidad intermedia",
+ "Débil depresión de la fase 0, alargan la duración del PA y se asocian y disocian lentamente (>10 s)"],a:0,
+ cita:"Subclase IB\nDébil depresión de fase 0\nDisminuyen la duración del potencial de acción\nAfinidad máxima por el estado inactivo del canal de Na+→ + efectivos donde los PA prolongados →arritmias ventriculares.\nAsociación y disociación muy rápida (<1s)□Discriminan latidos prematuros\nIncluyen\nLidocaína\nMexiletina: derivado de lidocaína, administración oral, actividad similar\nFenitoina: anticonvulsivante, como antiarritmico similar a lidocaína\nTocainida (retirada ren USA→aplasia medular y fibrosis pulmonar en humana)",
+ n:"Por su cinética tan rápida, los IB discriminan los latidos prematuros; los IC (lentos, >10 s) ↓ la excitabilidad sin discriminar. La opción de «fuerte depresión» describe a la IC, y la de «moderada», a la IA."},
+
+{doc:"t5a-cardio",t:5,p:18,q:"Lidocaína (clase IB) según tus apuntes. Señala la CORRECTA:",o:[
+ "Acción selectiva sobre el ventrículo, no altera la conducción AV y por vía oral no es efectiva",
+ "Acción selectiva sobre aurícula y nodos SA y AV, enlentece la conducción AV y es efectiva por vía oral",
+ "Acción selectiva sobre el ventrículo, no altera la conducción AV y es útil por vía oral a largo plazo",
+ "Acción selectiva sobre el ventrículo, enlentece mucho la conducción AV y por vía oral no es efectiva"],a:0,
+ cita:"LIDOCAÍNA (CLASE 1B):\nTratamiento y prevención de taquicardia y fibrilación ventriculares durante e inmediatamente después de un infarto de miocardio\nAcción selectiva sobre ventrículo, afecta poco a aurícula y nodos SA y AV.\nReduce automatismo en células de Purkinje ( ↓ PR y duración de PA).\nNo altera la conducción AV o intraventricular.\nI.V. amplia distribución\nP.O. no efectiva (efecto 1er paso)→no útil para tratamiento a largo plazo\nSemivida breve→ mejor infusión continua",
+ n:"Por eso se da por vía i.v., en bolo lento seguido de infusión continua. Su derivado oral es la mexiletina."},
+
+{doc:"t5a-cardio",t:5,p:18,q:"Lidocaína: ¿cuándo no es efectiva y qué reacción adversa cardiaca marcaste con «!»?",o:[
+ "No es efectiva con hipopotasemia; puede producir bloqueo AV (además de ↓ contractilidad y bradicardia)",
+ "No es efectiva con hiperpotasemia; puede producir taquicardia sinusal (además de ↑ contractilidad)",
+ "No es efectiva con hipopotasemia; puede producir fibrilación auricular (además de hipertensión)",
+ "No es efectiva con hipocalcemia; puede producir bloqueo AV (además de ↑ contractilidad y de taquicardia)"],a:0,
+ cita:"No efectiva en presencia de hipocaliemia (HIPOPOTASEMIA).\nReacciones adversas:\nNerviosas: sedación, náuseas, alt. visuales, parestesias, obnubilación, depresión respiratoria, convulsiones.\nCardiacas: ↓ contractilidad, bradicardia, bloqueo AV. (anotación a mano: «!» junto a «bloqueo AV»)\nVasculares: vasodilatación → hipotensión.\nContraindicaciones: fibrilación auricular o flutter",
+ n:"Ojo con las dosis de tus apuntes: la infusión de lidocaína se da en µg/kg/min, no en mg/kg/min."},
+
+/* ---------- p. 19 · Fenitoína y clase II ---------- */
+{doc:"t5a-cardio",t:5,p:19,q:"Fenitoína como antiarrítmico (clase IB) según tus apuntes:",o:[
+ "Indicada en arritmias por digitálicos: ↓ el automatismo ectópico sin reducir el ritmo sinusal y mejora la conducción AV",
+ "Indicada en arritmias por digitálicos: ↓ el ritmo sinusal y enlentece de forma marcada la conducción AV e intraventricular",
+ "Indicada en la fibrilación auricular del caballo: ↓ el automatismo ectópico y mejora la conducción AV",
+ "Poco útil en arritmias por digitálicos: ↑ la salida de K⁺ intracelular que estos provocan y ↓ el umbral de fibrilación"],a:0,
+ cita:"FENITOÍNA (CLASE 1B)\nActividad central (SNC): ↓ activación simpática del corazón\nLa fenitoína:\n↓ automatismo de marcapasos ectópicos (p.e. en intoxicación digitálica), pero no reduce el ritmo sinusal.\nMejora la conducción AV e intraventricular\n↑ umbral de fibrilación auricular y ventricular\nDisminuye la salida de K+ intracelular ocasionada por digitálicos\nIndicaciones: arritmias por digitálicos (revierte la arritmia sin alterar la capacidad contráctil); poca utilidad en otras arritmias.",
+ n:"Sus reacciones adversas están tachadas en tus apuntes: no entran."},
+
+{doc:"t5a-cardio",t:5,p:19,q:"Antiarrítmicos de clase II (β-bloqueantes), que marcaste con «!» en rojo. Señala la CORRECTA:",o:[
+ "Enlentecen la conducción A-V, previenen la taquicardia refleja y ↓ las despolarizaciones prematuras",
+ "Aceleran la conducción A-V, previenen la taquicardia refleja y ↓ las despolarizaciones prematuras",
+ "Enlentecen la conducción A-V, producen taquicardia refleja y ↑ las despolarizaciones prematuras",
+ "Enlentecen la conducción A-V, previenen la taquicardia refleja y agravan la hipertrofia ventricular"],a:0,
+ cita:"Clase II – Bloqueantes β -adrenérgicos (anotación a mano, lectura probable: «les interesa más», con «!» en rojo y flecha a este título)\nBasan su efecto en dos acciones:\nBloqueo de receptores β -adrenérgicos miocárdicos\nEfectos directos de estabilización de membranas relacionados con el bloqueo del canal de Na+\nEnlentecen la conducción A-V\nPrevienen la taquicardia refleja y ↓ despolarizaciones prematuras\nPueden reducir la presión sanguínea en hipertensión\nReducen los efectos nocivos de la hipertrofia ventricular (cardiopatía , hipertrófica, hipertiroidismo, estenosis aórtica , etc.)"},
+
+/* ---------- p. 20 · Clase II (indicaciones, carvedilol) y clase III ---------- */
+{doc:"t5a-cardio",t:5,p:20,q:"β-bloqueantes como antiarrítmicos: indicaciones y reacciones adversas según tus apuntes:",o:[
+ "Arritmias supraventriculares e intoxicación digitálica; pueden dar broncoespasmo y agravar una ICC",
+ "Arritmias supraventriculares e intoxicación digitálica; producen broncodilatación y mejoran la ICC",
+ "Bradicardia sinusal y bloqueo AV incompleto; pueden dar broncoespasmo y agravar una ICC",
+ "Arritmias supraventriculares y bloqueo AV; pueden dar hipertensión y agravar una ICC"],a:0,
+ cita:"Indicados en:\nArritmias supraventriculares (anotación a mano: «cánidos»)\nIntoxicación digitálica\nPrevención de recurrencia de taquicardias t por ↑ actividad simpática\nRRAA: Broncoespasmo, depresión cardíaca (inotropismo negativo) e hipotensión□Pueden agravar una ICC",
+ n:"Propranolol: el más utilizado. Selectivos β1, sin broncoconstricción: atenolol (en la cardiomiopatía hipertrófica felina), metoprolol y acebutolol."},
+
+{doc:"t5a-cardio",t:5,p:20,q:"Carvedilol según tus apuntes (y tu nota a mano). Señala la CORRECTA:",o:[
+ "Útil en la estenosis aórtica o subaórtica canina; contraindicado en asma y bloqueo AV; iniciar y retirar de forma progresiva",
+ "Útil en la estenosis aórtica o subaórtica canina; contraindicado en asma y bloqueo AV; se puede suspender bruscamente sin riesgo",
+ "Contraindicado en la estenosis aórtica o subaórtica; útil en asma y bloqueo AV; iniciar y retirar de forma progresiva",
+ "Útil en la estenosis aórtica o subaórtica canina; de elección en el asma felina; iniciar a dosis plena desde el principio"],a:0,
+ cita:"CARVEDILOL:\nEn estenosis aórtica o subaórtica canina: puede limitar la hipertrofia y mejorar la disfunción diastólica.\nEn estenosis pulmonar severa (sólo o con bloqueantes de canales del Ca2+).\nEn hipertensión esencial. (solo o combinado con fármacos antihipertensivos, especialmente diuréticos tiazidicos).\nEn ICC sintomática, en pacientes sometidos a tratamiento estándar con diuréticos, IECAs, digoxina y/o vasodilatadores.\nContraindicados:\nAlteraciones hepáticas con descenso del flujo sanguíneo\nAsma, alteraciones de vías respiratorias bajas\nBloqueo AV (anotación a mano junto a las contraindicaciones: «INICIAR Y RETIRAR TTO DE FORMA PROGRESIVA»)",
+ n:"Reducir dosis en alteraciones renales y digestivas e hipoglucemia."},
+
+{doc:"t5a-cardio",t:5,p:20,q:"Antiarrítmicos de clase III (bloqueantes de los canales de K⁺) según tus apuntes:",o:[
+ "Retrasan la repolarización; la amiodarona sirve en taquiarritmias SV y ventriculares, pero es de reserva por su toxicidad",
+ "Aceleran la repolarización; la amiodarona sirve en taquiarritmias SV y ventriculares, pero es de reserva por su toxicidad",
+ "Retrasan la repolarización; la amiodarona es de primera elección por su baja toxicidad, incluso en la tirotoxicosis",
+ "Retrasan la repolarización; el sotalol es de reserva por su toxicidad y está contraindicado en la taquicardia ventricular"],a:0,
+ cita:"Clase III – Bloqueantes de los canales K+:\nCausan retraso en la repolarización y prolongan PA y PR\nAMIODARONA, en taquiarritmias supraventriculares y ventriculares. Fármaco de reserva por su toxicidad. NO en tirotoxicosis ni bradicardia. (anotación a mano: «pero» antes de «Fármaco de reserva»)\nSOTALOL, en arritmias supraventriculares paroxísticas y suprime extrasístoles ventriculares y rachas breves de taquicardia ventricular.",
+ n:"Bretilio: suprime la fibrilación ventricular asociada al infarto (vía i.v.) y se usa como profilaxis de taquidisritmias ventriculares en cerdos durante la anestesia general."},
+
+/* ---------- p. 21 · Clase IV (verapamilo y diltiazem) ---------- */
+{doc:"t5a-cardio",t:5,p:21,q:"Bloqueantes de los canales lentos de Ca²⁺ (clase IV). Señala la CORRECTA según tus apuntes:",o:[
+ "Deprimen intensamente la conducción A-V, dilatan las arteriolas coronarias y son inotropos negativos",
+ "Aceleran la conducción A-V, dilatan las arteriolas coronarias y son inotropos negativos",
+ "Deprimen intensamente la conducción A-V, contraen las arteriolas coronarias y son inotropos negativos",
+ "Deprimen intensamente la conducción A-V, dilatan las arteriolas coronarias y son inotropos positivos"],a:0,
+ cita:"Clase IV – Bloqueantes de los canales lentos de Ca2+\nIntensa actividad depresora de la velocidad de conducción A-V en individuos con fibrilación atrial, también en células de Purkinje.\nVasodilatación arteriolar (CORONARIAS) y venosa. (anotación a mano con flecha a esta línea: «mejoran nutrición del corazón»)\nActividad inotrópica negativa."},
+
+{doc:"t5a-cardio",t:5,p:21,q:"Según tus apuntes, verapamilo y diltiazem:",o:[
+ "Son de elección en taquicardias supraventriculares severas y agudas y se usan en la cardiomiopatía hipertrófica",
+ "Son de elección en taquicardias ventriculares severas y agudas y se usan además en la cardiomiopatía hipertrófica",
+ "Son de elección en taquicardias supraventriculares severas y agudas, pero están contraindicados en la CMH",
+ "Son de elección en la fibrilación ventricular y se usan en la cardiomiopatía dilatada con ICC grave"],a:0,
+ cita:"DE ELECCIÓN TAQUICARDIAS SUPRAVENTRICULARES SEVERAS Y AGUDAS (aunque adenosina es más segura).\nIncluye a: VERAPAMILO Y DILTIAZEM\nUsos: desórdenes por hipertrofia ventricular (hipertiroidismo, cardiomiopatía hipertrófica y estenosis aórtica). Angina de pecho, hipertensión arterial, arritmias supraventriculares, migraña, etc. (anotación a mano: «!» en rojo y un corazón dibujado sobre «cardiomiopatía hipertrófica»)",
+ n:"Tus apuntes matizan que en la taquicardia supraventricular la adenosina es más segura."},
+
+{doc:"t5a-cardio",t:5,p:21,q:"Contraindicaciones e interacción de verapamilo y diltiazem (marcadas en rojo):",o:[
+ "Contraindicados en intoxicación digitálica, bloqueo AV e ICC severa; con β-bloqueantes → bloqueo AV",
+ "Indicados en la intoxicación digitálica y en el bloqueo AV; con β-bloqueantes → bloqueo AV",
+ "Contraindicados en intoxicación digitálica, bloqueo AV e ICC severa; con β-bloqueantes → taquicardia refleja",
+ "Contraindicados en hipertiroidismo y estenosis aórtica; con β-bloqueantes se asocian con seguridad"],a:0,
+ cita:"CONTRAINDICADOS: intoxicación digitálica, bloqueo AV, insuficiencia cardiaca congestiva severa. En hepatopatías reducir dosis hasta un 70% (anotación a mano en rojo: «lo potenciaría»)\nInteracciones: verapamilo + β -bloqueantes → bloqueo AV (anotaciones a mano en rojo: «2 potentes antiarrítmicos» y «! BLOQUEO x2»)",
+ n:"En hepatopatías, reducir la dosis hasta un 70 %."},
+/* ===== Tema 5 B (t5b-cardio): págs. 1-8, insuficiencia cardiaca, activación neurohormonal, tratamiento e infarto ===== */
+/* ---------- p. 1 · Etiología de la IC y disfunción ventricular ---------- */
+{doc:"t5b-cardio",t:5,p:1,q:"Etiología de la insuficiencia cardiaca (frases resaltadas y en negrita en tus apuntes). Señala la CORRECTA:",o:[
+ "Las más importantes: enfermedad coronaria, hipertensión y CMD; el 30 % de las CMD es de origen genético",
+ "Las más importantes: enfermedad coronaria, hipertensión y CMD; el 70 % de las CMD es de origen genético",
+ "Las más importantes: infecciones, toxinas y CMD; el 30 % de las CMD es de origen genético",
+ "Las más importantes: anemia, hipertiroidismo e hipertensión; el 30 % de las CMD es de origen genético"],a:0,
+ cita:"La enfermedad coronaria, HPT y CMD son las causas más importantes.\n30% de los pacientes CMD tienen etiología genética.\nEnfermedad valvular cardiaca es otra causa importante de IC. (anotación a mano: «Cardiomiopatía dilatada», unida con flechas rojas a «Hipertensión» y a la frase de las causas más importantes)",
+ n:"CMD = cardiomiopatía dilatada; HPT = hipertensión. La anemia y el hipertiroidismo están entre las causas precipitantes; las infecciones y las toxinas, en la lista general de causas."},
+
+{doc:"t5b-cardio",t:5,p:1,q:"Disfunción ventricular izquierda sistólica y diastólica (resaltadas en tus apuntes). Señala la CORRECTA:",o:[
+ "Sistólica: contractilidad o eyección alterada (≈ 2/3 de los pacientes con IC); diastólica: llenado o relajación alterados",
+ "Sistólica: llenado o relajación alterados (≈ 2/3 de los pacientes con IC); diastólica: contractilidad o eyección alterada",
+ "Sistólica: contractilidad o eyección alterada (≈ 1/3 de los pacientes con IC); diastólica: llenado o relajación alterados",
+ "Sistólica: contractilidad o eyección alterada (≈ 2/3 de los pacientes con IC); diastólica: eyección y frecuencia alteradas"],a:0,
+ cita:"DISFUNCIÓN VENTRICULAR IZQUIERDA\nSistólica: contractilidad o eyección alterada. Aproximadamente dos terceras partes de pacientes con IC tienen disfunción sistólica.\nDiastólica: llenado o relajación alterados."},
+
+/* ---------- p. 2 · Disfunción del VI y semiología ---------- */
+{doc:"t5b-cardio",t:5,p:2,q:"Según el esquema «Disfunción Ventricular Izquierda» (FE < 40 %), ¿cómo se llega a la congestión pulmonar?",o:[
+ "↑ volumen telesistólico → ↑ volumen telediastólico → congestión pulmonar",
+ "↓ volumen telediastólico → ↓ gasto cardiaco → congestión pulmonar",
+ "↓ volumen telesistólico → ↑ volumen telediastólico → congestión pulmonar",
+ "↑ volumen telediastólico → ↓ volumen telesistólico → congestión pulmonar"],a:0,
+ cita:"Disfunción Ventricular Izquierda (esquema de la p. 2: Sobrecarga De Volumen, Sobrecarga De Presión, Pérdida de Miocardio y Contractilidad Alterada → Disfunción VI FE < 40% → ↓Gasto Cardiaco → Hipoperfusión; Disfunción VI → ↑ Volumen Telesistólico → ↑ Volumen Telediastólico → Congestión Pulmonar)",
+ n:"La otra rama del esquema es ↓ gasto cardiaco → hipoperfusión. Causas de la disfunción: sobrecarga de volumen o de presión, pérdida de miocardio y contractilidad alterada."},
+
+{doc:"t5b-cardio",t:5,p:2,q:"Semiología de la IC: ¿qué grupo de signos aparece SOLO en la lista de la IC derecha de tus apuntes?",o:[
+ "Estasis yugular, hepatomegalia con dolor pulsátil y reflujo hepatoyugular",
+ "Confusión, dificultad de concentración y cefalea con insomnio y ansiedad",
+ "Oliguria, cardiomegalia y taquicardia con pulso alternante y arritmias",
+ "Estasis yugular, hepatomegalia y oliguria con cefalea, insomnio y ansiedad"],a:0,
+ cita:"SEMIOLOGÍA IC IZQUIERDA:\nConfusión\nDificultad de concentración\nCefalea, insomnio y ansiedad\nCardiomegalia\nTaquicardia, pulso\nAlternante, arritmias\nOliguria\nSEMIOLOGÍA IC DERECHA:\nConfusión\nDificultad de concentración\nCefalea, insomnio y ansiedad\nEstasis yugular\nHepatomegalia, dolor pulsátil y esplenomegalia -(Reflujo hepatoyugular)\nCardiomegalia\nTaquicardia, Pulso",
+ n:"Confusión, dificultad de concentración, cefalea, cardiomegalia y taquicardia están en las dos listas; la oliguria, solo en la izquierda. Las listas siguen, sin encabezado, al pie de la p. 2 y en la p. 3: por el orden, parece que disnea, ortopnea, disnea paroxística, respiración de Cheyne-Stokes y edema agudo son de la izquierda, y derrames cavitarios, edema y ascitis, de la derecha."},
+
+/* ---------- p. 3 · Activación neurohormonal: SNS y SRAA ---------- */
+{doc:"t5b-cardio",t:5,p:3,q:"Esquema del sistema nervioso simpático en la IC: la ↑ actividad simpática hacia los riñones y la vasculatura periférica…",o:[
+ "Actúa por α1 y β1 (el β1 activa el SRAA): vasoconstricción y retención de sodio",
+ "Actúa por β1, β2 y α1 cardiacos: toxicidad miocárdica y aumento de arritmias",
+ "Actúa por α1 y β2 (el β2 activa el SRAA): vasodilatación y retención de sodio",
+ "Actúa por α2 y β1 (el β1 inhibe el SRAA): vasoconstricción y pérdida de sodio"],a:0,
+ cita:"2.1. Sistema Nervioso Simpático (SNS) (esquema de la p. 3: ↑ Estímulo simpático del SNC → ↑Actividad simpática cardiaca → receptores β1-, receptores β2-, receptores α1- → Toxicidad Miocárdica, Aumento de arritmias; ↑ Actividad Simpática hacia riñones + vasculatura periférica → α1-, β1- → Activación del SRAA → Vasoconstricción, Retención Sodio; las dos ramas → Progreso De la Enfermedad)",
+ n:"La rama cardiaca (β1, β2 y α1) lleva a toxicidad miocárdica y más arritmias. Las dos ramas acaban en «Progreso de la enfermedad»."},
+
+{doc:"t5b-cardio",t:5,p:3,q:"Según el esquema del SRAA de tus apuntes, ¿qué produce la angiotensina II a través del receptor AT1?",o:[
+ "Vasoconstricción, estrés oxidativo, crecimiento celular, proteinuria y remodelado del VI y vascular",
+ "Vasodilatación, efecto antiproliferativo y apoptosis, que frenan el remodelado del VI y vascular",
+ "Natriuresis, diuresis e inhibición de la secreción de renina, aldosterona y vasopresina",
+ "Vasoconstricción, pero con menos estrés oxidativo y regresión del remodelado del VI"],a:0,
+ cita:"2.2. Sistema Renina-Angiotensina-Aldosterona (SRAA) (esquema de la p. 3: Angiotensinógeno → [Renina] → Angiotensina I → [Enzima Convertidora de Angiotensina (IECA)] → Angiotensina II → Receptor AT I → Vasoconstricción, Estrés Oxidativo, Crecimiento Celular, Proteinuria, Remodelado VI, Remodelado Vascular)",
+ n:"P. 4: el SRAA se activa por el descenso de la presión arterial media (↓ perfusión renal) y produce retención de sodio-agua y sed, aumento simpático y vasoconstricción. Ojo: la enzima es la ECA; IECA es el nombre de sus inhibidores."},
+
+/* ---------- p. 4 · Vasopresina y resumen de la estimulación neurohormonal ---------- */
+{doc:"t5b-cardio",t:5,p:4,q:"Vasopresina (hormona antidiurética, HAD) en la IC, según el esquema de tus apuntes:",o:[
+ "La ↓ PAM estimula los barorreceptores centrales → hipotálamo → secreción hipofisaria → vasoconstricción y retención de H₂O",
+ "La ↑ PAM estimula los barorreceptores centrales → hipotálamo → secreción hipofisaria → vasodilatación y diuresis",
+ "La ↓ PAM estimula los barorreceptores renales → corteza suprarrenal → secreción de vasopresina → retención de Na⁺",
+ "La ↓ PAM estimula los barorreceptores centrales → hipófisis → secreción hipotalámica → vasoconstricción y diuresis"],a:0,
+ cita:"2.3. Vasopresina (hormona antidiurética, HAD) (esquema de la p. 4: Presión Arterial Media Disminuida → Baroreceptores Centrales → Estimulación del hipotálamo, que produce vasopresina secretada por hipófisis → Secreción de vasopresina por la hipófisis → Vasoconstricción; Retención de H2O (riñón) → Aumento de la presión arterial media → Retroalimentación negativa)",
+ n:"Al subir la presión arterial media, el circuito se frena por retroalimentación negativa sobre los barorreceptores."},
+
+{doc:"t5b-cardio",t:5,p:4,q:"Esquema «Estimulación compensadora neurohormonal: resumen». La vasoconstricción arteriolar:",o:[
+ "Ayuda a mantener la presión arterial, pero actúa en contra (−) del gasto cardiaco",
+ "Aumenta el retorno venoso y la precarga, y con ello (+) el volumen latido",
+ "Aumenta (+) el gasto cardiaco y causa el edema periférico y la congestión pulmonar",
+ "Hace bajar la presión arterial, pero actúa a favor (+) del gasto cardiaco"],a:0,
+ cita:"ESTIMULACIÓN COMPENSADORA NEUROHORMONAL: RESUMEN (esquema de la p. 4: Gasto Cardiaco Disminuido → ↑Sistema Nervioso Simpático: ↑ Contractilidad, ↑ Frec. Cardiaca, Vasoconstricción; ↑ Sistema Renina-angiotensina: Vasoconstricción, ↑ Volumen circulante; ↑ Hormona Antidiurética (vasopresina): ↑ Volumen circulante. Vasoconstricción Anteriolar → Mantener presión arterial, y línea discontinua con (-) hacia Gasto Cardiaco; Venosa y ↑ Volumen circulante → ↑ Retorno Venoso al corazón (↑ precarga) → ↑ Volumen Latido (+) y Edema Periférico y congestión pulmonar)",
+ n:"Lo que sube la precarga es la vasoconstricción venosa, junto con el ↑ volumen circulante (SRAA y ADH): más volumen latido, pero también edema periférico y congestión pulmonar. «Anteriolar» es una errata por arteriolar."},
+
+/* ---------- p. 5 · Péptidos natriuréticos, endotelio, remodelado y clase funcional ---------- */
+{doc:"t5b-cardio",t:5,p:5,q:"Péptidos natriuréticos (resaltados en tus apuntes): ¿dónde se encuentra cada uno?",o:[
+ "ANP (tipo A) en las aurículas; BNP (tipo B) en los ventrículos; CNP en el SNC",
+ "ANP (tipo A) en los ventrículos; BNP (tipo B) en las aurículas; CNP en el SNC",
+ "ANP (tipo A) en las aurículas; BNP (tipo B) en el SNC; CNP en los ventrículos",
+ "ANP (tipo A) en las aurículas; BNP (tipo B) en los ventrículos; CNP en el riñón"],a:0,
+ cita:"1.- Péptido Natriurético Atrial (ANP) en aurículas (sobrecarga y distension).\n2.- Péptido Natriurético Cerebral (hBNP) Encontrado en los ventrículos (dilatación).\n3.- Péptido Natriurético tipo C (CNP) Encontrado en el SNC. Propiedades limitadas. (anotación a mano: «Tipo A» junto al ANP y «Tipo B» junto al BNP)",
+ n:"Ojo a la trampa: el BNP se llama «cerebral», pero está en los ventrículos (se libera con su dilatación); el ANP responde a la sobrecarga y distensión de las aurículas. El CNP tiene propiedades limitadas."},
+
+{doc:"t5b-cardio",t:5,p:5,q:"Propiedades que enumeran tus apuntes para los péptidos natriuréticos (al lado anotaste «Diana terapéutica»):",o:[
+ "Vasodilatadoras, natriuréticas y diuréticas; inhiben la secreción de renina, aldosterona y vasopresina",
+ "Vasoconstrictoras, natriuréticas y diuréticas; inhiben la secreción de renina, aldosterona y vasopresina",
+ "Vasodilatadoras, natriuréticas y diuréticas; estimulan la secreción de renina, aldosterona y vasopresina",
+ "Vasodilatadoras, antinatriuréticas y antidiuréticas; inhiben la secreción de renina y de aldosterona"],a:0,
+ cita:"Vasodilatadoras\nEfectos natriuréticos (excreción de sal) y diuréticos (excreción de agua).\nInhiben la secreción de renina, aldosterona y vasopresina (vasoconstrictivas). (anotación a mano: «Diana terapéutica»; con un corchete al lado: «+ info en sus diapos»)",
+ n:"Hacen lo contrario que el SRAA y la vasopresina. Tu nota «+ info en sus diapos» remite a las diapositivas de clase."},
+
+{doc:"t5b-cardio",t:5,p:5,q:"Sustancias vasoactivas liberadas por el endotelio (resaltadas en tus apuntes). Señala la CORRECTA:",o:[
+ "Relajantes: óxido nítrico, bradicinina y prostaciclina; constrictora: endotelina I",
+ "Relajantes: óxido nítrico, endotelina I y prostaciclina; constrictora: bradicinina",
+ "Relajantes: óxido nítrico, bradicinina y tromboxano; constrictora: prostaciclina",
+ "Relajantes: endotelina I, bradicinina y prostaciclina; constrictor: óxido nítrico"],a:0,
+ cita:"2.5. Sustancias vasoactivas liberadas por el endotelio: Producidas por las células que recubren las arterias y venas denominado endotelio.\nFactores relajantes derivados del endotelio – Vasodilatadores:\nÓxido Nítrico (NO)\nBradicinina\nProstaciclina\nFactores constrictores derivados del endotelio – Vasoconstrictores:\nEndotelina I\nActúan: en el mismo endotelio, células de músculo liso y paredes de vasos sanguíneos."},
+
+{doc:"t5b-cardio",t:5,p:5,q:"Remodelado ventricular en la IC, según el esquema y tus anotaciones:",o:[
+ "Hipertrofia → IC diastólica (cavidad más pequeña); dilatación → IC sistólica (faltan cardiomiocitos para contraer)",
+ "Hipertrofia → IC sistólica (faltan cardiomiocitos para contraer); dilatación → IC diastólica (cavidad más pequeña)",
+ "Hipertrofia → IC diastólica (cavidad más grande); dilatación → IC sistólica (pared más gruesa y rígida)",
+ "Hipertrofia → IC sistólica (cavidad más pequeña); dilatación → IC diastólica (faltan cardiomiocitos para relajarse)"],a:0,
+ cita:"3. REMODELADO VENTRICULAR EN INSUFICIENCIA CARDIACA DIASTÓLICA Y SISTÓLICA (esquema de la p. 5: Corazón normal; Hipertrofia ventricular (insuficiencia cardiaca diastólica); Dilatación ventricular (insuficiencia cardiaca sistólica)) (anotación a mano: junto a la hipertrofia, «cavidad + pequeña»; junto a la dilatación, «no hay suf. cardiomiocitos para contraer»)",
+ n:"En la p. 7 dibujaste también un corazón dilatado con el rótulo «remodelación»."},
+
+{doc:"t5b-cardio",t:5,p:5,q:"Clasificación funcional de la IC (resaltada en tus apuntes): sin problemas en reposo, pero la actividad física LIGERA causa fatiga, taquicardia, disnea o angina. Es la:",o:[
+ "Clase III: limitación importante de la actividad física",
+ "Clase II: pequeña limitación de la actividad física",
+ "Clase IV: incapaz de hacer actividad física sin molestias",
+ "Clase I: sin síntomas con la actividad física normal"],a:0,
+ cita:"Clase I: sin síntomas con actividad normal.\nClase II: pequeña limitación de la actividad física. Sin problemas en reposo pero la actividad física normal causa fatiga, taquicardia, disnea o angina.\nClase III: limitación importante a la actividad física. Sin problemas en reposo pero la actividad física ligera causa fatiga, taquicardia, disnea o angina.\nClase IV: incapaz de realizar cualquier actividad física sin molestias. Los síntomas de IC pueden estar presentes en el reposo",
+ n:"La clave es el tipo de esfuerzo: actividad normal → clase II; actividad ligera → clase III; síntomas incluso en reposo → clase IV."},
+
+/* ---------- p. 6 · Estadios clínicos, objetivos y factores agravantes ---------- */
+{doc:"t5b-cardio",t:5,p:6,q:"Según el esquema «Evolución de estadios clínicos» de tus apuntes, señala la CORRECTA:",o:[
+ "ICC compensada: sin síntomas y ↓ ejercicio; ICC refractaria: síntomas no controlados con tratamiento",
+ "ICC compensada: síntomas y ↓↓ ejercicio; ICC refractaria: síntomas no controlados con tratamiento",
+ "ICC compensada: sin síntomas y ↓ ejercicio; ICC refractaria: síntomas que ceden con el tratamiento",
+ "ICC compensada: sin síntomas y ejercicio normal; ICC refractaria: Fx VI alterada sin síntomas"],a:0,
+ cita:"EVOLUCION DE ESTADIOS CLINICOS (esquema de la p. 6: NORMAL: No síntomas, Ejercicio normal, Fx VI normal → Disfunción VI asintomática: No síntomas, Ejercicio normal, Fx VI alterada → ICC compensada: No síntomas, ⇩ ejercicio, Fx VI alterada → ICC descompensada: Síntomas, ⇩⇩ ejercicio, Fx VI alterada → ICC refractaria: Síntomas no controlados con tratamiento; «refractaria» y «Síntomas no controlados con tratamiento», resaltados)",
+ n:"Lo que separa la ICC compensada de la descompensada es la aparición de síntomas (y ↓↓ ejercicio). Sin síntomas, con ejercicio normal y Fx VI alterada = disfunción VI asintomática."},
+
+{doc:"t5b-cardio",t:5,p:6,q:"Objetivos del tratamiento de la IC (los resaltados en tus apuntes):",o:[
+ "↑ supervivencia, ↓ morbilidad, ↑ capacidad de ejercicio y ↓ cambios neurohormonales",
+ "↑ supervivencia, ↓ morbilidad, ↑ capacidad de ejercicio y ↑ activación neurohormonal",
+ "↑ supervivencia, ↑ precarga, ↑ frecuencia cardiaca y ↓ cambios neurohormonales",
+ "↓ morbilidad, ↑ volumen circulante, ↑ contractilidad y ↓ capacidad de ejercicio"],a:0,
+ cita:"OBJETIVOS DEL TRATAMIENTO:\n↑ Supervivencia\n↓ Morbilidad\n↑ Capacidad ejercicio ↑ Calidad de vida\n↓ Cambios neurohormonales\n↓ Progresión de ICC\n↓ Síntomas",
+ n:"En la misma línea resaltada está «↑ Calidad de vida»; sin resaltar: ↓ progresión de la ICC y ↓ síntomas."},
+
+{doc:"t5b-cardio",t:5,p:6,q:"Corrección de factores agravantes en el tratamiento de la IC (lista marcada en tus apuntes). ¿Qué grupo aparece completo en ella?",o:[
+ "Gestación, arritmias (FA), hipertiroidismo, obesidad, actividad física y excesos en dieta",
+ "Gestación, bradicardia, hipotiroidismo, obesidad, reposo prolongado y excesos en dieta",
+ "Infecciones, arritmias (FA), hipotiroidismo, delgadez, actividad física y dieta hiposódica",
+ "Endocarditis, tromboembolismo, hipotensión, obesidad, actividad física y excesos en dieta"],a:0,
+ cita:"CORRECCIÓN DE FACTORES AGRAVANTES:\nGestación\nArritmias (FA)\nInfecciones\nHipertiroidismo\nTromboembolismo\nEndocarditis\nObesidad\nHipertensión\nActividad física\nExcesos en dieta",
+ n:"Justo debajo, la terapia farmacológica (resaltada): diuréticos, inotrópicos, vasodilatadores y antagonistas neurohormonales; otros: anticoagulantes y antiarrítmicos. Ojo: aquí la actividad física es un factor agravante, pero en el estadio A (p. 7) se recomienda «Promover ejercicio regular»."},
+
+/* ---------- p. 7 · Enfoque por estadios, infarto agudo y fármacos vasoactivos ---------- */
+{doc:"t5b-cardio",t:5,p:7,q:"«Enfoque terapéutico hacia el paciente con IC»: el estadio A (resaltado en tus apuntes) es:",o:[
+ "Alto riesgo de sufrirla, pero sin daño estructural: tratar la HTA, promover ejercicio regular e IECA",
+ "Daño estructural asintomático: medidas del estadio A, IECA y β-bloqueantes en pacientes seleccionados",
+ "Daño estructural con síntomas: diuréticos, IECA, β-bloqueantes, digital y restricción de sodio",
+ "IC refractaria: asistencia mecánica, trasplante cardiaco y medicación endovenosa continua"],a:0,
+ cita:"Enfoque terapéutico hacia el paciente con Insuficiencia Cardiaca (esquema de la p. 7: Estadio A: Alto riesgo, sin daño estructural. Terapia: Tratar Hipertensión; Tratar dislipidemia; Promover ejercicio regular; Inhibición ECA) (anotación a mano: «de que la sufra pero», intercalado: alto riesgo de que la sufra pero sin daño estructural; debajo de «Inhibición ECA», «IECAs»)",
+ n:"También en el estadio A, sin resaltar: tratar la dislipidemia."},
+
+{doc:"t5b-cardio",t:5,p:7,q:"En el enfoque terapéutico por estadios, ¿en cuál se añaden por primera vez diuréticos, digital, dieta con restricción de sodio y antagonistas de la aldosterona?",o:[
+ "Estadio C: daño estructural con síntomas previos o actuales",
+ "Estadio B: daño estructural cardiaco, todavía asintomático",
+ "Estadio A: alto riesgo de sufrirla, sin daño estructural",
+ "Estadio D: IC refractaria con tratamiento especializado"],a:0,
+ cita:"Estadio C: Daño estructural cardiaco con síntomas previos o actuales de IC. Terapia: Todas las medidas para el Estadio A. Medicamentos: Diuréticos, IECA, Beta-bloqueadores, Digital, Dieta y restricción de sodio, Antagonistas Aldosterona (esquema de la p. 7)",
+ n:"Estadio B: medidas del A + IECA y β-bloqueantes en pacientes seleccionados. Estadio D: medidas de A, B y C + asistencia mecánica, trasplante cardiaco y uso continuo de medicación endovenosa para mejoría sintomática."},
+
+{doc:"t5b-cardio",t:5,p:7,q:"Tratamiento del infarto agudo (resaltado en tus apuntes). Señala la CORRECTA:",o:[
+ "Trombolítica solo en la terapia aguda (<12 h); β-bloqueantes e IECAs, en la aguda y en el mantenimiento",
+ "Trombolítica solo en la terapia aguda (<24 h); β-bloqueantes e IECAs, solo en el mantenimiento",
+ "Trombolítica en el mantenimiento; nitrodilatadores e IECAs, en la aguda y en el mantenimiento",
+ "Trombolítica solo en la terapia aguda (<12 h); bloqueantes del Ca²⁺ e hipolipemiantes, solo en la aguda"],a:0,
+ cita:"TRATAMIENTO INFARTO AGUDO\nTerapia Aguda\nOxigeno, reposo, analgesia monitorización ECG\nNitrodilatadores\nb-bloqueantes\nIECAs\nTerapia antiagregante\nTerapia trombolítica (<12h)\nTerapia de Mantenimiento\nb-bloqueantes\nBloqueantes de canales de Ca2+\nIECAs\nAgentes hipolipemiantes (anotación a mano junto a los β-bloqueantes y los bloqueantes de canales de Ca2+ del mantenimiento: «→ mantener a raya las arritmias»)",
+ n:"Las IECAs están resaltadas en azul en las dos fases. Oxígeno, reposo, analgesia y ECG, nitrodilatadores y terapia antiagregante son de la fase aguda; bloqueantes del Ca²⁺ e hipolipemiantes, del mantenimiento."},
+
+{doc:"t5b-cardio",t:5,p:7,q:"Fármacos vasoactivos («lo más importante del tema son los vasodilatadores»). Según tus apuntes:",o:[
+ "La amplitud venosa determina la oferta de sangre al corazón; el diámetro arterial, la resistencia periférica",
+ "La amplitud arterial determina la oferta de sangre al corazón; el diámetro venoso, la resistencia periférica",
+ "La amplitud venosa determina la resistencia periférica; el diámetro arterial, la oferta de sangre al corazón",
+ "La frecuencia cardiaca determina la oferta de sangre al corazón; la volemia, la resistencia periférica"],a:0,
+ cita:"FÁRMACOS VASOACTIVOS (lo más importante del tema son los vasodilatadores)\nLa amplitud de la zona circulatoria venosa determina la oferta de sangre al corazón:\nVolumen de pulsación\nVolumen minuto cardíaco (vmc)\nEl diámetro de los vasos arteriales determina la resistencia periférica\nEl vmc y la resistencia periférica son los factores decisivos en la presión arterial (anotación a mano: «← oferta de sangre que llega al corazón»)",
+ n:"El vmc y la resistencia periférica son los factores decisivos de la presión arterial. En la p. 1 escribiste en rojo «Vasodilatadores ! + lo imp»."},
+
+/* ---------- p. 8 · Usos de vasoconstrictores y vasodilatadores ---------- */
+{doc:"t5b-cardio",t:5,p:8,q:"Usos clínicos de los vasoconstrictores de tus apuntes (aminas adrenérgicas, tromboxanos, angiotensina, endotelina, ergaloides, ADH):",o:[
+ "Sobre todo locales; en estados hipotensivos, solo la adrenalina (choque anafiláctico y parada cardiaca)",
+ "Sobre todo sistémicos: su utilidad en cualquier estado hipotensivo está bien demostrada",
+ "Sobre todo locales; en estados hipotensivos, solo la ADH (choque anafiláctico y parada cardiaca)",
+ "Sobre todo locales; en estados hipotensivos, solo la angiotensina (choque séptico y parada cardiaca)"],a:0,
+ cita:"Usos clínicos:\nLimitada a aplicaciones locales (descongestión nasal, administración con anestésicos locales, hemorragias en sábana, etc.)\nUtilidad en estados hipotensivos no demostrada, excepto la adrenalina en el choque anafiláctico y la parada cardiaca.",
+ n:"Aplicaciones locales: descongestión nasal, junto con anestésicos locales y hemorragias en sábana. La lista de vasoconstrictores está al final de la p. 7, sin encabezado propio."},
+
+{doc:"t5b-cardio",t:5,p:8,q:"Según tus apuntes, ¿qué vasoconstrictor puede utilizarse para detener hemorragias esofágicas en pacientes con hipertensión portal secundaria a una hepatopatía?",o:[
+ "La ADH (hormona antidiurética)",
+ "La adrenalina (amina adrenérgica)",
+ "La endotelina I (péptido endotelial)",
+ "El tromboxano A₂ (eicosanoide)"],a:0,
+ cita:"La ADH puede utilizarse para detener hemorragias esofágicas en pacientes con hipertensión portal secundaria a una hepatopatía",
+ n:"La ADH (vasopresina) figura en la lista de la p. 7 como «OTROS: ERGALOIDES, ADH, ETC.»."},
+
+{doc:"t5b-cardio",t:5,p:8,q:"Indicaciones de los vasodilatadores según el tipo de vaso (resaltadas en tus apuntes). Señala la CORRECTA:",o:[
+ "Arteriodilatadores: HTA e IC, no angina (estimulación cardiaca refleja); venodilatadores: angina y a veces IC",
+ "Arteriodilatadores: angina e IC, no HTA (estimulación cardiaca refleja); venodilatadores: sobre todo HTA",
+ "Arteriodilatadores: HTA, IC y angina, sin efectos reflejos; venodilatadores: solo HTA, nunca angina ni IC",
+ "Venodilatadores: HTA e IC, no angina (estimulación cardiaca refleja); arteriodilatadores: angina y a veces IC"],a:0,
+ cita:"Utilizan en HTP, IC y angina; algunos vasodilatadores se ajustan más que otros a estas indicaciones.\nLos que actúan en vasos de resistencia (arteriodilatadores) HPT e IC, no en angina por provocar estimulación cardiaca refleja\nLos venodilatadores muy efectivos en angina y algunas veces útiles para IC, no se utilizan primariamente para tratar la HPT.",
+ n:"Al margen de estas líneas anotaste «Cuidado Riñón en algo de esto» (sin decir a qué fármaco se refiere)."},
+
+{doc:"t5b-cardio",t:5,p:8,q:"Según tus apuntes, ¿qué beneficio adicional tienen el verapamilo y el diltiazem frente a otros vasodilatadores?",o:[
+ "Disminuyen la función mecánica y eléctrica cardiaca: más acción antihipertensiva y bloquean arritmias",
+ "Aumentan la función mecánica y eléctrica cardiaca: más gasto cardiaco y menos edema pulmonar",
+ "Son venodilatadores puros: reducen la precarga y son muy efectivos en la angina sin otros efectos",
+ "Provocan estimulación cardiaca refleja: útiles en la bradicardia y en los estados hipotensivos"],a:0,
+ cita:"Algunos por su mecanismo de acción tienen otras importantes acciones que incrementar su utilidad terapéutica o proporcionar un beneficio terapéutico adicional.\nEj. bloqueantes de los canales de Ca2+ (veramapilo y diltiazem): vasodilatadores y disminuyen función mecánica y eléctrica cardiacas con lo que se incrementa su acción antiHTP y adicionalmente son capaces de bloquear arritmias.",
+ n:"«Veramapilo» es una errata por verapamilo. En la clasificación de la misma página, verapamilo y diltiazem son «cationes anfófilos» y el nifedipino, un «derivado de la dihidropirina» (dihidropiridina)."},
+
+{doc:"t5b-cardio",t:5,p:8,q:"Arteriodilatadores y venodilatadores (resaltados en tus apuntes). Señala la CORRECTA:",o:[
+ "Arteriodilatadores: ↓ presión arterial, resistencia periférica y postcarga; venodilatadores: ↓ oferta de sangre al corazón y precarga",
+ "Arteriodilatadores: ↓ oferta de sangre al corazón y precarga; venodilatadores: ↓ presión arterial, resistencia periférica y postcarga",
+ "Arteriodilatadores: ↓ presión arterial, resistencia periférica y precarga; venodilatadores: ↓ oferta de sangre al corazón y postcarga",
+ "Arteriodilatadores: ↑ trabajo cardiaco y postcarga; venodilatadores: ↑ oferta de sangre al corazón y precarga"],a:0,
+ cita:"ARTERIODILATADORES:\nDisminuyen la presión arterial (en hipertensión)\nDisminuyen el trabajo cardiaco (en angina) disminuyen la presión de postcarga\nDisminuyen la resistencia periférica (en icc)\nVENODILATADORES: Reducen la oferta de sangre al corazón (en infarto e icc) Reducen la presión de precarga",
+ n:"Los arteriodilatadores también disminuyen el trabajo cardiaco. Los venodilatadores se usan en el infarto y la ICC."},
+/* ===== Tema 5 B (t5b-cardio): págs. 9-15, vasodilatadores, IECA, bloqueantes α₁, nitratos e inhibidores de la PDE ===== */
+/* ---------- p. 10 · Antagonistas del calcio ---------- */
+{doc:"t5b-cardio",t:5,p:10,q:"Antagonistas del calcio. Junto a los dos grupos escribiste a mano «ambos son…». Señala la opción CORRECTA:",o:[
+ "Ambos son arteriodilatadores; las dihidropiridinas son vasoselectivas y los anfófilos, crono, ino y dromotropos negativos",
+ "Ambos son venodilatadores; las dihidropiridinas son vasoselectivas y los anfófilos, crono, ino y dromotropos negativos",
+ "Ambos son arteriodilatadores; los anfófilos son vasoselectivos y las dihidropiridinas, crono, ino y dromotropas negativas",
+ "Ambos son arteriodilatadores; las dihidropiridinas son vasoselectivas y los anfófilos, crono, ino y dromotropos positivos"],a:0,
+ cita:"1. DERIV. DE DIHIDROPIRINA: NIFEDIPINO, NITRENDIPINO, FELODIPINO, AMLODIPINO, ISRADIPINO, NIMODIPINO, NICARDIPINO.\nPRÁCTICAMENTE SIN EFECTOS CARDIACOS (VASOSELECTIVOS)\n• 2. CATIONES ANFÓFILOS: VERAPAMILO, GALOPAMIL Y DILTIAZEM\n• NO VASOSELECTIVOS\n• (cronotropo, inotropo y dromotropo negativo)\n(anotación a mano: «ambos son», con una flecha hacia «Arteriodilatadores»)",
+ n:"Por ser vasoselectivas, las dihidropiridinas dan taquicardia refleja; los anfófilos no, y además tienen actividad antiarrítmica."},
+{doc:"t5b-cardio",t:5,p:10,q:"Usos de las dihidropiridinas (nifedipino, nimodipino…) que resaltaste. Señala la CORRECTA:",o:[
+ "HPT, profilaxis y crisis agudas de infarto y vasoespasmo en la hemorragia subaracnoidea; no en la angina",
+ "HPT, profilaxis y crisis agudas de infarto y angina; no en el vasoespasmo de la hemorragia subaracnoidea",
+ "HPT, angina y vasoespasmo en la hemorragia subaracnoidea; no en la profilaxis ni en las crisis de infarto",
+ "Cardiomiopatía hipertrófica felina, arritmias y vasoespasmo en la hemorragia subaracnoidea; no en la HPT"],a:0,
+ cita:"Usos:\n- HPT\n- Profilaxis y crisis agudas de infarto de miocardio (evitan espasmos coronarios y ¯ requerimientos de o2)\n- Espasmo vascular en hemorragia subaracnoidea\n- No en angina pues pueden provocar taquicardia refleja.",
+ n:"No se usan en la angina porque pueden provocar taquicardia refleja. El «¯» de tus apuntes es una flecha «↓» que se perdió al convertir el documento: ↓ requerimientos de O₂."},
+{doc:"t5b-cardio",t:5,p:10,q:"Usos de los cationes anfófilos (verapamilo, galopamil, diltiazem) según tus apuntes:",o:[
+ "HPT, profilaxis del infarto, limitar el daño cerebral en traumatismos y cardiomiopatía hipertrófica felina",
+ "HPT, profilaxis del infarto, limitar el daño cerebral en traumatismos y cardiomiopatía dilatada canina",
+ "HPT, profilaxis del infarto, espasmo en la hemorragia subaracnoidea y cardiomiopatía hipertrófica felina",
+ "HPT, tratamiento crónico de la ICC, limitar el daño cerebral en traumatismos y cardiomiopatía hipertrófica felina"],a:0,
+ cita:"Usos:\n- HPT\n- Profilaxis del infarto de miocardio y para limitar daño cerebral en traumatismos.\n- Cardiomiopatía hipertrófica felina (anotación a mano: ! → únicos indicados)",
+ n:"Junto a la cardiomiopatía hipertrófica felina pusiste «!» y «→ únicos indicados»: de los antagonistas del calcio, son estos (no las dihidropiridinas) los que se usan en ella."},
+{doc:"t5b-cardio",t:5,p:10,q:"Cationes anfófilos: contraindicaciones (las resaltaste) e interacciones. Señala la CORRECTA:",o:[
+ "Contraindicados en bloqueo cardiaco e hipotensión; interaccionan con digitálicos, β-bloqueantes y metilxantinas",
+ "Contraindicados en bloqueo cardiaco e hipertensión; interaccionan con digitálicos, β-bloqueantes y metilxantinas",
+ "Contraindicados en taquicardias supraventriculares; interaccionan con digitálicos, β-bloqueantes y metilxantinas",
+ "Contraindicados en bloqueo cardiaco e hipotensión; se pueden asociar con seguridad a digitálicos y β-bloqueantes"],a:0,
+ cita:"Contraindicados: bloqueo cardíaco, hipotensión, síndrome del nodo sinusal y disfunción severa vi\nInteracciones:\n- digitálicos, anticoagulantes orales,\n- β -bloqueantes\n- metilxantinas/potenciación",
+ n:"También están contraindicados en el síndrome del nodo sinusal y en la disfunción severa del VI, e interaccionan con los anticoagulantes orales."},
+{doc:"t5b-cardio",t:5,p:10,q:"Activadores de los canales de K⁺ (rodeaste MINOXIDIL y pusiste «!»). Respuesta refleja y asociación según tus apuntes:",o:[
+ "↑ tono simpático (taquicardia) y ↑ renina con retención de Na⁺ y H₂O; se administran con diuréticos del asa",
+ "↓ tono simpático (bradicardia) y ↓ renina con pérdida de Na⁺ y H₂O; se administran con suplementos de sodio",
+ "↑ tono simpático (taquicardia) y ↑ renina con retención de Na⁺ y H₂O; se administran con digitálicos en la ICC",
+ "↑ tono vagal (bradicardia) y ↑ aldosterona con retención de K⁺; se administran con ahorradores de potasio"],a:0,
+ cita:"ACTIVADORES DE LOS CANALES DE K+: MINOXIDIL, CROMOKALIM, LEMAKALIM, NICORANDIL (+NO):\nArteriodilatadores con acción potente y prolongada\nRespuesta refleja:\n- Tono simpático (taquicardia, - gasto cardíaco, - consumo de o2)\n- Aumento de liberación de renina (retención de na+ y h2o)\nNo en ICC.\nAdministrar con diuréticos del asa\nDe reserva en casos de hpt arterial grave refractaria a otros fármacos",
+ n:"Los «-» del paréntesis son flechas «↑» que se perdieron al convertir el documento (↑ gasto cardiaco, ↑ consumo de O₂). No se usan en la ICC y son de reserva en la HPT arterial grave refractaria."},
+/* ---------- p. 11 · Hidralacina e IECAs ---------- */
+{doc:"t5b-cardio",t:5,p:11,q:"Hidralacina según tus apuntes. Señala la CORRECTA:",o:[
+ "Arteriodilatador; abre canales de K⁺ y estimula la liberación de NO endotelial; la vía oral es una ventaja",
+ "Venodilatador; abre canales de K⁺ y estimula la liberación de NO endotelial; la vía oral es una ventaja",
+ "Arteriodilatador; bloquea canales de Ca²⁺ e inhibe la liberación de NO endotelial; solo se da por vía IV",
+ "Arteriodilatador; abre canales de K⁺ y estimula la liberación de NO endotelial; su ventaja es la vida media larga"],a:0,
+ cita:"VASODILATADORES DE ACCIÓN DIRECTA: HIDRALACINA\nArteriodilatador semejante a los anteriores, mecanismo no claramente determinado, pero más selectivo, parece que interviene:\n- Apertura de canales de k+, inhibe la liberación de ca2+ dependiente de ip3 y estimula la liberación de no desde el endotelio\n(anotación a mano: oral → ventaja frente a otros)\n…\nDesventajas: vida media corta y la posibilidad de generar tsuicardia -> no útil en HPT crónica",
+ n:"El título y el principio de la frase están al final de la p. 10. También inhibe la liberación de Ca²⁺ dependiente de IP₃. «tsuicardia» = taquicardia."},
+{doc:"t5b-cardio",t:5,p:11,q:"Usos de la hidralacina que resaltaste. Señala la CORRECTA:",o:[
+ "Tratamiento a corto plazo de la HPT en la gestación y HPT grave que no responde a otros fármacos",
+ "Tratamiento crónico de la HPT en la gestación y HPT leve como fármaco de primera elección",
+ "Tratamiento a corto plazo de la HPT en la gestación y angina estable por su efecto bradicardizante",
+ "Tratamiento de la ICC con disfunción diastólica y de la hipotensión grave que no responde a otros"],a:0,
+ cita:"Usos:\n- Tratamiento a corto plazo de hpt durante la gestación;\n- HPT grave que no responde a otros, si cursa con ir grave, icc y reflujo mitral.\n- Amenudo utilizada junto:\n- a b-bloqueantes para atenuar la taquicardia refleja\n- a diuréticos para atenuar la retención de sodio,.",
+ n:"Se asocia a β-bloqueantes (por la taquicardia refleja) y a diuréticos (por la retención de sodio)."},
+{doc:"t5b-cardio",t:5,p:11,q:"Reacciones adversas de la hidralacina (las marcaste con un «!» rojo muy grande). Señala la CORRECTA:",o:[
+ "Taquicardia refleja, hipotensión y lesiones degenerativas en tratamientos crónicos en el perro",
+ "Bradicardia refleja, hipertensión de rebote y lesiones degenerativas en tratamientos crónicos en el perro",
+ "Taquicardia refleja, hipotensión e hiperpotasemia grave en tratamientos crónicos en el gato",
+ "Taquicardia refleja, tos seca por bradicinina y angioedema en tratamientos crónicos en el perro"],a:0,
+ cita:"RRAA: taquicardia refleja, hipotensión, alteraciones gastrointestinales, depresión, anorexia, lesiones degenerativas ad en tratamientos crónicos en perro.",
+ n:"El «!» rojo abarca también las interacciones: riesgo de hipotensión con IECAs, anestésicos, β-bloqueantes, bloqueantes de los canales de Ca²⁺ y diuréticos."},
+{doc:"t5b-cardio",t:5,p:11,q:"IECAs (título resaltado y con un corchete de fluorescente en el margen). ¿Qué opción contiene SOLO IECAs?",o:[
+ "Enalapril, lisinopril, ramipril y benazepril",
+ "Enalapril, losartán, ramipril y benazepril",
+ "Captopril, telmisartán, fosinopril y quinapril",
+ "Lisinopril, saralasina, perindopril y trandolapril"],a:0,
+ cita:"INHIBIDORES DE LA ENZIMA CONVERSORA ANGIOTENSINA (IECAS): ENALAPRIL, LISINOPRIL, RAMIPRIL, BENAZEPRIL, PERINDOPRIL, CAPTOPRIL, FOSINOPRIL, MOEXIPRIL, QUINAPRIL Y TRANDOLAPRIL",
+ n:"Losartán y telmisartán son sartanes (ARA II); la saralasina es el agonista parcial del grupo de los ARA II (p. 12)."},
+/* ---------- p. 12 · IECAs ---------- */
+{doc:"t5b-cardio",t:5,p:12,q:"Diferencias entre los IECAs según tus apuntes. Señala la CORRECTA:",o:[
+ "Mismo efecto y distinta farmacocinética; el grupo radical se une al zinc de la ECA; más liposolubles, más penetración tisular",
+ "Distinto efecto y misma farmacocinética; el grupo radical se une al zinc de la ECA; más liposolubles, más penetración tisular",
+ "Mismo efecto y distinta farmacocinética; el grupo radical se une al calcio de la ECA; más liposolubles, más penetración tisular",
+ "Mismo efecto y distinta farmacocinética; el grupo radical se une al zinc de la ECA; más hidrosolubles, más penetración tisular"],a:0,
+ cita:"Todos tienen el mismo efecto farmacológico pero distinta farmacocinética, solubilidad y metabolismo. El grupo radical es el que se une al sitio activo de unión Zinc de la enzima convertasa. A mayr liposolubilidad mayor capacidad de penetración tisular y fijación a la enzima.",
+ n:"Cuanto más liposolubles, además de penetrar más en los tejidos, más se fijan a la enzima."},
+{doc:"t5b-cardio",t:5,p:12,q:"Efectos de los IECAs que resaltaste en este tema. Señala la CORRECTA:",o:[
+ "↓ resistencia periférica sin apenas cambiar la FC; ↑ flujo renal sin apenas afectar la FG; retrasan la aterosclerosis",
+ "↓ resistencia periférica con taquicardia refleja; ↑ flujo renal sin apenas afectar la FG; retrasan la aterosclerosis",
+ "↓ resistencia periférica sin apenas cambiar la FC; ↓ flujo renal y caída de la FG; retrasan la aterosclerosis",
+ "↓ resistencia periférica sin apenas cambiar la FC; ↑ flujo renal sin apenas afectar la FG; aceleran la aterosclerosis"],a:0,
+ cita:"Hemodinámicos:\n- Resistencia vascular periférica total sin apenas cambios en la frecuencia cardiaca.\n…\nRenal:\n…\n- Flujo renal sin afectar apenas a la tasa de filtración glomerular\n…\nOtros: Retrasan desarrollo aterosclerosis, modulan el equilibrio fibrinolítico,…",
+ n:"En tus apuntes faltan las flechas (↓ resistencia, ↑ flujo renal): se perdieron al convertir el documento. También modulan el equilibrio fibrinolítico."},
+{doc:"t5b-cardio",t:5,p:12,q:"Según tus apuntes, el aumento de cininas, NO y prostaciclina que producen los IECAs explicaría sus efectos:",o:[
+ "Vasodilatadores, antiproliferativos y antitrombóticos",
+ "Vasoconstrictores, proliferativos y protrombóticos",
+ "Inotrópicos positivos, cronotrópicos y antiarrítmicos",
+ "Broncodilatadores, antitusígenos y analgésicos"],a:0,
+ cita:"IECAS: los IECAs aumentan la concentración de cininas, NO y prostaciclina que explicaría sus efectos vasodilatadores, antiproliferativos y antitrombóticos.",
+ n:"Lo resaltaste aquí y también lo resumiste a mano en el Tema 2 (allí se pregunta al revés)."},
+{doc:"t5b-cardio",t:5,p:12,q:"IECAs: reacciones adversas y contraindicaciones de este tema. Señala la CORRECTA:",o:[
+ "Hiperpotasemia en diabetes o IR, hiponatremia y edema angioneurótico; contraindicados en gestantes",
+ "Hipopotasemia en diabetes o IR, hipernatremia y edema angioneurótico; contraindicados en gestantes",
+ "Hiperpotasemia en diabetes o IR, hiponatremia y edema angioneurótico; seguros en gestantes",
+ "Hiperpotasemia en diabetes o IR, hiponatremia y taquicardia refleja; contraindicados en gestantes"],a:0,
+ cita:"RRAA: Hipotensión, hiperpotasemia en casos de diabetes o IR (+ si asociados a diuréticos), alteraciones gastrointestinales, hiponatremia, ↑ enzimas hepáticas y bilirrubina, reacciones de hipersensibilidad (edema angioneurótico).\nContraindicaciones: en IR, hipotensión e IC en tratamiento con potasio y diuréticos, en gestantes (teratógenos).\nPrecauciones: en deshidratación riesgo de colapso.",
+ n:"Resaltaste la hiperpotasemia en diabetes o IR. En gestantes están contraindicados por ser teratógenos, y en la deshidratación hay riesgo de colapso."},
+{doc:"t5b-cardio",t:5,p:12,q:"Interacciones de los IECAs (resaltaste el título y la primera). Señala la CORRECTA:",o:[
+ "Con AINEs o ahorradores de K⁺, hiperpotasemia; con diuréticos y vasodilatadores, hipotensión que corrige el suero salino",
+ "Con AINEs o ahorradores de K⁺, hipopotasemia; con diuréticos y vasodilatadores, hipotensión que corrige el suero salino",
+ "Con AINEs o ahorradores de K⁺, hiperpotasemia; con diuréticos y vasodilatadores, hipertensión que corrige el suero salino",
+ "Con AINEs o ahorradores de K⁺, hiperpotasemia; con diuréticos y vasodilatadores, hipotensión que corrige la dobutamina"],a:0,
+ cita:"Interacciones:\n- Con aines, diuréticos ahorradores de potasio y suplementos de potasio, aumento riesgo de hiperpotasemia.\n- Con diuréticos y vasodilatadores: hipotensión que se corrige con infusión de solución salina.\n- El uso frecuente de AINEs reduce la eficacia del captopril.",
+ n:"También los suplementos de potasio aumentan el riesgo de hiperpotasemia. Además, el uso frecuente de AINEs reduce la eficacia del captopril."},
+/* ---------- p. 12 · ARA II (enmarcados con un corchete rojo) ---------- */
+{doc:"t5b-cardio",t:5,p:12,q:"ARA II (bloque enmarcado en rojo): acciones similares a las de los IECAs. Señala la CORRECTA:",o:[
+ "↓ PA, precarga y poscarga; natriuréticos y diuréticos; inhiben la remodelación cardiaca y vascular",
+ "↓ PA, precarga y poscarga; antidiuréticos y retenedores de Na⁺; inhiben la remodelación cardiaca y vascular",
+ "↓ PA y poscarga, pero ↑ precarga; natriuréticos y diuréticos; favorecen la remodelación cardiaca y vascular",
+ "↓ PA, precarga y poscarga; natriuréticos y diuréticos; inotrópicos positivos con taquicardia refleja"],a:0,
+ cita:"Similares acciones a IECAs:\n- Disminución PA, precarga y poscarga cardiaca,\n- natriuréticos y diuréticos, (anotación a mano en rojo: → ↑ orina ↓ inflamación renal)\n- Inhiben la remodelación cardiaca y vascular asociada a HTP, fallo cardiaco e infarto de miocardio.",
+ n:"Tu nota en rojo: al ser natriuréticos y diuréticos, ↑ la orina y ↓ la inflamación renal."},
+{doc:"t5b-cardio",t:5,p:12,q:"ARA II: receptor que bloquean (dentro del bloque que enmarcaste en rojo) y usos. Señala la CORRECTA:",o:[
+ "Bloquean el receptor AT1 en vasos y corazón; se usan en IC, HPT y diagnóstico de hipertensión renina-dependiente",
+ "Bloquean el receptor AT2 en vasos y corazón; se usan en IC, HPT y diagnóstico de hipertensión renina-dependiente",
+ "Bloquean el receptor AT1 solo en el riñón; se usan en IC, HPT y diagnóstico de hipertensión renina-dependiente",
+ "Inhiben la ECA en vasos y corazón; se usan en IC, HPT y diagnóstico de hipertensión renina-dependiente"],a:0,
+ cita:"Antagonistas: Candesartan, Eprosartan, Irbesartan, Losartan, Olmesarta,Telmisartan y Valsartan Bloquean los receptores tipo1 de angiotensina II en vasos y otros tejidos como el cardiaco.\n…\nSe utilizan en:\n- Diagnóstico de hipertensión renina-dependiente\n- IC\n- HPT",
+ n:"Resaltaste candesartán, losartán y telmisartán. Están indicados si no se toleran los IECAs (tos seca por acúmulo de bradicinina) y en la proteinuria."},
+/* ---------- p. 13 · Bloqueantes α1, isoxsuprina y nitratos ---------- */
+{doc:"t5b-cardio",t:5,p:13,q:"Bloqueantes α1 (prazosín, terazosina, doxazosina, trimazosina; los resaltaste). Señala la CORRECTA:",o:[
+ "Útiles en la ICC de origen valvular; presentan tolerancia y dan hipotensión ortostática y síncope",
+ "Útiles en la ICC de origen valvular; no presentan tolerancia y dan hipertensión de rebote",
+ "Útiles en la angina por vasoespasmo; presentan tolerancia y dan hipotensión ortostática y síncope",
+ "Útiles en la ICC de origen valvular; aumentan la liberación de noradrenalina y dan taquicardia"],a:0,
+ cita:"BLOQUEANTES ALFA 1: PRAZOSIN, TERAZOSINA, DOXAZOSIN, TRIMAZOSIN:\nNo aumentan liberación de norepinefrina\nCaída intensa de presión sanguínea colapso vascular\nUsos\n- ICC de origen valvular (controla edemas, congestión pulmonar, mejora perfusión sanguínea, ascitis y estado general) y en icc descompensada con tratamiento diurético/digitálico\n- HPT asociada a cardiomiopatía o nefropatía\n- Útil en hiperplasia prostática benigna\nPresentan tolerancia\nRRAA: hipotensión ortostática, síncope, congestión nasal.",
+ n:"También se usan en la HPT asociada a cardiomiopatía o nefropatía y en la hiperplasia prostática benigna. Otra reacción adversa: congestión nasal."},
+{doc:"t5b-cardio",t:5,p:13,q:"Isoxsuprina (agonista β-adrenérgico); sus usos y su contraindicación los enmarcaste con un corchete rojo. Señala la CORRECTA:",o:[
+ "Arteriodilatador local del músculo esquelético; laminitis y navicular; contraindicada en gestantes y hemorragias",
+ "Venodilatador general del territorio esplácnico; laminitis y navicular; contraindicada en gestantes y hemorragias",
+ "Arteriodilatador local del músculo esquelético; laminitis y navicular; indicada en gestantes para frenar el parto",
+ "Arteriodilatador local del músculo esquelético; hipertensión pulmonar; contraindicada en gestantes y hemorragias"],a:0,
+ cita:"AGONISTAS b-ADRENÉRGICOS: ISOXUPRINA Y NILIDRINA\n- Arteriodilatadores locales, principalmente en vasos de músculo esquelético\n- Relajante de músculo uterino, por lo que retarda partos prematuros.\n- Actividad inotrópica positiva (desventaja).\nUsos en:\n- Enfermedad del navicular: 0’6 mg/kg cada 12h durante 6-14 semanas\n- Infosura o laminitis\nContraindicado en hembras gestantes y durante las 2 semanas tras el parto, o en animales con hemorragias.",
+ n:"También está contraindicada durante las 2 semanas tras el parto. Navicular: 0,6 mg/kg cada 12 h durante 6-14 semanas. Su actividad inotrópica positiva es una desventaja."},
+{doc:"t5b-cardio",t:5,p:13,q:"Nitratos orgánicos: acciones sistémicas y cardiacas según tus apuntes. Señala la CORRECTA:",o:[
+ "Mixtos de predominio venoso: ↓ presión venosa, efecto débil sobre la PA y ↓ demanda de O₂",
+ "Mixtos de predominio arterial: ↓ poscarga, efecto intenso sobre la PA y ↓ demanda de O₂",
+ "Venodilatadores puros: ↑ presión venosa, efecto débil sobre la PA y ↑ demanda de O₂",
+ "Mixtos de predominio venoso: ↓ presión venosa, efecto débil sobre la PA y ↑ demanda de O₂"],a:0,
+ cita:"Vascularización sistémica:\n- Vasodilatación (venodilatadores > arteriodilatadores)\n- Disminuyen presión venosa (anotación a mano en rojo: mixtos)\n- Disminuyen presión arterial (efecto débil)\nCardiaco:\n- Reduce precarga y poscarga (disminuye el stress de la pared)\n- Demanda oxígeno (anotación a mano en rojo: ↓)",
+ n:"Reducen la precarga y la poscarga (↓ estrés de la pared) y con ello la demanda de O₂. En la p. 14 volviste a anotar en rojo «Vasodilatadores mixtos» y «↓ demanda de O₂», y en la p. 8 rodeaste «Totales» en «VENODILATADORES: Totales no se disponen» con tu nota «solo hay mixtos»."},
+/* ---------- p. 14 · Nitrovasodilatadores e inhibidores de la renina ---------- */
+{doc:"t5b-cardio",t:5,p:14,q:"Usos de los nitratos orgánicos (los resaltaste y los repetiste a mano en rojo):",o:[
+ "Infarto de miocardio, ICC y crisis agudas hipertensivas",
+ "Infarto de miocardio, ICC e hipotensión grave refractaria",
+ "Hipertensión crónica, ICC e hiperplasia prostática benigna",
+ "Infarto de miocardio, cardiomiopatía hipertrófica y glaucoma"],a:0,
+ cita:"Usos:\n- Infarto de miocardio\n- ICC\n- Crisis agudas hipertensivas\n(anotación a mano en rojo junto a «NITRATOS ORGÁNICOS»: útiles en crisis agudas hipertensivas, ICC e infarto)"},
+{doc:"t5b-cardio",t:5,p:14,q:"Nitroprusiato sódico frente a nitratos orgánicos (los «dos tipos» de tus apuntes). Señala la CORRECTA:",o:[
+ "El nitroprusiato libera NO (y cianuro); a los nitratos los reducen a NO grupos sulfhidrilo intracelulares",
+ "Los nitratos liberan NO directamente; al nitroprusiato lo reducen a NO los grupos sulfhidrilo intracelulares",
+ "El nitroprusiato es un éster que libera NO; los nitratos actúan sin formar NO, abriendo canales de K⁺",
+ "El nitroprusiato libera NO (y cianuro); a los nitratos los reducen a NO las esterasas del plasma"],a:0,
+ cita:"Dos tipos:\n1. Liberan NO → nitroprusiato sódico\n2. Grupos nitrato interactuan con enzimas y grupos sulfhidrilo intracelulares que los reducen a NOo a s-nitrotiol posteriormente reducido a NO:\n- Mononitrato y dinitrato de isosorbida\n- Compuestos tetranitratos\n…\nNITROPRUSIATO SÓDICO:\nNo es un éster, LIBERA NO y GRUPOS CIANURO (tiosulfato Na)\nAsociada a dobutamina para mitigar la hipotensión que ocasiona.\nEn infusión controlada → a veces para controlar hpt",
+ n:"El NO activa la guanilciclasa. El nitroprusiato se da en infusión controlada y se asocia a dobutamina para mitigar la hipotensión; el «(tiosulfato Na)» se refiere al antídoto del cianuro."},
+{doc:"t5b-cardio",t:5,p:14,q:"Nitroglicerina (gliceril trinitrato) según tus apuntes. Señala la CORRECTA:",o:[
+ "Ungüento al 2 % (no oral, por su baja estabilidad); contraindicada en el choque cardiogénico; usar guantes",
+ "Comprimidos orales (por su alta estabilidad); contraindicada en el choque cardiogénico; aplicar con guantes",
+ "Ungüento al 2 % (no oral, por su baja estabilidad); de elección en el choque cardiogénico; no requiere guantes",
+ "Ungüento al 2 % (no oral, por su baja estabilidad); contraindicada en la congestión pulmonar cardiógena"],a:0,
+ cita:"GLICERIL TRINITRATO (NITROGLICERINA)\nDe elección en crisis de infarto y congestión pulmonar severa cardíogena.\n- Alta capacidad de atravesar membranas\n- Baja estabilidad: no oral\n- Acción en 30-60 minutos y duración 12-24 h\n- Parches transdérmicos (humana) ungüento (veterinaria)\nContraindicada en choque cardiogénico\nDosis: 0.5-2 cm ungüento al 2% (depilar zona no accesible al animal) perro y gato\nUsar guantes y prevenir al dueño, ya que como se aplica en forma de ungüento puede absorberse a través de la piel de las manos.",
+ n:"Es de elección en las crisis de infarto y en la congestión pulmonar severa cardiógena. Dosis: 0,5-2 cm de ungüento en una zona depilada que el animal no alcance."},
+{doc:"t5b-cardio",t:5,p:14,q:"Nitratos orgánicos: farmacocinética (resaltaste la primera frase). Señala la CORRECTA:",o:[
+ "Los de acción más larga, para la profilaxis; F oral ↓ por primer paso salvo el mononitrato de isosorbida",
+ "Los de acción más corta, para la profilaxis; F oral ↓ por primer paso salvo el mononitrato de isosorbida",
+ "Los de acción más larga, para la profilaxis; F oral ↓ por primer paso salvo la nitroglicerina",
+ "Los de acción más larga, para la profilaxis; sus metabolitos son inactivos y de vida media más corta"],a:0,
+ cita:"NITRATOS ORGÁNICOS:\n- La duración de acción superior son más útiles para la profilaxis y tratamiento a largo plazo de la enfermedad coronaria.\n- F oral disminuye por efecto de 1º paso (excepto mononitrato de isosorbida 100%), por ello las dosis son superiores.\n- Metabolitos biológicamente activos y con vidas medias más prolongadas que el compuesto original, lo que contribuyen significativamente a su actividad terapéutica.",
+ n:"El mononitrato de isosorbida tiene una F oral del 100 %; en los demás, las dosis orales son más altas. Sus metabolitos son activos y duran más que el compuesto original."},
+{doc:"t5b-cardio",t:5,p:14,q:"Inhibidores de la renina: efectos cardiorrenales (lo resaltaste). Señala la CORRECTA:",o:[
+ "Vasodilatación arterial y venosa, natriuresis y diuresis, ↓ actividad simpática e ↓ hipertrofia cardiaca",
+ "Vasodilatación solo arterial, natriuresis y diuresis, ↓ actividad simpática e ↓ hipertrofia cardiaca",
+ "Vasodilatación arterial y venosa, retención de Na⁺ y agua, ↑ actividad simpática e ↓ hipertrofia cardiaca",
+ "Venodilatación pura, ↑ volumen sanguíneo, ↓ actividad simpática e ↑ hipertrofia cardiaca y vascular"],a:0,
+ cita:"INHIBIDORES DE LA RENINA: EFECTOS CARDIORENALES:\n- Vasodilatación (arterial y venosa)\n- Baja presión arterial y venosa\n- Baja precarga y postcarga ventricular\n- Disminuye el volumen sanguíneo:\n- Natriurético\n- Diurético\n- Deprime la actividad simpática\n- Inhibe la hipertrofia cardiaca y vascular"},
+/* ---------- p. 15 · Inhibidores de PDE y bosentán ---------- */
+{doc:"t5b-cardio",t:5,p:15,q:"Inhibidores de la PDE3 (milrinona, inamrinona). Señala la CORRECTA según tus apuntes:",o:[
+ "Solo para el fallo cardiaco agudo o descompensado; ↑ contractilidad y volumen sistólico; RRAA: trombocitopenia",
+ "Para el tratamiento crónico de la insuficiencia cardiaca; ↑ contractilidad y volumen sistólico; RRAA: trombocitopenia",
+ "Solo para el fallo cardiaco agudo o descompensado; ↓ contractilidad y volumen sistólico; RRAA: trombocitopenia",
+ "Solo para el fallo cardiaco agudo o descompensado; ↑ contractilidad y volumen sistólico; RRAA: tos seca"],a:0,
+ cita:"Inhibidores PDE3 (tratamiento agudo de fallo cardiaco o descompensación de insuficiencia crónica. No para tratamientos crónicos).\n- Milrinona\n- Inamrinona (amrinona)\n- Cilostazol\n…\n- Cardiopulmonar:\n- ↑ contractilidad y frecuencia cardiaca\n- ↑ volumen sistólico y la fracción de eyección\n…\n- ↓ presión en AI\nRRAA: trombocitopenia y arritmias",
+ n:"Además: vasodilatación, ↑ perfusión orgánica, ↓ resistencia vascular sistémica y ↓ PA; tus apuntes incluyen el cilostazol en la lista. Ojo con la frecuencia: aquí pone «↑ contractilidad y frecuencia», pero en el Tema 5 A (p. 12) escribiste «Escasa actividad sobre frecuencia cardiaca», que es lo que sigue el test de la app."},
+{doc:"t5b-cardio",t:5,p:15,q:"Inhibidores de la PDE5 (marcados IMP y resaltados). Señala la CORRECTA:",o:[
+ "Sildenafilo y tadalafilo: disfunción eréctil y, en carnívoros, reducir la hipertensión pulmonar",
+ "Sildenafilo y tadalafilo: disfunción eréctil y, en carnívoros, el tratamiento agudo del fallo cardiaco",
+ "Milrinona y amrinona: disfunción eréctil y, en carnívoros, reducir la hipertensión pulmonar",
+ "Sildenafilo y tadalafilo: disfunción eréctil y, en carnívoros, reducir la hipertensión sistémica"],a:0,
+ cita:"Inhibidores PDE5 (IMP) (disfunción eréctil): sildenafilo, tadalafilo. En carnívoros se utiliza para reducir la hipertensión pulmonar."},
+{doc:"t5b-cardio",t:5,p:15,q:"Endotelina-1 y bosentán según tus apuntes. Señala la CORRECTA:",o:[
+ "La ET-1 es un vasoconstrictor potente; el bosentán bloquea ETA y ETB y se usa en la hipertensión pulmonar humana",
+ "La ET-1 es un vasodilatador potente; el bosentán bloquea ETA y ETB y se usa en la hipertensión pulmonar humana",
+ "La ET-1 es un vasoconstrictor potente; el bosentán bloquea solo ETA y se usa en la hipertensión sistémica felina",
+ "La ET-1 es un vasoconstrictor potente; el bosentán estimula ETA y ETB y se usa en la hipertensión pulmonar humana"],a:0,
+ cita:"Endotelina-1 (ET-1): péptido producido por el endotelio . Es un vasoconstrictor potente que se une a receptores del músculo liso vascular, de los que hay dos subtipos: ETA y ETB .\nPor bloqueo de los efectos vasoconstrictor y cardiotónico de ET-1→ vasodilatación e inhibición cardiaca.\n…\nBosentan, es un antagonista no selectivo del receptor ET-1 (bloquea ambos subtipos ETA y ETB ) se utiliza actualmente para el tratamiento en humana de la hipertensión pulmonar.",
+ n:"Al bloquear la ET-1 produce vasodilatación e inhibición cardiaca. Es un antagonista del receptor, aunque el título diga «inhibidores de la endotelina»."}
 ];
 APQ.forEach((q, i) => { q.id = i; if (!q.t) { const d = APUNTES.find(x => x.id === q.doc); q.t = d ? (Array.isArray(d.t) ? d.t[0] : d.t) : 0; } });
