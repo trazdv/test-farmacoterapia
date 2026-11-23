@@ -1,4 +1,6 @@
 "use strict";
+/* asignatura: index.html carga estos datos o los de toxi/ según la que se haya elegido arriba */
+const SUBJECT = { id: "farmaco", name: "Farmacoterapia", exam: "1er parcial", topics: [1, 2, 3, 4, 5], game: true, studyFirst: 2 };
 const TOPICS = {
   1:{name:"Tema 1",desc:"Terapéutica veterinaria"},
   2:{name:"Tema 2",desc:"Autacoides (histamina, serotonina, péptidos, eicosanoides y NO)"},

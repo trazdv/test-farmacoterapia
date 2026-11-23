@@ -4,13 +4,21 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const LET = ["A", "B", "C", "D", "E"];
-const ALL_TOPICS = [1, 2, 3, 4, 5];
+/* asignatura cargada (la define data.js o toxi/data.js); si faltara, Farmacoterapia */
+const SUBJ = typeof SUBJECT !== "undefined" ? SUBJECT : { id: "farmaco", name: "Farmacoterapia", exam: "1er parcial", topics: [1, 2, 3, 4, 5], game: true, studyFirst: 2 };
+const SUBJECTS = [["farmaco", "Farmacoterapia"], ["toxi", "Toxicología"]];
+const ALL_TOPICS = SUBJ.topics;
 function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+/* cada asignatura guarda aparte sus estadísticas, tests a medias y preferencias (Farmacoterapia, con las claves de siempre);
+   la consulta, la energía, el estudio acumulado y el tema visual son comunes */
+const SUBJ_KEYS = ["ft_stats", "ft_apstats", "ft_cfg", "ft_test", "ft_view", "ft_apcfg"];
+const skey = k => SUBJ.id === "farmaco" || !SUBJ_KEYS.includes(k) ? k : k + "@" + SUBJ.id;
 const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { } },
-  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+  get(k, d) { try { const v = localStorage.getItem(skey(k)); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(skey(k), JSON.stringify(v)); } catch (e) { } },
+  del(k) { try { localStorage.removeItem(skey(k)); } catch (e) { } }
 };
+document.title = "Test " + SUBJ.name;
 const countByTopic = t => QUESTIONS.filter(q => q.t === t).length;
 const topicsWithQ = () => ALL_TOPICS.filter(t => countByTopic(t) > 0);
 
@@ -65,20 +73,33 @@ const ICON = {
 /* ============ estado global ============ */
 let cfg = store.get("ft_cfg", { topics: topicsWithQ(), limit: 0, shuffleQ: true });
 if (!cfg.t1) { if (!cfg.topics.includes(1) && cfg.topics.length >= 4) cfg.topics = [1, ...cfg.topics]; cfg.t1 = 1; store.set("ft_cfg", cfg); }
+if (!cfg.topics.some(t => countByTopic(t) > 0)) { cfg.topics = topicsWithQ(); store.set("ft_cfg", cfg); }   // ningún tema elegido con preguntas: se marcan todos
 let view = store.get("ft_view", "test");
+if (view === "consulta" && !SUBJ.game) view = "test";   // la consulta solo existe en Farmacoterapia
 let quiz = null;          // test en curso o terminado
 let reviewTab = "bad";
 let showGrid = false;
 let studyTab = "temas";
-let studyTopic = 2;
+let studyTopic = SUBJ.studyFirst || ALL_TOPICS[0];
 let repasoLimit = 20;
 
 function saveQuiz() { if (quiz && !quiz.done) store.set("ft_test", quiz); else store.del("ft_test"); }
 function setView(v) { view = v; store.set("ft_view", v); if (quiz && quiz.done) quiz = null; render(); window.scrollTo(0, 0); }
 function setFocusMode(on) { document.body.classList.toggle("focus", on); }
 
+/* selector de asignatura (arriba de todas las pantallas): al cambiar, se recarga con los datos de la otra */
+function renderSubjBar() {
+  const el = $("#subjbar"); if (!el) return;
+  el.innerHTML = `<div class="subj" role="group" aria-label="Asignatura">${SUBJECTS.map(([id, name]) => `<button data-subj="${id}" aria-pressed="${SUBJ.id === id}">${name}</button>`).join("")}</div>`;
+  $$("#subjbar [data-subj]").forEach(b => b.onclick = () => {
+    if (b.dataset.subj === SUBJ.id) return;
+    try { localStorage.setItem("ft_subject", JSON.stringify(b.dataset.subj)); } catch (e) { }
+    location.reload();
+  });
+}
 function renderTabs() {
-  const tabs = [["test", "Test"], ["repaso", "Repaso"], ["estudiar", "Estudiar"], ["apuntes", "Apuntes"], ["consulta", "Consulta"]];
+  renderSubjBar();
+  const tabs = [["test", "Test"], ["repaso", "Repaso"], ["estudiar", "Estudiar"], ["apuntes", "Apuntes"], ["consulta", "Consulta"]].filter(([k]) => k !== "consulta" || SUBJ.game);
   const pend = Stats.pending().length;
   $("#tabs").innerHTML = `<div class="tabs-inner">${tabs.map(([k, l]) =>
     `<button data-view="${k}" aria-current="${view === k ? "page" : "false"}">${ICON[k]}<span>${l}</span>${k === "repaso" && pend ? `<i class="badge">${pend}</i>` : ""}</button>`).join("")}</div>`;
@@ -119,8 +140,8 @@ function renderSetup() {
       <span class="count">${c ? c + " preg." : "sin preguntas"}</span></button>`;
   }).join("");
   $("#app").innerHTML = `
-    <header class="page-head"><h1>Test Farmacoterapia</h1>
-    <p class="sub">1er parcial · ${QUESTIONS.length} preguntas. Respondes todas y al final ves la nota y los apuntes de lo que falles.</p></header>
+    <header class="page-head"><h1>Test ${SUBJ.name}</h1>
+    <p class="sub">${SUBJ.exam} · ${QUESTIONS.length} preguntas. Respondes todas y al final ves la nota y los apuntes de lo que falles.</p></header>
     ${pending && !pending.done && pending.bank !== "ap" ? `<div class="card note-card"><div class="row"><div><b>Tienes un test a medias</b><br><span class="muted">${pending.answers.filter(a => a != null).length} de ${pending.items.length} respondidas</span></div><span class="spacer"></span><button class="btn primary" id="resume">Continuar</button></div></div>` : ""}
     <div class="card stack">
       <div>
@@ -319,10 +340,10 @@ function renderStudy() {
   const failed = Stats.failed().sort((a, b) => b.e.w - a.e.w);
   let body = "";
   if (studyTab === "temas") {
-    const S = STUDY[studyTopic];
+    const S = STUDY[studyTopic] || { intro: "Aún no hay resumen de este tema.", sections: [] };
     const qs = QUESTIONS.filter(q => q.t === studyTopic);
     body = `
-      <div class="chips topic-chips">${ALL_TOPICS.map(t => `<button class="chip" data-st="${t}" aria-pressed="${studyTopic === t}">Tema ${t}</button>`).join("")}</div>
+      <div class="chips topic-chips">${ALL_TOPICS.map(t => `<button class="chip" data-st="${t}" aria-pressed="${studyTopic === t}">${TOPICS[t].name}</button>`).join("")}</div>
       <article class="paper">
         <h2 class="paper-title">${TOPICS[studyTopic].name}: ${esc(TOPICS[studyTopic].desc)}</h2>
         <p class="muted">${S.intro}</p>
@@ -406,15 +427,15 @@ function renderApuntes() {
     <div class="seg"><button data-asv="docs" aria-selected="${apTab === "docs"}">Mis apuntes</button><button data-asv="repasar" aria-selected="${apTab === "repasar"}">Repasar apuntes${pend.length ? ` (${pend.length})` : ""}</button></div>
     ${apTab === "repasar" ? reviewHtml : `
     <p class="sub ap-sub">Tus resúmenes tal cual, por temas.</p>
-    <div class="chips topic-chips">${ALL_TOPICS.map(t => { const c = APUNTES.filter(d => docIn(d, t)).length; return `<button class="chip" data-at="${t}" aria-pressed="${apTopic === t}">Tema ${t}${c ? ` · ${c}` : ""}</button>`; }).join("")}</div>
+    <div class="chips topic-chips">${ALL_TOPICS.map(t => { const c = APUNTES.filter(d => docIn(d, t)).length; return `<button class="chip" data-at="${t}" aria-pressed="${apTopic === t}">${TOPICS[t].name}${c ? ` · ${c}` : ""}</button>`; }).join("")}</div>
     ${docs.length ? docs.map(d => `<div class="card doc-card">
         <button class="doc-thumb" data-open="${d.id}" aria-label="Leer ${esc(d.title)}"><img src="${d.dir}p1.webp" alt="" loading="lazy" decoding="async"></button>
         <div class="doc-info"><b>${esc(d.title)}</b>${d.sub ? `<span class="muted small">${esc(d.sub)}</span>` : ""}
           <span class="muted small">${d.pages} páginas${apCount(d.id) ? ` · ${apCount(d.id)} preguntas` : ""}</span>
-          ${d.from ? `<span class="muted small">${Object.entries(d.from).map(([t, p], i, a) => `Tema ${t}: ${a[i + 1] ? `págs. ${p}-${a[i + 1][1] - 1}` : `págs. ${p}-${d.pages}`}`).join(" · ")}</span>` : ""}
+          ${d.from ? `<span class="muted small">${Object.entries(d.from).map(([t, p], i, a) => `${TOPICS[t] ? TOPICS[t].name : "Tema " + t}: ${a[i + 1] ? `págs. ${p}-${a[i + 1][1] - 1}` : `págs. ${p}-${d.pages}`}`).join(" · ")}</span>` : ""}
           <div class="row doc-btns"><button class="btn primary" data-open="${d.id}">Leer</button>${apCount(d.id) ? `<button class="btn" data-arev="${d.id}">Repasar</button>` : ""}</div></div>
       </div>`).join("")
-      : `<div class="card empty-state"><p><b>Aún no hay apuntes del ${TOPICS[apTopic].name}.</b></p><p class="muted">Cuando me pases tus resúmenes de este tema, aparecerán aquí tal cual.</p></div>`}`}`;
+      : `<div class="card empty-state"><p><b>Aún no hay apuntes de este tema.</b></p><p class="muted">Cuando me pases tus resúmenes de este tema, aparecerán aquí tal cual.</p></div>`}`}`;
   updateStudyChip();
   $$("[data-asv]").forEach(b => b.onclick = () => { apTab = b.dataset.asv; renderApuntes(); });
   $$("[data-apinfo]").forEach(b => b.onclick = () => openInfo(+b.dataset.apinfo, "ap"));
@@ -444,7 +465,7 @@ function openViewer(docId, page = 1) {
       <button class="icon-btn" id="vzout" aria-label="Alejar"><svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg></button>
       <button class="vzl" id="vzreset" aria-label="Ajustar al ancho">100 %</button>
       <button class="icon-btn" id="vzin" aria-label="Acercar"><svg viewBox="0 0 24 24"><path d="M6 12h12M12 6v12"/></svg></button>
-      <a class="icon-btn" href="${d.pdf}" target="_blank" rel="noopener" aria-label="Abrir el PDF original" title="Abrir el PDF original"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>
+      ${d.pdf ? `<a class="icon-btn" href="${d.pdf}" target="_blank" rel="noopener" aria-label="Abrir el PDF original" title="Abrir el PDF original"><svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg></a>` : ""}
     </div>
     <div class="vscroll" id="vscroll"><div class="vpages" id="vpages">
       ${Array.from({ length: d.pages }, (_, i) => `<div class="vpage" id="vp${i + 1}" style="aspect-ratio:${d.w}/${d.h}"><img src="${d.dir}p${i + 1}.webp" alt="Página ${i + 1} de ${d.pages}" decoding="async"${Math.abs(i + 1 - page) > 1 ? ' loading="lazy"' : ""}></div><div class="vpnum">${i + 1} / ${d.pages}</div>`).join("")}

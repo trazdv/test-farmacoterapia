@@ -494,8 +494,15 @@ body.focus #tabs{display:none}
 
 @media (max-width:380px){.g-rep-top span{display:none}}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+/* asignatura: Farmacoterapia o Toxicología (arriba de todas las pantallas, salvo en mitad de un test) */
+#subjbar{max-width:760px;margin:0 auto;padding:12px 16px 0;display:flex;justify-content:center}
+#subjbar:empty{display:none}
+.subj{display:flex;gap:3px;padding:4px;border-radius:999px;background:var(--surface);border:2px solid var(--border);max-width:100%}
+.subj button{border:none;background:transparent;border-radius:999px;padding:6px 14px;min-height:36px;font:800 .86rem var(--round);color:var(--muted);white-space:nowrap;transition:all .2s}
+.subj button[aria-pressed="true"]{background:linear-gradient(180deg,#bda6ff,var(--lilac));color:#fff;box-shadow:0 2px 0 rgba(120,90,200,.35)}
+body.focus #subjbar{display:none}
 @media print{
-  #tabs,.seg,.chips,.btn,.link,.navbar,.icon-btn{display:none!important}
+  #tabs,#subjbar,.seg,.chips,.btn,.link,.navbar,.icon-btn{display:none!important}
   body{background:#fff;color:#000} .paper,.qa,.card{box-shadow:none;border-color:#bbb;break-inside:avoid-page}
   .wrap{padding:0} #app>*{animation:none!important}
 }
@@ -517,12 +524,17 @@ body.focus #tabs{display:none}
     <pattern id="gGrain" width="3" height="3" patternUnits="userSpaceOnUse"><path d="M0 .75 H3 M.75 0 V3" stroke="#3a2418" stroke-width=".35" opacity=".55"/><path d="M0 2.25 H3 M2.25 0 V3" stroke="#fff" stroke-width=".35" opacity=".5"/></pattern>
   </defs>
 </svg>
+<div id="subjbar"></div>
 <main class="wrap" id="app"></main>
 <nav id="tabs" aria-label="Secciones"></nav>
 <div id="modal-root"></div>
-<script src="data.js"></script>
-<script src="study.js"></script>
-<script src="apuntes.js"></script>
+<script>/* asignatura elegida (Farmacoterapia por defecto): cada una carga sus propias preguntas, resúmenes y apuntes */
+var SUBJ_ID = "farmaco";
+try { if (JSON.parse(localStorage.getItem("ft_subject")) === "toxi") SUBJ_ID = "toxi"; } catch (e) {}
+document.write(SUBJ_ID === "toxi"
+  ? '<script src="toxi/data.js"><\/script><script src="toxi/study.js"><\/script><script src="toxi/apuntes.js"><\/script>'
+  : '<script src="data.js"><\/script><script src="study.js"><\/script><script src="apuntes.js"><\/script>');
+</script>
 <script src="app.js"></script>
 <script src="consultas.js"></script>
 <script src="art.js"></script>
